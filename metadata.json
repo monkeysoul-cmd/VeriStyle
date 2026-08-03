@@ -1,0 +1,6 @@
+{
+  "name": "VeriStyle",
+  "description": "AI-Powered Counterfeit Apparel & Fake Review Authenticity Verification Platform",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
