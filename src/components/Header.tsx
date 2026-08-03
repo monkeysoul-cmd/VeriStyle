@@ -1,6 +1,7 @@
 import React from 'react';
-import { Sparkles, History, Code2, ArrowRight } from 'lucide-react';
+import { History, Code2, ArrowRight } from 'lucide-react';
 import { VeriLensLogo } from './VeriLensLogo';
+import { VeriLensIcon } from './VeriLensIcon';
 
 interface HeaderProps {
   currentTab: 'landing' | 'dashboard' | 'history' | 'api-docs';
@@ -42,7 +43,7 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
             }`}
           >
-            <Sparkles className="w-4 h-4 text-emerald-400" />
+            <VeriLensIcon className="w-4 h-4 text-emerald-400" />
             AI Inspector
           </button>
           <button
@@ -100,7 +101,7 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
           onClick={() => setCurrentTab('dashboard')}
           className={`px-3 py-1.5 rounded-lg flex items-center gap-1 ${currentTab === 'dashboard' ? 'bg-indigo-600 text-white' : ''}`}
         >
-          <Sparkles className="w-3.5 h-3.5" /> Dashboard
+          <VeriLensIcon className="w-3.5 h-3.5 text-emerald-400" /> Dashboard
         </button>
         <button 
           onClick={() => setCurrentTab('history')}
