@@ -1,0 +1,60 @@
+%% Chapter5_Methodology.tex
+\chapter{System Architecture and Methodology}
+
+\section{Proposed VeriStyle Multimodal Architecture}
+The proposed **VeriStyle** framework integrates a dual-domain pipeline comprising the **VeriLens Computer Vision Transformer Engine**, the **NLP Perplexity Forensics Engine**, an **XAI Spatial Heatmap Overlay Generator**, and a **Cryptographic Provenance Vault**.
+
+Figure~\ref{fig:arch_flow} illustrates the end-to-end architecture and data flow of the VeriStyle platform.
+
+\begin{figure}[htbp]
+\centering
+\begin{tabular}{|c|}
+\hline
+\textbf{Input Stage}: High-Res Apparel Image $\mathbf{I}$ + Reseller Review Text $\mathbf{T}$ \\
+\downarrow \\
+\textbf{VeriLens Vision Transformer}: Micro-Stitching Pitch + Hardware Plating + Care Label \\
+\boldsymbol{\&} \textbf{NLP Perplexity Engine}: Phrase Entropy + Bot Markers + Discrepancy Check \\
+\downarrow \\
+\textbf{Multimodal Fusion Core}: Trust Score $S \in [0, 100]$ + Verdict Generation \\
+\downarrow \\
+\textbf{Output Stage}: XAI Heatmap Overlays + Provenance Vault Certificate \& QR Code \\
+\hline
+\end{tabular}
+\caption{End-to-End System Architecture Flow of VeriStyle (VeriLens AI Engine).}
+\label{fig:arch_flow}
+\end{figure}
+
+\section{Micro-Stitching & Surface Texture Computer Vision Pipeline}
+The vision processing pipeline extracts spatial micro-features from apparel photographs:
+\begin{enumerate}
+    \item \textbf{Preprocessing \& Patch Tokenization}: The input image $\mathbf{I} \in \mathbb{R}^{H \times W \times 3}$ is resized to $512 \times 512$ resolution and divided into non-overlapping patches $\mathbf{x}_p \in \mathbb{R}^{N \times (P^2 \cdot C)}$, where $P=16$.
+    \item \textbf{Micro-Stitching Pitch Density}: A specialized convolutional reticle measures stitch count per linear inch ($SPI$):
+    \begin{equation}
+        SPI = \frac{N_{\text{stitches}}}{L_{\text{inches}}}
+    \end{equation}
+    The calculated $SPI$ is cross-referenced against factory master tolerances ($\pm 0.2$ SPI).
+    \item \textbf{Hardware Electroplating Reflectivity}: Spectral luminance profiling evaluates metal hardware debossing depth and reflectivity indices under varied lighting.
+    \item \textbf{Typography Kerning Check}: Optical Character Recognition (OCR) isolates care tag text, measuring character spacing and font weight against brand vectors.
+\end{enumerate}
+
+\section{NLP Linguistic Perplexity & Bot Forensics Engine}
+The natural language processing pipeline evaluates reseller review text $\mathbf{T}$ for synthetic automation and LLM generation markers:
+\begin{enumerate}
+    \item \textbf{Linguistic Perplexity Score}: Computed using a causal language model to evaluate text predictability:
+    \begin{equation}
+        \text{PPL}(\mathbf{T}) = \exp \left( -\frac{1}{N} \sum_{i=1}^{N} \log P(w_i \mid w_1, w_2, \dots, w_{i-1}) \right)
+    \end{equation}
+    Unusually low perplexity values indicate automated LLM template generation.
+    \item \textbf{Phrase Repetition \& Bot Markers}: Measures n-gram entropy and detects repetitive bot template patterns (e.g., "100\% authentic fast shipping seller highly recommend").
+    \item \textbf{Cross-Modal Discrepancy Matrix}: Calculates semantic distance between extracted visual features (e.g., synthetic vinyl texture) and review text sentiment (e.g., "genuine caviar leather").
+\end{enumerate}
+
+\section{XAI Heatmap & Bounding Overlay Generator}
+To provide transparent reasoning, VeriStyle computes Grad-CAM activation maps over the final transformer self-attention layers \cite{dosovitskiy2020image}. The spatial attention weight matrix $\mathbf{A} \in \mathbb{R}^{N \times N}$ projects bounding box coordinate arrays $\mathbf{B} = \{x, y, w, h\}$ with associated severity flags (low, medium, high anomaly), rendered as interactive overlays on the user interface.
+
+\section{Cryptographic Provenance Vault & Digital Certificates}
+Upon completion of inspection, VeriStyle generates a cryptographically hashed digital provenance record:
+\begin{equation}
+    \mathbf{H}_{\text{verify}} = \text{SHA-256}(\text{ItemName} \parallel \text{Brand} \parallel S \parallel V \parallel \text{Timestamp})
+\end{equation}
+The generated 64-character hash is rendered alongside a dynamic QR code, allowing e-commerce buyers and sellers to verify certificate authenticity on the digital vault.

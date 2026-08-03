@@ -1,0 +1,39 @@
+%% Chapter7_Plan.tex
+\chapter{Project Execution Plan and Timeline}
+
+\section{Phase-Wise Implementation Schedule}
+The project execution is structured across seven distinct phases over the academic session, as outlined in Table~\ref{tab:project_plan}.
+
+\begin{table}[htbp]
+\centering
+\caption{Phase-Wise Project Implementation Plan & Timeline}
+\label{tab:project_plan}
+\small
+\begin{tabularx}{\textwidth}{c >{\raggedright\arraybackslash}p{4.5cm} >{\raggedright\arraybackslash}p{6.0cm}}
+\toprule
+\textbf{Phase} & \textbf{Milestone / Task} & \textbf{Key Deliverables} \\
+\midrule
+Phase 1 & Problem Definition \& Literature Survey & Comprehensive literature review, research gap identification, synopsis approval. \\
+\addlinespace
+Phase 2 & Dataset Curation \& Preprocessing & Dataset collection of luxury apparel imagery, micro-stitching crops, and review text corpus. \\
+\addlinespace
+Phase 3 & Model Architecture & VeriLens Vision Transformer tuning, micro-stitching SPI algorithm, NLP perplexity module. \\
+\addlinespace
+Phase 4 & XAI \& Heatmap Development & Grad-CAM integration, bounding box overlay pipeline, discrepancy score calculation. \\
+\addlinespace
+Phase 5 & Full-Stack Platform Integration & React 19 / TypeScript UI development, Node.js REST API endpoints, Vault QR generator. \\
+\addlinespace
+Phase 6 & Testing \& Performance Optimization & Benchmark testing (accuracy $\ge 99.4\%$, latency $<2.4$s), OpenAPI verification. \\
+\addlinespace
+Phase 7 & Paper Writing \& Final Submission & Peer-reviewed conference paper submission, patent assessment, final project report. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Resource & Hardware Requirements}
+The project requires the following computational resources:
+\begin{itemize}
+    \item \textbf{Hardware}: Workstation equipped with NVIDIA RTX GPU (16GB VRAM) for model training and inference optimization.
+    \item \textbf{Software Stack}: Python 3.11, PyTorch, Node.js 20+, React 19, TypeScript, TailwindCSS, Express.js.
+    \item \textbf{Deployment}: Node.js runtime, Vercel / Cloud server hosting.
+\end{itemize}

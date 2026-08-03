@@ -1,0 +1,120 @@
+%% main.tex - VeriStyle Research Proposal Synopsis
+\documentclass[a4paper,12pt]{report}
+
+% PACKAGES & MARGINS
+\usepackage[top=30mm, bottom=25mm, left=35mm, right=20mm]{geometry}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{times}
+\usepackage[hidelinks]{hyperref}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage{caption}
+\captionsetup{font=small, labelfont=bf}
+\usepackage{xcolor}
+
+% BIBLIOGRAPHY SETUP (IEEE Style)
+\usepackage[backend=biber, style=ieee, sorting=none]{biblatex}
+\addbibresource{References.bib}
+
+% WATERMARK TOGGLE
+\newif\ifwatermark
+\watermarkfalse % Set to \watermarktrue if watermark is needed
+
+\ifwatermark
+\usepackage[firstpage]{draftwatermark}
+\SetWatermarkText{ENSURE\\This Report is\\PLAGIARISM\\\&\ AI FREE}
+\SetWatermarkColor[RGB]{200,0,0}
+\SetWatermarkFontSize{3.2cm}
+\SetWatermarkAngle{45}
+\SetWatermarkLightness{0.75}
+\fi
+
+% DOCUMENT METADATA
+\newcommand{\reporttitle}{VeriStyle: Cross-Modal Multimodal AI for Luxury Apparel Authenticity Verification and Bot Review Forensics}
+\newcommand{\session}{2023--2027}
+\newcommand{\batchcode}{2023-2027/CSE/Sec-A/Group-04}
+\newcommand{\degree}{Bachelor of Technology\\in\\Computer Science and Engineering}
+\newcommand{\students}{Student 1 (Roll No. 23000000001)\\Student 2 (Roll No. 23000000002)\\Student 3 (Roll No. 23000000003)\\Student 4 (Roll No. 23000000004)}
+\newcommand{\mentor}{Supervisor / Faculty Mentor Name}
+\newcommand{\university}{AJAY KUMAR GARG ENGINEERING COLLEGE, GHAZIABAD\\DR. A.P.J. ABDUL KALAM TECHNICAL UNIVERSITY, LUCKNOW}
+\newcommand{\submissiondate}{\today}
+
+\begin{document}
+
+% TITLE PAGE
+\begin{titlepage}
+\begin{flushright}
+\textbf{\batchcode}
+\end{flushright}
+
+\begin{center}
+\vspace*{0.5cm}
+{\Large\textbf{\reporttitle}\par}
+\vspace{1.2cm}
+{\large\textbf{A Research Proposal Synopsis}\par}
+{\large\textit{(Based on Detailed Literature Review)}\par}
+\vspace{1.2cm}
+Submitted in Partial Fulfillment of the Requirements for the Degree of\par
+\vspace{0.4cm}
+{\large\textbf{\degree}\par}
+\vspace{0.8cm}
+Session: \session\par
+\vspace{0.8cm}
+by\par
+\vspace{0.4cm}
+{\large\textbf{\students}\par}
+\vspace{1.0cm}
+Under the Supervision of\par
+\vspace{0.4cm}
+{\large\textbf{\mentor}\par}
+\vspace{1.2cm}
+{\large\textbf{\university}\par}
+\vfill
+{\large\submissiondate\par}
+\vspace*{0.5cm}
+\end{center}
+\end{titlepage}
+
+% FRONT MATTER
+\onehalfspacing
+\pagenumbering{roman}
+\newpage
+\input{DECLARATION}
+\newpage
+\input{certificate}
+\newpage
+\input{ABSTRACT}
+\newpage
+\tableofcontents
+\newpage
+\listoffigures
+\newpage
+\listoftables
+
+% MAIN CHAPTERS
+\pagenumbering{arabic}
+\newpage
+\input{Chapter1_Introduction}
+\newpage
+\input{Chapter2_LiteratureReview}
+\newpage
+\input{Chapter3_SocietalImpact}
+\newpage
+\input{Chapter4_UHV}
+\newpage
+\input{Chapter5_Methodology}
+\newpage
+\input{Chapter6_ExpectedOutcomes}
+\newpage
+\input{Chapter7_Plan}
+
+% BIBLIOGRAPHY
+\newpage
+\addcontentsline{toc}{chapter}{References}
+\printbibliography
+
+\end{document}
