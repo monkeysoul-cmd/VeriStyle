@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { SAMPLE_PRESETS } from '../data/presets';
 import { SamplePreset } from '../types';
+import { VeriLensIcon } from './VeriLensIcon';
 
 interface LandingPageProps {
   onStartAnalysis: (preset?: SamplePreset) => void;
@@ -44,7 +45,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis }) => 
           {/* Top Pill Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/90 border border-slate-700/80 text-xs font-semibold text-slate-300 shadow-xl backdrop-blur-md animate-fade-in">
             <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
-            <Sparkles className="w-4 h-4 text-emerald-400" />
+            <VeriLensIcon className="w-4 h-4 text-emerald-400" />
             <span className="text-white font-medium">Multimodal Cross-Modal Engine</span>
             <span className="text-slate-500">|</span>
             <span className="text-indigo-400 font-mono">VeriLens AI Powered</span>
@@ -70,7 +71,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis }) => 
               onClick={() => onStartAnalysis()}
               className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-indigo-500 via-indigo-600 to-emerald-500 hover:from-indigo-600 hover:to-emerald-600 text-white font-bold text-base shadow-xl shadow-indigo-600/30 hover:shadow-indigo-600/50 transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3 group"
             >
-              <Sparkles className="w-5 h-5 text-emerald-300 group-hover:rotate-12 transition-transform" />
+              <VeriLensIcon className="w-5 h-5 text-emerald-300 group-hover:rotate-12 transition-transform" />
               <span>Try VeriLens Inspector</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>

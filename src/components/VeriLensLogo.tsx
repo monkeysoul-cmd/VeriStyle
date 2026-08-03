@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles } from 'lucide-react';
+import { VeriLensIcon } from './VeriLensIcon';
 
 interface VeriLensLogoProps {
   size?: 'sm' | 'md' | 'lg';
@@ -72,7 +72,7 @@ export const VeriLensLogo: React.FC<VeriLensLogoProps> = ({
               Veri<span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-emerald-400">Style</span>
             </span>
             <span className="px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center gap-1">
-              <Sparkles className="w-2.5 h-2.5 text-emerald-400" />
+              <VeriLensIcon className="w-2.5 h-2.5 text-emerald-400" />
               VeriLens AI
             </span>
           </div>

@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { AnalysisResult, SamplePreset, HeatmapPoint } from '../types';
 import { SAMPLE_PRESETS } from '../data/presets';
+import { VeriLensIcon } from './VeriLensIcon';
 
 interface DashboardProps {
   onRunAnalysis: (data: { imageUrl: string; reviewText: string; brand?: string; category?: string; itemName?: string }) => Promise<AnalysisResult>;
@@ -144,7 +145,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-6">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-semibold mb-2 border border-indigo-500/20">
-            <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+            <VeriLensIcon className="w-3.5 h-3.5 text-emerald-400" />
             LIVE AI FORENSIC DASHBOARD
           </div>
           <h1 className="text-3xl font-bold text-white tracking-tight">Apparel & Review Authenticator</h1>
@@ -315,7 +316,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
               </>
             ) : (
               <>
-                <Sparkles className="w-5 h-5 text-emerald-300" />
+                <VeriLensIcon className="w-5 h-5 text-emerald-300" />
                 <span>Analyze Authenticity</span>
               </>
             )}
@@ -609,7 +610,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
             /* Empty State: Ready for analysis */
             <div className="p-12 rounded-3xl bg-slate-900/90 border border-slate-800/80 flex flex-col items-center justify-center text-center space-y-4 min-h-[460px]">
               <div className="w-16 h-16 rounded-2xl bg-indigo-600/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
-                <Sparkles className="w-8 h-8 text-emerald-400" />
+                <VeriLensIcon className="w-8 h-8 text-emerald-400" />
               </div>
               <div className="space-y-1">
                 <h3 className="text-lg font-bold text-white">Ready for AI Verification</h3>
