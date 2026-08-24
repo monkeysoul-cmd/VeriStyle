@@ -4,12 +4,12 @@ import { Footer } from './components/Footer';
 import { LandingPage } from './components/LandingPage';
 import { Dashboard } from './components/Dashboard';
 import { HistoryView } from './components/HistoryView';
-import { ApiDocsView } from './components/ApiDocsView';
+import { ExploreView } from './components/ExploreView';
 import { AnalysisResult, SamplePreset } from './types';
 import { INITIAL_HISTORY, SAMPLE_PRESETS } from './data/presets';
 
 export default function App() {
-  const [currentTab, setCurrentTab] = useState<'landing' | 'dashboard' | 'history' | 'api-docs'>('landing');
+  const [currentTab, setCurrentTab] = useState<'landing' | 'dashboard' | 'history' | 'products'>('landing');
   const [selectedPreset, setSelectedPreset] = useState<SamplePreset | null>(null);
   const [history, setHistory] = useState<AnalysisResult[]>(INITIAL_HISTORY);
 
@@ -130,7 +130,10 @@ export default function App() {
 
         <main id="main-content">
           {currentTab === 'landing' && (
-            <LandingPage onStartAnalysis={handleStartAnalysisWithPreset} />
+            <LandingPage
+              onStartAnalysis={handleStartAnalysisWithPreset}
+              onViewProducts={() => setCurrentTab('products')}
+            />
           )}
 
           {currentTab === 'dashboard' && (
@@ -149,8 +152,8 @@ export default function App() {
             />
           )}
 
-          {currentTab === 'api-docs' && (
-            <ApiDocsView />
+          {currentTab === 'products' && (
+            <ExploreView />
           )}
         </main>
       </div>

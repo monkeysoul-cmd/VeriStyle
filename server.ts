@@ -2,6 +2,7 @@ import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI, Type } from "@google/genai";
+import * as cheerio from "cheerio";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -285,6 +286,192 @@ Respond STRICTLY in valid JSON matching this schema:
   } catch (err: any) {
     console.error("Error in /api/analyze-authenticity:", err);
     res.status(500).json({ error: "Failed to process authenticity analysis", message: err?.message });
+  }
+});
+
+app.post("/api/analyze-url", async (req, res) => {
+  try {
+    const { url } = req.body;
+    if (!url) {
+      return res.status(400).json({ error: "Product URL is required." });
+    }
+
+    let platform: 'amazon' | 'flipkart' | 'myntra' | 'unknown' = 'unknown';
+    if (url.includes('amazon.')) platform = 'amazon';
+    else if (url.includes('flipkart.com')) platform = 'flipkart';
+    else if (url.includes('myntra.com')) platform = 'myntra';
+
+    // Fetch page with browser-like headers
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9',
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch page. Status: ${response.status}`);
+    }
+
+    const html = await response.text();
+    const $ = cheerio.load(html);
+
+    // Extract meta tags
+    const title = $('meta[property="og:title"]').attr('content') || $('title').text() || 'Unknown Product';
+    const image = $('meta[property="og:image"]').attr('content') || '';
+    const description = $('meta[property="og:description"]').attr('content') || $('meta[name="description"]').attr('content') || '';
+
+    // Extract JSON-LD
+    let jsonData = null;
+    $('script[type="application/ld+json"]').each((i, el) => {
+      try {
+        const data = JSON.parse($(el).html() || '{}');
+        if (data['@type'] === 'Product' || (Array.isArray(data) && data.some(d => d['@type'] === 'Product'))) {
+          jsonData = Array.isArray(data) ? data.find(d => d['@type'] === 'Product') : data;
+        }
+      } catch (e) {
+        // Ignore parse errors
+      }
+    });
+
+    let brand = 'Unknown Brand';
+    let price = '';
+    let rating = 0;
+    let reviewCount = 0;
+
+    if (jsonData) {
+      if (jsonData.brand && jsonData.brand.name) brand = jsonData.brand.name;
+      if (jsonData.offers && jsonData.offers.price) price = `${jsonData.offers.priceCurrency || '₹'}${jsonData.offers.price}`;
+      if (jsonData.aggregateRating) {
+        rating = parseFloat(jsonData.aggregateRating.ratingValue) || 0;
+        reviewCount = parseInt(jsonData.aggregateRating.reviewCount) || 0;
+      }
+    }
+
+    // Flipkart specific selectors if JSON-LD is missing
+    if (platform === 'flipkart' && !price) {
+      price = $('div._30jeq3').first().text() || '';
+      rating = parseFloat($('div._3LWZlK').first().text()) || 0;
+    }
+
+    // Call Gemini with the extracted data
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      throw new Error("GEMINI_API_KEY not configured.");
+    }
+
+    const ai = new GoogleGenAI({ apiKey });
+    
+    // Convert image to base64 if we have it
+    let inlineData = null;
+    if (image) {
+       try {
+           const imgResp = await fetch(image);
+           const arrayBuffer = await imgResp.arrayBuffer();
+           const buffer = Buffer.from(arrayBuffer);
+           inlineData = {
+               data: buffer.toString('base64'),
+               mimeType: imgResp.headers.get('content-type') || 'image/jpeg'
+           };
+       } catch (e) {
+           console.warn("Failed to fetch image for Gemini:", e);
+       }
+    }
+
+    const promptText = `You are a Senior AI Fashion Inspector.
+Analyze this product based on its scraped listing data and image.
+Product Name: ${title}
+Brand: ${brand}
+Price: ${price}
+Rating: ${rating} (${reviewCount} reviews)
+Description: ${description}
+
+Perform a comprehensive authenticity and quality analysis based on the provided text and image.
+Generate a JSON response matching this exact schema:
+{
+  "trustScore": number (0-100),
+  "verdict": "VERIFIED AUTHENTIC" | "LIKELY COUNTERFEIT" | "SUSPICIOUS REVIEW / RISK" | "INCONCLUSIVE",
+  "aiConfidence": number (0-100),
+  "detailedScores": {
+    "stitchingQuality": number,
+    "typographyAccuracy": number,
+    "fabricTextureMatch": number,
+    "hardwareAuthenticity": number,
+    "serialCodeValidation": number,
+    "reviewPerplexity": number,
+    "reviewSentimentAlignment": number
+  },
+  "reviewFlags": [{"type": string, "severity": "low"|"medium"|"high", "explanation": string}],
+  "fakeReviewProbability": number,
+  "xaiReasoning": [string],
+  "recommendations": [string]
+}`;
+
+    let geminiResponseText = "";
+    
+    if (inlineData) {
+        const responseStream = await ai.models.generateContent({
+            model: "gemini-2.5-flash",
+            contents: [
+                inlineData,
+                promptText
+            ],
+            config: {
+                responseMimeType: "application/json",
+                temperature: 0.2
+            }
+        });
+        geminiResponseText = responseStream.text || "";
+    } else {
+         const responseStream = await ai.models.generateContent({
+            model: "gemini-2.5-flash",
+            contents: promptText,
+            config: {
+                responseMimeType: "application/json",
+                temperature: 0.2
+            }
+        });
+        geminiResponseText = responseStream.text || "";
+    }
+
+    const cleanedText = cleanJsonResponse(geminiResponseText);
+    const parsed = JSON.parse(cleanedText);
+
+    const result = {
+      id: `url-scan-${Date.now().toString(36)}`,
+      timestamp: new Date().toISOString(),
+      itemName: title,
+      brand: brand,
+      category: "Apparel & Accessories",
+      imageUrl: image || "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=800&q=80",
+      reviewText: description,
+      trustScore: parsed.trustScore ?? 85,
+      verdict: parsed.verdict || "INCONCLUSIVE",
+      aiConfidence: parsed.aiConfidence ?? 90,
+      detailedScores: parsed.detailedScores,
+      heatmapPoints: [],
+      reviewFlags: parsed.reviewFlags || [],
+      fakeReviewProbability: parsed.fakeReviewProbability ?? 10,
+      xaiReasoning: parsed.xaiReasoning || [],
+      recommendations: parsed.recommendations || [],
+      verificationHash: `0x${Math.random().toString(16).substring(2, 10)}`,
+      estimatedRetailValue: price || "Unknown",
+      resaleMarketVerdict: "AI Evaluated",
+      // Url analysis specific fields
+      productUrl: url,
+      platform: platform,
+      extractedPrice: price,
+      extractedRating: rating,
+      extractedReviewCount: reviewCount,
+      scrapedDescription: description
+    };
+
+    res.json(result);
+
+  } catch (err: any) {
+    console.error("Error in /api/analyze-url:", err);
+    res.status(500).json({ error: "Failed to fetch or analyze the URL.", message: err?.message });
   }
 });
 

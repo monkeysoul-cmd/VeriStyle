@@ -1,1 +1,26 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;1,400;1,500&family=Cormorant+Garamond:ital,wght@1,600;1,700&display=swap');
+
+@theme {
+  --font-heading: 'Plus Jakarta Sans', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-serif: 'Cormorant Garamond', serif;
+}
+
+:root {
+  --green-primary: #188137;
+  --green-accent-from: #47EA77;
+  --green-accent-to: #CBFBF1;
+  --hero-bg: linear-gradient(180deg, #163027 0%, #0C1D17 100%);
+  --nav-bg: #E7F3F2;
+  --page-light: #FBFBFB;
+  --text-primary: #0F172A;
+  --text-muted: #4A5565;
+  --border-card: #D5D5D5;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: #ffffff;
+  color: var(--text-primary);
+}

@@ -60,3 +60,64 @@ export interface SamplePreset {
   expectedVerdict: 'VERIFIED AUTHENTIC' | 'LIKELY COUNTERFEIT' | 'SUSPICIOUS REVIEW / RISK';
   description: string;
 }
+
+// ─── Tapju-style Product Analysis Types ─────────────────────────────────────
+
+export type ProductBadge = 'Top Rated' | 'Budget Pick' | 'Trending' | 'Premium Pick' | 'Best Value';
+export type ProductCategory = 'Handbags' | 'Sneakers' | 'Streetwear' | 'Accessories' | 'Watches';
+export type InsightIconType = 'camera' | 'star' | 'battery' | 'build' | 'dollar' | 'weight' | 'shield' | 'zap' | 'tag' | 'heart';
+
+export interface ProductReviewInsight {
+  title: string;
+  description: string;
+  iconType: InsightIconType;
+  sentiment: 'positive' | 'negative';
+}
+
+export interface ProductItem {
+  id: string;
+  name: string;
+  brand: string;
+  category: ProductCategory;
+  imageUrl: string;
+  price: string;
+  originalPrice?: string;
+  savings?: string;
+  aiScore: number;            // 0–100
+  rating: number;             // 0–5
+  reviewCount: number;
+  badge: ProductBadge;
+  shortDescription: string;
+  tags: string[];             // e.g. ["High Rated", "Best Value", "Trending"]
+  // Detail page data
+  scoreDimensions: {
+    buildQuality: number;
+    performance: number;
+    valueForMoney: number;
+    userSatisfaction: number;
+  };
+  reviewInsights: ProductReviewInsight[];
+  sentimentBreakdown: {
+    positive: number;         // 0–100 %
+    neutral: number;          // 0–100 %
+    negative: number;         // 0–100 %
+    reviewsAnalyzed: number;
+    storesChecked: number;
+    accuracyRate: number;
+  };
+  aiVerdict: string;          // Full paragraph verdict
+  hiddenPattern: string;      // "Hidden Buyer Pattern" insight text
+  curiosityTrigger: string;   // "What surprised our AI?" text
+  mostDiscussedFeature: string;
+}
+
+export type SupportedPlatform = 'amazon' | 'flipkart' | 'myntra' | 'unknown';
+
+export interface UrlAnalysisResult extends AnalysisResult {
+  productUrl: string;
+  platform: SupportedPlatform;
+  extractedPrice?: string;
+  extractedRating?: number;
+  extractedReviewCount?: number;
+  scrapedDescription?: string;
+}
