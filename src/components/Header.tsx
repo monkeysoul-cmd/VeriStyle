@@ -1,121 +1,106 @@
-import React from 'react';
-import { History, Code2, ArrowRight } from 'lucide-react';
-import { VeriLensLogo } from './VeriLensLogo';
+import React, { useState } from 'react';
+import { Menu, X } from 'lucide-react';
 import { VeriLensIcon } from './VeriLensIcon';
 
 interface HeaderProps {
-  currentTab: 'landing' | 'dashboard' | 'history' | 'api-docs';
-  setCurrentTab: (tab: 'landing' | 'dashboard' | 'history' | 'api-docs') => void;
+  currentTab: 'landing' | 'dashboard' | 'history' | 'products';
+  setCurrentTab: (tab: 'landing' | 'dashboard' | 'history' | 'products') => void;
   onQuickStart: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQuickStart }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleNav = (tab: 'landing' | 'dashboard' | 'history' | 'products') => {
+    setCurrentTab(tab);
+    setIsMenuOpen(false);
+  };
+
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-md bg-slate-900/80 border-b border-slate-800/80">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        {/* Brand Logo */}
+    <>
+      <nav className="fixed top-0 left-0 right-0 z-50 flex justify-center">
         <div 
-          onClick={() => setCurrentTab('landing')} 
-          className="cursor-pointer group"
+          className="flex h-[72px] w-full items-center justify-between px-4 sm:h-[82px] sm:px-8 lg:h-[93px] lg:px-12"
+          style={{
+            background: '#E7F3F2',
+            boxShadow: '0px 2.86853px 28.6853px rgba(26, 43, 109, 0.08)',
+            backdropFilter: 'blur(17.2112px)'
+          }}
         >
-          <VeriLensLogo size="md" showText={true} />
+          {/* Logo */}
+          <button 
+            onClick={() => handleNav('landing')} 
+            className="inline-flex items-center gap-3"
+          >
+            <div className="w-[34px] h-[34px] sm:w-[42px] sm:h-[42px] bg-gradient-to-br from-indigo-500 to-emerald-500 rounded-xl flex items-center justify-center text-white shrink-0">
+              <VeriLensIcon className="w-5 h-5 sm:w-6 sm:h-6" />
+            </div>
+            <span 
+              className="text-[20px] sm:text-[22px] font-semibold text-black tracking-[-0.5px]"
+              style={{ fontFamily: 'var(--font-heading)' }}
+            >
+              VeriStyle
+            </span>
+          </button>
+
+          {/* Menu Button */}
+          <button 
+            onClick={() => setIsMenuOpen(true)}
+            className="flex h-[42px] items-center gap-2 rounded-full bg-[#163027] px-[10px] text-[14px] font-medium text-white transition-colors sm:h-[48px] sm:px-[12px] sm:text-[15px] border border-[rgba(5,28,20,0.15)] hover:bg-[#0c1d17]"
+          >
+            <span className="hidden md:flex">Menu</span>
+            <Menu className="h-5 w-5 sm:h-6 sm:w-6" />
+          </button>
         </div>
+      </nav>
 
-        {/* Navigation Tabs */}
-        <nav className="hidden md:flex items-center gap-1 bg-slate-950/60 p-1 rounded-xl border border-slate-800/60">
-          <button
-            id="nav-landing-btn"
-            onClick={() => setCurrentTab('landing')}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-              currentTab === 'landing'
-                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
-            }`}
-          >
-            Overview
-          </button>
-          <button
-            id="nav-dashboard-btn"
-            onClick={() => setCurrentTab('dashboard')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-              currentTab === 'dashboard'
-                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
-            }`}
-          >
-            <VeriLensIcon className="w-4 h-4 text-emerald-400" />
-            AI Inspector
-          </button>
-          <button
-            id="nav-history-btn"
-            onClick={() => setCurrentTab('history')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-              currentTab === 'history'
-                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
-            }`}
-          >
-            <History className="w-4 h-4" />
-            Vault
-          </button>
-          <button
-            id="nav-apidocs-btn"
-            onClick={() => setCurrentTab('api-docs')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-              currentTab === 'api-docs'
-                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
-            }`}
-          >
-            <Code2 className="w-4 h-4 text-indigo-400" />
-            FastAPI Spec
-          </button>
-        </nav>
-
-        {/* Action Right CTA */}
-        <div className="flex items-center gap-3">
-          <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            Multimodal Engine Online
+      {/* Full Screen Menu Overlay */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-[100] bg-[#163027] text-white flex flex-col">
+          <div className="flex h-[72px] sm:h-[82px] lg:h-[93px] items-center justify-between px-4 sm:px-8 lg:px-12 border-b border-white/10">
+            <div className="inline-flex items-center gap-3">
+              <div className="w-[34px] h-[34px] sm:w-[42px] sm:h-[42px] bg-white/10 rounded-xl flex items-center justify-center text-white">
+                <VeriLensIcon className="w-5 h-5 sm:w-6 sm:h-6" />
+              </div>
+              <span className="text-[20px] sm:text-[22px] font-semibold tracking-[-0.5px]" style={{ fontFamily: 'var(--font-heading)' }}>
+                VeriStyle
+              </span>
+            </div>
+            <button 
+              onClick={() => setIsMenuOpen(false)}
+              className="p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
           </div>
-          <button
-            id="header-try-ai-btn"
-            onClick={onQuickStart}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 via-indigo-600 to-emerald-500 hover:from-indigo-600 hover:to-emerald-600 text-white font-medium text-sm shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-all active:scale-95"
-          >
-            <span>Try VeriLens AI</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
+          <div className="flex-1 flex flex-col items-center justify-center gap-6 text-2xl font-bold" style={{ fontFamily: 'var(--font-heading)' }}>
+            <button 
+              onClick={() => handleNav('landing')}
+              className={`hover:text-[var(--green-accent-from)] transition-colors ${currentTab === 'landing' ? 'text-[var(--green-accent-from)]' : ''}`}
+            >
+              Overview
+            </button>
+            <button 
+              onClick={() => handleNav('dashboard')}
+              className={`hover:text-[var(--green-accent-from)] transition-colors ${currentTab === 'dashboard' ? 'text-[var(--green-accent-from)]' : ''}`}
+            >
+              AI Inspector
+            </button>
+            <button 
+              onClick={() => handleNav('products')}
+              className={`hover:text-[var(--green-accent-from)] transition-colors ${currentTab === 'products' ? 'text-[var(--green-accent-from)]' : ''}`}
+            >
+              Products
+            </button>
+            <button 
+              onClick={() => handleNav('history')}
+              className={`hover:text-[var(--green-accent-from)] transition-colors ${currentTab === 'history' ? 'text-[var(--green-accent-from)]' : ''}`}
+            >
+              Vault
+            </button>
+          </div>
         </div>
-      </div>
-
-      {/* Mobile Bar */}
-      <div className="md:hidden flex items-center justify-around bg-slate-950 px-2 py-2 border-t border-slate-800 text-xs text-slate-400">
-        <button 
-          onClick={() => setCurrentTab('landing')}
-          className={`px-3 py-1.5 rounded-lg ${currentTab === 'landing' ? 'bg-indigo-600 text-white' : ''}`}
-        >
-          Overview
-        </button>
-        <button 
-          onClick={() => setCurrentTab('dashboard')}
-          className={`px-3 py-1.5 rounded-lg flex items-center gap-1 ${currentTab === 'dashboard' ? 'bg-indigo-600 text-white' : ''}`}
-        >
-          <VeriLensIcon className="w-3.5 h-3.5 text-emerald-400" /> Dashboard
-        </button>
-        <button 
-          onClick={() => setCurrentTab('history')}
-          className={`px-3 py-1.5 rounded-lg ${currentTab === 'history' ? 'bg-indigo-600 text-white' : ''}`}
-        >
-          Vault
-        </button>
-        <button 
-          onClick={() => setCurrentTab('api-docs')}
-          className={`px-3 py-1.5 rounded-lg ${currentTab === 'api-docs' ? 'bg-indigo-600 text-white' : ''}`}
-        >
-          FastAPI
-        </button>
-      </div>
-    </header>
+      )}
+    </>
   );
 };
