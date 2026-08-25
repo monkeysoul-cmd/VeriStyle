@@ -1152,18 +1152,33 @@ app.get("/api/history", async (req, res) => {
   }
 });
 
-async function startServer() {
+// Cached MongoDB connection for Vercel serverless functions
+let isMongoConnecting = false;
+async function connectToDatabase() {
+  if (mongoose.connection.readyState === 1 || isMongoConnecting) return;
+  const mongoUri = process.env.MONGODB_URI;
+  if (!mongoUri) return;
   try {
-    const mongoUri = process.env.MONGODB_URI;
-    if (mongoUri) {
-      await mongoose.connect(mongoUri);
-      console.log("Connected to MongoDB!");
-    } else {
-      console.warn("MONGODB_URI not found in .env, skipping database connection.");
-    }
+    isMongoConnecting = true;
+    await mongoose.connect(mongoUri, {
+      serverSelectionTimeoutMS: 4000
+    });
+    console.log("Connected to MongoDB!");
   } catch (err) {
-    console.error("Failed to connect to MongoDB:", err);
+    console.warn("MongoDB connection warning:", err);
+  } finally {
+    isMongoConnecting = false;
   }
+}
+
+// Database middleware
+app.use(async (req, res, next) => {
+  await connectToDatabase();
+  next();
+});
+
+async function startServer() {
+  await connectToDatabase();
 
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
@@ -1179,9 +1194,13 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`VeriStyle server running on http://0.0.0.0:${PORT}`);
-  });
+  if (process.env.VERCEL !== "1") {
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`VeriStyle server running on http://0.0.0.0:${PORT}`);
+    });
+  }
 }
 
 startServer();
+
+export default app;
