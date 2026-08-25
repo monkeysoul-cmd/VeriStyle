@@ -15,7 +15,7 @@ import { PRODUCTS } from '../data/products';
 import { ProductDetailView } from './ProductDetailView';
 import { ProductCard } from './ProductCard';
 
-type SortOption = 'ai-score' | 'price-low' | 'price-high' | 'rating' | 'reviews';
+type SortOption = 'trust-score' | 'price-low' | 'price-high' | 'rating' | 'reviews';
 type FilterTag = 'Best Value' | 'High Rated' | 'Trending' | 'High Trust Score' | 'Best Performance' | null;
 
 const tagFilterMap: Record<Exclude<FilterTag, null>, string> = {
@@ -29,7 +29,7 @@ const tagFilterMap: Record<Exclude<FilterTag, null>, string> = {
 export const ExploreView: React.FC = () => {
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory | 'All'>('All');
-  const [sortBy, setSortBy] = useState<SortOption>('ai-score');
+  const [sortBy, setSortBy] = useState<SortOption>('trust-score');
   const [activeTag, setActiveTag] = useState<FilterTag>(null);
   const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
 
@@ -56,7 +56,7 @@ export const ExploreView: React.FC = () => {
     }
 
     list.sort((a, b) => {
-      if (sortBy === 'ai-score') return b.aiScore - a.aiScore;
+      if (sortBy === 'trust-score') return b.trustScore - a.trustScore;
       if (sortBy === 'rating') return b.rating - a.rating;
       if (sortBy === 'reviews') return b.reviewCount - a.reviewCount;
       return 0;
@@ -82,7 +82,7 @@ export const ExploreView: React.FC = () => {
         <div className="text-center space-y-4">
           <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--green-primary)]/10 text-[var(--green-primary)] text-xs font-bold uppercase tracking-wider">
             <Sparkles className="w-3.5 h-3.5" />
-            AI-POWERED PRODUCT DISCOVERY
+            SMART PRODUCT DISCOVERY
           </div>
           <h1 className="text-4xl sm:text-5xl font-extrabold text-[var(--text-primary)]" style={{ fontFamily: 'var(--font-heading)' }}>
             Explore{' '}
@@ -91,7 +91,7 @@ export const ExploreView: React.FC = () => {
             </span>
           </h1>
           <p className="text-[var(--text-muted)] max-w-xl mx-auto text-sm sm:text-base">
-            Smart AI-powered product discovery with real-time authenticity insights and truth analysis.
+            Smart SMART PRODUCT DISCOVERY with real-time authenticity insights and truth analysis.
           </p>
         </div>
 
@@ -109,7 +109,7 @@ export const ExploreView: React.FC = () => {
           </div>
           <button className="flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-[var(--text-primary)] hover:bg-gray-800 text-white font-bold text-sm shadow-lg transition-all active:scale-95 shrink-0">
             <Sparkles className="w-4 h-4" />
-            <span className="hidden sm:inline">Search AI</span>
+            <span className="hidden sm:inline">Search</span>
           </button>
         </div>
 
@@ -140,7 +140,7 @@ export const ExploreView: React.FC = () => {
                 onChange={e => setSortBy(e.target.value as SortOption)}
                 className="appearance-none pl-4 pr-10 py-2.5 rounded-full bg-gray-50 border border-gray-200 text-gray-700 text-sm font-medium focus:outline-none focus:border-[var(--green-primary)] cursor-pointer"
               >
-                <option value="ai-score">Sort by: AI Score</option>
+                <option value="trust-score">Sort by: Trust Score</option>
                 <option value="rating">Sort by: Rating</option>
                 <option value="reviews">Sort by: Most Reviewed</option>
               </select>

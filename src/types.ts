@@ -48,6 +48,7 @@ export interface AnalysisResult {
   verificationHash: string;
   estimatedRetailValue: string;
   resaleMarketVerdict: string;
+  analysisMode?: 'review_only' | 'image_only' | 'combined';
 }
 
 export interface SamplePreset {
@@ -83,7 +84,7 @@ export interface ProductItem {
   price: string;
   originalPrice?: string;
   savings?: string;
-  aiScore: number;            // 0–100
+  trustScore: number;            // 0–100
   rating: number;             // 0–5
   reviewCount: number;
   badge: ProductBadge;
@@ -120,4 +121,20 @@ export interface UrlAnalysisResult extends AnalysisResult {
   extractedRating?: number;
   extractedReviewCount?: number;
   scrapedDescription?: string;
+  sellerName?: string;
+  companyName?: string;
+  productImages?: string[];
+  sampleReviews?: string[];
+  whatBuyersLove?: string[];
+  whatBuyersDislike?: string[];
+  hiddenPattern?: string;
+  curiosityTrigger?: string;
+  priceAnalysis?: string;
+  sentimentBreakdown?: {
+    positive: number;
+    neutral: number;
+    negative: number;
+  };
 }
+
+

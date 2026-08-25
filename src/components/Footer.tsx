@@ -1,90 +1,85 @@
 import React from 'react';
 import { VeriLensIcon } from './VeriLensIcon';
-import { Twitter, Linkedin, Instagram, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Sparkles, ExternalLink, Lock } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#163027] text-white">
-      {/* Pre-footer CTA */}
-      <div className="border-b border-white/10 px-5 py-12 sm:py-16">
-        <div className="max-w-[1280px] mx-auto text-center space-y-6">
-          <h2 className="text-[32px] sm:text-[42px] font-bold tracking-tight" style={{ fontFamily: 'var(--font-heading)' }}>
-            Start Verifying Fashion <span className="text-[var(--green-accent-from)] italic" style={{ fontFamily: 'var(--font-serif)' }}>Today.</span>
-          </h2>
-          <p className="text-white/70 max-w-xl mx-auto">
-            Join thousands of shoppers and authenticators using AI to uncover the truth behind luxury apparel and reviews.
-          </p>
-          <div className="pt-2">
-            <button
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-[var(--green-primary)] text-white text-[15px] font-bold hover:bg-[#146D2F] active:scale-95 transition-all shadow-lg"
-            >
-              Start Free Analysis
-              <ArrowRight className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
-      </div>
+    <footer className="bg-[#081912] text-white border-t border-emerald-900/40 relative overflow-hidden">
+      {/* Ambient background glow */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-12 lg:py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
-        {/* Brand info */}
-        <div className="space-y-6 lg:col-span-1">
-          <div className="inline-flex items-center gap-3">
-            <div className="w-[34px] h-[34px] bg-gradient-to-br from-indigo-500 to-emerald-500 rounded-xl flex items-center justify-center text-white shrink-0">
-              <VeriLensIcon className="w-5 h-5" />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/10">
+          
+          {/* Col 1 & 2: Brand Info */}
+          <div className="lg:col-span-2 space-y-4">
+            <div className="inline-flex items-center gap-3">
+              <div className="w-9 h-9 bg-gradient-to-br from-[var(--green-primary)] to-[var(--green-accent-from)] rounded-xl flex items-center justify-center text-white shrink-0 shadow-md shadow-emerald-900/30">
+                <VeriLensIcon className="w-5 h-5" />
+              </div>
+              <span className="text-xl font-extrabold text-white tracking-tight" style={{ fontFamily: 'var(--font-heading)' }}>
+                VeriStyle
+              </span>
             </div>
-            <span className="text-[22px] font-semibold tracking-[-0.5px]" style={{ fontFamily: 'var(--font-heading)' }}>
-              VeriStyle
-            </span>
+            <p className="text-sm text-gray-400 max-w-sm leading-relaxed">
+              Real-time multimodal authenticity inspection powered by Google Gemini 3.6 Flash. Detecting counterfeit fashion and manufactured reviews across major e-commerce platforms.
+            </p>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              Gemini Vision 3.6 Multimodal Active
+            </div>
           </div>
-          <p className="text-[14px] leading-relaxed text-white/60 max-w-[280px]">
-            AI-powered product analysis and authenticity verification for luxury shoppers.
-          </p>
-          <div className="flex gap-4 text-white/40">
-            <a href="#" className="hover:text-white transition-colors"><Twitter className="w-5 h-5" /></a>
-            <a href="#" className="hover:text-white transition-colors"><Linkedin className="w-5 h-5" /></a>
-            <a href="#" className="hover:text-white transition-colors"><Instagram className="w-5 h-5" /></a>
+
+          {/* Col 3: Capabilities */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-black uppercase tracking-widest text-emerald-400">Forensics</h4>
+            <ul className="space-y-2 text-sm text-gray-400">
+              <li className="hover:text-white transition-colors">Micro-Stitching Analysis</li>
+              <li className="hover:text-white transition-colors">Hardware & Debossing</li>
+              <li className="hover:text-white transition-colors">Review Perplexity Entropy</li>
+              <li className="hover:text-white transition-colors">White-Label Clone Detection</li>
+              <li className="hover:text-white transition-colors">Price Sanity Calibration</li>
+            </ul>
+          </div>
+
+          {/* Col 4: Supported Stores */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-black uppercase tracking-widest text-emerald-400">Platforms</h4>
+            <ul className="space-y-2 text-sm text-gray-400">
+              <li className="hover:text-white transition-colors">Amazon India (IN)</li>
+              <li className="hover:text-white transition-colors">Flipkart</li>
+              <li className="hover:text-white transition-colors">Myntra Luxury</li>
+              <li className="hover:text-white transition-colors">AJIO Luxe</li>
+              <li className="hover:text-white transition-colors">Nykaa Fashion</li>
+            </ul>
+          </div>
+
+          {/* Col 5: Trust & Security */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-black uppercase tracking-widest text-emerald-400">Trust & Safety</h4>
+            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
+              <div className="flex items-center gap-2 text-xs font-bold text-white">
+                <ShieldCheck className="w-4 h-4 text-emerald-400" /> 256-Bit SSL Encrypted
+              </div>
+              <p className="text-[11px] text-gray-400 leading-normal">
+                Verifications are cryptographically hashed and immutably recorded for resale provenance.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+          <p>© {new Date().getFullYear()} VeriStyle AI Authenticator. Engineered with Google DeepMind technologies.</p>
+          <div className="flex items-center gap-6">
+            <span className="hover:text-gray-300 transition-colors">Privacy Policy</span>
+            <span className="hover:text-gray-300 transition-colors">Terms of Service</span>
+            <span className="hover:text-gray-300 transition-colors">API Documentation</span>
           </div>
         </div>
-
-        {/* Column 1: Product */}
-        <div>
-          <h4 className="text-[15px] font-bold text-white mb-6" style={{ fontFamily: 'var(--font-heading)' }}>Product</h4>
-          <ul className="space-y-4 text-[14px] text-white/60">
-            <li><a href="#" className="hover:text-[var(--green-accent-from)] transition-colors">AI Authenticator</a></li>
-            <li><a href="#" className="hover:text-[var(--green-accent-from)] transition-colors">URL Analysis</a></li>
-            <li><a href="#" className="hover:text-[var(--green-accent-from)] transition-colors">Pricing</a></li>
-            <li><a href="#" className="hover:text-[var(--green-accent-from)] transition-colors">Supported Brands</a></li>
-            <li><a href="#" className="hover:text-[var(--green-accent-from)] transition-colors">API Access</a></li>
-          </ul>
-        </div>
-
-        {/* Column 2: Company */}
-        <div>
-          <h4 className="text-[15px] font-bold text-white mb-6" style={{ fontFamily: 'var(--font-heading)' }}>Company</h4>
-          <ul className="space-y-4 text-[14px] text-white/60">
-            <li><a href="#" className="hover:text-[var(--green-accent-from)] transition-colors">About Us</a></li>
-            <li><a href="#" className="hover:text-[var(--green-accent-from)] transition-colors">Careers</a></li>
-            <li><a href="#" className="hover:text-[var(--green-accent-from)] transition-colors">Blog</a></li>
-            <li><a href="#" className="hover:text-[var(--green-accent-from)] transition-colors">Contact</a></li>
-          </ul>
-        </div>
-
-        {/* Column 3: Legal */}
-        <div>
-          <h4 className="text-[15px] font-bold text-white mb-6" style={{ fontFamily: 'var(--font-heading)' }}>Legal</h4>
-          <ul className="space-y-4 text-[14px] text-white/60">
-            <li><a href="#" className="hover:text-[var(--green-accent-from)] transition-colors">Privacy Policy</a></li>
-            <li><a href="#" className="hover:text-[var(--green-accent-from)] transition-colors">Terms of Service</a></li>
-            <li><a href="#" className="hover:text-[var(--green-accent-from)] transition-colors">Cookie Policy</a></li>
-          </ul>
-        </div>
-      </div>
-
-      <div className="border-t border-white/10 px-5 sm:px-8 py-6 flex flex-col sm:flex-row items-center justify-between text-[13px] text-white/40 gap-4 max-w-[1280px] mx-auto">
-        <p>© {new Date().getFullYear()} VeriStyle. All rights reserved.</p>
-        <p>Built with precision & AI.</p>
       </div>
     </footer>
   );
 };
+

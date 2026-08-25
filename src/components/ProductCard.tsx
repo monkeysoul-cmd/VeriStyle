@@ -33,9 +33,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onView }) => 
           {product.badge}
         </span>
 
-        {/* AI Score top-right */}
+        {/* Trust Score top-right */}
         <span className="absolute top-3 right-12 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--text-primary)] text-white border border-gray-800 shadow-sm">
-          {product.aiScore}/100
+          {product.trustScore}/100
         </span>
 
         {/* Save button */}
@@ -98,7 +98,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onView }) => 
               className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gray-50 hover:bg-gray-100 text-[var(--text-primary)] text-sm font-bold border border-gray-200 hover:border-gray-300 transition-all group/btn"
             >
               <Sparkles className="w-3.5 h-3.5 text-[var(--green-primary)]" />
-              View AI Analysis
+              View authenticity check
               <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
             </button>
           </div>
