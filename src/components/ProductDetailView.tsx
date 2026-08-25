@@ -121,9 +121,9 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
   const [saved, setSaved] = useState(false);
 
   const scoreLabel =
-    product.aiScore >= 90 ? 'Highly Recommended' :
-    product.aiScore >= 75 ? 'Recommended' :
-    product.aiScore >= 60 ? 'Proceed with Caution' : 'High Risk';
+    product.trustScore >= 90 ? 'Highly Recommended' :
+    product.trustScore >= 75 ? 'Recommended' :
+    product.trustScore >= 60 ? 'Proceed with Caution' : 'High Risk';
 
   const positiveInsights = product.reviewInsights.filter(i => i.sentiment === 'positive');
   const negativeInsights = product.reviewInsights.filter(i => i.sentiment === 'negative');
@@ -160,11 +160,11 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
             {/* Info */}
             <div className="p-8 sm:p-10 flex flex-col justify-between gap-6 border-l border-gray-100">
               <div className="space-y-5">
-                {/* AI Score Badge */}
+                {/* Trust Score Badge */}
                 <div className="inline-flex items-center gap-4 px-5 py-3 rounded-2xl bg-[var(--green-primary)]/5 border border-[var(--green-primary)]/20">
                   <div className="text-center">
-                    <p className="text-[10px] text-[var(--green-primary)] uppercase tracking-widest font-bold mb-1">AI Score</p>
-                    <p className="text-3xl font-extrabold text-[var(--green-primary)] leading-none">{product.aiScore}<span className="text-sm text-gray-500 font-bold">/100</span></p>
+                    <p className="text-[10px] text-[var(--green-primary)] uppercase tracking-widest font-bold mb-1">Trust Score</p>
+                    <p className="text-3xl font-extrabold text-[var(--green-primary)] leading-none">{product.trustScore}<span className="text-sm text-gray-500 font-bold">/100</span></p>
                   </div>
                   <div className="w-px h-12 bg-gray-200" />
                   <div>
@@ -242,7 +242,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
           <div className="flex flex-col md:flex-row items-center gap-12 md:gap-20 max-w-4xl mx-auto">
             {/* Donut */}
             <div className="relative flex-shrink-0">
-              <ScoreDonut score={product.aiScore} label={scoreLabel} />
+              <ScoreDonut score={product.trustScore} label={scoreLabel} />
             </div>
 
             {/* Dimension Bars */}

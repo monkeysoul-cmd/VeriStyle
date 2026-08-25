@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { LandingPage } from './components/LandingPage';
@@ -11,7 +11,23 @@ import { INITIAL_HISTORY, SAMPLE_PRESETS } from './data/presets';
 export default function App() {
   const [currentTab, setCurrentTab] = useState<'landing' | 'dashboard' | 'history' | 'products'>('landing');
   const [selectedPreset, setSelectedPreset] = useState<SamplePreset | null>(null);
-  const [history, setHistory] = useState<AnalysisResult[]>(INITIAL_HISTORY);
+  const [history, setHistory] = useState<AnalysisResult[]>([]);
+
+  useEffect(() => {
+    fetch('/api/history')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setHistory(data);
+        } else {
+          setHistory(INITIAL_HISTORY);
+        }
+      })
+      .catch(err => {
+        console.error("Failed to fetch history:", err);
+        setHistory(INITIAL_HISTORY);
+      });
+  }, []);
 
   // Trigger analysis call to backend /api/analyze-authenticity
   const handleRunAnalysis = async (data: {
@@ -38,29 +54,33 @@ export default function App() {
       return result;
     } catch (err) {
       console.warn('API call error, constructing client-side fallback result:', err);
-      // Client-side fallback if network error
-      const score = data.reviewText?.toLowerCase().includes('replica') ? 28 : 86;
+      const hasImage = Boolean(data.imageUrl && data.imageUrl.trim().length > 0);
+      const hasReview = Boolean(data.reviewText && data.reviewText.trim().length > 0);
+      const isCounterfeit = hasReview && /replica|fake|1:1|aaa|first copy/i.test(data.reviewText);
+      const score = isCounterfeit ? 32 : 86;
+      
       const fallback: AnalysisResult = {
         id: `scan-${Date.now().toString(36)}`,
         timestamp: new Date().toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' }),
-        itemName: data.itemName || 'Verified Apparel Item',
-        brand: data.brand || 'Luxury Brand',
-        category: data.category || 'Fashion & Accessories',
-        imageUrl: data.imageUrl || SAMPLE_PRESETS[0].imageUrl,
+        itemName: data.itemName || (hasImage ? 'Inspected Apparel Item' : 'Reseller Review Analysis'),
+        brand: data.brand || (hasImage ? 'Luxury Brand' : 'Marketplace Reseller'),
+        category: data.category || (hasImage ? 'Fashion & Accessories' : 'Consumer Review'),
+        imageUrl: data.imageUrl || '',
         reviewText: data.reviewText || '',
+        analysisMode: hasImage && hasReview ? 'combined' : hasImage ? 'image_only' : 'review_only',
         trustScore: score,
         verdict: score >= 80 ? 'VERIFIED AUTHENTIC' : 'LIKELY COUNTERFEIT',
         aiConfidence: 92,
         detailedScores: {
-          stitchingQuality: score > 50 ? 94 : 32,
-          typographyAccuracy: score > 50 ? 92 : 36,
-          fabricTextureMatch: score > 50 ? 88 : 40,
-          hardwareAuthenticity: score > 50 ? 95 : 28,
-          serialCodeValidation: score > 50 ? 90 : 20,
-          reviewPerplexity: score > 50 ? 86 : 22,
-          reviewSentimentAlignment: score > 50 ? 92 : 30
+          stitchingQuality: hasImage ? (score > 50 ? 94 : 32) : 85,
+          typographyAccuracy: hasImage ? (score > 50 ? 92 : 36) : 85,
+          fabricTextureMatch: hasImage ? (score > 50 ? 88 : 40) : 85,
+          hardwareAuthenticity: hasImage ? (score > 50 ? 95 : 28) : 85,
+          serialCodeValidation: hasImage ? (score > 50 ? 90 : 20) : 85,
+          reviewPerplexity: hasReview ? (score > 50 ? 86 : 22) : 85,
+          reviewSentimentAlignment: hasReview ? (score > 50 ? 92 : 30) : 85
         },
-        heatmapPoints: [
+        heatmapPoints: hasImage ? [
           {
             id: 'hp-f1',
             x: 40,
@@ -74,18 +94,21 @@ export default function App() {
             severity: score > 50 ? 'low' : 'critical',
             description: score > 50 ? 'Thread gauge conforms to luxury master template.' : 'Stitch tension varies significantly across seam line.'
           }
-        ],
-        reviewFlags: [
+        ] : [],
+        reviewFlags: hasReview ? [
           {
-            type: 'Organic Vocabulary',
-            severity: 'low',
-            explanation: 'Review language demonstrates standard consumer vocabulary entropy.'
+            type: isCounterfeit ? 'Suspicious Replica Marker' : 'Organic Vocabulary',
+            severity: isCounterfeit ? 'high' : 'low',
+            explanation: isCounterfeit
+              ? 'Review text contains phrases commonly associated with unauthorized replicas.'
+              : 'Review language demonstrates standard consumer vocabulary entropy.'
           }
-        ],
-        fakeReviewProbability: score > 50 ? 8 : 82,
+        ] : [],
+        fakeReviewProbability: hasReview ? (score > 50 ? 8 : 82) : 0,
         xaiReasoning: [
-          'Multimodal inspection processed visual texture, edge gradients, and text perplexity.',
-          'Cross-referenced item traits against brand specifications.'
+          hasImage
+            ? 'Visual inspection processed texture and edge gradients on uploaded image.'
+            : 'Natural language processing analyzed review text entropy and sentiment coherence.'
         ],
         recommendations: [
           'Store digital verification record for resale provenance.'

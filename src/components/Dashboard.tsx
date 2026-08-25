@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { UrlAnalyzer } from './UrlAnalyzer';
 import { 
   Upload, 
   Image as ImageIcon, 
@@ -33,11 +34,11 @@ interface DashboardProps {
 
 export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPreset, onSaveToVault }) => {
   // Input State
-  const [imageUrl, setImageUrl] = useState<string>(initialPreset?.imageUrl || SAMPLE_PRESETS[0].imageUrl);
-  const [reviewText, setReviewText] = useState<string>(initialPreset?.defaultReview || SAMPLE_PRESETS[0].defaultReview);
-  const [itemName, setItemName] = useState<string>(initialPreset?.title || SAMPLE_PRESETS[0].title);
-  const [brand, setBrand] = useState<string>(initialPreset?.brand || SAMPLE_PRESETS[0].brand);
-  const [category, setCategory] = useState<string>(initialPreset?.category || SAMPLE_PRESETS[0].category);
+  const [imageUrl, setImageUrl] = useState<string>(initialPreset?.imageUrl || '');
+  const [reviewText, setReviewText] = useState<string>(initialPreset?.defaultReview || '');
+  const [itemName, setItemName] = useState<string>(initialPreset?.title || '');
+  const [brand, setBrand] = useState<string>(initialPreset?.brand || '');
+  const [category, setCategory] = useState<string>(initialPreset?.category || '');
 
   // Analysis Lifecycle State
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -98,11 +99,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
 
     // Scanning progress steps for high precision feel
     const steps = [
-      'Initializing Multimodal Inspection...',
-      'Extracting Visual Micro-Stitch Patterns...',
+      'Initializing Image Scanning...',
+      'Checking Stitching Quality...',
       'Analyzing Hardware Electroplating & Debossing...',
-      'Evaluating Review Text Perplexity & Bot Entropy...',
-      'Generating Cross-Modal XAI Heatmap & Trust Score...'
+      'Analyzing Review Text...',
+      'Generating Trust Score & Heatmap...'
     ];
 
     let stepIdx = 0;
@@ -141,14 +142,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
 
   return (
     <div className="w-full bg-[var(--page-light)] min-h-screen pt-24 pb-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      <div className="w-full mx-auto px-4 sm:px-6 lg:px-10 xl:px-14 space-y-10">
         
         {/* Title Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-[var(--border-subtle)]">
           <div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--green-primary)]/10 text-[var(--green-primary)] text-xs font-bold uppercase tracking-wider mb-3">
               <VeriLensIcon className="w-3.5 h-3.5" />
-              LIVE AI FORENSIC DASHBOARD
+              LIVE VERIFICATION DASHBOARD
             </div>
             <h1 className="text-3xl sm:text-4xl font-extrabold text-[var(--text-primary)]" style={{ fontFamily: 'var(--font-heading)' }}>
               Apparel & Review Authenticator.
@@ -177,11 +178,16 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
           </div>
         </div>
 
+        {/* URL Link Analyzer */}
+        <div className="w-full max-w-[850px] mx-auto">
+          <UrlAnalyzer standalone={false} onAnalyzeComplete={onSaveToVault} />
+        </div>
+
         {/* Main Grid: Input Area vs Controls */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           
           {/* LEFT COLUMN: Input Area (Image + Review Text) */}
-          <div className="lg:col-span-5 space-y-6">
+          <div className="lg:col-span-4 space-y-6">
             
             {/* Card 1: Product Image Upload Zone */}
             <div className="p-6 rounded-3xl bg-white border border-[var(--border-card)] shadow-sm space-y-4 hover:shadow-md transition-shadow">
@@ -330,7 +336,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
           </div>
 
           {/* RIGHT COLUMN: Results Area (XAI Heatmap, Trust Gauge, Analysis Details) */}
-          <div className="lg:col-span-7 space-y-6">
+          <div className="lg:col-span-8 space-y-6">
             {isLoading ? (
               /* Loading State Animation Container */
               <div className="p-12 rounded-3xl bg-white border border-[var(--border-card)] flex flex-col items-center justify-center text-center space-y-6 min-h-[500px] shadow-sm">
@@ -378,7 +384,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                   <div className="grid grid-cols-1 sm:grid-cols-12 gap-8 items-center">
                     
                     {/* Trust Gauge Ring */}
-                    <div className="sm:col-span-5 flex flex-col items-center justify-center p-6 rounded-2xl bg-gray-50 border border-gray-100">
+                    <div className="sm:col-span-4 flex flex-col items-center justify-center p-6 rounded-2xl bg-gray-50 border border-gray-100">
                       <div className="relative w-40 h-40 flex items-center justify-center">
                         {/* SVG Circular Progress Bar */}
                         <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
@@ -425,9 +431,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                     </div>
 
                     {/* AI Metric Breakdown Gauges */}
-                    <div className="sm:col-span-7 space-y-4">
+                    <div className="sm:col-span-8 space-y-4">
                       <div className="flex items-center justify-between text-[13px]">
-                        <span className="text-gray-600 font-bold">AI Multimodal Confidence</span>
+                        <span className="text-gray-600 font-bold">System Confidence</span>
                         <span className="text-[var(--green-primary)] font-black font-mono text-[15px]">{analysisResult.aiConfidence}%</span>
                       </div>
                       <div className="w-full bg-gray-100 h-2.5 rounded-full overflow-hidden">
@@ -437,185 +443,282 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                         />
                       </div>
 
-                      <div className="grid grid-cols-2 gap-3 pt-3 text-[11px] uppercase tracking-wider font-bold text-gray-500">
-                        <div className="p-3 rounded-xl bg-gray-50 border border-gray-100 flex flex-col gap-1 hover:border-[var(--green-primary)]/30 transition-colors">
-                          <span>Stitching Pitch</span>
-                          <span className="font-black text-[var(--text-primary)] text-[15px] font-mono">{analysisResult.detailedScores.stitchingQuality}%</span>
-                        </div>
-                        <div className="p-3 rounded-xl bg-gray-50 border border-gray-100 flex flex-col gap-1 hover:border-[var(--green-primary)]/30 transition-colors">
-                          <span>Hardware Engraving</span>
-                          <span className="font-black text-[var(--text-primary)] text-[15px] font-mono">{analysisResult.detailedScores.hardwareAuthenticity}%</span>
-                        </div>
-                        <div className="p-3 rounded-xl bg-gray-50 border border-gray-100 flex flex-col gap-1 hover:border-[var(--green-primary)]/30 transition-colors">
-                          <span>Care Tag Font</span>
-                          <span className="font-black text-[var(--text-primary)] text-[15px] font-mono">{analysisResult.detailedScores.typographyAccuracy}%</span>
-                        </div>
-                        <div className="p-3 rounded-xl bg-gray-50 border border-gray-100 flex flex-col gap-1 hover:border-purple-400/30 transition-colors">
-                          <span>Review NLP Naturalness</span>
-                          <span className="font-black text-[var(--text-primary)] text-[15px] font-mono">{analysisResult.detailedScores.reviewPerplexity}%</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Cross-Modal XAI Heatmap Visual Inspector */}
-                <div className="p-6 sm:p-8 rounded-3xl bg-white border border-[var(--border-card)] shadow-sm space-y-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className="flex items-center gap-2">
-                      <Eye className="w-5 h-5 text-[var(--green-primary)]" />
-                      <h3 className="text-lg font-extrabold text-[var(--text-primary)]" style={{ fontFamily: 'var(--font-heading)' }}>XAI Heatmap & Visual Bounding Boxes</h3>
-                    </div>
-
-                    {/* Mode Toggles */}
-                    <div className="flex items-center bg-gray-100 p-1 rounded-full text-xs font-bold self-start">
-                      <button
-                        onClick={() => setViewMode('heatmap')}
-                        className={`px-4 py-1.5 rounded-full transition-all ${
-                          viewMode === 'heatmap' ? 'bg-white text-[var(--text-primary)] shadow-sm' : 'text-gray-500 hover:text-gray-700'
-                        }`}
-                      >
-                        Heatmap
-                      </button>
-                      <button
-                        onClick={() => setViewMode('bounding_boxes')}
-                        className={`px-4 py-1.5 rounded-full transition-all ${
-                          viewMode === 'bounding_boxes' ? 'bg-white text-[var(--text-primary)] shadow-sm' : 'text-gray-500 hover:text-gray-700'
-                        }`}
-                      >
-                        Boxes
-                      </button>
-                      <button
-                        onClick={() => setViewMode('raw')}
-                        className={`px-4 py-1.5 rounded-full transition-all ${
-                          viewMode === 'raw' ? 'bg-white text-[var(--text-primary)] shadow-sm' : 'text-gray-500 hover:text-gray-700'
-                        }`}
-                      >
-                        Raw
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Interactive Image Canvas Display */}
-                  <div className="relative w-full rounded-2xl overflow-hidden bg-gray-50 border border-gray-200 min-h-[360px] flex items-center justify-center p-4">
-                    <img
-                      src={analysisResult.imageUrl}
-                      alt={analysisResult.itemName}
-                      className="max-h-[400px] w-auto object-contain rounded-lg mix-blend-multiply"
-                    />
-
-                    {/* Heatmap Overlay Simulation */}
-                    {viewMode === 'heatmap' && (
-                      <div className="absolute inset-0 bg-gradient-to-tr from-[var(--green-primary)]/15 via-purple-500/10 to-amber-500/15 mix-blend-multiply pointer-events-none" />
-                    )}
-
-                    {/* Bounding Box Hotspot Overlays */}
-                    {viewMode !== 'raw' && analysisResult.heatmapPoints.map(point => {
-                      const isSelected = selectedHotspot?.id === point.id;
-                      return (
-                        <div
-                          key={point.id}
-                          onClick={() => setSelectedHotspot(point)}
-                          style={{
-                            left: `${point.x}%`,
-                            top: `${point.y}%`,
-                            width: `${point.width}%`,
-                            height: `${point.height}%`
-                          }}
-                          className={`absolute border-2 rounded-lg cursor-pointer transition-all duration-200 flex items-start justify-start p-1 ${
-                            point.severity === 'critical' || point.severity === 'high'
-                              ? 'border-red-500 bg-red-500/10 hover:bg-red-500/20'
-                              : 'border-[#059669] bg-[#059669]/10 hover:bg-[#059669]/20'
-                          } ${isSelected ? 'ring-4 ring-white z-20 scale-105 shadow-xl' : 'hover:scale-105 z-10 shadow-sm'}`}
-                        >
-                          <span className={`text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider -mt-4 -ml-2 whitespace-nowrap shadow-sm ${
-                            point.severity === 'critical' || point.severity === 'high' ? 'bg-red-500 text-white' : 'bg-[#059669] text-white'
-                          }`}>
-                            {point.label}
-                          </span>
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  {/* Hotspot Detailed Explanation Box */}
-                  {selectedHotspot && (
-                    <div className="p-5 rounded-2xl bg-gray-50 border border-gray-200 space-y-2 relative overflow-hidden">
-                      <div className={`absolute top-0 left-0 w-1 h-full ${
-                        selectedHotspot.severity === 'critical' || selectedHotspot.severity === 'high' ? 'bg-red-500' : 'bg-[#059669]'
-                      }`} />
-                      <div className="flex items-center justify-between pl-2">
-                        <div className="flex items-center gap-3">
-                          <span className="font-bold text-[var(--text-primary)] text-[15px]">{selectedHotspot.label}</span>
-                          <span className="px-2 py-0.5 rounded text-[10px] font-bold font-mono bg-white text-gray-500 uppercase border border-gray-200">
-                            {selectedHotspot.category}
-                          </span>
-                        </div>
-                        <span className="text-[var(--green-primary)] font-black font-mono bg-[var(--green-primary)]/10 px-2 py-0.5 rounded text-sm">
-                          {selectedHotspot.confidence}% Conf.
-                        </span>
-                      </div>
-                      <p className="text-gray-600 text-sm leading-relaxed font-medium pl-2">{selectedHotspot.description}</p>
-                    </div>
-                  )}
-                </div>
-
-                {/* Fake Review NLP Forensics & Reasoning */}
-                <div className="p-6 sm:p-8 rounded-3xl bg-white border border-[var(--border-card)] shadow-sm space-y-6">
-                  <h3 className="text-lg font-extrabold text-[var(--text-primary)] flex items-center gap-2" style={{ fontFamily: 'var(--font-heading)' }}>
-                    <FileText className="w-5 h-5 text-purple-500" />
-                    NLP Review Forensics & XAI Reasoning
-                  </h3>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Fake review score */}
-                    <div className="p-5 rounded-2xl bg-[#F6EEFF] border border-[#E9D5FF] space-y-4">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-purple-900 font-bold">Bot / Synthetic Review Prob.</span>
-                        <span className={`font-mono font-black text-xl ${
-                          analysisResult.fakeReviewProbability > 50 ? 'text-red-500' : 'text-purple-600'
-                        }`}>
-                          {analysisResult.fakeReviewProbability}%
-                        </span>
-                      </div>
-                      <div className="w-full bg-white h-2.5 rounded-full overflow-hidden border border-purple-100">
-                        <div
-                          className={`h-full rounded-full ${
-                            analysisResult.fakeReviewProbability > 50 ? 'bg-red-500' : 'bg-purple-500'
-                          }`}
-                          style={{ width: `${analysisResult.fakeReviewProbability}%` }}
-                        />
-                      </div>
-
-                      <div className="pt-3 space-y-2 border-t border-purple-200">
-                        {analysisResult.reviewFlags.map((flag, idx) => (
-                          <div key={idx} className="flex items-start gap-2 text-sm">
-                            <AlertTriangle className={`w-4 h-4 shrink-0 mt-0.5 ${
-                              flag.severity === 'high' ? 'text-red-500' : 'text-amber-500'
-                            }`} />
-                            <div>
-                              <span className="font-bold text-purple-900">{flag.type}: </span>
-                              <span className="text-purple-800/80 font-medium">{flag.explanation}</span>
-                            </div>
+                      {analysisResult.imageUrl ? (
+                        <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 pt-3 text-[11px] uppercase tracking-wider font-bold text-gray-500">
+                          <div className="p-3 rounded-xl bg-gray-50 border border-gray-100 flex flex-col gap-1 hover:border-[var(--green-primary)]/30 transition-colors">
+                            <span>Stitching Pitch</span>
+                            <span className="font-black text-[var(--text-primary)] text-[15px] font-mono">{analysisResult.detailedScores.stitchingQuality}%</span>
                           </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Reasoning list */}
-                    <div className="p-5 rounded-2xl bg-gray-50 border border-gray-200 space-y-3">
-                      <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider block mb-2">Key XAI Inspection Notes</span>
-                      <ul className="space-y-2.5 text-sm text-[var(--text-primary)] font-medium">
-                        {analysisResult.xaiReasoning.map((reason, idx) => (
-                          <li key={idx} className="flex items-start gap-3">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[var(--green-primary)] shrink-0 mt-2" />
-                            <span className="leading-relaxed">{reason}</span>
-                          </li>
-                        ))}
-                      </ul>
+                          <div className="p-3 rounded-xl bg-gray-50 border border-gray-100 flex flex-col gap-1 hover:border-[var(--green-primary)]/30 transition-colors">
+                            <span>Hardware Engraving</span>
+                            <span className="font-black text-[var(--text-primary)] text-[15px] font-mono">{analysisResult.detailedScores.hardwareAuthenticity}%</span>
+                          </div>
+                          <div className="p-3 rounded-xl bg-gray-50 border border-gray-100 flex flex-col gap-1 hover:border-[var(--green-primary)]/30 transition-colors">
+                            <span>Care Tag Font</span>
+                            <span className="font-black text-[var(--text-primary)] text-[15px] font-mono">{analysisResult.detailedScores.typographyAccuracy}%</span>
+                          </div>
+                          <div className="p-3 rounded-xl bg-gray-50 border border-gray-100 flex flex-col gap-1 hover:border-purple-400/30 transition-colors">
+                            <span>Material Texture</span>
+                            <span className="font-black text-[var(--text-primary)] text-[15px] font-mono">{analysisResult.detailedScores.fabricTextureMatch}%</span>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-2 gap-3 pt-3 text-[11px] uppercase tracking-wider font-bold text-gray-500">
+                          <div className="p-3.5 rounded-xl bg-purple-50 border border-purple-100 flex flex-col gap-1">
+                            <span className="text-purple-900">NLP Linguistic Perplexity</span>
+                            <span className="font-black text-purple-700 text-lg font-mono">{analysisResult.detailedScores.reviewPerplexity}%</span>
+                            <span className="text-[10px] text-purple-600 normal-case">Organic syntactic entropy</span>
+                          </div>
+                          <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-100 flex flex-col gap-1">
+                            <span className="text-emerald-900">Sentiment-Rating Coherence</span>
+                            <span className="font-black text-emerald-700 text-lg font-mono">{analysisResult.detailedScores.reviewSentimentAlignment}%</span>
+                            <span className="text-[10px] text-emerald-600 normal-case">Authentic buyer tone alignment</span>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
+
+                {/* VISUAL IMAGE INSPECTOR: Render ONLY if user uploaded an image */}
+                {analysisResult.imageUrl && (
+                  <div className="p-6 sm:p-8 rounded-3xl bg-white border border-[var(--border-card)] shadow-sm space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div className="flex items-center gap-2">
+                        <Eye className="w-5 h-5 text-[var(--green-primary)]" />
+                        <h3 className="text-lg font-extrabold text-[var(--text-primary)]" style={{ fontFamily: 'var(--font-heading)' }}>
+                          Uploaded Image Inspection Map
+                        </h3>
+                      </div>
+
+                      {/* Mode Toggles */}
+                      <div className="flex items-center bg-gray-100 p-1 rounded-full text-xs font-bold self-start">
+                        <button
+                          onClick={() => setViewMode('heatmap')}
+                          className={`px-4 py-1.5 rounded-full transition-all ${
+                            viewMode === 'heatmap' ? 'bg-white text-[var(--text-primary)] shadow-sm' : 'text-gray-500 hover:text-gray-700'
+                          }`}
+                        >
+                          Heatmap
+                        </button>
+                        <button
+                          onClick={() => setViewMode('bounding_boxes')}
+                          className={`px-4 py-1.5 rounded-full transition-all ${
+                            viewMode === 'bounding_boxes' ? 'bg-white text-[var(--text-primary)] shadow-sm' : 'text-gray-500 hover:text-gray-700'
+                          }`}
+                        >
+                          Boxes
+                        </button>
+                        <button
+                          onClick={() => setViewMode('raw')}
+                          className={`px-4 py-1.5 rounded-full transition-all ${
+                            viewMode === 'raw' ? 'bg-white text-[var(--text-primary)] shadow-sm' : 'text-gray-500 hover:text-gray-700'
+                          }`}
+                        >
+                          Raw
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Interactive Image Canvas Display */}
+                    <div className="relative w-full rounded-2xl overflow-hidden bg-gray-50 border border-gray-200 min-h-[360px] flex items-center justify-center p-4">
+                      <img
+                        src={analysisResult.imageUrl}
+                        alt={analysisResult.itemName}
+                        className="max-h-[400px] w-auto object-contain rounded-lg mix-blend-multiply"
+                      />
+                      {/* Heatmap Overlay Simulation */}
+                      {viewMode === 'heatmap' && (
+                        <div className="absolute inset-0 bg-gradient-to-tr from-[var(--green-primary)]/15 via-purple-500/10 to-amber-500/15 mix-blend-multiply pointer-events-none" />
+                      )}
+
+                      {/* Bounding Box Hotspot Overlays */}
+                      {viewMode !== 'raw' && analysisResult.heatmapPoints.map(point => {
+                        const isSelected = selectedHotspot?.id === point.id;
+                        return (
+                          <div
+                            key={point.id}
+                            onClick={() => setSelectedHotspot(point)}
+                            style={{
+                              left: `${point.x}%`,
+                              top: `${point.y}%`,
+                              width: `${point.width}%`,
+                              height: `${point.height}%`
+                            }}
+                            className={`absolute border-2 rounded-lg cursor-pointer transition-all duration-200 flex items-start justify-start p-1 ${
+                              point.severity === 'critical' || point.severity === 'high'
+                                ? 'border-red-500 bg-red-500/10 hover:bg-red-500/20'
+                                : 'border-[#059669] bg-[#059669]/10 hover:bg-[#059669]/20'
+                            } ${isSelected ? 'ring-4 ring-white z-20 scale-105 shadow-xl' : 'hover:scale-105 z-10 shadow-sm'}`}
+                          >
+                            <span className={`text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider -mt-4 -ml-2 whitespace-nowrap shadow-sm ${
+                              point.severity === 'critical' || point.severity === 'high' ? 'bg-red-500 text-white' : 'bg-[#059669] text-white'
+                            }`}>
+                              {point.label}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Hotspot Detailed Explanation Box */}
+                    {selectedHotspot && (
+                      <div className="p-5 rounded-2xl bg-gray-50 border border-gray-200 space-y-2 relative overflow-hidden">
+                        <div className={`absolute top-0 left-0 w-1 h-full ${
+                          selectedHotspot.severity === 'critical' || selectedHotspot.severity === 'high' ? 'bg-red-500' : 'bg-[#059669]'
+                        }`} />
+                        <div className="flex items-center justify-between pl-2">
+                          <div className="flex items-center gap-3">
+                            <span className="font-bold text-[var(--text-primary)] text-[15px]">{selectedHotspot.label}</span>
+                            <span className="px-2 py-0.5 rounded text-[10px] font-bold font-mono bg-white text-gray-500 uppercase border border-gray-200">
+                              {selectedHotspot.category}
+                            </span>
+                          </div>
+                          <span className="text-[var(--green-primary)] font-black font-mono bg-[var(--green-primary)]/10 px-2 py-0.5 rounded text-sm">
+                            {selectedHotspot.confidence}% Conf.
+                          </span>
+                        </div>
+                        <p className="text-gray-600 text-sm leading-relaxed font-medium pl-2">{selectedHotspot.description}</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* REVIEW NLP FORENSICS: Render ONLY if review was provided */}
+                {analysisResult.reviewText && (
+                  <div className="p-6 sm:p-8 rounded-3xl bg-white border border-[var(--border-card)] shadow-sm space-y-6">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-lg font-extrabold text-[var(--text-primary)] flex items-center gap-2" style={{ fontFamily: 'var(--font-heading)' }}>
+                        <FileText className="w-5 h-5 text-purple-500" />
+                        Linguistic & Review NLP Forensics
+                      </h3>
+                      <span className="text-xs font-bold text-purple-700 bg-purple-50 border border-purple-200 px-3 py-1 rounded-full">
+                        {analysisResult.reviewText.length} characters analyzed
+                      </span>
+                    </div>
+
+                    {/* Actual Typed Review Quote Block */}
+                    <div className="p-4 sm:p-5 rounded-2xl bg-purple-50/50 border border-purple-100 relative">
+                      <div className="text-[11px] font-bold uppercase tracking-wider text-purple-800 mb-1.5 flex items-center gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5 text-purple-600" />
+                        Analyzed User Review Submission:
+                      </div>
+                      <p className="text-sm text-purple-950 font-medium italic leading-relaxed">
+                        "{analysisResult.reviewText}"
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                      {/* Fake review score */}
+                      <div className="p-5 rounded-2xl bg-[#F6EEFF] border border-[#E9D5FF] space-y-4">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-purple-900 font-bold">Bot / Synthetic Prob.</span>
+                          <span className={`font-mono font-black text-xl ${
+                            analysisResult.fakeReviewProbability > 50 ? 'text-red-500' : 'text-purple-600'
+                          }`}>
+                            {analysisResult.fakeReviewProbability}%
+                          </span>
+                        </div>
+                        <div className="w-full bg-white h-2.5 rounded-full overflow-hidden border border-purple-100">
+                          <div
+                            className={`h-full rounded-full ${
+                              analysisResult.fakeReviewProbability > 50 ? 'bg-red-500' : 'bg-purple-500'
+                            }`}
+                            style={{ width: `${analysisResult.fakeReviewProbability}%` }}
+                          />
+                        </div>
+
+                        <div className="pt-3 space-y-2 border-t border-purple-200">
+                          {analysisResult.reviewFlags && analysisResult.reviewFlags.length > 0 ? (
+                            analysisResult.reviewFlags.map((flag, idx) => (
+                              <div key={idx} className="flex items-start gap-2 text-sm">
+                                <AlertTriangle className={`w-4 h-4 shrink-0 mt-0.5 ${
+                                  flag.severity === 'high' ? 'text-red-500' : 'text-amber-500'
+                                }`} />
+                                <div>
+                                  <span className="font-bold text-purple-900">{flag.type}: </span>
+                                  <span className="text-purple-800/80 font-medium">{flag.explanation}</span>
+                                </div>
+                              </div>
+                            ))
+                          ) : (
+                            <div className="flex items-center gap-2 text-xs font-bold text-emerald-700">
+                              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                              <span>Organic human phrasing verified</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Reasoning list */}
+                      <div className="p-5 rounded-2xl bg-gray-50 border border-gray-200 space-y-3">
+                        <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider block mb-2">AI Linguistic Notes</span>
+                        <ul className="space-y-2.5 text-sm text-[var(--text-primary)] font-medium">
+                          {analysisResult.xaiReasoning.map((reason, idx) => (
+                            <li key={idx} className="flex items-start gap-3">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[var(--green-primary)] shrink-0 mt-2" />
+                              <span className="leading-relaxed">{reason}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Recommendations panel */}
+                      <div className="p-5 rounded-2xl bg-[#ECFDF5] border border-[#A7F3D0] space-y-3 md:col-span-2 xl:col-span-1">
+                        <span className="text-[11px] font-bold text-[#059669] uppercase tracking-wider block mb-2 flex items-center gap-1.5">
+                          <CheckCircle2 className="w-3.5 h-3.5" />
+                          AI Recommendations
+                        </span>
+                        <ul className="space-y-2.5 text-sm text-[var(--text-primary)] font-medium">
+                          {analysisResult.recommendations.map((rec, idx) => (
+                            <li key={idx} className="flex items-start gap-3">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#059669] shrink-0 mt-2" />
+                              <span className="leading-relaxed">{rec}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Fallback info block if Image-Only without Review */}
+                {analysisResult.imageUrl && !analysisResult.reviewText && (
+                  <div className="p-6 sm:p-8 rounded-3xl bg-white border border-[var(--border-card)] shadow-sm space-y-6">
+                    <h3 className="text-lg font-extrabold text-[var(--text-primary)] flex items-center gap-2" style={{ fontFamily: 'var(--font-heading)' }}>
+                      <ShieldCheck className="w-5 h-5 text-[var(--green-primary)]" />
+                      Visual Craftsmanship Reasoning & Next Steps
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="p-5 rounded-2xl bg-gray-50 border border-gray-200 space-y-3">
+                        <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider block mb-2">Key Inspection Findings</span>
+                        <ul className="space-y-2.5 text-sm text-[var(--text-primary)] font-medium">
+                          {analysisResult.xaiReasoning.map((reason, idx) => (
+                            <li key={idx} className="flex items-start gap-3">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[var(--green-primary)] shrink-0 mt-2" />
+                              <span className="leading-relaxed">{reason}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="p-5 rounded-2xl bg-[#ECFDF5] border border-[#A7F3D0] space-y-3">
+                        <span className="text-[11px] font-bold text-[#059669] uppercase tracking-wider block mb-2 flex items-center gap-1.5">
+                          <CheckCircle2 className="w-3.5 h-3.5" />
+                          Recommended Next Steps
+                        </span>
+                        <ul className="space-y-2.5 text-sm text-[var(--text-primary)] font-medium">
+                          {analysisResult.recommendations.map((rec, idx) => (
+                            <li key={idx} className="flex items-start gap-3">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#059669] shrink-0 mt-2" />
+                              <span className="leading-relaxed">{rec}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
               </div>
             ) : (
@@ -683,7 +786,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
               <div className="p-5 rounded-2xl bg-[var(--text-primary)] border border-gray-800 flex items-center justify-between">
                 <div>
                   <p className="text-[15px] font-bold text-white">Scan QR for Online Verification</p>
-                  <p className="text-xs text-gray-400 mt-0.5">Immutable record stored in VeriStyle Vault</p>
+                  <p className="text-xs text-gray-400 mt-0.5">Immutable record stored in VeriStyle History</p>
                 </div>
                 <div className="w-16 h-16 bg-white rounded-xl p-1.5 flex items-center justify-center shadow-inner">
                   <QrCode className="w-full h-full text-black" />

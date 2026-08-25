@@ -10,7 +10,7 @@ export const PRODUCTS: ProductItem[] = [
     price: '₹2,85,000',
     originalPrice: '₹3,10,000',
     savings: 'Save ₹25,000',
-    aiScore: 94,
+    trustScore: 94,
     rating: 4.8,
     reviewCount: 1240,
     badge: 'Premium Pick',
@@ -38,7 +38,7 @@ export const PRODUCTS: ProductItem[] = [
     price: '₹1,95,000',
     originalPrice: '₹2,20,000',
     savings: 'Save ₹25,000',
-    aiScore: 91,
+    trustScore: 91,
     rating: 4.7,
     reviewCount: 2840,
     badge: 'Top Rated',
@@ -66,7 +66,7 @@ export const PRODUCTS: ProductItem[] = [
     price: '₹95,000',
     originalPrice: '₹1,10,000',
     savings: 'Save ₹15,000',
-    aiScore: 78,
+    trustScore: 78,
     rating: 4.3,
     reviewCount: 3420,
     badge: 'Trending',
@@ -94,7 +94,7 @@ export const PRODUCTS: ProductItem[] = [
     price: '₹5,20,000',
     originalPrice: '₹5,60,000',
     savings: 'Save ₹40,000',
-    aiScore: 96,
+    trustScore: 96,
     rating: 4.9,
     reviewCount: 890,
     badge: 'Premium Pick',
@@ -122,7 +122,7 @@ export const PRODUCTS: ProductItem[] = [
     price: '₹32,000',
     originalPrice: '₹38,000',
     savings: 'Save ₹6,000',
-    aiScore: 72,
+    trustScore: 72,
     rating: 4.1,
     reviewCount: 5600,
     badge: 'Trending',
@@ -150,7 +150,7 @@ export const PRODUCTS: ProductItem[] = [
     price: '₹24,50,000',
     originalPrice: '₹26,00,000',
     savings: 'Save ₹1,50,000',
-    aiScore: 89,
+    trustScore: 89,
     rating: 4.6,
     reviewCount: 420,
     badge: 'Premium Pick',
@@ -178,7 +178,7 @@ export const PRODUCTS: ProductItem[] = [
     price: '₹8,495',
     originalPrice: '₹10,000',
     savings: 'Save ₹1,505',
-    aiScore: 85,
+    trustScore: 85,
     rating: 4.5,
     reviewCount: 12800,
     badge: 'Best Value',
@@ -206,7 +206,7 @@ export const PRODUCTS: ProductItem[] = [
     price: '₹12,80,000',
     originalPrice: '₹13,50,000',
     savings: 'Save ₹70,000',
-    aiScore: 88,
+    trustScore: 88,
     rating: 4.7,
     reviewCount: 680,
     badge: 'Top Rated',
@@ -232,5 +232,5 @@ export const TRENDING_PRODUCTS = PRODUCTS.filter(p =>
 );
 
 export const TOP_RATED_PRODUCTS = PRODUCTS.filter(p =>
-  p.aiScore >= 88
+  p.trustScore >= 88
 );

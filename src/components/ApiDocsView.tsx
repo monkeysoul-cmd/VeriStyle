@@ -62,7 +62,7 @@ async def verify_apparel(payload: AnalysisRequest):
     if not payload.image_url and not payload.review_text:
         raise HTTPException(status_code=400, detail="Provide image_url or review_text")
         
-    # Execute VeriLens AI Multimodal Inspection Pipeline
+    # Execute VeriLens AI Image Scanning Pipeline
     return AnalysisResponse(
         trust_score=88,
         verdict="VERIFIED AUTHENTIC",
