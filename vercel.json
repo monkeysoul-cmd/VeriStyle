@@ -2,23 +2,7 @@
   "version": 2,
   "rewrites": [
     {
-      "source": "/api/analyze-url",
-      "destination": "/api/analyze-url"
-    },
-    {
-      "source": "/api/analyze-authenticity",
-      "destination": "/api/analyze-authenticity"
-    },
-    {
-      "source": "/api/history",
-      "destination": "/api/history"
-    },
-    {
-      "source": "/api/health",
-      "destination": "/api/health"
-    },
-    {
-      "source": "/(.*)",
+      "source": "/((?!api/.*).*)",
       "destination": "/index.html"
     }
   ],
