@@ -66,17 +66,17 @@ function cleanJsonResponse(text: string): string {
   return cleaned.trim();
 }
 
-// API Routes
-app.get(["/api/health", "/health"], (req, res) => {
+// API Route Handlers
+export async function handleHealth(req: any, res: any) {
   res.json({
     status: "ok",
     app: "VeriStyle AI Fashion Authenticator",
     geminiConfigured: Boolean(process.env.GEMINI_API_KEY),
     timestamp: new Date().toISOString()
   });
-});
+}
 
-app.post(["/api/analyze-authenticity", "/analyze-authenticity"], async (req, res) => {
+export async function handleAnalyzeAuthenticity(req: any, res: any) {
   try {
     const { imageUrl, reviewText, brand, category, itemName } = req.body;
 
@@ -499,10 +499,10 @@ Respond STRICTLY in valid JSON matching this schema:
     console.error("Authenticity Analysis Error:", error);
     res.status(500).json({ error: error.message || "Failed to process authenticity scan." });
   }
-});
+}
 
 // Multi-Platform Scraper and Forensic Analyzer
-app.post(["/api/analyze-url", "/analyze-url"], async (req, res) => {
+export async function handleAnalyzeUrl(req: any, res: any) {
   try {
     let { url } = req.body;
     if (!url) {
@@ -1140,9 +1140,9 @@ Return strictly JSON matching this structure:
     console.error("Error in /api/analyze-url:", err);
     res.status(500).json({ error: "Failed to analyze product URL", message: err?.message });
   }
-});
+}
 
-app.get(["/api/history", "/history"], async (req, res) => {
+export async function handleHistory(req: any, res: any) {
   try {
     const history = await AnalysisModel.find().sort({ _id: -1 }).limit(50);
     res.json(history);
@@ -1150,7 +1150,13 @@ app.get(["/api/history", "/history"], async (req, res) => {
     console.error("Error fetching history:", err);
     res.status(500).json({ error: "Failed to fetch history." });
   }
-});
+}
+
+// Register Express routes for local dev server
+app.get(["/api/health", "/health"], handleHealth);
+app.post(["/api/analyze-authenticity", "/analyze-authenticity"], handleAnalyzeAuthenticity);
+app.post(["/api/analyze-url", "/analyze-url"], handleAnalyzeUrl);
+app.get(["/api/history", "/history"], handleHistory);
 
 // Cached MongoDB connection for Vercel serverless functions
 let isMongoConnecting = false;
