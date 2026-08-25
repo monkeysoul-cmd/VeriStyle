@@ -67,7 +67,7 @@ function cleanJsonResponse(text: string): string {
 }
 
 // API Routes
-app.get("/api/health", (req, res) => {
+app.get(["/api/health", "/health"], (req, res) => {
   res.json({
     status: "ok",
     app: "VeriStyle AI Fashion Authenticator",
@@ -76,7 +76,7 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-app.post("/api/analyze-authenticity", async (req, res) => {
+app.post(["/api/analyze-authenticity", "/analyze-authenticity"], async (req, res) => {
   try {
     const { imageUrl, reviewText, brand, category, itemName } = req.body;
 
@@ -502,7 +502,7 @@ Respond STRICTLY in valid JSON matching this schema:
 });
 
 // Multi-Platform Scraper and Forensic Analyzer
-app.post("/api/analyze-url", async (req, res) => {
+app.post(["/api/analyze-url", "/analyze-url"], async (req, res) => {
   try {
     let { url } = req.body;
     if (!url) {
@@ -1142,7 +1142,7 @@ Return strictly JSON matching this structure:
   }
 });
 
-app.get("/api/history", async (req, res) => {
+app.get(["/api/history", "/history"], async (req, res) => {
   try {
     const history = await AnalysisModel.find().sort({ _id: -1 }).limit(50);
     res.json(history);
@@ -1194,13 +1194,13 @@ async function startServer() {
     });
   }
 
-  if (process.env.VERCEL !== "1") {
-    app.listen(PORT, "0.0.0.0", () => {
-      console.log(`VeriStyle server running on http://0.0.0.0:${PORT}`);
-    });
-  }
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`VeriStyle server running on http://0.0.0.0:${PORT}`);
+  });
 }
 
-startServer();
+if (!process.env.VERCEL) {
+  startServer();
+}
 
 export default app;
