@@ -260,9 +260,9 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
   if (status === 'input' || status === 'error') {
     return (
       <div className="w-full max-w-[850px] mx-auto">
-        <div className="flex flex-col sm:flex-row items-center gap-2.5 bg-white rounded-full border border-gray-200 p-2.5 sm:p-3 shadow-xl shadow-black/5 relative z-50">
-          <div className="pl-4 sm:pl-5 flex-shrink-0 text-gray-400">
-            <Search className="w-5 h-5 sm:w-6 sm:h-6" />
+        <div className="flex items-center gap-2 bg-white rounded-full border border-gray-200/90 p-1.5 sm:p-2.5 shadow-xl shadow-black/5 relative z-50">
+          <div className="pl-3 sm:pl-4 flex-shrink-0 text-gray-400">
+            <Search className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
           <input
             type="url"
@@ -270,17 +270,18 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleAnalyze()}
-            className="flex-1 bg-transparent text-gray-900 placeholder:text-gray-400 py-3.5 sm:py-4 px-3 sm:px-4 text-sm sm:text-base min-w-0 focus:outline-none"
+            className="flex-1 bg-transparent text-gray-900 placeholder:text-gray-400 py-2.5 sm:py-3 px-2 sm:px-3 text-sm sm:text-base min-w-0 focus:outline-none"
             autoComplete="off"
             spellCheck="false"
           />
           <button
             onClick={handleAnalyze}
             disabled={!url.trim()}
-            className="w-full sm:auto inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 rounded-full bg-[var(--green-primary)] text-white text-sm sm:text-base font-bold hover:bg-[#146D2F] active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md cursor-pointer shrink-0"
+            className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-[var(--green-primary)] text-white text-xs sm:text-sm md:text-base font-bold hover:bg-[#146D2F] active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md cursor-pointer shrink-0 whitespace-nowrap"
           >
-            <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
-            Analyse with AI
+            <Sparkles className="w-4 h-4 shrink-0" />
+            <span className="hidden sm:inline">Analyse with AI</span>
+            <span className="sm:hidden">Analyse</span>
           </button>
         </div>
 
