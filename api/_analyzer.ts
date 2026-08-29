@@ -309,54 +309,67 @@ export async function analyzeUrlForensics(rawUrl: string) {
   let parsed: any = null;
 
   if (ai) {
-    const promptText = `
-You are the VeriStyle & Tapju AI Forensic Product Authenticator.
-Perform a genuine, custom, forensic authenticity evaluation of this unique e-commerce product:
-URL: ${url}
-Platform: ${platform}
-Title: ${title || urlSlugTitle}
-Brand: ${brand}
-Price: ${price || 'Not Scraped'}
-Rating: ${rating ? `${rating} / 5` : 'Unknown'}
-Review Count: ${reviewCount ? `${reviewCount}` : 'Unknown'}
-Scraped Customer Reviews: ${sampleReviews.join(' | ') || 'None available'}
-Description: ${description}
+    const productName = title || urlSlugTitle || (brand ? brand + ' Product' : 'Unknown Product');
+    const productPrice = price || 'Price not available';
+    const productRating = rating ? `${rating} / 5` : 'Not available';
+    const productReviewCount = reviewCount ? String(reviewCount) : 'Unknown';
+    const productReviews = sampleReviews.join(' | ') || 'No reviews scraped';
 
-Analyze the product name, pricing sanity, review sentiment, component manufacturing quality, and brand integrity.
-Return ONLY valid JSON matching this schema:
+    const promptText = `You are the VeriStyle forensic AI product authenticator.
+Analyze this e-commerce product and return ONLY a valid JSON object (no markdown, no explanation).
+
+PRODUCT DATA:
+- Platform: ${platform}
+- URL: ${url}
+- Product Name: ${productName}
+- Brand: ${brand || 'Unknown'}
+- Listed Price: ${productPrice}
+- Rating: ${productRating}
+- Review Count: ${productReviewCount}
+- Customer Reviews Sample: ${productReviews}
+- Product Description: ${description || 'Not available'}
+
+INSTRUCTIONS:
+1. Generate a UNIQUE forensic analysis specifically for this product
+2. Use your knowledge of this brand, price range, and product category
+3. Detect if reviews appear bot-generated (repeated phrases, unusual rating patterns)
+4. Assess price vs market value for authenticity signals
+5. Evaluate brand legitimacy for this specific product
+
+Return this exact JSON structure with YOUR ANALYSIS VALUES (not template placeholders):
 {
-  "itemName": "${title || urlSlugTitle || `${brand} Product`}",
-  "brand": "${brand}",
-  "trustScore": <number 0-100>,
-  "verdict": "VERIFIED AUTHENTIC" | "SUSPICIOUS REVIEW / RISK" | "LIKELY COUNTERFEIT",
-  "aiConfidence": <number 75-99>,
-  "estimatedRetailValue": "${price || 'Market Rate'}",
-  "priceAnalysis": "Fair Market Price" | "Budget Fast-Fashion Tier" | "Great Value Deal" | "Anomalously Cheap / High Risk",
-  "whatBuyersLove": ["2-3 specific real strengths of this product"],
-  "whatBuyersDislike": ["1-2 specific critical warnings or limitations"],
-  "hiddenPattern": "Specific observation about this product review cluster or factory source",
-  "curiosityTrigger": "Fascinating technical or manufacturing specification detail",
-  "sentimentBreakdown": { "positive": 75, "neutral": 15, "negative": 10 },
+  "itemName": "[full product name]",
+  "brand": "[brand name]",
+  "trustScore": [integer 0-100 based on your analysis],
+  "verdict": "[one of: VERIFIED AUTHENTIC, SUSPICIOUS REVIEW / RISK, LIKELY COUNTERFEIT]",
+  "aiConfidence": [integer 75-99],
+  "estimatedRetailValue": "[price string with currency symbol]",
+  "priceAnalysis": "[one of: Fair Market Price, Budget Fast-Fashion Tier, Great Value Deal, Anomalously Cheap / High Risk]",
+  "whatBuyersLove": ["[specific strength 1]", "[specific strength 2]"],
+  "whatBuyersDislike": ["[specific limitation 1]"],
+  "hiddenPattern": "[specific supply chain or review pattern observation for this product]",
+  "curiosityTrigger": "[fascinating specific technical or manufacturing detail about this product]",
+  "sentimentBreakdown": { "positive": [integer], "neutral": [integer], "negative": [integer] },
   "detailedScores": {
-    "stitchingQuality": <0-100>,
-    "typographyAccuracy": <0-100>,
-    "fabricTextureMatch": <0-100>,
-    "hardwareAuthenticity": <0-100>,
-    "serialCodeValidation": <0-100>,
-    "reviewPerplexity": <0-100>,
-    "reviewSentimentAlignment": <0-100>
+    "stitchingQuality": [integer 0-100],
+    "typographyAccuracy": [integer 0-100],
+    "fabricTextureMatch": [integer 0-100],
+    "hardwareAuthenticity": [integer 0-100],
+    "serialCodeValidation": [integer 0-100],
+    "reviewPerplexity": [integer 0-100],
+    "reviewSentimentAlignment": [integer 0-100]
   },
-  "fakeReviewProbability": <0-100>,
-  "xaiReasoning": ["Detailed explanation of findings"],
-  "recommendations": ["Actionable buyer advice"]
-}
-`;
+  "fakeReviewProbability": [integer 0-100],
+  "xaiReasoning": ["[detailed specific finding about this exact product]"],
+  "recommendations": ["[actionable specific advice for a buyer of this product]"]
+}`;
 
+    // Verified working models (tested 2026-08-29):
     const candidateModels = [
       "gemini-3.5-flash",
       "gemini-3.5-flash-lite",
       "gemini-3.1-flash-lite",
-      "gemini-2.5-flash-lite",
+      "gemini-3.6-flash",
       "gemini-2.5-flash"
     ];
 
@@ -364,18 +377,31 @@ Return ONLY valid JSON matching this schema:
       try {
         const response = await ai.models.generateContent({
           model: modelName,
-          contents: [{ text: promptText }],
-          config: {
-            responseMimeType: "application/json",
-            temperature: 0.1
-          }
+          contents: [{ role: 'user', parts: [{ text: promptText }] }],
+          config: { temperature: 0.15 }
         });
-        if (response.text) {
-          parsed = JSON.parse(cleanJsonResponse(response.text));
-          break;
+        const rawText = response.text;
+        if (rawText && rawText.length > 50) {
+          const candidate = JSON.parse(cleanJsonResponse(rawText));
+          // Validate it has real AI-generated content (not template echo)
+          if (
+            candidate &&
+            typeof candidate.trustScore === 'number' &&
+            typeof candidate.verdict === 'string' &&
+            candidate.verdict.length > 5 &&
+            Array.isArray(candidate.whatBuyersLove) &&
+            candidate.whatBuyersLove.length > 0 &&
+            !candidate.whatBuyersLove[0].includes('specific real')
+          ) {
+            parsed = candidate;
+            console.log(`[VeriStyle] Model ${modelName} returned valid analysis. Score: ${candidate.trustScore}`);
+            break;
+          } else {
+            console.warn(`[VeriStyle] Model ${modelName} returned template echo, trying next.`);
+          }
         }
       } catch (aiErr: any) {
-        console.warn(`Model ${modelName} error:`, aiErr.message);
+        console.warn(`[VeriStyle] Model ${modelName} error:`, aiErr.message?.substring(0, 120));
       }
     }
   }
