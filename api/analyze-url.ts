@@ -1,5 +1,5 @@
 // VeriStyle - Standalone Vercel Serverless Function
-// Self-contained: Live scraping + Gemini Foundation AI for 100% genuine product images, exact prices, and forensic analysis
+// Self-contained: URL sanitization + Live Jina Scraper + Gemini Foundation AI
 import { GoogleGenAI } from "@google/genai";
 
 function getAiClient(): GoogleGenAI | null {
@@ -29,6 +29,38 @@ function cleanJsonResponse(raw: string): string {
   const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
   if (jsonMatch) cleaned = jsonMatch[0];
   return cleaned.trim();
+}
+
+export function sanitizeProductUrl(rawUrl: string): string {
+  let u = rawUrl.trim();
+  if (u.includes("veristyle.ai/")) {
+    u = u.split("veristyle.ai/")[1].trim();
+  }
+  if (!u.startsWith("http")) {
+    u = "https://" + u;
+  }
+
+  try {
+    const urlObj = new URL(u);
+    if (urlObj.hostname.includes("flipkart.com")) {
+      const pid = urlObj.searchParams.get("pid");
+      let cleanPath = urlObj.pathname;
+      if (cleanPath.includes("/product-reviews/")) {
+        cleanPath = cleanPath.replace("/product-reviews/", "/p/");
+      }
+      return "https://www.flipkart.com" + cleanPath + (pid ? "?pid=" + pid : "");
+    } else if (urlObj.hostname.includes("amazon.")) {
+      const asinMatch = u.match(/\/(?:dp|gp\/product)\/([A-Z0-9]{10})/i);
+      if (asinMatch) {
+        const domain = urlObj.hostname;
+        return `https://${domain}/dp/${asinMatch[1].toUpperCase()}`;
+      }
+    } else if (urlObj.hostname.includes("myntra.com")) {
+      return `https://www.myntra.com${urlObj.pathname}`;
+    }
+  } catch (_) {}
+
+  return u;
 }
 
 function extractFromUrl(url: string) {
@@ -65,7 +97,7 @@ function extractFromUrl(url: string) {
 
   const lower = (urlSlugTitle + " " + url).toLowerCase();
   const brandMatch = lower.match(
-    /\b(triggr|boat|jbl|sony|boult|noise|portronics|zebronics|mivi|realme|apple|samsung|oneplus|xiaomi|redmi|poco|nike|adidas|puma|benetton|kotty|impulse|wildcraft|skybags|american tourister|safari|highlander|instafab|fastrack|casio|fossil|titan|lakhya|xeezos|shozie|zenvar|levi|zara)\b/i
+    /\b(triggr|boat|jbl|sony|boult|noise|portronics|zebronics|mivi|realme|apple|samsung|oneplus|xiaomi|redmi|poco|nike|adidas|puma|benetton|kotty|impulse|wildcraft|skybags|american tourister|safari|highlander|instafab|fastrack|casio|fossil|titan|lakhya|xeezos|shozie|zenvar|moncada|levi|zara)\b/i
   );
   if (brandMatch && !brand) {
     brand = brandMatch[1].charAt(0).toUpperCase() + brandMatch[1].slice(1);
@@ -80,7 +112,7 @@ function extractFromUrl(url: string) {
   return { platform, urlSlugTitle: titleWords, brand, asin };
 }
 
-async function scrapeLiveProduct(url: string, asin?: string) {
+async function scrapeLiveProduct(cleanUrl: string, asin?: string) {
   let title = "";
   let price = "";
   let imageUrl = "";
@@ -92,13 +124,12 @@ async function scrapeLiveProduct(url: string, asin?: string) {
   }
 
   try {
-    const res = await fetch(`https://r.jina.ai/${url}`, {
+    const res = await fetch(`https://r.jina.ai/${cleanUrl}`, {
       headers: {
         Accept: "text/plain",
         "X-With-Images-Summary": "true",
-        "X-With-Links-Summary": "true",
       },
-      signal: AbortSignal.timeout(5500),
+      signal: AbortSignal.timeout(6000),
     });
 
     if (res.ok) {
@@ -146,7 +177,6 @@ async function scrapeLiveProduct(url: string, asin?: string) {
         }
       }
 
-      // Flipkart high-res upscale
       if (
         imageUrl &&
         (imageUrl.includes("rukminim1.flixcart.com") ||
@@ -156,7 +186,6 @@ async function scrapeLiveProduct(url: string, asin?: string) {
         imageUrl = imageUrl.replace(/\/image\/\d+\/\d+\//, "/image/800/1070/");
       }
 
-      // 4. Extract Rating
       const ratingMatch =
         text.match(/(\d\.\d)\s*(?:out of 5|stars|★|\/ 5|\(\d+ ratings\))/i) ||
         text.match(/Rating:\s*(\d\.\d)/i);
@@ -171,12 +200,13 @@ async function scrapeLiveProduct(url: string, asin?: string) {
   return { title, price, imageUrl, rating, rawSnippet };
 }
 
-async function runGeminiAnalysis(url: string): Promise<any> {
+async function runGeminiAnalysis(rawUrl: string): Promise<any> {
   const ai = getAiClient();
   if (!ai) throw new Error("AI client unavailable");
 
-  const { platform, urlSlugTitle, brand, asin } = extractFromUrl(url);
-  const scraped = await scrapeLiveProduct(url, asin);
+  const cleanUrl = sanitizeProductUrl(rawUrl);
+  const { platform, urlSlugTitle, brand, asin } = extractFromUrl(cleanUrl);
+  const scraped = await scrapeLiveProduct(cleanUrl, asin);
 
   const finalTitle = scraped.title || urlSlugTitle || (brand ? `${brand} Product` : "E-Commerce Product");
   const finalPrice = scraped.price || "₹899";
@@ -190,14 +220,14 @@ Brand: ${brand || "Extract from Name"}
 Listed Price: ${finalPrice}
 Rating: ${scraped.rating} / 5
 Platform: ${platform}
-URL: ${url}
+URL: ${cleanUrl}
 
 Scraped Product Content:
 ${scraped.rawSnippet || "No additional text available"}
 
 INSTRUCTIONS:
 1. Evaluate the product name, pricing sanity (is ${finalPrice} realistic or anomalous?), manufacturing traits, and buyer sentiment.
-2. If the price is extremely low (e.g. ₹200-₹500 for shoes/watches/shorts), analyze it as a budget fast-fashion/white-label item.
+2. If the price is extremely low (e.g. ₹150-₹500 for sandals/shoes/watches/shorts), analyze it as a budget fast-fashion/white-label item.
 3. Return ONLY valid JSON matching this schema:
 {
   "itemName": "${finalTitle}",
@@ -266,7 +296,6 @@ INSTRUCTIONS:
     }
   }
 
-  // Calculate score and verdict
   const score = parsed?.trustScore ? Math.max(0, Math.min(100, Math.round(parsed.trustScore))) : 75;
   const verdict =
     score >= 80
@@ -309,7 +338,7 @@ INSTRUCTIONS:
     verificationHash: `0x${Math.random().toString(16).substring(2, 10)}${Math.random().toString(16).substring(2, 6)}`,
     estimatedRetailValue: resolvedPrice,
     resaleMarketVerdict: score >= 80 ? "Grade A Authentic" : "Risk Review Required",
-    productUrl: url,
+    productUrl: rawUrl,
     platform: platform,
     extractedPrice: resolvedPrice,
     extractedRating: scraped.rating || 4.1,
@@ -365,16 +394,8 @@ export default async function handler(req: any, res: any) {
       return res.status(400).json({ error: "Product URL is required." });
     }
 
-    let cleanUrl = url.trim();
-    if (cleanUrl.includes("veristyle.ai/")) {
-      cleanUrl = cleanUrl.split("veristyle.ai/")[1].trim();
-    }
-    if (!cleanUrl.startsWith("http")) {
-      cleanUrl = "https://" + cleanUrl;
-    }
-
-    console.log(`[VeriStyle] Analyzing URL: ${cleanUrl}`);
-    const result = await runGeminiAnalysis(cleanUrl);
+    console.log(`[VeriStyle] Received URL request: ${url}`);
+    const result = await runGeminiAnalysis(url);
     console.log(
       `[VeriStyle] Analysis complete - Score: ${result.trustScore}, Product: ${result.itemName}, Price: ${result.extractedPrice}, Image: ${result.imageUrl ? "YES" : "NO"}`
     );
