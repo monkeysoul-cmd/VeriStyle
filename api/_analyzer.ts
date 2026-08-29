@@ -29,6 +29,37 @@ export function cleanJsonResponse(raw: string): string {
   return cleaned.trim();
 }
 
+export function sanitizeProductUrl(rawUrl: string): string {
+  let u = rawUrl.trim();
+  if (u.includes("veristyle.ai/")) {
+    u = u.split("veristyle.ai/")[1].trim();
+  }
+  if (!u.startsWith("http")) {
+    u = "https://" + u;
+  }
+
+  try {
+    const urlObj = new URL(u);
+    if (urlObj.hostname.includes("flipkart.com")) {
+      const pid = urlObj.searchParams.get("pid");
+      let cleanPath = urlObj.pathname;
+      if (cleanPath.includes("/product-reviews/")) {
+        cleanPath = cleanPath.replace("/product-reviews/", "/p/");
+      }
+      return "https://www.flipkart.com" + cleanPath + (pid ? "?pid=" + pid : "");
+    } else if (urlObj.hostname.includes("amazon.")) {
+      const asinMatch = u.match(/\/(?:dp|gp\/product)\/([A-Z0-9]{10})/i);
+      if (asinMatch) {
+        return `https://${urlObj.hostname}/dp/${asinMatch[1].toUpperCase()}`;
+      }
+    } else if (urlObj.hostname.includes("myntra.com")) {
+      return `https://www.myntra.com${urlObj.pathname}`;
+    }
+  } catch (_) {}
+
+  return u;
+}
+
 function extractFromUrl(url: string) {
   let platform: string = "unknown";
   if (url.includes("amazon.")) platform = "amazon";
@@ -63,7 +94,7 @@ function extractFromUrl(url: string) {
 
   const lower = (urlSlugTitle + " " + url).toLowerCase();
   const brandMatch = lower.match(
-    /\b(triggr|boat|jbl|sony|boult|noise|portronics|zebronics|mivi|realme|apple|samsung|oneplus|xiaomi|redmi|poco|nike|adidas|puma|benetton|kotty|impulse|wildcraft|skybags|american tourister|safari|highlander|instafab|fastrack|casio|fossil|titan|lakhya|xeezos|shozie|zenvar|levi|zara)\b/i
+    /\b(triggr|boat|jbl|sony|boult|noise|portronics|zebronics|mivi|realme|apple|samsung|oneplus|xiaomi|redmi|poco|nike|adidas|puma|benetton|kotty|impulse|wildcraft|skybags|american tourister|safari|highlander|instafab|fastrack|casio|fossil|titan|lakhya|xeezos|shozie|zenvar|moncada|levi|zara)\b/i
   );
   if (brandMatch && !brand) {
     brand = brandMatch[1].charAt(0).toUpperCase() + brandMatch[1].slice(1);
@@ -78,7 +109,7 @@ function extractFromUrl(url: string) {
   return { platform, urlSlugTitle: titleWords, brand, asin };
 }
 
-async function scrapeLiveProduct(url: string, asin?: string) {
+async function scrapeLiveProduct(cleanUrl: string, asin?: string, ai?: GoogleGenAI | null) {
   let title = "";
   let price = "";
   let imageUrl = "";
@@ -89,14 +120,14 @@ async function scrapeLiveProduct(url: string, asin?: string) {
     imageUrl = `https://images-na.ssl-images-amazon.com/images/P/${asin}.01._SCLZZZZZZZ_SX600_.jpg`;
   }
 
+  // Engine 1: Jina AI Reader (Fast)
   try {
-    const res = await fetch(`https://r.jina.ai/${url}`, {
+    const res = await fetch(`https://r.jina.ai/${cleanUrl}`, {
       headers: {
         Accept: "text/plain",
         "X-With-Images-Summary": "true",
-        "X-With-Links-Summary": "true",
       },
-      signal: AbortSignal.timeout(5500),
+      signal: AbortSignal.timeout(4000),
     });
 
     if (res.ok) {
@@ -136,18 +167,9 @@ async function scrapeLiveProduct(url: string, asin?: string) {
           !src.includes("banner") &&
           !src.includes("batman")
         ) {
-          imageUrl = src;
+          imageUrl = src.replace(/\/image\/\d+\/\d+\//, "/image/800/1070/");
           break;
         }
-      }
-
-      if (
-        imageUrl &&
-        (imageUrl.includes("rukminim1.flixcart.com") ||
-          imageUrl.includes("rukminim2.flixcart.com") ||
-          imageUrl.includes("rukminim3.flixcart.com"))
-      ) {
-        imageUrl = imageUrl.replace(/\/image\/\d+\/\d+\//, "/image/800/1070/");
       }
 
       const ratingMatch =
@@ -157,8 +179,46 @@ async function scrapeLiveProduct(url: string, asin?: string) {
         rating = parseFloat(ratingMatch[1]);
       }
     }
-  } catch (e: any) {
-    console.warn("[VeriStyle] Live scraper notice:", e.message);
+  } catch (e: any) {}
+
+  // Engine 2: Microlink Fast Fallback (if image or price missing)
+  if (!imageUrl || !price || !title) {
+    try {
+      const mlRes = await fetch(
+        `https://api.microlink.io?url=${encodeURIComponent(cleanUrl)}`,
+        { signal: AbortSignal.timeout(3000) }
+      );
+      if (mlRes.ok) {
+        const mlData = await mlRes.json();
+        if (!title && mlData?.data?.title) title = mlData.data.title;
+        if (!imageUrl && mlData?.data?.image?.url) imageUrl = mlData.data.image.url;
+        if (!price && mlData?.data?.description) {
+          const pm = mlData.data.description.match(/(?:₹|Rs\.?)\s*[\d,]+/i);
+          if (pm) price = pm[0].replace(/\s+/g, "");
+        }
+      }
+    } catch (e: any) {}
+  }
+
+  // Engine 3: Gemini Search Grounding Fallback
+  if ((!imageUrl || !price) && ai) {
+    try {
+      const slugTitle =
+        cleanUrl.split("/p/")[0].split("/").pop()?.replace(/-/g, " ") || "";
+      const searchPrompt = `Search for this product on Flipkart/Amazon: "${slugTitle}". Find the exact listed price in INR (₹) and high-res product image URL. Return JSON: {"price": "₹...", "imageUrl": "https://..."}`;
+      const searchRes = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: [{ role: "user", parts: [{ text: searchPrompt }] }],
+        config: { tools: [{ googleSearch: {} }], temperature: 0.1 },
+      });
+      const txt = searchRes.text || "";
+      const jMatch = txt.match(/\{[\s\S]*\}/);
+      if (jMatch) {
+        const p = JSON.parse(jMatch[0]);
+        if (!price && p.price) price = p.price;
+        if (!imageUrl && p.imageUrl && p.imageUrl.startsWith("http")) imageUrl = p.imageUrl;
+      }
+    } catch (e: any) {}
   }
 
   return { title, price, imageUrl, rating, rawSnippet };
@@ -176,8 +236,9 @@ export async function analyzeUrlForensics(rawUrl: string) {
   const ai = getAiClient();
   if (!ai) throw new Error("AI client unavailable");
 
-  const { platform, urlSlugTitle, brand, asin } = extractFromUrl(url);
-  const scraped = await scrapeLiveProduct(url, asin);
+  const cleanUrl = sanitizeProductUrl(url);
+  const { platform, urlSlugTitle, brand, asin } = extractFromUrl(cleanUrl);
+  const scraped = await scrapeLiveProduct(cleanUrl, asin, ai);
 
   const finalTitle = scraped.title || urlSlugTitle || (brand ? `${brand} Product` : "E-Commerce Product");
   const finalPrice = scraped.price || "₹899";
@@ -191,14 +252,14 @@ Brand: ${brand || "Extract from Name"}
 Listed Price: ${finalPrice}
 Rating: ${scraped.rating} / 5
 Platform: ${platform}
-URL: ${url}
+URL: ${cleanUrl}
 
 Scraped Product Content:
 ${scraped.rawSnippet || "No additional text available"}
 
 INSTRUCTIONS:
 1. Evaluate the product name, pricing sanity (is ${finalPrice} realistic or anomalous?), manufacturing traits, and buyer sentiment.
-2. If the price is extremely low (e.g. ₹200-₹500 for shoes/watches/shorts), analyze it as a budget fast-fashion/white-label item.
+2. If the price is extremely low (e.g. ₹150-₹500 for sandals/shoes/watches/shorts), analyze it as a budget fast-fashion/white-label item.
 3. Return ONLY valid JSON matching this schema:
 {
   "itemName": "${finalTitle}",
@@ -307,7 +368,7 @@ INSTRUCTIONS:
     verificationHash: `0x${Math.random().toString(16).substring(2, 10)}${Math.random().toString(16).substring(2, 6)}`,
     estimatedRetailValue: resolvedPrice,
     resaleMarketVerdict: score >= 80 ? "Grade A Authentic" : "Risk Review Required",
-    productUrl: url,
+    productUrl: rawUrl,
     platform: platform,
     extractedPrice: resolvedPrice,
     extractedRating: scraped.rating || 4.1,
