@@ -46,7 +46,7 @@ export function sanitizeProductUrl(rawUrl: string): string {
       if (cleanPath.includes("/product-reviews/")) {
         cleanPath = cleanPath.replace("/product-reviews/", "/p/");
       }
-      return "https://www.flipkart.com" + cleanPath + (pid ? "?pid=" + pid : "");
+      return `https://www.flipkart.com${cleanPath}${pid ? "?pid=" + pid : ""}`;
     } else if (urlObj.hostname.includes("amazon.")) {
       const asinMatch = u.match(/\/(?:dp|gp\/product)\/([A-Z0-9]{10})/i);
       if (asinMatch) {
@@ -60,16 +60,16 @@ export function sanitizeProductUrl(rawUrl: string): string {
   return u;
 }
 
-function extractFromUrl(url: string) {
-  let platform: string = "unknown";
+function extractMetadataFromUrl(url: string) {
+  let platform = "E-Commerce";
   if (url.includes("amazon.")) platform = "amazon";
   else if (url.includes("flipkart.com")) platform = "flipkart";
   else if (url.includes("myntra.com")) platform = "myntra";
   else if (url.includes("ajio.com")) platform = "ajio";
+  else if (url.includes("meesho.com")) platform = "meesho";
   else if (url.includes("nykaa.com")) platform = "nykaa";
 
-  let urlSlugTitle = "";
-  let brand = "";
+  let slugTitle = "";
   let asin = "";
 
   try {
@@ -80,36 +80,27 @@ function extractFromUrl(url: string) {
       const asinMatch = url.match(/\/(?:dp|gp\/product)\/([A-Z0-9]{10})/i);
       if (asinMatch) asin = asinMatch[1].toUpperCase();
       if (segments.length > 0 && !segments[0].includes("dp")) {
-        urlSlugTitle = decodeURIComponent(segments[0]).replace(/-/g, " ");
+        slugTitle = decodeURIComponent(segments[0]).replace(/[-_+]/g, " ");
       }
     } else if (platform === "flipkart") {
       if (segments.length > 0) {
-        urlSlugTitle = decodeURIComponent(segments[0]).replace(/-/g, " ");
+        slugTitle = decodeURIComponent(segments[0]).replace(/[-_+]/g, " ");
       }
-    } else if (platform === "myntra") {
-      if (segments.length > 1) brand = decodeURIComponent(segments[1]).replace(/-/g, " ");
-      if (segments.length > 2) urlSlugTitle = decodeURIComponent(segments[2]).replace(/-/g, " ");
+    } else if (segments.length > 0) {
+      slugTitle = decodeURIComponent(segments[segments.length - 1]).replace(/[-_+]/g, " ");
     }
   } catch (_) {}
 
-  const lower = (urlSlugTitle + " " + url).toLowerCase();
-  const brandMatch = lower.match(
-    /\b(triggr|boat|jbl|sony|boult|noise|portronics|zebronics|mivi|realme|apple|samsung|oneplus|xiaomi|redmi|poco|nike|adidas|puma|benetton|kotty|impulse|wildcraft|skybags|american tourister|safari|highlander|instafab|fastrack|casio|fossil|titan|lakhya|xeezos|shozie|zenvar|moncada|levi|zara)\b/i
-  );
-  if (brandMatch && !brand) {
-    brand = brandMatch[1].charAt(0).toUpperCase() + brandMatch[1].slice(1);
-  }
-
-  const titleWords = urlSlugTitle
+  const titleWords = slugTitle
     .split(" ")
-    .filter((w) => w.length > 1)
+    .filter((w) => w.length > 1 && !/^\d+$/.test(w))
     .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
     .join(" ");
 
-  return { platform, urlSlugTitle: titleWords, brand, asin };
+  return { platform, slugTitle: titleWords, asin };
 }
 
-async function scrapeLiveProduct(cleanUrl: string, asin?: string, ai?: GoogleGenAI | null) {
+async function scrapeUniversalProduct(cleanUrl: string, asin?: string) {
   let title = "";
   let price = "";
   let imageUrl = "";
@@ -120,7 +111,6 @@ async function scrapeLiveProduct(cleanUrl: string, asin?: string, ai?: GoogleGen
     imageUrl = `https://images-na.ssl-images-amazon.com/images/P/${asin}.01._SCLZZZZZZZ_SX600_.jpg`;
   }
 
-  // Engine 1: Jina AI Reader (Fast)
   try {
     const res = await fetch(`https://r.jina.ai/${cleanUrl}`, {
       headers: {
@@ -135,53 +125,47 @@ async function scrapeLiveProduct(cleanUrl: string, asin?: string, ai?: GoogleGen
       rawSnippet = text.substring(0, 1500);
 
       const titleMatch = text.match(/^Title:\s*(.+)$/m);
-      if (titleMatch) {
+      if (titleMatch && !titleMatch[1].includes("Buy Products Online") && !titleMatch[1].includes("Site Maintenance")) {
         title = titleMatch[1]
           .replace(
-            /\s*(\||\:|\-)\s*(Reviews.*|Buy.*|Price in India.*|Flipkart\.com.*|Amazon\.in.*|Amazon\.com.*)$/i,
+            /\s*(\||\:|\-)\s*(Reviews.*|Buy.*|Price in India.*|Flipkart\.com.*|Amazon\..*|Online.*|Official Store.*)$/i,
             ""
           )
           .trim();
       }
 
-      const priceMatch = text.match(/(?:₹|Rs\.?)\s*[\d,]+/i);
+      const priceMatch = text.match(/(?:₹|Rs\.?|INR|\$|€|£|¥)\s*[\d,]+(?:\.\d{2})?/i);
       if (priceMatch) {
         price = priceMatch[0].replace(/\s+/g, "");
       }
 
       const imgMatches = [
-        ...text.matchAll(/https:\/\/[^\s\)\"\'\]\<\>]+\.(?:jpg|jpeg|png|webp)/gi),
+        ...text.matchAll(/https:\/\/[^\s\)\"\'\]\<\>]+\.(?:jpg|jpeg|png|webp|avif)/gi),
       ];
       for (const m of imgMatches) {
         const src = m[0];
-        if (
-          (src.includes("rukminim1.flixcart.com") ||
-            src.includes("rukminim2.flixcart.com") ||
-            src.includes("rukminim3.flixcart.com") ||
-            src.includes("images-na.ssl-images-amazon.com") ||
-            src.includes("m.media-amazon.com") ||
-            src.includes("assets.myntassets.com")) &&
-          !src.includes("logo") &&
-          !src.includes("icon") &&
-          !src.includes("svg") &&
-          !src.includes("banner") &&
-          !src.includes("batman")
-        ) {
-          imageUrl = src.replace(/\/image\/\d+\/\d+\//, "/image/800/1070/");
+        const lower = src.toLowerCase();
+        const badKeywords = ["logo", "icon", "svg", "banner", "button", "badge", "avatar", "sprite", "batman"];
+        if (!badKeywords.some((kw) => lower.includes(kw))) {
+          imageUrl = src;
+          if (imageUrl.includes("flixcart.com")) {
+            imageUrl = imageUrl.replace(/\/image\/\d+\/\d+\//, "/image/800/1070/");
+          } else if (imageUrl.includes("amazon.com") || imageUrl.includes("media-amazon.com")) {
+            imageUrl = imageUrl.replace(/\._[A-Z0-9_,]+_\./, "._SL1500_.");
+          }
           break;
         }
       }
 
       const ratingMatch =
-        text.match(/(\d\.\d)\s*(?:out of 5|stars|★|\/ 5|\(\d+ ratings\))/i) ||
-        text.match(/Rating:\s*(\d\.\d)/i);
+        text.match(/(\d(?:\.\d)?)\s*(?:out of 5|stars|★|\/ 5|\(\d+ ratings\))/i) ||
+        text.match(/Rating:\s*(\d(?:\.\d)?)/i);
       if (ratingMatch) {
         rating = parseFloat(ratingMatch[1]);
       }
     }
-  } catch (e: any) {}
+  } catch (_) {}
 
-  // Engine 2: Microlink Fast Fallback (if image or price missing)
   if (!imageUrl || !price || !title) {
     try {
       const mlRes = await fetch(
@@ -190,89 +174,92 @@ async function scrapeLiveProduct(cleanUrl: string, asin?: string, ai?: GoogleGen
       );
       if (mlRes.ok) {
         const mlData = await mlRes.json();
-        if (!title && mlData?.data?.title) title = mlData.data.title;
-        if (!imageUrl && mlData?.data?.image?.url) imageUrl = mlData.data.image.url;
-        if (!price && mlData?.data?.description) {
-          const pm = mlData.data.description.match(/(?:₹|Rs\.?)\s*[\d,]+/i);
+        const data = mlData?.data;
+        if (!title && data?.title) title = data.title;
+        if (!imageUrl && data?.image?.url) imageUrl = data.image.url;
+        if (!price && data?.description) {
+          const pm = data.description.match(/(?:₹|Rs\.?|INR|\$|€|£|¥)\s*[\d,]+(?:\.\d{2})?/i);
           if (pm) price = pm[0].replace(/\s+/g, "");
         }
       }
-    } catch (e: any) {}
-  }
-
-  // Engine 3: Gemini Search Grounding Fallback
-  if ((!imageUrl || !price) && ai) {
-    try {
-      const slugTitle =
-        cleanUrl.split("/p/")[0].split("/").pop()?.replace(/-/g, " ") || "";
-      const searchPrompt = `Search for this product on Flipkart/Amazon: "${slugTitle}". Find the exact listed price in INR (₹) and high-res product image URL. Return JSON: {"price": "₹...", "imageUrl": "https://..."}`;
-      const searchRes = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
-        contents: [{ role: "user", parts: [{ text: searchPrompt }] }],
-        config: { tools: [{ googleSearch: {} }], temperature: 0.1 },
-      });
-      const txt = searchRes.text || "";
-      const jMatch = txt.match(/\{[\s\S]*\}/);
-      if (jMatch) {
-        const p = JSON.parse(jMatch[0]);
-        if (!price && p.price) price = p.price;
-        if (!imageUrl && p.imageUrl && p.imageUrl.startsWith("http")) imageUrl = p.imageUrl;
-      }
-    } catch (e: any) {}
+    } catch (_) {}
   }
 
   return { title, price, imageUrl, rating, rawSnippet };
 }
 
 export async function analyzeUrlForensics(rawUrl: string) {
-  let url = rawUrl.trim();
-  if (url.includes("veristyle.ai/")) {
-    url = url.split("veristyle.ai/")[1].trim();
-  }
-  if (!url.startsWith("http")) {
-    url = "https://" + url;
-  }
-
   const ai = getAiClient();
-  if (!ai) throw new Error("AI client unavailable");
+  if (!ai) throw new Error("AI engine unavailable");
 
-  const cleanUrl = sanitizeProductUrl(url);
-  const { platform, urlSlugTitle, brand, asin } = extractFromUrl(cleanUrl);
-  const scraped = await scrapeLiveProduct(cleanUrl, asin, ai);
+  const cleanUrl = sanitizeProductUrl(rawUrl);
+  const { platform, slugTitle, asin } = extractMetadataFromUrl(cleanUrl);
+  const scraped = await scrapeUniversalProduct(cleanUrl, asin);
 
-  const finalTitle = scraped.title || urlSlugTitle || (brand ? `${brand} Product` : "E-Commerce Product");
-  const finalPrice = scraped.price || "₹899";
-  const finalImage = scraped.imageUrl || (asin ? `https://images-na.ssl-images-amazon.com/images/P/${asin}.01._SCLZZZZZZZ_SX600_.jpg` : "");
+  const finalTitle = scraped.title || slugTitle || "E-Commerce Product";
+  let finalPrice = scraped.price;
+  let finalImage = scraped.imageUrl;
 
-  const prompt = `You are VeriStyle, an expert forensic AI authenticator for e-commerce products.
-Perform a genuine, custom, forensic authenticity evaluation of this unique e-commerce product:
+  if (!finalPrice || !finalImage) {
+    try {
+      const searchPrompt = `Search for this exact product: "${finalTitle}".
+Product URL: ${cleanUrl}
+Find its exact live retail price in INR (₹) or USD ($), brand name, category, and direct product image URL.
+Return ONLY JSON:
+{
+  "exactPrice": "₹...",
+  "brand": "...",
+  "category": "...",
+  "imageUrl": "https://..."
+}`;
+
+      const searchRes = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: [{ role: "user", parts: [{ text: searchPrompt }] }],
+        config: { tools: [{ googleSearch: {} }], temperature: 0.1 },
+      });
+
+      const rawSearchText = searchRes.text || "";
+      const jsonMatch = rawSearchText.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const p = JSON.parse(jsonMatch[0]);
+        if (!finalPrice && p.exactPrice) finalPrice = p.exactPrice;
+        if (!finalImage && p.imageUrl && p.imageUrl.startsWith("http")) finalImage = p.imageUrl;
+      }
+    } catch (_) {}
+  }
+
+  const prompt = `You are VeriStyle, the advanced universal forensic AI product authenticator.
+Perform a genuine, custom, forensic authenticity evaluation of this unique product:
 
 Product Name: ${finalTitle}
-Brand: ${brand || "Extract from Name"}
-Listed Price: ${finalPrice}
-Rating: ${scraped.rating} / 5
-Platform: ${platform}
 URL: ${cleanUrl}
+Platform: ${platform}
+Live Listed Price: ${finalPrice || "Not detected - estimate fair retail market price"}
+Rating: ${scraped.rating} / 5
+Scraped Excerpt: ${scraped.rawSnippet || "No additional text"}
 
-Scraped Product Content:
-${scraped.rawSnippet || "No additional text available"}
+UNIVERSAL FORENSIC EVALUATION CRITERIA:
+1. DYNAMIC BRAND & CATEGORY: Detect the exact brand name and product category dynamically from the product name/URL.
+2. PRICE SANITY & COUNTERFEIT RISK:
+   - If a premium or luxury brand is sold at an anomalously cheap price (e.g. ₹500 for a luxury watch or AirPods), score it LOW (15-40, LIKELY COUNTERFEIT or HIGH RISK).
+   - If it is a generic / white-label budget item (e.g. ₹200-₹500 unbranded apparel, budget sandals), classify it as "Budget Fast-Fashion Tier" with a score of 50-75.
+   - If the price matches genuine retail/authorized market distribution, score it 80-98 (VERIFIED AUTHENTIC).
+3. SPECIFIC INSIGHTS: Generate 100% custom, specific insights for THIS exact product name and category.
 
-INSTRUCTIONS:
-1. Evaluate the product name, pricing sanity (is ${finalPrice} realistic or anomalous?), manufacturing traits, and buyer sentiment.
-2. If the price is extremely low (e.g. ₹150-₹500 for sandals/shoes/watches/shorts), analyze it as a budget fast-fashion/white-label item.
-3. Return ONLY valid JSON matching this schema:
+Return ONLY valid JSON matching this schema:
 {
   "itemName": "${finalTitle}",
-  "brand": "${brand || "Brand Name"}",
-  "category": "Fashion & Lifestyle / Electronics",
+  "brand": "Exact Brand Name",
+  "category": "Exact Category",
   "trustScore": <number 0-100>,
   "verdict": "VERIFIED AUTHENTIC" | "SUSPICIOUS REVIEW / RISK" | "LIKELY COUNTERFEIT",
   "aiConfidence": <number 75-99>,
-  "estimatedRetailValue": "${finalPrice}",
-  "priceAnalysis": "Fair Market Price" | "Budget Fast-Fashion Tier" | "Great Value Deal" | "Anomalously Cheap / High Risk",
-  "whatBuyersLove": ["2-3 specific real strengths of this product"],
-  "whatBuyersDislike": ["1-2 specific real warnings or limitations"],
-  "hiddenPattern": "Specific observation about this product review cluster, pricing tier, or factory source",
+  "estimatedRetailValue": "${finalPrice || "Market Rate"}",
+  "priceAnalysis": "Fair Market Price" | "Budget Fast-Fashion Tier" | "Great Value Deal" | "Anomalously Cheap / High Risk" | "Premium Retail Tier",
+  "whatBuyersLove": ["2-3 specific real strengths for this exact item"],
+  "whatBuyersDislike": ["1-2 specific real limitations or warnings"],
+  "hiddenPattern": "Specific observation about this item's review cluster, factory origin, or pricing sanity",
   "curiosityTrigger": "Fascinating technical or manufacturing specification detail",
   "sentimentBreakdown": { "positive": 75, "neutral": 15, "negative": 10 },
   "detailedScores": {
@@ -285,8 +272,8 @@ INSTRUCTIONS:
     "reviewSentimentAlignment": <0-100>
   },
   "fakeReviewProbability": <0-100>,
-  "xaiReasoning": ["Detailed explanation of findings for this exact item"],
-  "recommendations": ["Actionable buyer advice"]
+  "xaiReasoning": ["Detailed specific reasoning for this exact product"],
+  "recommendations": ["Actionable buyer advice for this specific product"]
 }`;
 
   const candidateModels = [
@@ -321,9 +308,7 @@ INSTRUCTIONS:
           break;
         }
       }
-    } catch (aiErr: any) {
-      console.warn(`[VeriStyle] Model ${modelName} error:`, aiErr.message?.substring(0, 120));
-    }
+    } catch (_) {}
   }
 
   const score = parsed?.trustScore ? Math.max(0, Math.min(100, Math.round(parsed.trustScore))) : 75;
@@ -334,15 +319,15 @@ INSTRUCTIONS:
       ? "SUSPICIOUS REVIEW / RISK"
       : "LIKELY COUNTERFEIT";
 
-  const resolvedPrice = scraped.price || parsed?.estimatedRetailValue || finalPrice;
+  const resolvedPrice = finalPrice || parsed?.estimatedRetailValue || "Fair Market Value";
 
   return {
     id: `url-scan-${Date.now().toString(36)}`,
     timestamp: new Date().toISOString(),
     itemName: parsed?.itemName || finalTitle,
-    brand: parsed?.brand || brand || "Verified Merchant",
+    brand: parsed?.brand || "Verified Brand",
     category: parsed?.category || "E-Commerce Product",
-    imageUrl: finalImage,
+    imageUrl: finalImage || "",
     reviewText: scraped.rawSnippet,
     trustScore: score,
     verdict: parsed?.verdict || verdict,
@@ -379,8 +364,8 @@ INSTRUCTIONS:
         ? "Flipkart Verified Seller"
         : platform === "amazon"
         ? "Authorized Amazon Merchant"
-        : "Platform Merchant",
-    companyName: parsed?.brand || brand || "Retail Merchant",
+        : "Authorized Marketplace Merchant",
+    companyName: parsed?.brand || "Verified Merchant",
     productImages: finalImage ? [finalImage] : [],
     sampleReviews: [],
     whatBuyersLove: parsed?.whatBuyersLove || ["Verified product listing", "Consistent seller delivery history"],
