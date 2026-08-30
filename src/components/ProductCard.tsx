@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Star, Heart, Sparkles, ArrowRight } from 'lucide-react';
+import { motion } from 'motion/react';
 import { ProductItem } from '../types';
 
 interface ProductCardProps {
@@ -19,13 +20,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onView }) => 
   const [saved, setSaved] = useState(false);
 
   return (
-    <div className="group rounded-3xl bg-white border border-[var(--border-card)] hover:border-[var(--green-primary)]/40 transition-all duration-300 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 flex flex-col">
+    <motion.div 
+      className="group rounded-3xl bg-white border border-[var(--border-card)] hover:border-[var(--green-primary)]/40 transition-all duration-400 overflow-hidden shadow-sm hover:shadow-xl flex flex-col"
+      whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
+    >
       {/* Image */}
       <div className="relative h-56 overflow-hidden bg-[var(--page-light)] p-6">
         <img
           src={product.imageUrl}
           alt={product.name}
-          className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500 mix-blend-multiply"
+          referrerPolicy="no-referrer"
+          crossOrigin="anonymous"
+          className="w-full h-full object-contain group-hover:scale-110 group-hover:brightness-105 transition-all duration-500 mix-blend-multiply"
         />
         
         {/* Badge top-left */}
@@ -34,19 +40,24 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onView }) => 
         </span>
 
         {/* Trust Score top-right */}
-        <span className="absolute top-3 right-12 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--text-primary)] text-white border border-gray-800 shadow-sm">
-          {product.trustScore}/100
-        </span>
+        <div className="absolute top-3 right-12">
+          <span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--text-primary)] text-white border border-gray-800 shadow-sm">
+            {product.trustScore}/100
+          </span>
+        </div>
 
         {/* Save button */}
-        <button
+        <motion.button
           onClick={(e) => { e.stopPropagation(); setSaved(!saved); }}
-          className={`absolute top-3 right-3 w-7 h-7 rounded-full flex items-center justify-center border transition-all shadow-sm ${
+          className={`absolute top-3 right-3 w-7 h-7 rounded-full flex items-center justify-center border transition-all shadow-sm cursor-pointer ${
             saved ? 'bg-red-50 border-red-200 text-red-500' : 'bg-white border-gray-200 text-gray-400 hover:text-gray-600'
           }`}
+          whileTap={{ scale: 0.75 }}
+          animate={saved ? { scale: [1, 1.3, 1] } : {}}
+          transition={{ duration: 0.3 }}
         >
           <Heart className={`w-3.5 h-3.5 ${saved ? 'fill-red-500' : ''}`} />
-        </button>
+        </motion.button>
       </div>
 
       {/* Content */}
@@ -95,15 +106,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onView }) => 
           <div className="mt-auto pt-4 border-t border-[var(--border-subtle)]">
             <button
               onClick={onView}
-              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gray-50 hover:bg-gray-100 text-[var(--text-primary)] text-sm font-bold border border-gray-200 hover:border-gray-300 transition-all group/btn"
+              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gray-50 hover:bg-[var(--green-primary)]/5 text-[var(--text-primary)] text-sm font-bold border border-gray-200 hover:border-[var(--green-primary)]/30 transition-all group/btn cursor-pointer"
             >
               <Sparkles className="w-3.5 h-3.5 text-[var(--green-primary)]" />
               View authenticity check
-              <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
+              <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
             </button>
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };

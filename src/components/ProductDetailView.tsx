@@ -19,6 +19,7 @@ import {
   AlertTriangle,
   ChevronRight,
 } from 'lucide-react';
+import { motion } from 'motion/react';
 import { ProductItem, InsightIconType } from '../types';
 
 interface ProductDetailViewProps {
@@ -26,7 +27,6 @@ interface ProductDetailViewProps {
   onBack: () => void;
 }
 
-// Map icon type string → Lucide component
 const InsightIcon: React.FC<{ type: InsightIconType; className?: string }> = ({ type, className = 'w-5 h-5' }) => {
   const map: Record<InsightIconType, React.ReactNode> = {
     camera: <Camera className={className} />,
@@ -43,16 +43,15 @@ const InsightIcon: React.FC<{ type: InsightIconType; className?: string }> = ({ 
   return <>{map[type]}</>;
 };
 
-// SVG donut score gauge
 const ScoreDonut: React.FC<{ score: number; label: string }> = ({ score, label }) => {
-  const radius = 52;
-  const stroke = 8;
+  const radius = 56;
+  const stroke = 9;
   const normalizedRadius = radius - stroke / 2;
   const circumference = 2 * Math.PI * normalizedRadius;
   const offset = circumference - (score / 100) * circumference;
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-center gap-2 relative">
       <svg width={radius * 2} height={radius * 2} className="-rotate-90">
         <circle
           cx={radius} cy={radius} r={normalizedRadius}
@@ -60,51 +59,58 @@ const ScoreDonut: React.FC<{ score: number; label: string }> = ({ score, label }
         />
         <circle
           cx={radius} cy={radius} r={normalizedRadius}
-          stroke="url(#scoreGrad)" strokeWidth={stroke} fill="none"
+          stroke="url(#scoreGradDetail)" strokeWidth={stroke} fill="none"
           strokeLinecap="round"
           strokeDasharray={`${circumference} ${circumference}`}
           strokeDashoffset={offset}
-          style={{ transition: 'stroke-dashoffset 1s ease' }}
+          style={{ transition: 'stroke-dashoffset 1.4s cubic-bezier(0.16, 1, 0.3, 1)' }}
         />
         <defs>
-          <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <linearGradient id="scoreGradDetail" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor="var(--green-accent-from)" />
             <stop offset="100%" stopColor="var(--green-accent-to)" />
           </linearGradient>
         </defs>
       </svg>
-      <div className="absolute flex flex-col items-center">
-        <span className="text-3xl font-extrabold text-[var(--text-primary)] mt-1">{score}</span>
-        <span className="text-xs text-gray-500 font-medium">/ 100</span>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center">
+        <span className="text-3xl font-extrabold text-[var(--text-primary)] leading-none">{score}</span>
+        <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-0.5">/ 100</span>
       </div>
-      <span className="text-xs font-bold text-[var(--green-primary)] tracking-wide uppercase mt-1">{label}</span>
+      <span className="text-xs font-bold text-[var(--green-primary)] tracking-wide uppercase mt-2">{label}</span>
     </div>
   );
 };
 
-const ScoreBar: React.FC<{ label: string; value: number }> = ({ label, value }) => (
+const ScoreBar: React.FC<{ label: string; value: number; delay?: number }> = ({ label, value, delay = 0 }) => (
   <div className="space-y-1.5">
     <div className="flex justify-between items-center text-sm">
       <span className="text-gray-700 font-bold">{label}</span>
-      <span className="text-[var(--green-primary)] font-bold font-mono">{value}%</span>
+      <span className="text-[var(--green-primary)] font-black font-mono">{value}%</span>
     </div>
     <div className="h-2.5 w-full bg-gray-100 rounded-full overflow-hidden">
-      <div
+      <motion.div
         className="h-full rounded-full bg-gradient-to-r from-[var(--green-accent-from)] to-[var(--green-accent-to)]"
-        style={{ width: `${value}%`, transition: 'width 1s ease' }}
+        initial={{ width: 0 }}
+        animate={{ width: `${value}%` }}
+        transition={{ duration: 1, delay, ease: [0.16, 1, 0.3, 1] }}
       />
     </div>
   </div>
 );
 
-const SentimentBar: React.FC<{ label: string; value: number; color: string }> = ({ label, value, color }) => (
+const SentimentBar: React.FC<{ label: string; value: number; color: string; delay?: number }> = ({ label, value, color, delay = 0 }) => (
   <div className="space-y-1.5">
     <div className="flex justify-between items-center text-sm">
       <span className="text-gray-600 font-bold">{label}</span>
-      <span className="font-bold font-mono text-[var(--text-primary)]">{value}%</span>
+      <span className="font-black font-mono text-[var(--text-primary)]">{value}%</span>
     </div>
     <div className="h-2.5 w-full bg-gray-100 rounded-full overflow-hidden">
-      <div className={`h-full rounded-full ${color}`} style={{ width: `${value}%`, transition: 'width 1s ease' }} />
+      <motion.div 
+        className={`h-full rounded-full ${color}`} 
+        initial={{ width: 0 }}
+        animate={{ width: `${value}%` }}
+        transition={{ duration: 1, delay, ease: [0.16, 1, 0.3, 1] }}
+      />
     </div>
   </div>
 );
@@ -129,20 +135,26 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
   const negativeInsights = product.reviewInsights.filter(i => i.sentiment === 'negative');
 
   return (
-    <div className="w-full bg-[var(--page-light)] min-h-screen pt-24 pb-20">
+    <motion.div 
+      className="w-full bg-[var(--page-light)] min-h-screen pt-24 pb-20"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4 }}
+    >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
 
         {/* Back Button */}
-        <button
+        <motion.button
           onClick={onBack}
-          className="flex items-center gap-2 text-gray-500 hover:text-[var(--text-primary)] transition-colors text-sm font-bold group"
+          className="flex items-center gap-2 text-gray-500 hover:text-[var(--text-primary)] transition-colors text-sm font-bold group cursor-pointer"
+          whileHover={{ x: -3 }}
         >
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
           Back to Products
-        </button>
+        </motion.button>
 
         {/* ── Hero Block ─────────────────────────────────────────── */}
-        <div className="rounded-3xl bg-white border border-[var(--border-card)] shadow-sm overflow-hidden">
+        <div className="rounded-3xl bg-white border border-[var(--border-card)] shadow-md overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
 
             {/* Image */}
@@ -150,7 +162,9 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
               <img
                 src={product.imageUrl}
                 alt={product.name}
-                className="max-w-full max-h-full object-contain mix-blend-multiply drop-shadow-xl"
+                referrerPolicy="no-referrer"
+                crossOrigin="anonymous"
+                className="max-w-full max-h-full object-contain mix-blend-multiply drop-shadow-xl transition-transform duration-500 hover:scale-105"
               />
               <span className={`absolute top-6 left-6 px-3 py-1 rounded-full text-xs font-bold border ${badgeStyles[product.badge] || 'bg-gray-100 text-gray-600 border-gray-200'}`}>
                 {product.badge}
@@ -211,16 +225,16 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
 
               {/* CTAs */}
               <div className="flex items-center gap-3 flex-wrap mt-4 pt-6 border-t border-gray-100">
-                <button className="flex items-center gap-2 px-6 py-3.5 rounded-full bg-[var(--text-primary)] hover:bg-gray-800 text-white font-bold text-sm shadow-md transition-all active:scale-95">
+                <button className="flex items-center gap-2 px-6 py-3.5 rounded-full bg-[var(--text-primary)] hover:bg-gray-800 text-white font-bold text-sm shadow-md transition-all active:scale-95 cursor-pointer">
                   <ExternalLink className="w-4 h-4" />
                   Buy Product
                 </button>
-                <button className="flex items-center gap-2 px-5 py-3.5 rounded-full bg-white hover:bg-gray-50 text-gray-700 font-bold text-sm border border-gray-200 shadow-sm transition-all">
+                <button className="flex items-center gap-2 px-5 py-3.5 rounded-full bg-white hover:bg-gray-50 text-gray-700 font-bold text-sm border border-gray-200 shadow-sm transition-all cursor-pointer">
                   <Share2 className="w-4 h-4" /> Share
                 </button>
                 <button
                   onClick={() => setSaved(!saved)}
-                  className={`flex items-center gap-2 px-5 py-3.5 rounded-full font-bold text-sm border transition-all shadow-sm ${saved ? 'bg-red-50 text-red-500 border-red-200' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'}`}
+                  className={`flex items-center gap-2 px-5 py-3.5 rounded-full font-bold text-sm border transition-all shadow-sm cursor-pointer ${saved ? 'bg-red-50 text-red-500 border-red-200' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'}`}
                 >
                   <Heart className={`w-4 h-4 ${saved ? 'fill-red-500' : ''}`} />
                   {saved ? 'Saved' : 'Save'}
@@ -247,10 +261,10 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
 
             {/* Dimension Bars */}
             <div className="flex-1 w-full space-y-6">
-              <ScoreBar label="Build Quality" value={product.scoreDimensions.buildQuality} />
-              <ScoreBar label="Performance" value={product.scoreDimensions.performance} />
-              <ScoreBar label="Value for Money" value={product.scoreDimensions.valueForMoney} />
-              <ScoreBar label="User Satisfaction" value={product.scoreDimensions.userSatisfaction} />
+              <ScoreBar label="Build Quality" value={product.scoreDimensions.buildQuality} delay={0.1} />
+              <ScoreBar label="Performance" value={product.scoreDimensions.performance} delay={0.2} />
+              <ScoreBar label="Value for Money" value={product.scoreDimensions.valueForMoney} delay={0.3} />
+              <ScoreBar label="User Satisfaction" value={product.scoreDimensions.userSatisfaction} delay={0.4} />
             </div>
           </div>
         </section>
@@ -311,7 +325,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
 
         {/* ── AI Verdict Banner ─────────────────────────────────── */}
         <section className="relative overflow-hidden rounded-3xl p-8 sm:p-10 bg-[var(--text-primary)] border border-gray-800 shadow-xl">
-          <div className="absolute inset-0 bg-gradient-to-br from-[var(--green-primary)]/10 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[var(--green-primary)]/15 to-transparent pointer-events-none" />
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 relative z-10">
             <div className="w-16 h-16 rounded-2xl bg-[var(--green-primary)]/20 border border-[var(--green-primary)]/30 flex items-center justify-center text-[var(--green-primary)] flex-shrink-0">
               <Sparkles className="w-8 h-8" />
@@ -331,9 +345,9 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
             <h3 className="text-xl font-extrabold text-[var(--text-primary)]" style={{ fontFamily: 'var(--font-heading)' }}>Sentiment Breakdown</h3>
 
             <div className="space-y-5">
-              <SentimentBar label="Positive Feedback" value={product.sentimentBreakdown.positive} color="bg-[var(--green-primary)]" />
-              <SentimentBar label="Neutral Feedback" value={product.sentimentBreakdown.neutral} color="bg-gray-400" />
-              <SentimentBar label="Negative Feedback" value={product.sentimentBreakdown.negative} color="bg-red-400" />
+              <SentimentBar label="Positive Feedback" value={product.sentimentBreakdown.positive} color="bg-[var(--green-primary)]" delay={0.1} />
+              <SentimentBar label="Neutral Feedback" value={product.sentimentBreakdown.neutral} color="bg-gray-400" delay={0.2} />
+              <SentimentBar label="Negative Feedback" value={product.sentimentBreakdown.negative} color="bg-red-400" delay={0.3} />
             </div>
 
             <p className="text-[11px] text-gray-500 leading-relaxed p-3 rounded-xl bg-gray-50 border border-gray-100 font-medium">
@@ -399,6 +413,6 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
         </section>
 
       </div>
-    </div>
+    </motion.div>
   );
 };

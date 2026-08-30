@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { UrlAnalyzer } from './UrlAnalyzer';
+import { motion, AnimatePresence } from 'motion/react';
 import { Search, Sparkles, Brain, ScanLine, FileText, CheckCircle2, ChevronDown, HelpCircle, Shield, AlertTriangle } from 'lucide-react';
 
 interface LandingPageProps {
@@ -7,8 +8,30 @@ interface LandingPageProps {
   onViewProducts?: () => void;
 }
 
+// Hook: Animate on scroll intersection
+function useScrollReveal() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setIsVisible(true); },
+      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  
+  return { ref, isVisible };
+}
+
 export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const howItWorks = useScrollReveal();
+  const bentoSection = useScrollReveal();
+  const faqSection = useScrollReveal();
 
   const faqs = [
     { q: "How accurate is the authenticity check?", a: "Our advanced checking system achieves 99.4% accuracy by cross-referencing micro-stitching, hardware finishes, and typography against an extensive database of verified authentic luxury goods. It also performs text analysis on reviews." },
@@ -17,10 +40,21 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
     { q: "Can I use VeriStyle for sneakers and streetwear?", a: "Yes, our image scanner is trained on luxury handbags, limited-edition sneakers, designer streetwear, and high-end watches." }
   ];
 
+  const stores = [
+    { name: 'Amazon', domain: 'amazon.in' },
+    { name: 'Flipkart', domain: 'flipkart.com' },
+    { name: 'Myntra', domain: 'myntra.com' },
+    { name: 'AJIO', domain: 'ajio.com' },
+    { name: 'Nykaa', domain: 'nykaa.com' },
+    { name: 'Croma', domain: 'croma.com' },
+    { name: 'Meesho', domain: 'meesho.com' },
+    { name: 'Tata CLiQ', domain: 'tatacliq.com' }
+  ];
+
   return (
     <div className="w-full flex flex-col min-h-screen">
       
-      {/* 1. Hero Section */}
+      {/* ═══ 1. HERO SECTION ═══════════════════════════════════ */}
       <section 
         className="relative w-full flex flex-col items-center justify-center overflow-hidden px-4 pt-[136px] sm:pt-[178px] lg:pt-[189px] pb-16 sm:pb-24"
         style={{ background: 'var(--hero-bg)' }}
@@ -28,35 +62,85 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
         {/* SVG Grid Overlay */}
         <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'40\' height=\'40\' viewBox=\'0 0 40 40\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 0h40v40H0V0zm20 20h20v20H20V20zM0 20h20v20H0V20zM20 0h20v20H20V0z\' fill=\'%23ffffff\' fill-opacity=\'0.05\' fill-rule=\'evenodd\'/%3E%3C/svg%3E")' }} />
         
+        {/* Floating Ambient Orbs */}
+        <div className="absolute top-20 left-[15%] w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl animate-float pointer-events-none" />
+        <div className="absolute bottom-10 right-[10%] w-80 h-80 bg-teal-400/8 rounded-full blur-3xl animate-float-slow pointer-events-none" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-600/5 rounded-full blur-3xl pointer-events-none animate-breathe" />
+        
         <div className="relative z-10 w-full mx-auto px-2 sm:px-6 text-center flex flex-col items-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-white mb-8">
+          <motion.div 
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-white mb-8"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
             <Sparkles className="w-4 h-4 text-[var(--green-accent-from)]" />
             ✦ Smart Fashion Verification
-          </div>
+          </motion.div>
           
-          <h1 className="text-[40px] leading-[1.1] sm:text-[56px] md:text-[64px] font-extrabold text-white tracking-tight mb-6" style={{ fontFamily: 'var(--font-heading)' }}>
+          <motion.h1 
+            className="text-[40px] leading-[1.1] sm:text-[56px] md:text-[64px] font-extrabold text-white tracking-tight mb-6" 
+            style={{ fontFamily: 'var(--font-heading)' }}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          >
             Verify With Absolute <br/>
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[var(--green-accent-from)] to-[var(--green-accent-to)] italic" style={{ fontFamily: 'var(--font-serif)' }}>Confidence.</span>
-          </h1>
+            <motion.span 
+              className="bg-clip-text text-transparent bg-gradient-to-r from-[var(--green-accent-from)] to-[var(--green-accent-to)] italic" 
+              style={{ fontFamily: 'var(--font-serif)' }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            >
+              Confidence.
+            </motion.span>
+          </motion.h1>
           
-          <p className="text-[16px] sm:text-[20px] text-white/80 max-w-2xl mb-12">
+          <motion.p 
+            className="text-[16px] sm:text-[20px] text-white/80 max-w-2xl mb-12"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
             Paste any fashion product link for instant authenticity check.
-          </p>
+          </motion.p>
           
-          <div className="w-full mb-8 px-4 sm:px-8">
-             <UrlAnalyzer standalone={false} />
-          </div>
+          <motion.div 
+            className="w-full mb-8 px-4 sm:px-8"
+            initial={{ opacity: 0, y: 20, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div className="animate-focus-glow rounded-full">
+              <UrlAnalyzer standalone={false} />
+            </div>
+          </motion.div>
 
-          <div className="flex flex-wrap items-center justify-center gap-2 text-sm text-white/60">
+          <motion.div 
+            className="flex flex-wrap items-center justify-center gap-2 text-sm text-white/60"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.8 }}
+          >
             <span>Try:</span>
-            <button className="px-3 py-1 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">amazon.in/nike-jordan</button>
-            <button className="px-3 py-1 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">flipkart.com/gucci-bag</button>
-            <button className="px-3 py-1 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">myntra.com/yeezy</button>
-          </div>
+            {['amazon.in/nike-jordan', 'flipkart.com/gucci-bag', 'myntra.com/yeezy'].map((chip, i) => (
+              <motion.button 
+                key={chip}
+                className="px-3 py-1 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors cursor-pointer"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.9 + i * 0.08 }}
+                whileHover={{ scale: 1.04 }}
+              >
+                {chip}
+              </motion.button>
+            ))}
+          </motion.div>
         </div>
       </section>
 
-      {/* 2. Tip Bar */}
+      {/* ═══ 2. PRO TIP BAR ═══════════════════════════════════ */}
       <div className="w-full bg-[#0A481C] py-3 text-center px-4">
         <p className="text-white/90 text-sm sm:text-base italic" style={{ fontFamily: 'var(--font-body)' }}>
           <span className="font-semibold text-white not-italic opacity-60 mr-2">Pro Tip:</span> 
@@ -64,20 +148,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
         </p>
       </div>
 
-      {/* 3. Stores Marquee */}
+      {/* ═══ 3. STORES MARQUEE ════════════════════════════════ */}
       <section className="w-full bg-white py-12 border-b border-[var(--border-subtle)] overflow-hidden">
-        <div className="flex w-[200%] sm:w-[150%] lg:w-full animate-marquee items-center justify-around opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-          {[
-            { name: 'Amazon', domain: 'amazon.in' },
-            { name: 'Flipkart', domain: 'flipkart.com' },
-            { name: 'Myntra', domain: 'myntra.com' },
-            { name: 'AJIO', domain: 'ajio.com' },
-            { name: 'Nykaa', domain: 'nykaa.com' },
-            { name: 'Croma', domain: 'croma.com' },
-            { name: 'Meesho', domain: 'meesho.com' },
-            { name: 'Tata CLiQ', domain: 'tatacliq.com' }
-          ].map((store, i) => (
-            <div key={i} className="flex items-center gap-2 font-bold text-xl text-slate-800">
+        <div className="animate-marquee flex items-center gap-16 w-max opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+          {/* Duplicate list for seamless loop */}
+          {[...stores, ...stores].map((store, i) => (
+            <div key={`${store.name}-${i}`} className="flex items-center gap-2.5 font-bold text-xl text-slate-800 shrink-0">
                <img src={`https://icon.horse/icon/${store.domain}`} alt={store.name} className="w-8 h-8 rounded-full shadow-sm border border-gray-100 object-contain p-0.5 bg-white" />
                {store.name}
             </div>
@@ -85,8 +161,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
         </div>
       </section>
 
-      {/* 4. How It Works */}
-      <section className="w-full bg-[var(--page-light)] py-20 sm:py-32 px-4 sm:px-6 lg:px-8" id="how-it-works">
+      {/* ═══ 4. HOW IT WORKS ═══════════════════════════════════ */}
+      <section className="w-full bg-[var(--page-light)] py-20 sm:py-32 px-4 sm:px-6 lg:px-8" id="how-it-works" ref={howItWorks.ref}>
         <div className="max-w-7xl mx-auto space-y-16">
           <div className="text-center">
             <h2 className="text-[32px] sm:text-[42px] font-bold text-[var(--text-primary)]" style={{ fontFamily: 'var(--font-heading)' }}>
@@ -97,28 +173,37 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+            {/* Connecting line (desktop only) */}
+            <div className="hidden lg:block absolute top-16 left-[12%] right-[12%] h-px border-t-2 border-dashed border-gray-200 z-0" />
+            
             {[
               { step: 1, title: 'Find Product', desc: 'Copy the URL of any fashion item from supported stores.', icon: Search },
-              { step: 2, title: 'Paste URL', desc: 'Paste the link into VeriStyle’s AI analyzer bar.', icon: ScanLine },
+              { step: 2, title: 'Paste URL', desc: 'Paste the link into VeriStyle\'s AI analyzer bar.', icon: ScanLine },
               { step: 3, title: 'Data Extraction', desc: 'We fetch images, price, and reviews in real-time.', icon: Brain },
               { step: 4, title: 'Get Verdict', desc: 'Receive an instant authenticity score and breakdown.', icon: CheckCircle2 }
             ].map((item, idx) => (
-              <div key={idx} className="bg-white rounded-3xl p-8 border border-[var(--border-card)] shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                <div className="w-14 h-14 rounded-2xl bg-[var(--green-primary)] flex items-center justify-center text-white mb-6">
+              <motion.div 
+                key={idx} 
+                className="relative z-10 bg-white rounded-3xl p-8 border border-[var(--border-card)] shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-400"
+                initial={{ opacity: 0, y: 28 }}
+                animate={howItWorks.isVisible ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: idx * 0.12, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[var(--green-primary)] to-[var(--green-light)] flex items-center justify-center text-white mb-6 shadow-lg shadow-emerald-900/15">
                   <item.icon className="w-7 h-7" />
                 </div>
                 <div className="text-[13px] font-bold text-[var(--green-primary)] tracking-wider uppercase mb-2">Step 0{item.step}</div>
                 <h3 className="text-xl font-bold text-[var(--text-primary)] mb-3" style={{ fontFamily: 'var(--font-heading)' }}>{item.title}</h3>
                 <p className="text-[var(--text-muted)] text-[15px] leading-relaxed">{item.desc}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 5. Insights Dashboard Bento */}
-      <section className="w-full bg-white py-20 sm:py-32 px-4 sm:px-6 lg:px-8">
+      {/* ═══ 5. BENTO INSIGHTS GRID ═══════════════════════════ */}
+      <section className="w-full bg-white py-20 sm:py-32 px-4 sm:px-6 lg:px-8" ref={bentoSection.ref}>
         <div className="max-w-7xl mx-auto space-y-16">
           <div className="text-center max-w-3xl mx-auto">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-bold text-emerald-800 uppercase tracking-wider mb-4">
@@ -137,9 +222,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             
             {/* Card 1: Review NLP Intelligence */}
-            <div className="lg:col-span-2 bg-gradient-to-br from-purple-50/80 via-indigo-50/40 to-white rounded-3xl p-8 sm:p-10 border border-purple-200/80 shadow-md flex flex-col justify-between hover:shadow-xl transition-all duration-300">
+            <motion.div 
+              className="lg:col-span-2 bg-gradient-to-br from-purple-50/80 via-indigo-50/40 to-white rounded-3xl p-8 sm:p-10 border border-purple-200/80 shadow-md flex flex-col justify-between hover:shadow-xl transition-all duration-400 group"
+              initial={{ opacity: 0, y: 24 }}
+              animate={bentoSection.isVisible ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
               <div>
-                <div className="w-12 h-12 rounded-2xl bg-purple-600 text-white flex items-center justify-center mb-6 shadow-md shadow-purple-600/20">
+                <div className="w-12 h-12 rounded-2xl bg-purple-600 text-white flex items-center justify-center mb-6 shadow-lg shadow-purple-600/20 group-hover:scale-110 transition-transform">
                   <FileText className="w-6 h-6" />
                 </div>
                 <div className="text-xs font-bold uppercase tracking-wider text-purple-700 mb-2">Natural Language Forensics</div>
@@ -154,12 +244,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
                 <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-purple-600" /> Perplexity Entropy Scoring</span>
                 <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-purple-600" /> Sentiment-Rating Coherence</span>
               </div>
-            </div>
+            </motion.div>
             
             {/* Card 2: Trust Score Meter */}
-            <div className="bg-gradient-to-br from-emerald-950 via-[#0C241B] to-teal-950 text-white rounded-3xl p-8 border border-emerald-500/30 shadow-xl flex flex-col items-center justify-center text-center relative overflow-hidden">
-               <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
-               <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center mb-4 text-emerald-400">
+            <motion.div 
+              className="bg-gradient-to-br from-emerald-950 via-[#0C241B] to-teal-950 text-white rounded-3xl p-8 border border-emerald-500/30 shadow-xl flex flex-col items-center justify-center text-center relative overflow-hidden"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={bentoSection.isVisible ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+               <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none animate-breathe" />
+               <div className="absolute bottom-0 left-0 w-24 h-24 bg-teal-400/8 rounded-full blur-2xl pointer-events-none animate-breathe" style={{ animationDelay: '1.5s' }} />
+               <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center mb-4 text-emerald-400 animate-glow-pulse">
                  <Shield className="w-7 h-7" />
                </div>
                <div className="text-xs font-bold uppercase tracking-widest text-emerald-400">Real-Time Metric</div>
@@ -170,11 +266,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
                <div className="px-5 py-2 bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 rounded-full text-xs font-black uppercase tracking-wider">
                  VERIFIED AUTHENTIC GRADE
                </div>
-            </div>
+            </motion.div>
 
             {/* Card 3: Bot & Review Spam Filter */}
-            <div className="bg-gradient-to-br from-amber-50/80 via-orange-50/40 to-white rounded-3xl p-8 border border-amber-200/80 shadow-md hover:shadow-xl transition-all duration-300">
-              <div className="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center mb-4 shadow-md shadow-amber-500/20">
+            <motion.div 
+              className="bg-gradient-to-br from-amber-50/80 via-orange-50/40 to-white rounded-3xl p-8 border border-amber-200/80 shadow-md hover:shadow-xl transition-all duration-400 group"
+              initial={{ opacity: 0, y: 24 }}
+              animate={bentoSection.isVisible ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <div className="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center mb-4 shadow-lg shadow-amber-500/20 group-hover:scale-110 transition-transform">
                 <AlertTriangle className="w-6 h-6" />
               </div>
               <div className="text-xs font-bold uppercase tracking-wider text-amber-700 mb-1">Bot Shield</div>
@@ -188,15 +289,25 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
                    <span>94.8%</span>
                  </div>
                  <div className="w-full bg-amber-200/70 h-2 rounded-full overflow-hidden">
-                   <div className="bg-amber-500 h-full rounded-full w-[94.8%]"></div>
+                   <motion.div 
+                     className="bg-amber-500 h-full rounded-full"
+                     initial={{ width: 0 }}
+                     animate={bentoSection.isVisible ? { width: '94.8%' } : { width: 0 }}
+                     transition={{ duration: 1.2, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                   />
                  </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Card 4: High-Precision Image Inspection */}
-            <div className="lg:col-span-2 bg-gradient-to-br from-blue-50/80 via-sky-50/40 to-white rounded-3xl p-8 sm:p-10 border border-blue-200/80 shadow-md hover:shadow-xl transition-all duration-300">
+            <motion.div 
+              className="lg:col-span-2 bg-gradient-to-br from-blue-50/80 via-sky-50/40 to-white rounded-3xl p-8 sm:p-10 border border-blue-200/80 shadow-md hover:shadow-xl transition-all duration-400 group"
+              initial={{ opacity: 0, y: 24 }}
+              animate={bentoSection.isVisible ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
                <div className="flex items-center gap-3 mb-6">
-                 <div className="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-md shadow-blue-600/20">
+                 <div className="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-600/20 group-hover:scale-110 transition-transform">
                    <ScanLine className="w-6 h-6" />
                  </div>
                  <div>
@@ -208,25 +319,30 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
                </div>
 
                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                 <div className="bg-white p-5 rounded-2xl border border-blue-100 shadow-xs">
+                 <div className="bg-white p-5 rounded-2xl border border-blue-100 shadow-xs hover:shadow-md hover:border-blue-200 transition-all">
                    <p className="text-xs font-bold uppercase tracking-wider text-blue-800">Thread Pitch & Gauge</p>
                    <p className="text-gray-700 text-sm mt-1 leading-relaxed">Cross-referenced against verified manufacturer seam patterns and tension parameters.</p>
                  </div>
-                 <div className="bg-white p-5 rounded-2xl border border-blue-100 shadow-xs">
+                 <div className="bg-white p-5 rounded-2xl border border-blue-100 shadow-xs hover:shadow-md hover:border-blue-200 transition-all">
                    <p className="text-xs font-bold uppercase tracking-wider text-blue-800">Electroplating & Debossing</p>
                    <p className="text-gray-700 text-sm mt-1 leading-relaxed">Reflective gloss and font depth inspected for exact authentic stamping fidelity.</p>
                  </div>
                </div>
-            </div>
+            </motion.div>
 
           </div>
         </div>
       </section>
 
-      {/* 6. FAQ Accordion */}
-      <section className="w-full bg-[var(--page-light)] py-20 sm:py-32 px-4 border-t border-[var(--border-subtle)]" id="faq">
+      {/* ═══ 6. FAQ ACCORDION ════════════════════════════════════ */}
+      <section className="w-full bg-[var(--page-light)] py-20 sm:py-32 px-4 border-t border-[var(--border-subtle)]" id="faq" ref={faqSection.ref}>
         <div className="max-w-3xl mx-auto space-y-12">
-          <div className="text-center flex flex-col items-center">
+          <motion.div 
+            className="text-center flex flex-col items-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={faqSection.isVisible ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
+          >
             <div className="w-12 h-12 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-center justify-center mb-4 text-[var(--green-primary)] shadow-sm">
               <HelpCircle className="w-6 h-6" />
             </div>
@@ -236,24 +352,45 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
             <p className="text-[var(--text-muted)] text-sm sm:text-base mt-2">
               Everything you need to know about our multimodal authenticity verification.
             </p>
-          </div>
+          </motion.div>
 
           <div className="space-y-4">
             {faqs.map((faq, i) => (
-              <div key={i} className="bg-white border border-[var(--border-card)] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+              <motion.div 
+                key={i} 
+                className="bg-white border border-[var(--border-card)] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                initial={{ opacity: 0, y: 16 }}
+                animate={faqSection.isVisible ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+              >
                 <button 
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   className="w-full px-6 py-5 text-left flex justify-between items-center bg-white hover:bg-gray-50/80 transition-colors cursor-pointer"
                 >
                   <span className="font-bold text-[16px] text-[var(--text-primary)] pr-4" style={{ fontFamily: 'var(--font-heading)' }}>{faq.q}</span>
-                  <ChevronDown className={`w-5 h-5 shrink-0 text-[var(--green-primary)] transition-transform duration-300 ${openFaq === i ? 'rotate-180' : ''}`} />
+                  <motion.div
+                    animate={{ rotate: openFaq === i ? 180 : 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <ChevronDown className="w-5 h-5 shrink-0 text-[var(--green-primary)]" />
+                  </motion.div>
                 </button>
-                {openFaq === i && (
-                  <div className="px-6 pb-6 pt-2 text-[var(--text-muted)] text-[15px] leading-relaxed border-t border-gray-100 mx-6 mt-2">
-                    {faq.a}
-                  </div>
-                )}
-              </div>
+                <AnimatePresence initial={false}>
+                  {openFaq === i && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-6 pb-6 pt-2 text-[var(--text-muted)] text-[15px] leading-relaxed border-t border-gray-100 mx-6 mt-2">
+                        {faq.a}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -262,4 +399,3 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
     </div>
   );
 };
-

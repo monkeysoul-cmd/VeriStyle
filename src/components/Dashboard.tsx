@@ -225,6 +225,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                     <img
                       src={imageUrl}
                       alt="Apparel upload preview"
+                      referrerPolicy="no-referrer"
+                      crossOrigin="anonymous"
                       className="max-h-[220px] w-auto object-contain rounded-lg group-hover:scale-[1.02] transition-transform mix-blend-multiply"
                     />
                     <div className="absolute inset-0 bg-white/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 backdrop-blur-[2px]">
@@ -525,6 +527,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                       <img
                         src={analysisResult.imageUrl}
                         alt={analysisResult.itemName}
+                        referrerPolicy="no-referrer"
+                        crossOrigin="anonymous"
                         className="max-h-[400px] w-auto object-contain rounded-lg mix-blend-multiply"
                       />
                       {/* Heatmap Overlay Simulation */}

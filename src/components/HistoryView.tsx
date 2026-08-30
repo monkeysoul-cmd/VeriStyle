@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import { 
   History, 
   Search, 
@@ -39,7 +40,12 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
     <div className="w-full bg-[var(--page-light)] min-h-screen pt-24 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[var(--border-subtle)] pb-6">
+        <motion.div 
+          className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[var(--border-subtle)] pb-6"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--green-primary)]/10 text-[var(--green-primary)] text-xs font-semibold mb-2 border border-[var(--green-primary)]/20">
               <History className="w-3.5 h-3.5" />
@@ -52,18 +58,25 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
           </div>
 
           {onClearHistory && history.length > 0 && (
-            <button
+            <motion.button
               onClick={onClearHistory}
-              className="self-start md:self-auto px-4 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-semibold flex items-center gap-2 transition-colors"
+              className="self-start md:self-auto px-4 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-semibold flex items-center gap-2 transition-colors cursor-pointer"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
             >
               <Trash2 className="w-4 h-4" />
               <span>Clear History</span>
-            </button>
+            </motion.button>
           )}
-        </div>
+        </motion.div>
 
         {/* Controls: Search & Filter */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-12 gap-4"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
           {/* Search */}
           <div className="md:col-span-8 relative">
             <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" />
@@ -90,21 +103,26 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
               <option value="COUNTERFEIT">Likely Counterfeit (&lt;50%)</option>
             </select>
           </div>
-        </div>
+        </motion.div>
 
         {/* History List */}
         {filteredHistory.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredHistory.map(item => {
+            {filteredHistory.map((item, idx) => {
               const isAuthentic = item.trustScore >= 80;
               const isSuspicious = item.trustScore >= 50 && item.trustScore < 80;
               const scoreColor = isAuthentic ? '#059669' : isSuspicious ? '#d97706' : '#dc2626';
+              const accentBorder = isAuthentic ? 'hover:border-l-emerald-500' : isSuspicious ? 'hover:border-l-amber-500' : 'hover:border-l-rose-500';
 
               return (
-                <div
+                <motion.div
                   key={item.id}
                   onClick={() => onSelectResult(item)}
-                  className="group cursor-pointer p-6 rounded-3xl bg-white border border-[var(--border-card)] hover:border-[var(--green-primary)] transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1 flex flex-col justify-between space-y-4"
+                  className={`group cursor-pointer p-6 rounded-3xl bg-white border border-[var(--border-card)] border-l-4 border-l-transparent ${accentBorder} hover:border-[var(--green-primary)]/30 transition-all duration-400 shadow-sm hover:shadow-xl flex flex-col justify-between space-y-4`}
+                  initial={{ opacity: 0, y: 20, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.5, delay: idx * 0.06, ease: [0.16, 1, 0.3, 1] }}
+                  whileHover={{ y: -4 }}
                 >
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
@@ -127,7 +145,9 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
                         <img
                           src={item.imageUrl}
                           alt={item.itemName}
-                          className="max-h-full max-w-full object-contain rounded-xl mix-blend-multiply group-hover:scale-105 transition-transform"
+                          referrerPolicy="no-referrer"
+                          crossOrigin="anonymous"
+                          className="max-h-full max-w-full object-contain rounded-xl mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
                         />
                       </div>
                       <div className="min-w-0 flex-1">
@@ -149,20 +169,24 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
 
                   <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-gray-400 group-hover:text-[var(--green-primary)] transition-colors">
                     <span>Inspect Visual Heatmap</span>
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform text-[var(--green-primary)]" />
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </div>
         ) : (
-          <div className="p-12 rounded-3xl bg-white border border-[var(--border-card)] text-center space-y-3 shadow-sm">
+          <motion.div 
+            className="p-12 rounded-3xl bg-white border border-[var(--border-card)] text-center space-y-3 shadow-sm"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+          >
             <p className="text-lg font-bold text-[var(--text-primary)]" style={{ fontFamily: 'var(--font-heading)' }}>No scans found matching your filter</p>
             <p className="text-xs text-[var(--text-muted)] font-medium">Run an AI inspection on the dashboard to store provenance records in your vault.</p>
-          </div>
+          </motion.div>
         )}
       </div>
     </div>
   );
 };
-
