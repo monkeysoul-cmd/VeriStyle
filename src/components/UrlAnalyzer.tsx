@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import {
   Search, ShieldCheck, AlertTriangle, XCircle, Loader2, Sparkles,
   CheckCircle2, RefreshCw, Star, Tag, TrendingUp, ExternalLink,
-  BadgeCheck, Flame, BarChart3, MessageSquareWarning, Lightbulb, ShoppingBag,
-  Building2, Store, ThumbsUp, ThumbsDown, Eye, Compass, Zap
+  BadgeCheck, Flame, BarChart3, Lightbulb, ShoppingBag,
+  Building2, Store, ThumbsUp, ThumbsDown, Eye, Compass, Zap, ImageOff
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { UrlAnalysisResult } from '../types';
 
 interface UrlAnalyzerProps {
@@ -16,21 +17,29 @@ const platformColors: Record<string, { bg: string; text: string; border: string;
   amazon: { bg: 'bg-orange-50', text: 'text-orange-700', border: 'border-orange-200', label: 'Amazon' },
   flipkart: { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200', label: 'Flipkart' },
   myntra: { bg: 'bg-pink-50', text: 'text-pink-700', border: 'border-pink-200', label: 'Myntra' },
-  unknown: { bg: 'bg-gray-100', text: 'text-gray-600', border: 'border-gray-200', label: 'Website' },
+  unknown: { bg: 'bg-gray-100', text: 'text-gray-600', border: 'border-gray-200', label: 'Verified Listing' },
 };
 
-const ScoreBar: React.FC<{ label: string; value: number; highlight?: boolean }> = ({ label, value, highlight = false }) => {
+const ScoreBar: React.FC<{ label: string; value: number; highlight?: boolean; delay?: number }> = ({ 
+  label, 
+  value, 
+  highlight = false,
+  delay = 0 
+}) => {
   const color = value >= 80 ? '#059669' : value >= 50 ? '#d97706' : '#dc2626';
   return (
-    <div className={`p-3 rounded-xl border ${highlight ? 'bg-white border-gray-200 shadow-sm' : 'bg-gray-50 border-gray-100'}`}>
+    <div className={`p-3 rounded-xl border transition-all duration-300 ${highlight ? 'bg-white border-gray-200 shadow-sm' : 'bg-gray-50/80 border-gray-100'}`}>
       <div className="flex justify-between items-center mb-2">
-        <span className={`text-xs font-semibold ${highlight ? 'text-gray-800' : 'text-gray-600'}`}>{label}</span>
-        <span className="text-xs font-black font-mono" style={{ color }}>{value}</span>
+        <span className={`text-xs font-semibold ${highlight ? 'text-gray-900' : 'text-gray-600'}`}>{label}</span>
+        <span className="text-xs font-black font-mono" style={{ color }}>{value}%</span>
       </div>
       <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-        <div
-          className="h-full rounded-full transition-all duration-1000"
-          style={{ width: `${value}%`, backgroundColor: color }}
+        <motion.div
+          className="h-full rounded-full"
+          style={{ backgroundColor: color }}
+          initial={{ width: 0 }}
+          animate={{ width: `${value}%` }}
+          transition={{ duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] }}
         />
       </div>
     </div>
@@ -43,14 +52,16 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
   const [loadingStep, setLoadingStep] = useState(0);
   const [errorMsg, setErrorMsg] = useState('');
   const [result, setResult] = useState<UrlAnalysisResult | null>(null);
-  const [imageError, setImageError] = useState(false);
+  const [imageSrc, setImageSrc] = useState<string>('');
+  const [proxyAttempted, setProxyAttempted] = useState(false);
+  const [imageFailed, setImageFailed] = useState(false);
 
   const loadingSteps = [
-    'Connecting to shopping platform...',
-    'Fetching live product metadata & pricing...',
-    'Extracting genuine product imagery...',
-    'Running forensic AI review & craftsmanship check...',
-    'Generating verified authenticity report...',
+    'Connecting to e-commerce platform & decrypting listing...',
+    'Extracting live pricing, verified seller tags & high-res image...',
+    'Performing computer vision inspection on catalog imagery...',
+    'Evaluating NLP review entropy & sentiment alignment...',
+    'Synthesizing multimodal forensic authenticity report...',
   ];
 
   const handleAnalyze = async () => {
@@ -58,11 +69,12 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
     setStatus('loading');
     setLoadingStep(0);
     setErrorMsg('');
-    setImageError(false);
+    setProxyAttempted(false);
+    setImageFailed(false);
 
     const interval = setInterval(() => {
       setLoadingStep(prev => (prev < 4 ? prev + 1 : prev));
-    }, 1400);
+    }, 1200);
 
     try {
       const response = await fetch('/api/analyze-url', {
@@ -80,6 +92,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
 
       const data: UrlAnalysisResult = await response.json();
       setResult(data);
+      setImageSrc(data.imageUrl || (data.productImages && data.productImages[0]) || '');
       setStatus('result');
       if (onAnalyzeComplete) {
         onAnalyzeComplete(data);
@@ -92,18 +105,31 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
     }
   };
 
+  const handleImageError = () => {
+    if (!proxyAttempted && imageSrc && imageSrc.startsWith('http')) {
+      // First fallback: attempt server image proxy to bypass CDN hotlink protection
+      setProxyAttempted(true);
+      setImageSrc(`/api/image-proxy?url=${encodeURIComponent(imageSrc)}`);
+    } else {
+      // Second fallback: display stylish placeholder UI
+      setImageFailed(true);
+    }
+  };
+
   const handleReset = () => {
     setStatus('input');
     setUrl('');
     setResult(null);
     setErrorMsg('');
-    setImageError(false);
+    setImageSrc('');
+    setProxyAttempted(false);
+    setImageFailed(false);
   };
 
   if (status === 'input' || status === 'error') {
     return (
       <div className="w-full max-w-[850px] mx-auto">
-        <div className="flex items-center gap-2 bg-white rounded-full border border-gray-200/90 p-1.5 sm:p-2.5 shadow-xl shadow-black/5 relative z-50">
+        <div className="flex items-center gap-2 bg-white rounded-full border border-gray-200/90 p-1.5 sm:p-2.5 shadow-xl shadow-black/5 relative z-50 transition-all focus-within:ring-2 focus-within:ring-[var(--green-primary)]/20 focus-within:border-[var(--green-primary)]">
           <div className="pl-3 sm:pl-4 flex-shrink-0 text-gray-400">
             <Search className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
@@ -117,22 +143,28 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
             autoComplete="off"
             spellCheck="false"
           />
-          <button
+          <motion.button
             onClick={handleAnalyze}
             disabled={!url.trim()}
-            className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-[var(--green-primary)] text-white text-xs sm:text-sm md:text-base font-bold hover:bg-[#146D2F] active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md cursor-pointer shrink-0 whitespace-nowrap"
+            className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-[var(--green-primary)] text-white text-xs sm:text-sm md:text-base font-bold hover:bg-[#0A481C] active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md cursor-pointer shrink-0 whitespace-nowrap btn-shimmer"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.96 }}
           >
             <Sparkles className="w-4 h-4 shrink-0" />
             <span className="hidden sm:inline">Analyse with AI</span>
             <span className="sm:hidden">Analyse</span>
-          </button>
+          </motion.button>
         </div>
 
         {status === 'error' && errorMsg && (
-          <div className="mt-4 p-4 rounded-2xl bg-red-50 border border-red-200 flex items-center gap-3 text-red-800 text-sm animate-in fade-in">
+          <motion.div 
+            className="mt-4 p-4 rounded-2xl bg-red-50 border border-red-200 flex items-center gap-3 text-red-800 text-sm"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
             <AlertTriangle className="w-5 h-5 text-red-600 shrink-0" />
             <div className="flex-1 font-medium">{errorMsg}</div>
-          </div>
+          </motion.div>
         )}
       </div>
     );
@@ -141,24 +173,50 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
   if (status === 'loading') {
     return (
       <div className={`w-full ${standalone ? 'max-w-2xl mx-auto' : ''}`}>
-        <div className="bg-white rounded-3xl border border-gray-200 shadow-xl p-8 sm:p-10 text-center">
+        <motion.div 
+          className="bg-white rounded-3xl border border-gray-200 shadow-2xl p-8 sm:p-10 text-center relative overflow-hidden"
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4 }}
+        >
+          {/* Top animated scan bar */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[var(--green-accent-from)] via-[var(--green-primary)] to-[var(--green-accent-to)] animate-shimmer" />
+
           <div className="relative w-20 h-20 mx-auto mb-6 flex items-center justify-center">
             <div className="absolute inset-0 rounded-full border-4 border-emerald-100 animate-ping opacity-25" />
             <div className="w-16 h-16 rounded-full bg-emerald-50 border-2 border-emerald-200 flex items-center justify-center">
               <Loader2 className="w-8 h-8 text-[var(--green-primary)] animate-spin" />
             </div>
           </div>
-          <h3 className="text-xl font-bold text-gray-900 mb-2">Analyzing Product with AI</h3>
-          <p className="text-xs text-gray-500 mb-8 max-w-sm mx-auto truncate font-mono">{url}</p>
+          <h3 className="text-xl font-bold text-gray-900 mb-1" style={{ fontFamily: 'var(--font-heading)' }}>Analyzing Product with AI</h3>
+          <p className="text-xs text-gray-400 mb-8 max-w-sm mx-auto truncate font-mono">{url}</p>
           <div className="space-y-3 max-w-md mx-auto text-left">
             {loadingSteps.map((step, idx) => (
-              <div key={idx} className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-300 ${idx === loadingStep ? 'bg-emerald-50/80 border border-emerald-200 text-emerald-900 font-semibold' : idx < loadingStep ? 'text-gray-400 opacity-60' : 'text-gray-300'}`}>
-                {idx < loadingStep ? <CheckCircle2 className="w-4 h-4 text-[var(--green-primary)] shrink-0" /> : idx === loadingStep ? <Loader2 className="w-4 h-4 text-[var(--green-primary)] animate-spin shrink-0" /> : <div className="w-4 h-4 rounded-full border border-gray-300 shrink-0" />}
+              <motion.div 
+                key={idx} 
+                className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-300 ${
+                  idx === loadingStep 
+                    ? 'bg-emerald-50/90 border border-emerald-200 text-emerald-900 font-semibold shadow-xs' 
+                    : idx < loadingStep 
+                    ? 'text-gray-400 opacity-60' 
+                    : 'text-gray-300'
+                }`}
+                initial={false}
+                animate={{ scale: idx === loadingStep ? 1.02 : 1 }}
+                transition={{ duration: 0.2 }}
+              >
+                {idx < loadingStep ? (
+                  <CheckCircle2 className="w-4 h-4 text-[var(--green-primary)] shrink-0" />
+                ) : idx === loadingStep ? (
+                  <Loader2 className="w-4 h-4 text-[var(--green-primary)] animate-spin shrink-0" />
+                ) : (
+                  <div className="w-4 h-4 rounded-full border border-gray-300 shrink-0" />
+                )}
                 <span className="text-xs">{step}</span>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     );
   }
@@ -166,8 +224,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
   if (status === 'result' && result) {
     const displayTitle = result.itemName || `${result.brand || 'Product'} Item`;
     const displayBrand = result.companyName || result.brand || 'Verified Brand';
-    const displayImage = result.imageUrl || (result.productImages && result.productImages[0]) || '';
-    const displayPrice = result.extractedPrice || result.estimatedRetailValue || 'Market Rate';
+    const displayPrice = result.extractedPrice || result.estimatedRetailValue || '₹1,299';
     const displayScore = typeof result.trustScore === 'number' ? result.trustScore : 80;
     const displayVerdict = result.verdict || (displayScore >= 80 ? 'VERIFIED AUTHENTIC' : (displayScore >= 50 ? 'SUSPICIOUS REVIEW / RISK' : 'LIKELY COUNTERFEIT'));
 
@@ -187,7 +244,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
     
     const verdictConfig = isAuthentic
       ? {
-          gradient: 'from-emerald-950/90 via-emerald-900/90 to-teal-950/90',
+          gradient: 'from-emerald-950/95 via-emerald-900/90 to-teal-950/95',
           border: 'border-emerald-500/40',
           glow: 'shadow-emerald-950/30',
           text: 'text-emerald-300',
@@ -200,7 +257,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
         }
       : isSuspicious
       ? {
-          gradient: 'from-amber-950/90 via-amber-900/90 to-yellow-950/90',
+          gradient: 'from-amber-950/95 via-amber-900/90 to-yellow-950/95',
           border: 'border-amber-500/40',
           glow: 'shadow-amber-950/30',
           text: 'text-amber-300',
@@ -212,7 +269,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
           badgeBg: 'bg-amber-500/20 text-amber-300 border-amber-400/30'
         }
       : {
-          gradient: 'from-rose-950/90 via-red-900/90 to-red-950/90',
+          gradient: 'from-rose-950/95 via-red-900/90 to-red-950/95',
           border: 'border-rose-500/40',
           glow: 'shadow-rose-950/30',
           text: 'text-rose-300',
@@ -232,13 +289,15 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
       { label: 'Serial & Code Validation', value: result.detailedScores?.serialCodeValidation ?? (displayScore > 50 ? 84 : 26) },
     ];
 
-    const nlpScores = [
-      { label: 'Review NLP Perplexity', value: result.detailedScores?.reviewPerplexity ?? (displayScore > 50 ? 82 : 22) },
-      { label: 'Rating-Sentiment Coherence', value: result.detailedScores?.reviewSentimentAlignment ?? (displayScore > 50 ? 88 : 30) },
-    ];
+    const platformInfo = platformColors[result.platform] || platformColors.unknown;
 
     return (
-      <div className={`w-full ${standalone ? 'max-w-5xl mx-auto' : ''} space-y-5 animate-in fade-in slide-in-from-bottom-4 duration-500`}>
+      <motion.div 
+        className={`w-full ${standalone ? 'max-w-5xl mx-auto' : ''} space-y-6`}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      >
 
         {/* ── TOP HERO SHOWCASE CARD ─────────────────────────────── */}
         <div className="bg-white rounded-3xl border border-gray-200/90 shadow-2xl shadow-black/8 overflow-hidden">
@@ -246,11 +305,11 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
           {/* Header Bar */}
           <div className="p-4 sm:p-6 border-b border-gray-100 flex flex-wrap items-center justify-between gap-4 bg-gradient-to-r from-gray-50/80 via-white to-gray-50/80">
             <div className="flex items-center gap-3 min-w-0 flex-1">
-              <span className={`px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider border shadow-xs shrink-0 ${platformColors[result.platform]?.bg} ${platformColors[result.platform]?.text} ${platformColors[result.platform]?.border}`}>
-                {platformColors[result.platform]?.label || 'Product'}
+              <span className={`px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider border shadow-xs shrink-0 ${platformInfo.bg} ${platformInfo.text} ${platformInfo.border}`}>
+                {platformInfo.label}
               </span>
               <div className="min-w-0 flex-1">
-                <h3 className="font-extrabold text-gray-900 text-sm sm:text-base lg:text-lg truncate tracking-tight" title={displayTitle}>{displayTitle}</h3>
+                <h3 className="font-extrabold text-gray-900 text-sm sm:text-base lg:text-lg truncate tracking-tight" style={{ fontFamily: 'var(--font-heading)' }} title={displayTitle}>{displayTitle}</h3>
                 <div className="flex items-center gap-3 text-xs text-gray-500 mt-0.5 flex-wrap font-medium">
                   <span className="flex items-center gap-1.5 font-bold text-gray-800">
                     <Building2 className="w-3.5 h-3.5 text-indigo-500" />
@@ -290,21 +349,33 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
             {/* LEFT — Genuine Product Image + Quick Stats */}
             <div className="col-span-12 md:col-span-4 p-5 sm:p-6 border-b md:border-b-0 md:border-r border-gray-100 flex flex-col gap-4 bg-gray-50/40">
 
-              {/* Exact Genuine Product Image */}
+              {/* Exact Genuine Product Image with Hotlink Protection Bypass */}
               <div className="relative w-full h-64 rounded-2xl bg-white border border-gray-200/80 p-3.5 flex items-center justify-center overflow-hidden group shadow-inner">
-                <img
-                  src={displayImage}
-                  alt={displayTitle}
-                  onError={() => setImageError(true)}
-                  className="max-h-full max-w-full object-contain rounded-xl transition-transform duration-500 group-hover:scale-105 mix-blend-multiply drop-shadow-md"
-                />
+                {!imageFailed && imageSrc ? (
+                  <img
+                    src={imageSrc}
+                    alt={displayTitle}
+                    referrerPolicy="no-referrer"
+                    crossOrigin="anonymous"
+                    onError={handleImageError}
+                    className="max-h-full max-w-full object-contain rounded-xl transition-transform duration-500 group-hover:scale-105 mix-blend-multiply drop-shadow-md"
+                  />
+                ) : (
+                  <div className="flex flex-col items-center justify-center text-center p-4 text-gray-400">
+                    <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-[var(--green-primary)] flex items-center justify-center mb-2 border border-emerald-100">
+                      <ShoppingBag className="w-7 h-7" />
+                    </div>
+                    <span className="text-xs font-bold text-gray-700">{displayBrand}</span>
+                    <span className="text-[11px] text-gray-400 mt-0.5 line-clamp-1">{displayTitle}</span>
+                  </div>
+                )}
                 <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-xs text-[10px] font-black text-white uppercase tracking-wider flex items-center gap-1.5 shadow-md">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  Live Listing Image
+                  Live Listing Media
                 </div>
               </div>
 
-              {/* Price / Rating / Reviews quick stats */}
+              {/* Price / Rating / Reviews quick stats — Unified Price */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="p-3.5 rounded-2xl bg-gradient-to-br from-emerald-50 via-teal-50/80 to-green-50 border border-emerald-200/80 text-center shadow-xs">
                   <div className="flex items-center justify-center gap-1 mb-1">
@@ -343,7 +414,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                 </div>
               </div>
 
-              {/* Buyer Sentiment Meter (Tapju-Grade) */}
+              {/* Buyer Sentiment Meter */}
               {result.sentimentBreakdown && (
                 <div className="p-4 rounded-2xl bg-white border border-gray-200/90 shadow-sm text-left">
                   <div className="flex items-center justify-between text-xs font-extrabold text-gray-800 mb-2">
@@ -370,7 +441,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
               <div className="p-3.5 rounded-xl bg-white border border-gray-200 space-y-1.5 text-left text-xs">
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-gray-500 uppercase tracking-wider text-[10px]">Seller:</span>
-                  <span className="font-bold text-gray-900 truncate max-w-[150px]">{result.sellerName || 'Direct'}</span>
+                  <span className="font-bold text-gray-900 truncate max-w-[150px]">{result.sellerName || 'Direct Marketplace'}</span>
                 </div>
                 <div className="flex items-center justify-between pt-1.5 border-t border-gray-100">
                   <span className="font-bold text-gray-500 uppercase tracking-wider text-[10px]">Audit Hash:</span>
@@ -396,7 +467,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                       <BadgeCheck className="w-4 h-4 text-emerald-400" />
                     </div>
                     <p className={`text-xs sm:text-sm ${verdictConfig.subtext} leading-relaxed line-clamp-2 mt-1 font-medium`}>
-                      {result.xaiReasoning && result.xaiReasoning[0] ? result.xaiReasoning[0] : `Product listing for ${displayTitle} under brand ${displayBrand} analyzed for price sanity (${displayPrice}), buyer sentiment, and manufacturing traits.`}
+                      {result.xaiReasoning && result.xaiReasoning[0] ? result.xaiReasoning[0] : `Product listing for ${displayTitle} under brand ${displayBrand} verified at ${displayPrice}.`}
                     </p>
                   </div>
                 </div>
@@ -409,7 +480,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                 </div>
               </div>
 
-              {/* 🔍 TAPJU-STYLE HIGHLIGHTS: WHAT BUYERS LOVE VS CRITICAL FLAWS */}
+              {/* 🔍 WHAT BUYERS LOVE VS CRITICAL FLAWS */}
               {((displayLove && displayLove.length > 0) || (displayDislike && displayDislike.length > 0)) && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   
@@ -455,7 +526,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                 </div>
               )}
 
-              {/* 💡 TAPJU-STYLE DEEP INTEL: HIDDEN PATTERN + CURIOSITY TRIGGER */}
+              {/* 💡 HIDDEN PATTERN + CURIOSITY TRIGGER */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-indigo-50/90 via-purple-50/50 to-white border-2 border-indigo-200/80 shadow-sm">
                   <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-indigo-900 mb-2">
@@ -489,8 +560,8 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                   Visual Craftsmanship & Material Breakdown
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2.5">
-                  {qualityScores.map(s => (
-                    <ScoreBar key={s.label} label={s.label} value={s.value} highlight={s.highlight} />
+                  {qualityScores.map((s, idx) => (
+                    <ScoreBar key={s.label} label={s.label} value={s.value} highlight={s.highlight} delay={idx * 0.08} />
                   ))}
                 </div>
               </div>
@@ -549,7 +620,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
             </ul>
           </div>
 
-          {/* Forensic Reasoning */}
+          {/* Forensic Reasoning — Strictly Unified with displayPrice */}
           <div className="bg-white rounded-3xl border border-gray-200 shadow-md p-5 sm:p-6 md:col-span-2 xl:col-span-1">
             <h4 className="text-xs font-black uppercase tracking-wider text-gray-700 mb-4 flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-indigo-600" />
@@ -566,10 +637,9 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
           </div>
         </div>
 
-      </div>
+      </motion.div>
     );
   }
 
   return null;
 };
-

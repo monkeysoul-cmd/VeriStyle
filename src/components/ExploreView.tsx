@@ -10,6 +10,7 @@ import {
   Award,
   ChevronDown,
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { ProductItem, ProductCategory } from '../types';
 import { PRODUCTS } from '../data/products';
 import { ProductDetailView } from './ProductDetailView';
@@ -79,24 +80,34 @@ export const ExploreView: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
 
         {/* ── Header ─────────────────────────────────────────────── */}
-        <div className="text-center space-y-4">
+        <motion.div 
+          className="text-center space-y-4"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
           <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--green-primary)]/10 text-[var(--green-primary)] text-xs font-bold uppercase tracking-wider">
             <Sparkles className="w-3.5 h-3.5" />
             SMART PRODUCT DISCOVERY
           </div>
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-[var(--text-primary)]" style={{ fontFamily: 'var(--font-heading)' }}>
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-[var(--text-primary)] tracking-tight" style={{ fontFamily: 'var(--font-heading)' }}>
             Explore{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--green-primary)] to-[var(--green-accent-from)] italic" style={{ fontFamily: 'var(--font-serif)' }}>
               All Products.
             </span>
           </h1>
-          <p className="text-[var(--text-muted)] max-w-xl mx-auto text-sm sm:text-base">
-            Smart SMART PRODUCT DISCOVERY with real-time authenticity insights and truth analysis.
+          <p className="text-[var(--text-muted)] max-w-xl mx-auto text-sm sm:text-base font-medium">
+            Smart fashion discovery with real-time authenticity insights and craftsmanship metrics.
           </p>
-        </div>
+        </motion.div>
 
         {/* ── Search ─────────────────────────────────────────────── */}
-        <div className="flex gap-3 max-w-2xl mx-auto">
+        <motion.div 
+          className="flex gap-3 max-w-2xl mx-auto"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
           <div className="relative flex-1">
             <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input
@@ -104,17 +115,22 @@ export const ExploreView: React.FC = () => {
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search brands, categories, or products..."
-              className="w-full pl-12 pr-4 py-4 rounded-full bg-white border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[var(--green-primary)] focus:ring-1 focus:ring-[var(--green-primary)] transition-all text-sm shadow-sm"
+              className="w-full pl-12 pr-4 py-4 rounded-full bg-white border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[var(--green-primary)] focus:ring-2 focus:ring-[var(--green-primary)]/10 transition-all text-sm shadow-sm font-medium"
             />
           </div>
-          <button className="flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-[var(--text-primary)] hover:bg-gray-800 text-white font-bold text-sm shadow-lg transition-all active:scale-95 shrink-0">
+          <button className="flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-[var(--text-primary)] hover:bg-gray-800 text-white font-bold text-sm shadow-lg transition-all active:scale-95 shrink-0 cursor-pointer btn-shimmer">
             <Sparkles className="w-4 h-4" />
             <span className="hidden sm:inline">Search</span>
           </button>
-        </div>
+        </motion.div>
 
         {/* ── Filters Row ────────────────────────────────────────── */}
-        <div className="flex flex-col sm:flex-row items-center gap-4 bg-white p-4 rounded-2xl border border-[var(--border-subtle)] shadow-sm">
+        <motion.div 
+          className="flex flex-col sm:flex-row items-center gap-4 bg-white p-4 rounded-2xl border border-[var(--border-subtle)] shadow-sm"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
           <div className="flex items-center gap-2 text-gray-500 text-sm font-bold w-full sm:w-auto">
             <SlidersHorizontal className="w-4 h-4" />
             Filters:
@@ -147,7 +163,7 @@ export const ExploreView: React.FC = () => {
               <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* ── Quick Tag Filters ──────────────────────────────────── */}
         <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
@@ -158,23 +174,30 @@ export const ExploreView: React.FC = () => {
             { label: 'High Trust Score', icon: <Shield className="w-3.5 h-3.5" /> },
             { label: 'Best Performance', icon: <Zap className="w-3.5 h-3.5" /> },
           ] as const).map(({ label, icon }) => (
-            <button
+            <motion.button
               key={label}
               onClick={() => setActiveTag(activeTag === label ? null : label)}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-[13px] font-bold border transition-all ${
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-[13px] font-bold border transition-all cursor-pointer ${
                 activeTag === label
                   ? 'bg-[var(--green-primary)] text-white border-[var(--green-primary)] shadow-md shadow-[var(--green-primary)]/20'
                   : 'bg-white text-gray-600 border-gray-200 hover:border-[var(--green-primary)] hover:text-[var(--green-primary)]'
               }`}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
             >
               {icon} {label}
-            </button>
+            </motion.button>
           ))}
         </div>
 
         {/* ── Product Grid ───────────────────────────────────────── */}
         {filtered.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pt-6">
+          <motion.div 
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pt-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4 }}
+          >
             {filtered.map(product => (
               <ProductCard
                 key={product.id}
@@ -182,9 +205,13 @@ export const ExploreView: React.FC = () => {
                 onView={() => setSelectedProduct(product)}
               />
             ))}
-          </div>
+          </motion.div>
         ) : (
-          <div className="text-center py-20 space-y-4 bg-white rounded-3xl border border-gray-200 mt-6 shadow-sm">
+          <motion.div 
+            className="text-center py-20 space-y-4 bg-white rounded-3xl border border-gray-200 mt-6 shadow-sm"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+          >
             <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto text-gray-400 mb-2">
                <Search className="w-8 h-8" />
             </div>
@@ -192,11 +219,11 @@ export const ExploreView: React.FC = () => {
             <p className="text-[var(--text-muted)] text-sm max-w-sm mx-auto">Try adjusting your filters or search query to find what you're looking for.</p>
             <button
               onClick={() => { setSearch(''); setSelectedCategory('All'); setActiveTag(null); }}
-              className="mt-4 px-6 py-2.5 rounded-full bg-[var(--green-primary)]/10 text-[var(--green-primary)] text-sm font-bold hover:bg-[var(--green-primary)]/20 transition-colors"
+              className="mt-4 px-6 py-2.5 rounded-full bg-[var(--green-primary)]/10 text-[var(--green-primary)] text-sm font-bold hover:bg-[var(--green-primary)]/20 transition-colors cursor-pointer"
             >
               Clear all filters
             </button>
-          </div>
+          </motion.div>
         )}
       </div>
     </div>
