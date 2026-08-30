@@ -229,6 +229,10 @@ Return ONLY JSON:
     } catch (_) {}
   }
 
+  const priceInstruction = finalPrice
+    ? `CRITICAL: The verified live listed price is exactly ${finalPrice}. You MUST use this exact price string "${finalPrice}" as the estimatedRetailValue. Do NOT invent, estimate, or modify the price. When referencing the price in xaiReasoning, use exactly "${finalPrice}".`
+    : `The price could not be scraped. Estimate a fair retail market price for this product and use it as estimatedRetailValue.`;
+
   const prompt = `You are VeriStyle, the advanced universal forensic AI product authenticator.
 Perform a genuine, custom, forensic authenticity evaluation of this unique product:
 
@@ -239,6 +243,8 @@ Live Listed Price: ${finalPrice || "Not detected - estimate fair retail market p
 Rating: ${scraped.rating} / 5
 Scraped Excerpt: ${scraped.rawSnippet || "No additional text"}
 
+${priceInstruction}
+
 UNIVERSAL FORENSIC EVALUATION CRITERIA:
 1. DYNAMIC BRAND & CATEGORY: Detect the exact brand name and product category dynamically from the product name/URL.
 2. PRICE SANITY & COUNTERFEIT RISK:
@@ -246,6 +252,7 @@ UNIVERSAL FORENSIC EVALUATION CRITERIA:
    - If it is a generic / white-label budget item (e.g. ₹200-₹500 unbranded apparel, budget sandals), classify it as "Budget Fast-Fashion Tier" with a score of 50-75.
    - If the price matches genuine retail/authorized market distribution, score it 80-98 (VERIFIED AUTHENTIC).
 3. SPECIFIC INSIGHTS: Generate 100% custom, specific insights for THIS exact product name and category.
+4. PRICE CONSISTENCY: The estimatedRetailValue in your response MUST exactly match the Live Listed Price provided above (if one was provided). Do NOT generate a different price.
 
 Return ONLY valid JSON matching this schema:
 {
@@ -319,7 +326,29 @@ Return ONLY valid JSON matching this schema:
       ? "SUSPICIOUS REVIEW / RISK"
       : "LIKELY COUNTERFEIT";
 
+  // PRICE CONSISTENCY: Always prefer the real scraped price over AI-generated estimates
   const resolvedPrice = finalPrice || parsed?.estimatedRetailValue || "Fair Market Value";
+
+  // Fix price in AI reasoning text: replace any AI-hallucinated price with the real scraped price
+  let fixedXaiReasoning = parsed?.xaiReasoning || [
+    `Forensic analysis of ${parsed?.itemName || finalTitle} completed. Price sanity calibrated at ${resolvedPrice}.`,
+  ];
+  if (finalPrice && Array.isArray(fixedXaiReasoning)) {
+    fixedXaiReasoning = fixedXaiReasoning.map((reason: string) => {
+      // Replace any currency+number pattern that doesn't match the real price
+      const pricePatterns = reason.match(/(?:₹|Rs\.?|INR|\$|€|£|¥)\s*[\d,]+(?:\.\d{1,2})?/gi);
+      if (pricePatterns) {
+        for (const found of pricePatterns) {
+          const normalizedFound = found.replace(/\s+/g, '').replace(/,/g, '');
+          const normalizedReal = finalPrice.replace(/\s+/g, '').replace(/,/g, '');
+          if (normalizedFound !== normalizedReal) {
+            reason = reason.replace(found, finalPrice);
+          }
+        }
+      }
+      return reason;
+    });
+  }
 
   return {
     id: `url-scan-${Date.now().toString(36)}`,
@@ -344,9 +373,7 @@ Return ONLY valid JSON matching this schema:
     heatmapPoints: [],
     reviewFlags: [],
     fakeReviewProbability: parsed?.fakeReviewProbability ?? (score >= 80 ? 12 : 45),
-    xaiReasoning: parsed?.xaiReasoning || [
-      `Forensic analysis of ${parsed?.itemName || finalTitle} completed. Price sanity calibrated at ${resolvedPrice}.`,
-    ],
+    xaiReasoning: fixedXaiReasoning,
     recommendations: parsed?.recommendations || [
       "Verify product packaging and invoice upon delivery.",
     ],
