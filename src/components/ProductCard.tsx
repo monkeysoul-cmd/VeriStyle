@@ -30,7 +30,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onView }) => 
           src={product.imageUrl}
           alt={product.name}
           referrerPolicy="no-referrer"
-          crossOrigin="anonymous"
           className="w-full h-full object-contain group-hover:scale-110 group-hover:brightness-105 transition-all duration-500 mix-blend-multiply"
         />
         

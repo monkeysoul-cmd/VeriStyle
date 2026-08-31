@@ -146,7 +146,6 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
                           src={item.imageUrl}
                           alt={item.itemName}
                           referrerPolicy="no-referrer"
-                          crossOrigin="anonymous"
                           className="max-h-full max-w-full object-contain rounded-xl mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
                         />
                       </div>

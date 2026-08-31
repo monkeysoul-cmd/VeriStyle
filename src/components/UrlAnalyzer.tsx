@@ -356,7 +356,6 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                     src={imageSrc}
                     alt={displayTitle}
                     referrerPolicy="no-referrer"
-                    crossOrigin="anonymous"
                     onError={handleImageError}
                     className="max-h-full max-w-full object-contain rounded-xl transition-transform duration-500 group-hover:scale-105 mix-blend-multiply drop-shadow-md"
                   />

@@ -163,7 +163,6 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
                 src={product.imageUrl}
                 alt={product.name}
                 referrerPolicy="no-referrer"
-                crossOrigin="anonymous"
                 className="max-w-full max-h-full object-contain mix-blend-multiply drop-shadow-xl transition-transform duration-500 hover:scale-105"
               />
               <span className={`absolute top-6 left-6 px-3 py-1 rounded-full text-xs font-bold border ${badgeStyles[product.badge] || 'bg-gray-100 text-gray-600 border-gray-200'}`}>
