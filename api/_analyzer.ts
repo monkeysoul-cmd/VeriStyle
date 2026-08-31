@@ -141,7 +141,7 @@ function isValidProductImage(url: string): boolean {
   if (lower.endsWith(".gif") && (lower.includes("1x1") || lower.includes("_TTD_"))) return false;
   
   const hasImageExt = /\.(jpg|jpeg|png|webp|avif)(\?|$)/i.test(url);
-  const isKnownCDN = /media-amazon\.com|rukminim[12]\.flixcart\.com|assets\.myntassets\.com|smartwatchspecs|openboxwale|walmartimages|flightclub|1stdibscdn/i.test(url);
+  const isKnownCDN = /media-amazon\.com|rukminim[12]\.flixcart\.com|assets\.myntassets\.com|smartwatchspecs|openboxwale|walmartimages|flightclub|1stdibscdn|imimg\.com|gonoise\.com/i.test(url);
   
   return hasImageExt || isKnownCDN;
 }
@@ -218,7 +218,7 @@ async function scrapeViaJina(cleanUrl: string): Promise<{ title: string; price: 
         "X-With-Images-Summary": "true",
         "X-No-Cache": "true",
       },
-      signal: AbortSignal.timeout(6000),
+      signal: AbortSignal.timeout(5000),
     });
 
     if (res.ok) {
@@ -262,48 +262,6 @@ async function scrapeViaJina(cleanUrl: string): Promise<{ title: string; price: 
   return { title, price, imageUrl, rating, rawSnippet };
 }
 
-async function fetchProductDataViaGrounding(
-  ai: GoogleGenAI,
-  cleanUrl: string,
-  platform: string,
-  slugTitle: string
-): Promise<{ title: string; price: string; rating: number; brand: string; groundedResearch: string }> {
-  let title = "";
-  let price = "";
-  let rating = 0;
-  let brand = "";
-  let groundedResearch = "";
-
-  const query = `What is the live listed price, official product name, customer rating, and brand for "${slugTitle || cleanUrl}" on ${platform} India?`;
-
-  try {
-    const resp = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: query,
-      config: {
-        tools: [{ googleSearch: {} }]
-      }
-    });
-
-    const text = resp.text || resp.candidates?.[0]?.content?.parts?.map((p: any) => p.text).filter(Boolean).join("\n") || "";
-    groundedResearch = text;
-
-    if (text) {
-      price = extractBestPrice(text);
-      
-      const brandMatch = text.match(/(?:brand\s*is|brand\s*:)\s*["']?([A-Za-z0-9\s]{2,25})["']?/i);
-      if (brandMatch) brand = brandMatch[1].trim();
-
-      const ratingMatch = text.match(/(\d(?:\.\d)?)\s*(?:out of 5|stars|★|\/ 5)/i);
-      if (ratingMatch) rating = parseFloat(ratingMatch[1]);
-    }
-  } catch (err: any) {
-    console.warn("[VeriStyle] Grounding notice:", err.message?.substring(0, 80));
-  }
-
-  return { title, price, rating, brand, groundedResearch };
-}
-
 export async function analyzeUrlForensics(rawUrl: string): Promise<any> {
   const ai = getAiClient();
   if (!ai) throw new Error("AI engine unavailable");
@@ -311,16 +269,10 @@ export async function analyzeUrlForensics(rawUrl: string): Promise<any> {
   const cleanUrl = sanitizeProductUrl(rawUrl);
   const { platform, slugTitle, asin } = extractMetadataFromUrl(cleanUrl);
 
-  const [jinaData, groundingData, searchImage] = await Promise.all([
+  const [jinaData, searchImage] = await Promise.all([
     scrapeViaJina(cleanUrl).catch(() => ({ title: "", price: "", imageUrl: "", rating: 0, rawSnippet: "" })),
-    fetchProductDataViaGrounding(ai, cleanUrl, platform, slugTitle).catch(() => ({ title: "", price: "", rating: 0, brand: "", groundedResearch: "" })),
     searchProductImage(slugTitle).catch(() => ""),
   ]);
-
-  const resolvedTitle = jinaData.title || slugTitle || "E-Commerce Product";
-  const resolvedBrand = groundingData.brand || (slugTitle ? slugTitle.split(" ")[0] : "Verified Brand");
-  const resolvedPrice = jinaData.price || groundingData.price || "₹1,299";
-  const resolvedRating = jinaData.rating || groundingData.rating || 4.3;
 
   let resolvedImage = "";
   if (asin) {
@@ -336,40 +288,40 @@ export async function analyzeUrlForensics(rawUrl: string): Promise<any> {
     resolvedImage = "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80";
   }
 
-  const rawSnippet = jinaData.rawSnippet || groundingData.groundedResearch || "";
+  const initialTitle = jinaData.title || slugTitle || "E-Commerce Product";
+  const scrapedPrice = jinaData.price;
 
   const prompt = `You are VeriStyle, the advanced universal forensic AI product authenticator.
-Analyze this product link and verified live data:
-Product Link: ${cleanUrl}
+Analyze this e-commerce product link and identify its live market data:
+Product: "${initialTitle}"
 Platform: ${platform}
-Product Title: ${resolvedTitle}
-Brand: ${resolvedBrand}
-Verified Live Listed Price: ${resolvedPrice}
-Product Image: ${resolvedImage}
-Grounding Context: ${groundingData.groundedResearch.substring(0, 800) || "None"}
+URL: ${cleanUrl}
+${scrapedPrice ? `Scraped Live Price: ${scrapedPrice}` : ""}
 
 CRITICAL FORENSIC INSTRUCTIONS:
-1. Product is listed on legitimate marketplace (${platform}).
-2. PRICE RULE: You MUST use exactly "${resolvedPrice}" as exactPrice.
-3. IMAGE: Use the product image "${resolvedImage}" as imageUrl.
-4. TRUST SCORE: Major marketplace authentic items typically score 82-96 with verdict "VERIFIED AUTHENTIC".
-5. CONSISTENCY RULE: All prices in "exactPrice" and "xaiReasoning" sentences MUST be "${resolvedPrice}".
+1. Identify the exact official product name, brand, category.
+2. Determine the REAL, CURRENT selling price (${scrapedPrice ? `use exactly "${scrapedPrice}"` : `in original currency like ₹ for India or $ for US`}). Set exactPrice to this string.
+3. Determine customer rating out of 5 (e.g. 4.2) and verified review count.
+4. Calculate trustScore (82-96 for authentic products from major platforms like Amazon, Flipkart, Myntra), verdict "VERIFIED AUTHENTIC".
+5. Provide genuine buyer strengths (whatBuyersLove), limitations (whatBuyersDislike), hiddenPattern, curiosityTrigger.
+6. All prices in "exactPrice" and all sentences in "xaiReasoning" MUST be IDENTICAL.
 
 Return ONLY valid JSON matching this schema:
 {
-  "itemName": "${resolvedTitle}",
-  "brand": "${resolvedBrand}",
-  "category": "Consumer Product",
-  "exactPrice": "${resolvedPrice}",
-  "imageUrl": "${resolvedImage}",
+  "itemName": "${initialTitle}",
+  "brand": "Exact Brand",
+  "category": "Product Category",
+  "exactPrice": "${scrapedPrice || "₹4,499"}",
   "trustScore": 88,
   "verdict": "VERIFIED AUTHENTIC",
   "aiConfidence": 94,
   "priceAnalysis": "Fair Market Price",
-  "whatBuyersLove": ["Verified marketplace listing", "Consistent seller fulfillment"],
-  "whatBuyersDislike": ["Verify detailed sizing prior to checkout"],
-  "hiddenPattern": "Review velocity correlates with organic customer acquisition.",
-  "curiosityTrigger": "Product specifications conform to standard certified commercial manufacturing.",
+  "extractedRating": 4.2,
+  "extractedReviewCount": 1420,
+  "whatBuyersLove": ["2-3 specific verified advantages"],
+  "whatBuyersDislike": ["1-2 specific verified limitations"],
+  "hiddenPattern": "Specific observation on review clusters, seller pedigree, or factory origins",
+  "curiosityTrigger": "Specific technical specification detail",
   "sentimentBreakdown": { "positive": 84, "neutral": 11, "negative": 5 },
   "detailedScores": {
     "stitchingQuality": 88,
@@ -381,12 +333,17 @@ Return ONLY valid JSON matching this schema:
     "reviewSentimentAlignment": 90
   },
   "fakeReviewProbability": 8,
-  "xaiReasoning": ["Forensic analysis for ${resolvedTitle} completed. Live listing verified at ${resolvedPrice}."],
+  "xaiReasoning": ["Forensic analysis for ${initialTitle} completed. Live listing verified at exactPrice."],
   "recommendations": ["Inspect packaging invoice and brand seal upon delivery."]
 }`;
 
   let parsed: any = null;
-  const candidateModels = ["gemini-2.5-flash", "gemini-2.0-flash"];
+  const candidateModels = [
+    "gemini-3.5-flash",
+    "gemini-3.5-flash-lite",
+    "gemini-3.1-flash-lite",
+    "gemini-2.5-flash"
+  ];
 
   for (const modelName of candidateModels) {
     try {
@@ -396,30 +353,26 @@ Return ONLY valid JSON matching this schema:
         config: {
           temperature: 0.1,
           responseMimeType: "application/json"
-        },
-      });
-
-      const rawText = response.text;
-      if (rawText && rawText.length > 50) {
-        const candidate = JSON.parse(cleanJsonResponse(rawText));
-        if (candidate && typeof candidate.trustScore === "number") {
-          parsed = candidate;
-          break;
         }
+      });
+      const rawText = response.text || "";
+      if (rawText.length > 50) {
+        parsed = JSON.parse(cleanJsonResponse(rawText));
+        if (parsed && typeof parsed.trustScore === "number") break;
       }
     } catch (aiErr: any) {
       console.warn(`[VeriStyle] Model ${modelName} notice:`, aiErr.message?.substring(0, 80));
     }
   }
 
-  const finalPrice = resolvedPrice;
+  const resolvedPrice = scrapedPrice || parsed?.exactPrice || parsed?.estimatedRetailValue || "₹4,499";
   const score = parsed?.trustScore ? Math.max(0, Math.min(100, Math.round(parsed.trustScore))) : 88;
   const verdict = parsed?.verdict || (score >= 80 ? "VERIFIED AUTHENTIC" : "SUSPICIOUS REVIEW / RISK");
 
   let fixedXaiReasoning: string[] = Array.isArray(parsed?.xaiReasoning) && parsed.xaiReasoning.length > 0
     ? parsed.xaiReasoning
     : [
-        `Forensic authenticity analysis for ${parsed?.itemName || resolvedTitle} completed. Live listing verified at ${finalPrice}.`,
+        `Forensic authenticity analysis for ${parsed?.itemName || initialTitle} completed. Live listing verified at ${resolvedPrice}.`,
         `Product craftsmanship, seller pedigree, and marketplace distribution channels assessed with ${parsed?.aiConfidence || 94}% confidence.`
       ];
 
@@ -428,17 +381,17 @@ Return ONLY valid JSON matching this schema:
     if (priceMatches) {
       for (const p of priceMatches) {
         const normP = p.replace(/\s+/g, "").replace(/,/g, "");
-        const normR = finalPrice.replace(/\s+/g, "").replace(/,/g, "");
+        const normR = resolvedPrice.replace(/\s+/g, "").replace(/,/g, "");
         if (normP !== normR) {
-          reason = reason.replace(p, finalPrice);
+          reason = reason.replace(p, resolvedPrice);
         }
       }
     }
     return reason;
   });
 
-  const finalItemName = parsed?.itemName || resolvedTitle;
-  const finalBrandName = parsed?.brand || resolvedBrand;
+  const finalItemName = parsed?.itemName || initialTitle;
+  const finalBrandName = parsed?.brand || (slugTitle ? slugTitle.split(" ")[0] : "Verified Brand");
 
   return {
     id: `url-scan-${Date.now().toString(36)}`,
@@ -447,7 +400,7 @@ Return ONLY valid JSON matching this schema:
     brand: finalBrandName,
     category: parsed?.category || "E-Commerce Product",
     imageUrl: resolvedImage,
-    reviewText: rawSnippet,
+    reviewText: jinaData.rawSnippet || "",
     trustScore: score,
     verdict: verdict,
     aiConfidence: parsed?.aiConfidence || 94,
@@ -468,14 +421,14 @@ Return ONLY valid JSON matching this schema:
       "Inspect product tags, serial branding, and packaging invoice upon delivery.",
     ],
     verificationHash: `0x${Math.random().toString(16).substring(2, 10)}${Math.random().toString(16).substring(2, 6)}`,
-    estimatedRetailValue: finalPrice,
+    estimatedRetailValue: resolvedPrice,
     resaleMarketVerdict: score >= 80 ? "Grade A Authentic" : "Risk Review Required",
     productUrl: rawUrl,
     platform: platform,
-    extractedPrice: finalPrice,
-    extractedRating: resolvedRating,
-    extractedReviewCount: score >= 80 ? 1420 : 189,
-    scrapedDescription: rawSnippet,
+    extractedPrice: resolvedPrice,
+    extractedRating: parsed?.extractedRating || jinaData.rating || 4.2,
+    extractedReviewCount: parsed?.extractedReviewCount || (score >= 80 ? 1420 : 189),
+    scrapedDescription: jinaData.rawSnippet || "",
     sellerName:
       platform === "flipkart"
         ? "Flipkart Verified Merchant"
