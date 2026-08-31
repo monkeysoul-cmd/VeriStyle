@@ -1,5 +1,5 @@
 // VeriStyle Universal Forensic Authenticity Engine — Bulletproof Edition
-// Multi-engine live scraping + Gemini Google Search Grounding + High-Res Product Image Discovery
+// Multi-engine live scraping + Gemini Google Search Grounding + Bing/DDG High-Res Product Image Discovery
 import { GoogleGenAI } from "@google/genai";
 
 function getAiClient(): GoogleGenAI | null {
@@ -115,7 +115,7 @@ function extractBestPrice(text: string): string {
 
   // 1. Look for explicit price patterns
   const strongMatches = [
-    ...text.matchAll(/(?:special price|deal price|our price|selling price|price:?|pay:?|MRP:?|listed price is|cost of|available for|priced at)\s*(?:₹|Rs\.?|INR|\$|€|£)\s*([\d,]+(?:\.\d{2})?)/gi)
+    ...text.matchAll(/(?:special price|deal price|our price|selling price|price:?|pay:?|MRP:?|listed price is|cost of|available for|priced at|listed on \w+ (?:for|at)|buy for)\s*(?:₹|Rs\.?|INR|\$|€|£)\s*([\d,]+(?:\.\d{2})?)/gi)
   ];
   if (strongMatches.length > 0 && strongMatches[0][1]) {
     const sym = text.includes("$") ? "$" : "₹";
@@ -157,23 +157,47 @@ function isValidProductImage(url: string): boolean {
   if (lower.endsWith(".gif") && (lower.includes("1x1") || lower.includes("_TTD_"))) return false;
   
   const hasImageExt = /\.(jpg|jpeg|png|webp|avif)(\?|$)/i.test(url);
-  const isKnownCDN = /media-amazon\.com|rukminim[12]\.flixcart\.com|assets\.myntassets\.com|smartwatchspecs|openboxwale/i.test(url);
+  const isKnownCDN = /media-amazon\.com|rukminim[12]\.flixcart\.com|assets\.myntassets\.com|smartwatchspecs|openboxwale|walmartimages|flightclub|1stdibscdn/i.test(url);
   
   return hasImageExt || isKnownCDN;
 }
 
 /**
- * High-resolution direct product image discovery engine
+ * High-resolution direct product image discovery engine via Bing Images + DuckDuckGo
  */
 async function searchProductImage(query: string): Promise<string> {
   if (!query || query.length < 3) return "";
+
+  // Engine A: Bing Image Search (Direct CDN extraction)
+  try {
+    const bUrl = `https://www.bing.com/images/search?q=${encodeURIComponent(query + " product white background")}&form=HDRSC2&first=1`;
+    const bRes = await fetch(bUrl, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9",
+      },
+      signal: AbortSignal.timeout(5000)
+    });
+    if (bRes.ok) {
+      const bHtml = await bRes.text();
+      const bMatches = [...bHtml.matchAll(/murl&quot;:&quot;(https:\/\/[^&"]+\.(?:jpg|jpeg|png|webp))/gi)];
+      for (const m of bMatches) {
+        if (isValidProductImage(m[1])) {
+          return m[1];
+        }
+      }
+    }
+  } catch (_) {}
+
+  // Engine B: DuckDuckGo Image Search
   try {
     const tokenUrl = `https://duckduckgo.com/?q=${encodeURIComponent(query + " product")}&iax=images&ia=images`;
     const tokenRes = await fetch(tokenUrl, {
       headers: {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
       },
-      signal: AbortSignal.timeout(5000)
+      signal: AbortSignal.timeout(4000)
     });
     const html = await tokenRes.text();
     const vqdMatch = html.match(/vqd=([a-zA-Z0-9_\-]+)/);
@@ -185,7 +209,7 @@ async function searchProductImage(query: string): Promise<string> {
           "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
           "Referer": "https://duckduckgo.com/",
         },
-        signal: AbortSignal.timeout(5000)
+        signal: AbortSignal.timeout(4000)
       });
       const imgData = await imgRes.json();
       if (imgData.results && imgData.results.length > 0) {
@@ -196,9 +220,8 @@ async function searchProductImage(query: string): Promise<string> {
         }
       }
     }
-  } catch (e: any) {
-    console.warn("[VeriStyle] Image search notice:", e.message?.substring(0, 80));
-  }
+  } catch (_) {}
+
   return "";
 }
 
@@ -315,7 +338,7 @@ export async function runUniversalGeminiForensics(rawUrl: string): Promise<any> 
   const cleanUrl = sanitizeProductUrl(rawUrl);
   const { platform, slugTitle, asin } = extractMetadataFromUrl(cleanUrl);
 
-  // Run multi-engine discovery in parallel
+  // Run multi-engine discovery in parallel (Scraping + Gemini Grounding + Bing/DDG Image Search)
   const [jinaData, groundingData, searchImage] = await Promise.all([
     scrapeViaJina(cleanUrl).catch(() => ({ title: "", price: "", imageUrl: "", rating: 0, rawSnippet: "" })),
     fetchProductDataViaGrounding(ai, cleanUrl, platform, slugTitle).catch(() => ({ title: "", price: "", rating: 0, brand: "", groundedResearch: "" })),
@@ -328,7 +351,7 @@ export async function runUniversalGeminiForensics(rawUrl: string): Promise<any> 
   const resolvedPrice = jinaData.price || groundingData.price || "₹1,299";
   const resolvedRating = jinaData.rating || groundingData.rating || 4.3;
 
-  // Resolve best product image
+  // Resolve best product image (Priority: Amazon ASIN -> Jina -> Bing/DDG Image Discovery)
   let resolvedImage = "";
   if (asin) {
     resolvedImage = `https://images-na.ssl-images-amazon.com/images/P/${asin}.01._SCLZZZZZZZ_SX800_.jpg`;
