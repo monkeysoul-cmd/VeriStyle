@@ -1210,7 +1210,7 @@ Return strictly JSON matching this structure:
         ]),
         fakeReviewProbability: catalogProfile.score >= 80 ? 12 : (catalogProfile.score >= 50 ? 42 : 78),
         xaiReasoning: [
-          `Product listing for ${catalogProfile.title} under brand ${catalogProfile.brand} analyzed for price sanity (${catalogProfile.price}), buyer sentiment, and manufacturing traits.`,
+          `Product listing for ${catalogProfile.title} under brand ${catalogProfile.brand} analyzed for price sanity (${price || catalogProfile.price}), buyer sentiment, and manufacturing traits.`,
           catalogProfile.score < 50 ? `Flagged high risk: pricing and physical specifications correspond to unverified white-label manufacturing.` : (catalogProfile.score < 80 ? `Moderate risk: entry-level domestic manufacturing with expected budget-tier material tolerances.` : `High trust: pricing, authorized distribution, and review entropy confirm authentic product standard.`)
         ],
         recommendations: catalogProfile.score >= 80 ? [
@@ -1275,7 +1275,7 @@ Return strictly JSON matching this structure:
       xaiReasoning: parsed.xaiReasoning || [],
       recommendations: parsed.recommendations || [],
       verificationHash: `0x${Math.random().toString(16).substring(2, 10)}${Math.random().toString(16).substring(2, 6)}`,
-      estimatedRetailValue: parsed.estimatedRetailValue || finalPrice,
+      estimatedRetailValue: finalPrice,
       resaleMarketVerdict: finalTrustScore >= 80 ? "Grade A Authentic" : (finalTrustScore >= 50 ? "Risk Review Required" : "High Counterfeit Risk"),
       productUrl: url,
       platform: platform,
