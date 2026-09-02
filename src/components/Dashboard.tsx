@@ -356,205 +356,220 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                 </div>
               </div>
             ) : analysisResult ? (
-              /* Results Available View */
-              <div className="space-y-6 animate-fade-in">
-                
-                {/* Header Result Summary Card */}
-                <div className="p-6 sm:p-8 rounded-3xl bg-white border border-[var(--border-card)] shadow-sm space-y-6">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-100 pb-5">
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <h2 className="text-2xl font-extrabold text-[var(--text-primary)]" style={{ fontFamily: 'var(--font-heading)' }}>{analysisResult.itemName}</h2>
-                        <span className="text-sm font-bold text-[var(--green-primary)] px-2 py-0.5 bg-[var(--green-primary)]/10 rounded-full">{analysisResult.brand}</span>
+              /* ═══════════════════════════════════════════════════════════
+                 ANALYSIS REPORT — Premium Redesign
+                 ═══════════════════════════════════════════════════════════ */
+              <div className="space-y-5 animate-fade-in-up">
+
+                {/* ── VERDICT HERO BANNER ─────────────────────────────── */}
+                <div className={`relative overflow-hidden rounded-3xl p-6 sm:p-8 border ${
+                  analysisResult.trustScore >= 80
+                    ? 'bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-900 border-emerald-700/40'
+                    : analysisResult.trustScore >= 50
+                    ? 'bg-gradient-to-br from-amber-950 via-amber-900 to-orange-900 border-amber-700/40'
+                    : 'bg-gradient-to-br from-rose-950 via-red-900 to-rose-900 border-red-700/40'
+                } shadow-xl`}>
+                  {/* Subtle orb glow behind content */}
+                  <div className={`absolute -top-16 -right-16 w-64 h-64 rounded-full blur-3xl opacity-20 ${
+                    analysisResult.trustScore >= 80 ? 'bg-emerald-400' : analysisResult.trustScore >= 50 ? 'bg-amber-400' : 'bg-red-400'
+                  }`} />
+                  <div className="absolute bottom-0 left-1/3 w-48 h-32 rounded-full blur-3xl opacity-10 bg-white" />
+
+                  <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+                    {/* Left: Identity */}
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2.5 flex-wrap">
+                        <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-widest border ${
+                          analysisResult.trustScore >= 80
+                            ? 'bg-emerald-400/20 text-emerald-300 border-emerald-400/30'
+                            : analysisResult.trustScore >= 50
+                            ? 'bg-amber-400/20 text-amber-300 border-amber-400/30'
+                            : 'bg-red-400/20 text-red-300 border-red-400/30'
+                        }`}>
+                          <ShieldCheck className="w-3 h-3" />
+                          {analysisResult.verdict}
+                        </span>
+                        <span className="text-white/40 text-xs font-bold uppercase tracking-widest">Verification Complete</span>
                       </div>
-                      <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">
-                        Scan Hash: <span className="font-mono text-gray-600">{analysisResult.verificationHash}</span> • {analysisResult.timestamp}
+                      <h2 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight" style={{ fontFamily: 'var(--font-heading)' }}>
+                        {analysisResult.itemName}
+                        <span className="ml-3 text-lg font-bold opacity-60">{analysisResult.brand}</span>
+                      </h2>
+                      <p className="text-[11px] font-bold text-white/40 uppercase tracking-widest font-mono">
+                        {analysisResult.verificationHash} · {analysisResult.timestamp}
                       </p>
                     </div>
 
-                    <button
-                      onClick={() => setShowCertificateModal(true)}
-                      className="self-start sm:self-auto px-4 py-2.5 rounded-full bg-gray-50 hover:bg-gray-100 text-[var(--text-primary)] text-xs font-bold flex items-center gap-2 border border-gray-200 transition-colors"
-                    >
-                      <QrCode className="w-4 h-4 text-[var(--green-primary)]" />
-                      <span>View Certificate</span>
-                    </button>
-                  </div>
-
-                  {/* Score Circular Ring & AI Confidence Grid */}
-                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-8 items-center">
-                    
-                    {/* Trust Gauge Ring */}
-                    <div className="sm:col-span-4 flex flex-col items-center justify-center p-6 rounded-2xl bg-gray-50 border border-gray-100">
-                      <div className="relative w-40 h-40 flex items-center justify-center">
-                        {/* SVG Circular Progress Bar */}
+                    {/* Right: Score Ring + Action */}
+                    <div className="flex items-center gap-5 sm:gap-6 shrink-0">
+                      {/* Animated Trust Ring */}
+                      <div className="relative w-28 h-28 sm:w-32 sm:h-32 shrink-0">
                         <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                          {/* Track */}
+                          <circle cx="50" cy="50" r="40" className="fill-none stroke-[10]" stroke="rgba(255,255,255,0.08)" />
+                          {/* Outer glow ring */}
+                          <circle cx="50" cy="50" r="44" className="fill-none stroke-[2]" stroke="rgba(255,255,255,0.06)" />
+                          {/* Score arc */}
                           <circle
-                            cx="50"
-                            cy="50"
-                            r="42"
-                            className="stroke-gray-200 fill-none stroke-[8]"
-                          />
-                          <circle
-                            cx="50"
-                            cy="50"
-                            r="42"
-                            className={`fill-none stroke-[8] transition-all duration-1000 ${
-                              analysisResult.trustScore >= 80
-                                ? 'stroke-[#059669]'
-                                : analysisResult.trustScore >= 50
-                                ? 'stroke-amber-400'
-                                : 'stroke-red-500'
-                            }`}
-                            strokeDasharray="264"
-                            strokeDashoffset={264 - (264 * analysisResult.trustScore) / 100}
+                            cx="50" cy="50" r="40"
+                            className="fill-none stroke-[10] animate-draw-arc"
+                            stroke={analysisResult.trustScore >= 80 ? '#34d399' : analysisResult.trustScore >= 50 ? '#fbbf24' : '#f87171'}
+                            strokeDasharray="251"
+                            strokeDashoffset={251 - (251 * analysisResult.trustScore) / 100}
                             strokeLinecap="round"
                           />
                         </svg>
-                        <div className="absolute inset-0 flex flex-col items-center justify-center text-center mt-1">
-                          <span className="text-4xl font-extrabold text-[var(--text-primary)] tracking-tight">{analysisResult.trustScore}%</span>
-                          <span className="text-[10px] uppercase font-bold text-gray-500 tracking-wider">Trust Score</span>
+                        <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                          <span className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-none">{analysisResult.trustScore}</span>
+                          <span className="text-[9px] font-black text-white/50 uppercase tracking-widest mt-0.5">Trust %</span>
                         </div>
                       </div>
 
-                      <div className="mt-4 text-center">
-                        <span className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide border ${
-                          analysisResult.trustScore >= 80
-                            ? 'bg-[#059669]/10 text-[#059669] border-[#059669]/20'
-                            : analysisResult.trustScore >= 50
-                            ? 'bg-amber-100 text-amber-700 border-amber-200'
-                            : 'bg-red-50 text-red-600 border-red-200'
-                        }`}>
-                          <ShieldCheck className="w-3.5 h-3.5" />
-                          {analysisResult.verdict}
-                        </span>
+                      {/* Certificate button */}
+                      <div className="flex flex-col gap-2">
+                        <button
+                          onClick={() => setShowCertificateModal(true)}
+                          className="px-4 py-2.5 rounded-2xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold flex items-center gap-2 border border-white/20 transition-all hover:border-white/40 backdrop-blur-sm"
+                        >
+                          <QrCode className="w-4 h-4" />
+                          <span>Certificate</span>
+                        </button>
+                        <button className="px-4 py-2.5 rounded-2xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold flex items-center gap-2 border border-white/20 transition-all hover:border-white/40 backdrop-blur-sm">
+                          <Share2 className="w-4 h-4" />
+                          <span>Share</span>
+                        </button>
                       </div>
-                    </div>
-
-                    {/* AI Metric Breakdown Gauges */}
-                    <div className="sm:col-span-8 space-y-4">
-                      <div className="flex items-center justify-between text-[13px]">
-                        <span className="text-gray-600 font-bold">System Confidence</span>
-                        <span className="text-[var(--green-primary)] font-black font-mono text-[15px]">{analysisResult.aiConfidence}%</span>
-                      </div>
-                      <div className="w-full bg-gray-100 h-2.5 rounded-full overflow-hidden">
-                        <div 
-                          className="bg-gradient-to-r from-[var(--green-accent-from)] to-[var(--green-accent-to)] h-full transition-all duration-1000"
-                          style={{ width: `${analysisResult.aiConfidence}%` }}
-                        />
-                      </div>
-
-                      {analysisResult.imageUrl ? (
-                        <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 pt-3 text-[11px] uppercase tracking-wider font-bold text-gray-500">
-                          <div className="p-3 rounded-xl bg-gray-50 border border-gray-100 flex flex-col gap-1 hover:border-[var(--green-primary)]/30 transition-colors">
-                            <span>Stitching Pitch</span>
-                            <span className="font-black text-[var(--text-primary)] text-[15px] font-mono">{analysisResult.detailedScores.stitchingQuality}%</span>
-                          </div>
-                          <div className="p-3 rounded-xl bg-gray-50 border border-gray-100 flex flex-col gap-1 hover:border-[var(--green-primary)]/30 transition-colors">
-                            <span>Hardware Engraving</span>
-                            <span className="font-black text-[var(--text-primary)] text-[15px] font-mono">{analysisResult.detailedScores.hardwareAuthenticity}%</span>
-                          </div>
-                          <div className="p-3 rounded-xl bg-gray-50 border border-gray-100 flex flex-col gap-1 hover:border-[var(--green-primary)]/30 transition-colors">
-                            <span>Care Tag Font</span>
-                            <span className="font-black text-[var(--text-primary)] text-[15px] font-mono">{analysisResult.detailedScores.typographyAccuracy}%</span>
-                          </div>
-                          <div className="p-3 rounded-xl bg-gray-50 border border-gray-100 flex flex-col gap-1 hover:border-purple-400/30 transition-colors">
-                            <span>Material Texture</span>
-                            <span className="font-black text-[var(--text-primary)] text-[15px] font-mono">{analysisResult.detailedScores.fabricTextureMatch}%</span>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="grid grid-cols-2 gap-3 pt-3 text-[11px] uppercase tracking-wider font-bold text-gray-500">
-                          <div className="p-3.5 rounded-xl bg-purple-50 border border-purple-100 flex flex-col gap-1">
-                            <span className="text-purple-900">NLP Linguistic Perplexity</span>
-                            <span className="font-black text-purple-700 text-lg font-mono">{analysisResult.detailedScores.reviewPerplexity}%</span>
-                            <span className="text-[10px] text-purple-600 normal-case">Organic syntactic entropy</span>
-                          </div>
-                          <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-100 flex flex-col gap-1">
-                            <span className="text-emerald-900">Sentiment-Rating Coherence</span>
-                            <span className="font-black text-emerald-700 text-lg font-mono">{analysisResult.detailedScores.reviewSentimentAlignment}%</span>
-                            <span className="text-[10px] text-emerald-600 normal-case">Authentic buyer tone alignment</span>
-                          </div>
-                        </div>
-                      )}
                     </div>
                   </div>
                 </div>
 
-                {/* VISUAL IMAGE INSPECTOR: Render ONLY if user uploaded an image */}
-                {analysisResult.imageUrl && (
-                  <div className="p-6 sm:p-8 rounded-3xl bg-white border border-[var(--border-card)] shadow-sm space-y-4">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                      <div className="flex items-center gap-2">
-                        <Eye className="w-5 h-5 text-[var(--green-primary)]" />
-                        <h3 className="text-lg font-extrabold text-[var(--text-primary)]" style={{ fontFamily: 'var(--font-heading)' }}>
-                          Uploaded Image Inspection Map
-                        </h3>
-                      </div>
+                {/* ── AI CONFIDENCE + METRIC BREAKDOWN ────────────────── */}
+                <div className="grid grid-cols-1 sm:grid-cols-12 gap-5">
 
+                  {/* Confidence Card */}
+                  <div className="sm:col-span-5 p-6 rounded-3xl bg-white border border-[var(--border-card)] shadow-sm space-y-5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-black text-gray-400 uppercase tracking-widest">AI System Confidence</span>
+                      <span className="text-[var(--green-primary)] font-black font-mono text-xl">{analysisResult.aiConfidence}%</span>
+                    </div>
+                    {/* Thick confidence bar */}
+                    <div className="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
+                      <div
+                        className="bg-gradient-to-r from-[var(--green-primary)] to-[var(--green-accent-from)] h-full rounded-full transition-all duration-1000 ease-out animate-fill-bar"
+                        style={{ width: `${analysisResult.aiConfidence}%` }}
+                      />
+                    </div>
+                    <p className="text-[12px] text-gray-500 font-medium leading-relaxed">
+                      The AI model cross-referenced {analysisResult.aiConfidence >= 85 ? 'high-fidelity' : 'baseline'} pattern libraries with {analysisResult.aiConfidence >= 85 ? 'strong' : 'moderate'} signal convergence.
+                    </p>
+                  </div>
+
+                  {/* Detailed Metric Scores */}
+                  <div className="sm:col-span-7 p-6 rounded-3xl bg-white border border-[var(--border-card)] shadow-sm space-y-4">
+                    <span className="text-[11px] font-black text-gray-400 uppercase tracking-widest">
+                      {analysisResult.imageUrl ? 'Visual Craftsmanship Scores' : 'NLP Signal Metrics'}
+                    </span>
+
+                    {analysisResult.imageUrl ? (
+                      <div className="space-y-3.5">
+                        {[
+                          { label: 'Stitching Pitch', value: analysisResult.detailedScores.stitchingQuality, color: 'var(--green-primary)' },
+                          { label: 'Hardware Engraving', value: analysisResult.detailedScores.hardwareAuthenticity, color: '#6366f1' },
+                          { label: 'Care Tag Typography', value: analysisResult.detailedScores.typographyAccuracy, color: '#0ea5e9' },
+                          { label: 'Material Texture', value: analysisResult.detailedScores.fabricTextureMatch, color: '#a855f7' },
+                        ].map((metric, i) => (
+                          <div key={i} className="space-y-1.5">
+                            <div className="flex items-center justify-between text-[12px]">
+                              <span className="font-bold text-[var(--text-primary)]">{metric.label}</span>
+                              <span className="font-black font-mono" style={{ color: metric.color }}>{metric.value}%</span>
+                            </div>
+                            <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+                              <div
+                                className="h-full rounded-full transition-all duration-700 ease-out"
+                                style={{ width: `${metric.value}%`, backgroundColor: metric.color, transitionDelay: `${i * 100}ms` }}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-2 gap-4 pt-1">
+                        <div className="p-4 rounded-2xl bg-purple-50 border border-purple-100 space-y-1">
+                          <span className="text-[10px] font-black text-purple-400 uppercase tracking-widest block">Linguistic Perplexity</span>
+                          <span className="text-2xl font-black text-purple-700 font-mono">{analysisResult.detailedScores.reviewPerplexity}%</span>
+                          <span className="text-[11px] text-purple-500 font-medium">Organic syntactic entropy</span>
+                        </div>
+                        <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-100 space-y-1">
+                          <span className="text-[10px] font-black text-emerald-400 uppercase tracking-widest block">Sentiment Coherence</span>
+                          <span className="text-2xl font-black text-emerald-700 font-mono">{analysisResult.detailedScores.reviewSentimentAlignment}%</span>
+                          <span className="text-[11px] text-emerald-500 font-medium">Authentic buyer tone</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* ── VISUAL IMAGE INSPECTOR ───────────────────────────── */}
+                {analysisResult.imageUrl && (
+                  <div className="rounded-3xl bg-white border border-[var(--border-card)] shadow-sm overflow-hidden">
+                    {/* Card Header */}
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-6 sm:px-8 py-5 border-b border-gray-100">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-[var(--green-primary)]/10 flex items-center justify-center">
+                          <Eye className="w-4.5 h-4.5 text-[var(--green-primary)]" />
+                        </div>
+                        <div>
+                          <h3 className="text-[15px] font-extrabold text-[var(--text-primary)]" style={{ fontFamily: 'var(--font-heading)' }}>
+                            Image Inspection Map
+                          </h3>
+                          <p className="text-[11px] text-gray-400 font-bold">{analysisResult.heatmapPoints.length} hotspots detected</p>
+                        </div>
+                      </div>
                       {/* Mode Toggles */}
-                      <div className="flex items-center bg-gray-100 p-1 rounded-full text-xs font-bold self-start">
-                        <button
-                          onClick={() => setViewMode('heatmap')}
-                          className={`px-4 py-1.5 rounded-full transition-all ${
-                            viewMode === 'heatmap' ? 'bg-white text-[var(--text-primary)] shadow-sm' : 'text-gray-500 hover:text-gray-700'
-                          }`}
-                        >
-                          Heatmap
-                        </button>
-                        <button
-                          onClick={() => setViewMode('bounding_boxes')}
-                          className={`px-4 py-1.5 rounded-full transition-all ${
-                            viewMode === 'bounding_boxes' ? 'bg-white text-[var(--text-primary)] shadow-sm' : 'text-gray-500 hover:text-gray-700'
-                          }`}
-                        >
-                          Boxes
-                        </button>
-                        <button
-                          onClick={() => setViewMode('raw')}
-                          className={`px-4 py-1.5 rounded-full transition-all ${
-                            viewMode === 'raw' ? 'bg-white text-[var(--text-primary)] shadow-sm' : 'text-gray-500 hover:text-gray-700'
-                          }`}
-                        >
-                          Raw
-                        </button>
+                      <div className="flex items-center bg-gray-100 p-1 rounded-full text-[11px] font-black self-start gap-0.5">
+                        {(['heatmap', 'bounding_boxes', 'raw'] as const).map((mode) => (
+                          <button
+                            key={mode}
+                            onClick={() => setViewMode(mode)}
+                            className={`px-3.5 py-1.5 rounded-full transition-all uppercase tracking-wide ${
+                              viewMode === mode
+                                ? 'bg-white text-[var(--text-primary)] shadow-sm'
+                                : 'text-gray-400 hover:text-gray-600'
+                            }`}
+                          >
+                            {mode === 'bounding_boxes' ? 'Boxes' : mode}
+                          </button>
+                        ))}
                       </div>
                     </div>
 
-                    {/* Interactive Image Canvas Display */}
-                    <div className="relative w-full rounded-2xl overflow-hidden bg-gray-50 border border-gray-200 min-h-[360px] flex items-center justify-center p-4">
+                    {/* Canvas */}
+                    <div className="relative w-full bg-[#F8FAFC] min-h-[360px] flex items-center justify-center p-6 border-b border-gray-100">
                       <img
                         src={analysisResult.imageUrl}
                         alt={analysisResult.itemName}
                         referrerPolicy="no-referrer"
-                        className="max-h-[400px] w-auto object-contain rounded-lg mix-blend-multiply"
+                        className="max-h-[420px] w-auto object-contain rounded-xl mix-blend-multiply drop-shadow-sm"
                       />
-                      {/* Heatmap Overlay Simulation */}
                       {viewMode === 'heatmap' && (
-                        <div className="absolute inset-0 bg-gradient-to-tr from-[var(--green-primary)]/15 via-purple-500/10 to-amber-500/15 mix-blend-multiply pointer-events-none" />
+                        <div className="absolute inset-0 bg-gradient-to-tr from-[var(--green-primary)]/12 via-purple-500/8 to-amber-500/12 mix-blend-multiply pointer-events-none rounded-b-none" />
                       )}
-
-                      {/* Bounding Box Hotspot Overlays */}
                       {viewMode !== 'raw' && analysisResult.heatmapPoints.map(point => {
                         const isSelected = selectedHotspot?.id === point.id;
+                        const isCritical = point.severity === 'critical' || point.severity === 'high';
                         return (
                           <div
                             key={point.id}
                             onClick={() => setSelectedHotspot(point)}
-                            style={{
-                              left: `${point.x}%`,
-                              top: `${point.y}%`,
-                              width: `${point.width}%`,
-                              height: `${point.height}%`
-                            }}
+                            style={{ left: `${point.x}%`, top: `${point.y}%`, width: `${point.width}%`, height: `${point.height}%` }}
                             className={`absolute border-2 rounded-lg cursor-pointer transition-all duration-200 flex items-start justify-start p-1 ${
-                              point.severity === 'critical' || point.severity === 'high'
+                              isCritical
                                 ? 'border-red-500 bg-red-500/10 hover:bg-red-500/20'
                                 : 'border-[#059669] bg-[#059669]/10 hover:bg-[#059669]/20'
-                            } ${isSelected ? 'ring-4 ring-white z-20 scale-105 shadow-xl' : 'hover:scale-105 z-10 shadow-sm'}`}
+                            } ${isSelected ? 'ring-2 ring-offset-1 ring-white z-20 scale-[1.04] shadow-xl' : 'hover:scale-[1.03] z-10 shadow-sm'}`}
                           >
                             <span className={`text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider -mt-4 -ml-2 whitespace-nowrap shadow-sm ${
-                              point.severity === 'critical' || point.severity === 'high' ? 'bg-red-500 text-white' : 'bg-[#059669] text-white'
+                              isCritical ? 'bg-red-500 text-white' : 'bg-[#059669] text-white'
                             }`}>
                               {point.label}
                             </span>
@@ -563,157 +578,258 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                       })}
                     </div>
 
-                    {/* Hotspot Detailed Explanation Box */}
-                    {selectedHotspot && (
-                      <div className="p-5 rounded-2xl bg-gray-50 border border-gray-200 space-y-2 relative overflow-hidden">
-                        <div className={`absolute top-0 left-0 w-1 h-full ${
-                          selectedHotspot.severity === 'critical' || selectedHotspot.severity === 'high' ? 'bg-red-500' : 'bg-[#059669]'
-                        }`} />
-                        <div className="flex items-center justify-between pl-2">
-                          <div className="flex items-center gap-3">
-                            <span className="font-bold text-[var(--text-primary)] text-[15px]">{selectedHotspot.label}</span>
-                            <span className="px-2 py-0.5 rounded text-[10px] font-bold font-mono bg-white text-gray-500 uppercase border border-gray-200">
-                              {selectedHotspot.category}
-                            </span>
-                          </div>
-                          <span className="text-[var(--green-primary)] font-black font-mono bg-[var(--green-primary)]/10 px-2 py-0.5 rounded text-sm">
-                            {selectedHotspot.confidence}% Conf.
-                          </span>
+                    {/* Hotspot list + detail panel */}
+                    <div className="p-6 sm:p-8 grid grid-cols-1 sm:grid-cols-12 gap-5">
+                      {/* Hotspot selector pills */}
+                      <div className="sm:col-span-5 space-y-2">
+                        <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Select Hotspot</span>
+                        <div className="flex flex-col gap-1.5 max-h-[200px] overflow-y-auto pr-1">
+                          {analysisResult.heatmapPoints.map(point => {
+                            const isSelected = selectedHotspot?.id === point.id;
+                            const isCritical = point.severity === 'critical' || point.severity === 'high';
+                            return (
+                              <button
+                                key={point.id}
+                                onClick={() => setSelectedHotspot(point)}
+                                className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-left transition-all border text-[12px] font-bold ${
+                                  isSelected
+                                    ? isCritical
+                                      ? 'bg-red-50 border-red-300 text-red-700'
+                                      : 'bg-[var(--green-primary)]/8 border-[var(--green-primary)]/30 text-[var(--green-primary)]'
+                                    : 'bg-gray-50 border-gray-200 text-gray-600 hover:border-gray-300'
+                                }`}
+                              >
+                                <span className="truncate">{point.label}</span>
+                                <span className={`text-[10px] font-black px-2 py-0.5 rounded-full shrink-0 ml-2 ${
+                                  isCritical ? 'bg-red-100 text-red-600' : 'bg-emerald-100 text-emerald-700'
+                                }`}>
+                                  {point.confidence}%
+                                </span>
+                              </button>
+                            );
+                          })}
                         </div>
-                        <p className="text-gray-600 text-sm leading-relaxed font-medium pl-2">{selectedHotspot.description}</p>
                       </div>
-                    )}
+
+                      {/* Detail panel */}
+                      <div className="sm:col-span-7">
+                        {selectedHotspot ? (
+                          <div className={`h-full rounded-2xl p-5 space-y-3 border relative overflow-hidden ${
+                            selectedHotspot.severity === 'critical' || selectedHotspot.severity === 'high'
+                              ? 'bg-red-50/60 border-red-200'
+                              : 'bg-emerald-50/60 border-emerald-200'
+                          }`}>
+                            {/* Accent bar */}
+                            <div className={`absolute top-0 left-0 w-full h-0.5 ${
+                              selectedHotspot.severity === 'critical' || selectedHotspot.severity === 'high'
+                                ? 'bg-gradient-to-r from-red-500 to-orange-400'
+                                : 'bg-gradient-to-r from-[var(--green-primary)] to-emerald-400'
+                            }`} />
+                            <div className="flex items-start justify-between gap-3 pt-1">
+                              <div>
+                                <span className="font-extrabold text-[var(--text-primary)] text-[15px] block">{selectedHotspot.label}</span>
+                                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{selectedHotspot.category}</span>
+                              </div>
+                              <span className={`text-[11px] font-black px-2.5 py-1 rounded-lg shrink-0 ${
+                                selectedHotspot.severity === 'critical' || selectedHotspot.severity === 'high'
+                                  ? 'bg-red-100 text-red-600'
+                                  : 'bg-emerald-100 text-emerald-700'
+                              }`}>
+                                {selectedHotspot.confidence}% conf.
+                              </span>
+                            </div>
+                            <p className="text-[13px] text-gray-600 leading-relaxed font-medium">{selectedHotspot.description}</p>
+                          </div>
+                        ) : (
+                          <div className="h-full rounded-2xl p-5 bg-gray-50 border border-gray-200 border-dashed flex items-center justify-center text-center">
+                            <div className="space-y-1">
+                              <Maximize2 className="w-6 h-6 text-gray-300 mx-auto" />
+                              <p className="text-[12px] text-gray-400 font-bold">Click a hotspot or select one from the list</p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 )}
 
-                {/* REVIEW NLP FORENSICS: Render ONLY if review was provided */}
+                {/* ── REVIEW NLP FORENSICS ─────────────────────────────── */}
                 {analysisResult.reviewText && (
-                  <div className="p-6 sm:p-8 rounded-3xl bg-white border border-[var(--border-card)] shadow-sm space-y-6">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-lg font-extrabold text-[var(--text-primary)] flex items-center gap-2" style={{ fontFamily: 'var(--font-heading)' }}>
-                        <FileText className="w-5 h-5 text-purple-500" />
-                        Linguistic & Review NLP Forensics
-                      </h3>
-                      <span className="text-xs font-bold text-purple-700 bg-purple-50 border border-purple-200 px-3 py-1 rounded-full">
-                        {analysisResult.reviewText.length} characters analyzed
+                  <div className="rounded-3xl bg-white border border-[var(--border-card)] shadow-sm overflow-hidden">
+                    {/* Card Header */}
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-6 sm:px-8 py-5 border-b border-gray-100">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-purple-100 flex items-center justify-center">
+                          <FileText className="w-4.5 h-4.5 text-purple-600" />
+                        </div>
+                        <div>
+                          <h3 className="text-[15px] font-extrabold text-[var(--text-primary)]" style={{ fontFamily: 'var(--font-heading)' }}>
+                            NLP Linguistic Forensics
+                          </h3>
+                          <p className="text-[11px] text-gray-400 font-bold">{analysisResult.reviewText.length} characters · review authenticity analysis</p>
+                        </div>
+                      </div>
+                      <span className={`self-start sm:self-auto text-[11px] font-black px-3 py-1.5 rounded-full border ${
+                        analysisResult.fakeReviewProbability > 50
+                          ? 'bg-red-50 text-red-600 border-red-200'
+                          : 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                      }`}>
+                        {analysisResult.fakeReviewProbability > 50 ? '⚠ High Synthetic Risk' : '✓ Likely Organic'}
                       </span>
                     </div>
 
-                    {/* Actual Typed Review Quote Block */}
-                    <div className="p-4 sm:p-5 rounded-2xl bg-purple-50/50 border border-purple-100 relative">
-                      <div className="text-[11px] font-bold uppercase tracking-wider text-purple-800 mb-1.5 flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5 text-purple-600" />
-                        Analyzed User Review Submission:
+                    <div className="p-6 sm:p-8 space-y-6">
+                      {/* Review Quote */}
+                      <div className="relative rounded-2xl border border-purple-100 bg-gradient-to-br from-purple-50/80 to-indigo-50/50 p-5">
+                        <div className="absolute top-4 left-5 text-5xl text-purple-200 font-serif leading-none select-none">"</div>
+                        <div className="text-[10px] font-black text-purple-400 uppercase tracking-widest mb-2 pt-1">Analyzed Review Submission</div>
+                        <p className="text-[13px] text-purple-950 font-medium italic leading-relaxed pl-1 pr-4">
+                          {analysisResult.reviewText}
+                        </p>
                       </div>
-                      <p className="text-sm text-purple-950 font-medium italic leading-relaxed">
-                        "{analysisResult.reviewText}"
-                      </p>
-                    </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                      {/* Fake review score */}
+                      {/* Synthetic probability meter */}
                       <div className="p-5 rounded-2xl bg-[#F6EEFF] border border-[#E9D5FF] space-y-4">
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-purple-900 font-bold">Bot / Synthetic Prob.</span>
-                          <span className={`font-mono font-black text-xl ${
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <span className="text-[13px] font-black text-purple-900">Bot / Synthetic Probability</span>
+                            <p className="text-[11px] text-purple-500 font-medium mt-0.5">How likely this review was AI- or bot-generated</p>
+                          </div>
+                          <span className={`text-3xl font-black font-mono ${
                             analysisResult.fakeReviewProbability > 50 ? 'text-red-500' : 'text-purple-600'
                           }`}>
                             {analysisResult.fakeReviewProbability}%
                           </span>
                         </div>
-                        <div className="w-full bg-white h-2.5 rounded-full overflow-hidden border border-purple-100">
+                        {/* Segmented bar */}
+                        <div className="relative w-full h-3 bg-white rounded-full overflow-hidden border border-purple-100">
+                          <div className="absolute inset-0 flex">
+                            <div className="h-full bg-emerald-400/30 flex-1" style={{ maxWidth: '50%' }} />
+                            <div className="h-full bg-red-400/20 flex-1" />
+                          </div>
                           <div
-                            className={`h-full rounded-full ${
+                            className={`absolute top-0 left-0 h-full rounded-full transition-all duration-1000 ease-out ${
                               analysisResult.fakeReviewProbability > 50 ? 'bg-red-500' : 'bg-purple-500'
                             }`}
                             style={{ width: `${analysisResult.fakeReviewProbability}%` }}
                           />
+                          {/* Midpoint marker */}
+                          <div className="absolute top-0 left-1/2 w-px h-full bg-white/70" />
+                        </div>
+                        <div className="flex justify-between text-[10px] font-bold text-purple-400">
+                          <span>Organic</span>
+                          <span>50% threshold</span>
+                          <span>Synthetic</span>
                         </div>
 
-                        <div className="pt-3 space-y-2 border-t border-purple-200">
-                          {analysisResult.reviewFlags && analysisResult.reviewFlags.length > 0 ? (
-                            analysisResult.reviewFlags.map((flag, idx) => (
-                              <div key={idx} className="flex items-start gap-2 text-sm">
-                                <AlertTriangle className={`w-4 h-4 shrink-0 mt-0.5 ${
-                                  flag.severity === 'high' ? 'text-red-500' : 'text-amber-500'
-                                }`} />
+                        {/* Flags */}
+                        {analysisResult.reviewFlags && analysisResult.reviewFlags.length > 0 && (
+                          <div className="pt-3 border-t border-purple-200 space-y-2">
+                            <span className="text-[10px] font-black text-purple-400 uppercase tracking-widest">Detected Flags</span>
+                            {analysisResult.reviewFlags.map((flag, idx) => (
+                              <div key={idx} className={`flex items-start gap-2.5 p-3 rounded-xl text-[12px] ${
+                                flag.severity === 'high' ? 'bg-red-50 border border-red-100' : 'bg-amber-50 border border-amber-100'
+                              }`}>
+                                <AlertTriangle className={`w-3.5 h-3.5 shrink-0 mt-0.5 ${flag.severity === 'high' ? 'text-red-500' : 'text-amber-500'}`} />
                                 <div>
-                                  <span className="font-bold text-purple-900">{flag.type}: </span>
-                                  <span className="text-purple-800/80 font-medium">{flag.explanation}</span>
+                                  <span className="font-black text-gray-800">{flag.type}: </span>
+                                  <span className="text-gray-600 font-medium">{flag.explanation}</span>
                                 </div>
                               </div>
-                            ))
-                          ) : (
-                            <div className="flex items-center gap-2 text-xs font-bold text-emerald-700">
-                              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                              <span>Organic human phrasing verified</span>
+                            ))}
+                          </div>
+                        )}
+                        {(!analysisResult.reviewFlags || analysisResult.reviewFlags.length === 0) && (
+                          <div className="pt-3 border-t border-purple-200">
+                            <div className="flex items-center gap-2 text-[12px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-xl px-3 py-2.5">
+                              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                              <span>No synthetic patterns detected — organic human phrasing verified</span>
                             </div>
-                          )}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Notes + Recommendations two-col */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        {/* AI Linguistic Notes */}
+                        <div className="rounded-2xl border border-gray-200 overflow-hidden">
+                          <div className="px-5 py-3.5 border-b border-gray-100 bg-gray-50/80 flex items-center gap-2">
+                            <Layers className="w-4 h-4 text-gray-400" />
+                            <span className="text-[11px] font-black text-gray-500 uppercase tracking-widest">AI Linguistic Notes</span>
+                          </div>
+                          <ul className="p-5 space-y-3">
+                            {analysisResult.xaiReasoning.map((reason, idx) => (
+                              <li key={idx} className="flex items-start gap-3">
+                                <span className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center text-[9px] font-black text-gray-500 shrink-0 mt-0.5">{idx + 1}</span>
+                                <span className="text-[13px] text-gray-600 leading-relaxed font-medium">{reason}</span>
+                              </li>
+                            ))}
+                          </ul>
                         </div>
-                      </div>
 
-                      {/* Reasoning list */}
-                      <div className="p-5 rounded-2xl bg-gray-50 border border-gray-200 space-y-3">
-                        <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider block mb-2">AI Linguistic Notes</span>
-                        <ul className="space-y-2.5 text-sm text-[var(--text-primary)] font-medium">
-                          {analysisResult.xaiReasoning.map((reason, idx) => (
-                            <li key={idx} className="flex items-start gap-3">
-                              <span className="w-1.5 h-1.5 rounded-full bg-[var(--green-primary)] shrink-0 mt-2" />
-                              <span className="leading-relaxed">{reason}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      {/* Recommendations panel */}
-                      <div className="p-5 rounded-2xl bg-[#ECFDF5] border border-[#A7F3D0] space-y-3 md:col-span-2 xl:col-span-1">
-                        <span className="text-[11px] font-bold text-[#059669] uppercase tracking-wider block mb-2 flex items-center gap-1.5">
-                          <CheckCircle2 className="w-3.5 h-3.5" />
-                          AI Recommendations
-                        </span>
-                        <ul className="space-y-2.5 text-sm text-[var(--text-primary)] font-medium">
-                          {analysisResult.recommendations.map((rec, idx) => (
-                            <li key={idx} className="flex items-start gap-3">
-                              <span className="w-1.5 h-1.5 rounded-full bg-[#059669] shrink-0 mt-2" />
-                              <span className="leading-relaxed">{rec}</span>
-                            </li>
-                          ))}
-                        </ul>
+                        {/* AI Recommendations */}
+                        <div className="rounded-2xl border border-emerald-200 overflow-hidden">
+                          <div className="px-5 py-3.5 border-b border-emerald-100 bg-emerald-50/80 flex items-center gap-2">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                            <span className="text-[11px] font-black text-emerald-600 uppercase tracking-widest">AI Recommendations</span>
+                          </div>
+                          <ul className="p-5 space-y-3">
+                            {analysisResult.recommendations.map((rec, idx) => (
+                              <li key={idx} className="flex items-start gap-3">
+                                <span className="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center shrink-0 mt-0.5">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                                </span>
+                                <span className="text-[13px] text-gray-700 leading-relaxed font-medium">{rec}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   </div>
                 )}
 
-                {/* Fallback info block if Image-Only without Review */}
+                {/* ── IMAGE-ONLY: Findings + Next Steps ───────────────── */}
                 {analysisResult.imageUrl && !analysisResult.reviewText && (
-                  <div className="p-6 sm:p-8 rounded-3xl bg-white border border-[var(--border-card)] shadow-sm space-y-6">
-                    <h3 className="text-lg font-extrabold text-[var(--text-primary)] flex items-center gap-2" style={{ fontFamily: 'var(--font-heading)' }}>
-                      <ShieldCheck className="w-5 h-5 text-[var(--green-primary)]" />
-                      Visual Craftsmanship Reasoning & Next Steps
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="p-5 rounded-2xl bg-gray-50 border border-gray-200 space-y-3">
-                        <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider block mb-2">Key Inspection Findings</span>
-                        <ul className="space-y-2.5 text-sm text-[var(--text-primary)] font-medium">
+                  <div className="rounded-3xl bg-white border border-[var(--border-card)] shadow-sm overflow-hidden">
+                    <div className="flex items-center gap-3 px-6 sm:px-8 py-5 border-b border-gray-100">
+                      <div className="w-9 h-9 rounded-xl bg-[var(--green-primary)]/10 flex items-center justify-center">
+                        <ShieldCheck className="w-4.5 h-4.5 text-[var(--green-primary)]" />
+                      </div>
+                      <div>
+                        <h3 className="text-[15px] font-extrabold text-[var(--text-primary)]" style={{ fontFamily: 'var(--font-heading)' }}>
+                          Visual Craftsmanship & Next Steps
+                        </h3>
+                        <p className="text-[11px] text-gray-400 font-bold">Key inspection findings from visual AI analysis</p>
+                      </div>
+                    </div>
+                    <div className="p-6 sm:p-8 grid grid-cols-1 md:grid-cols-2 gap-5">
+                      <div className="rounded-2xl border border-gray-200 overflow-hidden">
+                        <div className="px-5 py-3.5 border-b border-gray-100 bg-gray-50/80 flex items-center gap-2">
+                          <Layers className="w-4 h-4 text-gray-400" />
+                          <span className="text-[11px] font-black text-gray-500 uppercase tracking-widest">Key Inspection Findings</span>
+                        </div>
+                        <ul className="p-5 space-y-3">
                           {analysisResult.xaiReasoning.map((reason, idx) => (
                             <li key={idx} className="flex items-start gap-3">
-                              <span className="w-1.5 h-1.5 rounded-full bg-[var(--green-primary)] shrink-0 mt-2" />
-                              <span className="leading-relaxed">{reason}</span>
+                              <span className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center text-[9px] font-black text-gray-500 shrink-0 mt-0.5">{idx + 1}</span>
+                              <span className="text-[13px] text-gray-600 leading-relaxed font-medium">{reason}</span>
                             </li>
                           ))}
                         </ul>
                       </div>
-
-                      <div className="p-5 rounded-2xl bg-[#ECFDF5] border border-[#A7F3D0] space-y-3">
-                        <span className="text-[11px] font-bold text-[#059669] uppercase tracking-wider block mb-2 flex items-center gap-1.5">
-                          <CheckCircle2 className="w-3.5 h-3.5" />
-                          Recommended Next Steps
-                        </span>
-                        <ul className="space-y-2.5 text-sm text-[var(--text-primary)] font-medium">
+                      <div className="rounded-2xl border border-emerald-200 overflow-hidden">
+                        <div className="px-5 py-3.5 border-b border-emerald-100 bg-emerald-50/80 flex items-center gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                          <span className="text-[11px] font-black text-emerald-600 uppercase tracking-widest">Recommended Next Steps</span>
+                        </div>
+                        <ul className="p-5 space-y-3">
                           {analysisResult.recommendations.map((rec, idx) => (
                             <li key={idx} className="flex items-start gap-3">
-                              <span className="w-1.5 h-1.5 rounded-full bg-[#059669] shrink-0 mt-2" />
-                              <span className="leading-relaxed">{rec}</span>
+                              <span className="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center shrink-0 mt-0.5">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                              </span>
+                              <span className="text-[13px] text-gray-700 leading-relaxed font-medium">{rec}</span>
                             </li>
                           ))}
                         </ul>
