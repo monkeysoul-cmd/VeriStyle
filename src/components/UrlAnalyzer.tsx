@@ -92,7 +92,8 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
 
       const data: UrlAnalysisResult = await response.json();
       setResult(data);
-      setImageSrc(data.imageUrl || (data.productImages && data.productImages[0]) || '');
+      const rawImg = (data.imageUrl || (data.productImages && data.productImages[0]) || '').trim();
+      setImageSrc(rawImg ? rawImg.replace(/^http:\/\//i, 'https://') : '');
       setStatus('result');
       if (onAnalyzeComplete) {
         onAnalyzeComplete(data);

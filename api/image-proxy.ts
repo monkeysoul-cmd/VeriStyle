@@ -7,10 +7,13 @@ export default async function handler(req: any, res: any) {
     return res.status(200).end();
   }
 
-  const imageUrl = req.query?.url;
+  let imageUrl = req.query?.url || req.params?.url;
   if (!imageUrl || typeof imageUrl !== "string" || !imageUrl.startsWith("http")) {
     return res.status(400).json({ error: "Valid image URL is required" });
   }
+
+  // Upgrade to HTTPS
+  imageUrl = imageUrl.replace(/^http:\/\//i, "https://");
 
   // Determine the best Referer header based on the image CDN
   let referer = "https://www.google.com/";
