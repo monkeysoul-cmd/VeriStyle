@@ -143,7 +143,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-indigo-500 selection:text-white flex flex-col justify-between">
+    <div className="min-h-screen font-sans flex flex-col justify-between" style={{ background: 'var(--bg-base)', color: 'var(--text-primary)' }}>
       <div>
         <Header
           currentTab={currentTab}
