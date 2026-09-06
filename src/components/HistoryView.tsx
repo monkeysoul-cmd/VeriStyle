@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { 
-  History, 
-  Search, 
-  ShieldCheck, 
-  AlertTriangle, 
-  ExternalLink, 
-  Trash2, 
+import {
+  History,
+  Search,
+  ShieldCheck,
+  AlertTriangle,
+  Trash2,
   Filter,
   ArrowRight,
-  Download
+  Download,
+  Clock,
+  Hash,
+  Package,
+  XCircle,
+  DatabaseZap,
 } from 'lucide-react';
 import { AnalysisResult } from '../types';
 
@@ -27,162 +31,273 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
     const matchesSearch = item.itemName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           item.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           item.verificationHash.toLowerCase().includes(searchTerm.toLowerCase());
-    
     if (filterVerdict === 'ALL') return matchesSearch;
     if (filterVerdict === 'AUTHENTIC') return matchesSearch && item.trustScore >= 80;
     if (filterVerdict === 'COUNTERFEIT') return matchesSearch && item.trustScore < 50;
     if (filterVerdict === 'SUSPICIOUS') return matchesSearch && item.trustScore >= 50 && item.trustScore < 80;
-    
     return matchesSearch;
   });
 
+  const getVerdictStyle = (score: number) => {
+    if (score >= 80) return {
+      badge: { background: 'rgba(0,255,122,0.1)', border: '1px solid rgba(0,255,122,0.25)', color: 'var(--green-accent-from)' },
+      bar: '#00D668',
+      barGlow: 'rgba(0,255,122,0.4)',
+      dot: 'var(--green-accent-from)',
+      cardBorder: 'rgba(0,255,122,0.12)',
+      cardBorderHover: 'rgba(0,255,122,0.28)',
+      label: 'AUTHENTIC',
+      icon: ShieldCheck,
+    };
+    if (score >= 50) return {
+      badge: { background: 'rgba(252,211,77,0.1)', border: '1px solid rgba(252,211,77,0.25)', color: '#FCD34D' },
+      bar: '#D97706',
+      barGlow: 'rgba(252,211,77,0.4)',
+      dot: '#FCD34D',
+      cardBorder: 'rgba(252,211,77,0.1)',
+      cardBorderHover: 'rgba(252,211,77,0.25)',
+      label: 'SUSPICIOUS',
+      icon: AlertTriangle,
+    };
+    return {
+      badge: { background: 'rgba(251,113,133,0.1)', border: '1px solid rgba(251,113,133,0.25)', color: '#FB7185' },
+      bar: '#E11D48',
+      barGlow: 'rgba(251,113,133,0.4)',
+      dot: '#FB7185',
+      cardBorder: 'rgba(251,113,133,0.1)',
+      cardBorderHover: 'rgba(251,113,133,0.25)',
+      label: 'COUNTERFEIT',
+      icon: XCircle,
+    };
+  };
+
   return (
-    <div className="w-full bg-[var(--page-light)] min-h-screen pt-24 pb-20">
+    <div className="w-full min-h-screen pt-24 pb-20" style={{ background: 'var(--bg-base)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+
         {/* Header */}
-        <motion.div 
-          className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[var(--border-subtle)] pb-6"
+        <motion.div
+          className="flex flex-col md:flex-row md:items-center justify-between gap-5 pb-8"
+          style={{ borderBottom: '1px solid rgba(0,255,122,0.07)' }}
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--green-primary)]/10 text-[var(--green-primary)] text-xs font-semibold mb-2 border border-[var(--green-primary)]/20">
+            <div className="section-badge mb-4">
               <History className="w-3.5 h-3.5" />
-              SAVED VERIFICATION HISTORY
+              Verification Vault
             </div>
-            <h1 className="text-3xl font-bold text-[var(--text-primary)] tracking-tight" style={{ fontFamily: 'var(--font-heading)' }}>Saved History</h1>
-            <p className="text-[var(--text-muted)] text-sm mt-1">
+            <h1
+              className="text-3xl sm:text-4xl font-extrabold tracking-tight"
+              style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}
+            >
+              Scan History
+            </h1>
+            <p className="text-sm mt-2" style={{ color: 'var(--text-muted)' }}>
               Browse and export previously executed authenticity scans and inspection records.
             </p>
           </div>
 
-          {onClearHistory && history.length > 0 && (
-            <motion.button
-              onClick={onClearHistory}
-              className="self-start md:self-auto px-4 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-semibold flex items-center gap-2 transition-colors cursor-pointer"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.97 }}
-            >
-              <Trash2 className="w-4 h-4" />
-              <span>Clear History</span>
-            </motion.button>
-          )}
+          <div className="flex items-center gap-3">
+            {history.length > 0 && (
+              <div
+                className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold"
+                style={{ background: 'rgba(0,255,122,0.07)', border: '1px solid rgba(0,255,122,0.1)', color: 'var(--text-muted)' }}
+              >
+                <DatabaseZap className="w-3.5 h-3.5" style={{ color: 'var(--green-accent-from)' }} />
+                {history.length} record{history.length !== 1 ? 's' : ''}
+              </div>
+            )}
+            {onClearHistory && history.length > 0 && (
+              <motion.button
+                onClick={onClearHistory}
+                className="px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer"
+                style={{
+                  background: 'rgba(251,113,133,0.08)',
+                  border: '1px solid rgba(251,113,133,0.2)',
+                  color: '#FB7185',
+                }}
+                whileHover={{ scale: 1.02, background: 'rgba(251,113,133,0.14)' }}
+                whileTap={{ scale: 0.97 }}
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                Clear Vault
+              </motion.button>
+            )}
+          </div>
         </motion.div>
 
-        {/* Controls: Search & Filter */}
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-12 gap-4"
+        {/* Controls */}
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-12 gap-3"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
           {/* Search */}
           <div className="md:col-span-8 relative">
-            <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" />
+            <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'var(--text-dim)' }} />
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search by apparel name, brand, or hash..."
-              className="w-full bg-white border border-gray-200 rounded-xl pl-10 pr-4 py-2.5 text-sm text-[var(--text-primary)] placeholder-gray-400 focus:outline-none focus:border-[var(--green-primary)] focus:ring-1 focus:ring-[var(--green-primary)] transition-colors shadow-sm"
+              className="input-dark w-full pl-11 pr-4 py-3 text-sm rounded-xl"
+              style={{ fontFamily: 'var(--font-body)' }}
             />
           </div>
 
           {/* Filter */}
-          <div className="md:col-span-4 flex items-center gap-2">
-            <Filter className="w-4 h-4 text-gray-400 shrink-0" />
+          <div className="md:col-span-4 relative">
+            <Filter className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: 'var(--text-dim)' }} />
             <select
               value={filterVerdict}
               onChange={(e) => setFilterVerdict(e.target.value)}
-              className="w-full bg-white border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--green-primary)] focus:ring-1 focus:ring-[var(--green-primary)] cursor-pointer transition-colors shadow-sm"
+              className="input-dark w-full pl-11 pr-4 py-3 text-sm rounded-xl cursor-pointer appearance-none"
             >
               <option value="ALL">All Verdicts</option>
-              <option value="AUTHENTIC">Verified Authentic (≥80%)</option>
-              <option value="SUSPICIOUS">Suspicious Review / Risk (50-79%)</option>
-              <option value="COUNTERFEIT">Likely Counterfeit (&lt;50%)</option>
+              <option value="AUTHENTIC">✓ Verified Authentic (≥80%)</option>
+              <option value="SUSPICIOUS">⚠ Suspicious (50-79%)</option>
+              <option value="COUNTERFEIT">✗ Likely Counterfeit (&lt;50%)</option>
             </select>
           </div>
         </motion.div>
 
-        {/* History List */}
+        {/* History Grid */}
         {filteredHistory.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {filteredHistory.map((item, idx) => {
-              const isAuthentic = item.trustScore >= 80;
-              const isSuspicious = item.trustScore >= 50 && item.trustScore < 80;
-              const scoreColor = isAuthentic ? '#059669' : isSuspicious ? '#d97706' : '#dc2626';
-              const accentBorder = isAuthentic ? 'hover:border-l-emerald-500' : isSuspicious ? 'hover:border-l-amber-500' : 'hover:border-l-rose-500';
+              const vs = getVerdictStyle(item.trustScore);
+              const VerdictIcon = vs.icon;
 
               return (
                 <motion.div
                   key={item.id}
                   onClick={() => onSelectResult(item)}
-                  className={`group cursor-pointer p-6 rounded-3xl bg-white border border-[var(--border-card)] border-l-4 border-l-transparent ${accentBorder} hover:border-[var(--green-primary)]/30 transition-all duration-400 shadow-sm hover:shadow-xl flex flex-col justify-between space-y-4`}
+                  className="group cursor-pointer p-6 rounded-2xl flex flex-col justify-between space-y-5 transition-all duration-300"
+                  style={{
+                    background: 'var(--bg-card)',
+                    border: `1px solid ${vs.cardBorder}`,
+                    boxShadow: 'var(--card-shadow)',
+                  }}
                   initial={{ opacity: 0, y: 20, scale: 0.97 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ duration: 0.5, delay: idx * 0.06, ease: [0.16, 1, 0.3, 1] }}
-                  whileHover={{ y: -4 }}
+                  whileHover={{ y: -4, borderColor: vs.cardBorderHover, boxShadow: 'var(--card-shadow-hover)' }}
                 >
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-mono text-[var(--green-primary)] font-bold bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200/80">
-                        {item.verificationHash}
-                      </span>
-                      <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border shadow-xs ${
-                        isAuthentic
-                          ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
-                          : isSuspicious
-                          ? 'bg-amber-50 text-amber-800 border-amber-200'
-                          : 'bg-rose-50 text-rose-800 border-rose-200'
-                      }`}>
-                        {item.verdict}
-                      </span>
+                  {/* Top: Hash + Verdict badge */}
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <div
+                      className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold"
+                      style={{ background: 'rgba(0,255,122,0.06)', border: '1px solid rgba(0,255,122,0.1)', color: 'var(--text-muted)' }}
+                    >
+                      <Hash className="w-3 h-3" />
+                      {item.verificationHash.slice(0, 14)}…
                     </div>
+                    <div
+                      className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider"
+                      style={vs.badge}
+                    >
+                      <VerdictIcon className="w-3 h-3" />
+                      {vs.label}
+                    </div>
+                  </div>
 
-                    <div className="flex items-center gap-4 pt-1">
-                      <div className="w-16 h-16 rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 shrink-0 p-1 flex items-center justify-center">
+                  {/* Product info */}
+                  <div className="flex items-center gap-4">
+                    <div
+                      className="w-16 h-16 rounded-xl overflow-hidden shrink-0 flex items-center justify-center"
+                      style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
+                    >
+                      {item.imageUrl ? (
                         <img
                           src={item.imageUrl}
                           alt={item.itemName}
                           referrerPolicy="no-referrer"
-                          className="max-h-full max-w-full object-contain rounded-xl mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
+                          className="max-h-full max-w-full object-contain rounded-xl group-hover:scale-105 transition-transform duration-500"
+                          style={{ mixBlendMode: 'luminosity', filter: 'brightness(0.9)' }}
                         />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <h3 className="font-extrabold text-[var(--text-primary)] text-sm group-hover:text-[var(--green-primary)] transition-colors truncate" style={{ fontFamily: 'var(--font-heading)' }}>
-                          {item.itemName}
-                        </h3>
-                        <p className="text-xs text-gray-500 font-semibold truncate mt-0.5">{item.brand} • {item.category}</p>
-                        <p className="text-[11px] text-gray-400 mt-1 font-medium">{item.timestamp}</p>
-                      </div>
+                      ) : (
+                        <Package className="w-7 h-7" style={{ color: 'var(--text-dim)' }} />
+                      )}
                     </div>
-
-                    <div className="p-3.5 rounded-2xl bg-gray-50/80 border border-gray-100 flex items-center justify-between text-xs">
-                      <span className="text-gray-500 font-bold uppercase tracking-wider text-[10px]">Trust Score:</span>
-                      <span className="font-black font-mono text-base" style={{ color: scoreColor }}>
-                        {item.trustScore}%
-                      </span>
+                    <div className="min-w-0 flex-1">
+                      <h3
+                        className="font-bold text-sm truncate mb-0.5 transition-colors"
+                        style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}
+                      >
+                        {item.itemName}
+                      </h3>
+                      <p className="text-xs font-medium truncate" style={{ color: 'var(--text-muted)' }}>
+                        {item.brand} · {item.category}
+                      </p>
+                      <p className="flex items-center gap-1 text-[11px] mt-1.5" style={{ color: 'var(--text-dim)' }}>
+                        <Clock className="w-3 h-3" />
+                        {item.timestamp}
+                      </p>
                     </div>
                   </div>
 
-                  <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-gray-400 group-hover:text-[var(--green-primary)] transition-colors">
-                    <span>Inspect Visual Heatmap</span>
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
+                  {/* Score bar */}
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center text-xs">
+                      <span className="font-bold uppercase tracking-wider" style={{ color: 'var(--text-dim)' }}>Trust Score</span>
+                      <span className="font-black font-mono text-base" style={{ color: vs.dot }}>
+                        {item.trustScore}%
+                      </span>
+                    </div>
+                    <div className="metric-track">
+                      <div
+                        className="metric-fill"
+                        style={{
+                          width: `${item.trustScore}%`,
+                          background: `linear-gradient(90deg, ${vs.bar}88, ${vs.bar})`,
+                          boxShadow: `0 0 8px ${vs.barGlow}`,
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Footer CTA */}
+                  <div
+                    className="flex items-center justify-between text-xs font-bold transition-colors pt-3"
+                    style={{
+                      borderTop: '1px solid rgba(255,255,255,0.05)',
+                      color: 'var(--text-dim)',
+                    }}
+                  >
+                    <span className="group-hover:text-[var(--green-accent-from)] transition-colors">View Analysis Report</span>
+                    <ArrowRight
+                      className="w-4 h-4 transition-all group-hover:translate-x-1.5 group-hover:text-[var(--green-accent-from)]"
+                    />
                   </div>
                 </motion.div>
               );
             })}
           </div>
         ) : (
-          <motion.div 
-            className="p-12 rounded-3xl bg-white border border-[var(--border-card)] text-center space-y-3 shadow-sm"
+          <motion.div
+            className="py-20 rounded-2xl text-center space-y-4"
+            style={{ background: 'var(--bg-surface-1)', border: '1px solid rgba(0,255,122,0.07)' }}
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <p className="text-lg font-bold text-[var(--text-primary)]" style={{ fontFamily: 'var(--font-heading)' }}>No scans found matching your filter</p>
-            <p className="text-xs text-[var(--text-muted)] font-medium">Run an AI inspection on the dashboard to store provenance records in your vault.</p>
+            <div
+              className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-2"
+              style={{ background: 'rgba(0,255,122,0.07)', border: '1px solid rgba(0,255,122,0.12)' }}
+            >
+              <History className="w-7 h-7" style={{ color: 'var(--text-muted)' }} />
+            </div>
+            <p className="text-lg font-bold" style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}>
+              {searchTerm || filterVerdict !== 'ALL' ? 'No scans match your filter' : 'Your vault is empty'}
+            </p>
+            <p className="text-sm max-w-sm mx-auto" style={{ color: 'var(--text-muted)' }}>
+              {searchTerm || filterVerdict !== 'ALL'
+                ? 'Try adjusting your search or filters to find records.'
+                : 'Run an AI inspection on the dashboard to store provenance records here.'}
+            </p>
           </motion.div>
         )}
       </div>
