@@ -110,7 +110,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
           />
         </div>
 
-        <div className="relative z-10 w-full max-w-5xl mx-auto px-2 sm:px-6 text-center flex flex-col items-center">
+        <div className="relative z-10 w-full max-w-6xl mx-auto px-2 sm:px-6 text-center flex flex-col items-center">
 
           {/* Badge */}
           <motion.div
@@ -167,7 +167,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
 
           {/* URL Analyzer — terminal style wrapper */}
           <motion.div
-            className="w-full max-w-3xl mb-6"
+            className="w-full mb-6"
             initial={{ opacity: 0, y: 20, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
