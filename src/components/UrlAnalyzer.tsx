@@ -18,21 +18,21 @@ interface UrlAnalyzerProps {
 const ScoreBar: React.FC<{ label: string; value: number; highlight?: boolean; delay?: number }> = ({
   label, value, highlight = false, delay = 0
 }) => {
-  const color = value >= 80 ? '#00FF7A' : value >= 50 ? '#FCD34D' : '#FB7185';
-  const glow = value >= 80 ? 'rgba(0,255,122,0.35)' : value >= 50 ? 'rgba(252,211,77,0.35)' : 'rgba(251,113,133,0.35)';
+  const color = value >= 80 ? '#00C966' : value >= 50 ? '#F59E0B' : '#F43F5E';
+  const glow = value >= 80 ? 'rgba(0,160,70,0.25)' : value >= 50 ? 'rgba(252,211,77,0.35)' : 'rgba(251,113,133,0.35)';
   return (
     <div
       className="p-3 rounded-xl transition-all duration-300"
       style={{
-        background: highlight ? 'rgba(0,255,122,0.05)' : 'rgba(255,255,255,0.03)',
-        border: highlight ? '1px solid rgba(0,255,122,0.12)' : '1px solid rgba(255,255,255,0.05)',
+        background: highlight ? 'rgba(0,160,70,0.04)' : 'rgba(0,60,30,0.03)',
+        border: highlight ? '1px solid rgba(0,80,40,0.08)' : '1px solid rgba(0,60,30,0.04)',
       }}
     >
       <div className="flex justify-between items-center mb-2">
         <span className="text-xs font-semibold" style={{ color: 'var(--text-secondary)' }}>{label}</span>
         <span className="text-xs font-black font-mono" style={{ color }}>{value}%</span>
       </div>
-      <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
+      <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(0,60,30,0.05)' }}>
         <motion.div
           className="h-full rounded-full"
           style={{ background: `linear-gradient(90deg, ${color}88, ${color})`, boxShadow: `0 0 8px ${glow}` }}
@@ -128,8 +128,8 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
           className="flex items-center gap-2 rounded-2xl p-2 relative z-50 transition-all"
           style={{
             background: 'rgba(13, 25, 18, 0.95)',
-            border: '1px solid rgba(0,255,122,0.18)',
-            boxShadow: '0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,255,122,0.08)',
+            border: '1px solid rgba(0,160,70,0.12)',
+            boxShadow: '0 8px 40px rgba(0,40,20,0.06), 0 0 0 1px rgba(0,80,40,0.07)',
           }}
         >
           <div className="pl-3 sm:pl-4 flex-shrink-0" style={{ color: 'var(--text-dim)' }}>
@@ -165,7 +165,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
         {status === 'error' && errorMsg && (
           <motion.div
             className="mt-3 p-4 rounded-xl flex items-center gap-3 text-sm"
-            style={{ background: 'rgba(251,113,133,0.08)', border: '1px solid rgba(251,113,133,0.2)', color: '#FB7185' }}
+            style={{ background: 'rgba(251,113,133,0.08)', border: '1px solid rgba(244,63,94,0.15)', color: '#F43F5E' }}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
           >
@@ -186,8 +186,8 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
           className="rounded-2xl p-8 sm:p-10 text-center relative overflow-hidden scanline-overlay"
           style={{
             background: 'var(--bg-card)',
-            border: '1px solid rgba(0,255,122,0.12)',
-            boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
+            border: '1px solid rgba(0,80,40,0.08)',
+            boxShadow: '0 20px 60px rgba(0,40,20,0.06)',
           }}
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -201,13 +201,13 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
             style={{ background: 'linear-gradient(90deg, transparent, var(--green-accent-from), transparent)', backgroundSize: '200% 100%' }}
           />
           {/* Center glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] rounded-full blur-3xl pointer-events-none animate-breathe" style={{ background: 'rgba(0,255,122,0.05)' }} />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] rounded-full blur-3xl pointer-events-none animate-breathe" style={{ background: 'rgba(0,160,70,0.04)' }} />
 
           {/* Spinner */}
           <div className="relative w-20 h-20 mx-auto mb-6 flex items-center justify-center">
-            <div className="absolute inset-0 rounded-full border-2 border-t-[var(--green-accent-from)] animate-spin" style={{ borderColor: 'rgba(0,255,122,0.12)', borderTopColor: 'var(--green-accent-from)' }} />
-            <div className="absolute inset-3 rounded-full border-2 border-b-[#818CF8] animate-spin" style={{ animationDuration: '1.5s', borderColor: 'rgba(129,140,248,0.1)', borderBottomColor: '#818CF8' }} />
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center animate-glow-pulse" style={{ background: 'rgba(0,255,122,0.1)', border: '1px solid rgba(0,255,122,0.2)' }}>
+            <div className="absolute inset-0 rounded-full border-2 border-t-[var(--green-accent-from)] animate-spin" style={{ borderColor: 'rgba(0,80,40,0.08)', borderTopColor: 'var(--green-accent-from)' }} />
+            <div className="absolute inset-3 rounded-full border-2 border-b-[#6366F1] animate-spin" style={{ animationDuration: '1.5s', borderColor: 'rgba(129,140,248,0.1)', borderBottomColor: '#6366F1' }} />
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center animate-glow-pulse" style={{ background: 'rgba(0,80,40,0.08)', border: '1px solid rgba(0,160,70,0.15)' }}>
               <Brain className="w-5 h-5" style={{ color: 'var(--green-accent-from)' }} />
             </div>
           </div>
@@ -224,12 +224,12 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                 className="flex items-center gap-3 p-3 rounded-xl transition-all duration-300"
                 style={{
                   background: idx === loadingStep
-                    ? 'rgba(0,255,122,0.07)'
+                    ? 'rgba(0,80,40,0.06)'
                     : idx < loadingStep
-                    ? 'rgba(0,255,122,0.03)'
+                    ? 'rgba(0,160,70,0.03)'
                     : 'transparent',
                   border: idx === loadingStep
-                    ? '1px solid rgba(0,255,122,0.18)'
+                    ? '1px solid rgba(0,160,70,0.12)'
                     : '1px solid transparent',
                 }}
                 initial={false}
@@ -280,45 +280,45 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
     const vc = isAuthentic
       ? {
           bg: 'rgba(0,30,15,0.98)',
-          border: 'rgba(0,255,122,0.25)',
-          glow: 'rgba(0,255,122,0.3)',
-          accent: '#00FF7A',
-          arcColor: '#00D668',
-          iconBg: 'rgba(0,255,122,0.12)',
-          iconBorder: 'rgba(0,255,122,0.25)',
-          icon: <ShieldCheck className="w-7 h-7" style={{ color: '#00FF7A' }} />,
-          badgeBg: 'rgba(0,255,122,0.1)',
-          badgeBorder: 'rgba(0,255,122,0.25)',
-          badgeText: '#00FF7A',
+          border: 'rgba(0,160,70,0.18)',
+          glow: 'rgba(0,160,70,0.2)',
+          accent: '#00C966',
+          arcColor: '#00A854',
+          iconBg: 'rgba(0,80,40,0.08)',
+          iconBorder: 'rgba(0,160,70,0.18)',
+          icon: <ShieldCheck className="w-7 h-7" style={{ color: '#00C966' }} />,
+          badgeBg: 'rgba(0,80,40,0.08)',
+          badgeBorder: 'rgba(0,160,70,0.18)',
+          badgeText: '#00C966',
           badgeLabel: 'VERIFIED AUTHENTIC',
         }
       : isSuspicious
       ? {
           bg: 'rgba(30,20,0,0.98)',
-          border: 'rgba(252,211,77,0.25)',
-          glow: 'rgba(252,211,77,0.25)',
-          accent: '#FCD34D',
-          arcColor: '#D97706',
-          iconBg: 'rgba(252,211,77,0.1)',
-          iconBorder: 'rgba(252,211,77,0.25)',
-          icon: <AlertTriangle className="w-7 h-7" style={{ color: '#FCD34D' }} />,
-          badgeBg: 'rgba(252,211,77,0.1)',
-          badgeBorder: 'rgba(252,211,77,0.25)',
-          badgeText: '#FCD34D',
+          border: 'rgba(245,158,11,0.18)',
+          glow: 'rgba(245,158,11,0.18)',
+          accent: '#F59E0B',
+          arcColor: '#B45309',
+          iconBg: 'rgba(245,158,11,0.08)',
+          iconBorder: 'rgba(245,158,11,0.18)',
+          icon: <AlertTriangle className="w-7 h-7" style={{ color: '#F59E0B' }} />,
+          badgeBg: 'rgba(245,158,11,0.08)',
+          badgeBorder: 'rgba(245,158,11,0.18)',
+          badgeText: '#F59E0B',
           badgeLabel: 'SUSPICIOUS / AT RISK',
         }
       : {
           bg: 'rgba(30,0,8,0.98)',
           border: 'rgba(251,113,133,0.25)',
           glow: 'rgba(251,113,133,0.25)',
-          accent: '#FB7185',
-          arcColor: '#E11D48',
+          accent: '#F43F5E',
+          arcColor: '#DC2626',
           iconBg: 'rgba(251,113,133,0.1)',
           iconBorder: 'rgba(251,113,133,0.25)',
-          icon: <XCircle className="w-7 h-7" style={{ color: '#FB7185' }} />,
+          icon: <XCircle className="w-7 h-7" style={{ color: '#F43F5E' }} />,
           badgeBg: 'rgba(251,113,133,0.1)',
           badgeBorder: 'rgba(251,113,133,0.25)',
-          badgeText: '#FB7185',
+          badgeText: '#F43F5E',
           badgeLabel: 'LIKELY COUNTERFEIT',
         };
 
@@ -346,19 +346,19 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
           className="rounded-2xl overflow-hidden"
           style={{
             background: 'var(--bg-card)',
-            border: '1px solid rgba(0,255,122,0.1)',
+            border: '1px solid rgba(0,80,40,0.08)',
             boxShadow: 'var(--card-shadow)',
           }}
         >
           {/* Card Header Bar */}
           <div
             className="p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4"
-            style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', background: 'rgba(255,255,255,0.02)' }}
+            style={{ borderBottom: '1px solid rgba(0,60,30,0.04)', background: 'rgba(255,255,255,0.02)' }}
           >
             <div className="flex items-center gap-3 min-w-0 flex-1">
               <span
                 className="px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider shrink-0"
-                style={{ background: 'rgba(0,255,122,0.08)', border: '1px solid rgba(0,255,122,0.18)', color: 'var(--green-accent-from)' }}
+                style={{ background: 'rgba(0,80,40,0.07)', border: '1px solid rgba(0,160,70,0.12)', color: 'var(--green-accent-from)' }}
               >
                 {platformLabel}
               </span>
@@ -372,12 +372,12 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                 </h3>
                 <div className="flex items-center gap-3 text-xs mt-0.5 flex-wrap">
                   <span className="flex items-center gap-1.5 font-bold" style={{ color: 'var(--text-secondary)' }}>
-                    <Building2 className="w-3.5 h-3.5" style={{ color: '#818CF8' }} />
+                    <Building2 className="w-3.5 h-3.5" style={{ color: '#6366F1' }} />
                     {displayBrand}
                   </span>
                   {result.sellerName && (
                     <span className="flex items-center gap-1" style={{ color: 'var(--text-muted)' }}>
-                      <Store className="w-3.5 h-3.5" style={{ color: '#FCD34D' }} />
+                      <Store className="w-3.5 h-3.5" style={{ color: '#F59E0B' }} />
                       Sold by: <strong className="font-bold ml-0.5" style={{ color: 'var(--text-secondary)' }}>{result.sellerName}</strong>
                     </span>
                   )}
@@ -391,7 +391,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition cursor-pointer"
-                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', color: 'var(--text-secondary)' }}
+                style={{ background: 'rgba(0,60,30,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: 'var(--text-secondary)' }}
               >
                 View on Site <ExternalLink className="w-3.5 h-3.5" />
               </a>
@@ -410,12 +410,12 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
             {/* LEFT — Product Image + Quick Stats */}
             <div
               className="col-span-12 md:col-span-4 p-5 sm:p-6 flex flex-col gap-4"
-              style={{ borderRight: '1px solid rgba(255,255,255,0.04)', background: 'rgba(0,0,0,0.15)' }}
+              style={{ borderRight: '1px solid rgba(0,60,30,0.03)', background: 'rgba(0,0,0,0.15)' }}
             >
               {/* Product Image */}
               <div
                 className="relative w-full h-60 rounded-xl flex items-center justify-center overflow-hidden group"
-                style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.06)' }}
+                style={{ background: 'rgba(0,40,20,0.04)', border: '1px solid rgba(0,60,30,0.05)' }}
               >
                 {!imageFailed && imageSrc ? (
                   <img
@@ -428,7 +428,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                   />
                 ) : (
                   <div className="flex flex-col items-center justify-center text-center p-4" style={{ color: 'var(--text-dim)' }}>
-                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-2" style={{ background: 'rgba(0,255,122,0.08)', border: '1px solid rgba(0,255,122,0.15)' }}>
+                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-2" style={{ background: 'rgba(0,80,40,0.07)', border: '1px solid rgba(0,80,40,0.1)' }}>
                       <ShoppingBag className="w-7 h-7" style={{ color: 'var(--green-accent-from)' }} />
                     </div>
                     <span className="text-xs font-bold" style={{ color: 'var(--text-secondary)' }}>{displayBrand}</span>
@@ -443,14 +443,14 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
 
               {/* Price / Rating / Reviews */}
               <div className="grid grid-cols-2 gap-3">
-                <div className="p-3.5 rounded-xl text-center" style={{ background: 'rgba(0,255,122,0.06)', border: '1px solid rgba(0,255,122,0.12)' }}>
+                <div className="p-3.5 rounded-xl text-center" style={{ background: 'rgba(0,160,70,0.05)', border: '1px solid rgba(0,80,40,0.08)' }}>
                   <div className="flex items-center justify-center gap-1 mb-1">
                     <Tag className="w-3.5 h-3.5" style={{ color: 'var(--green-accent-from)' }} />
                     <span className="text-[10px] uppercase font-black tracking-wider" style={{ color: 'var(--green-accent-from)' }}>Live Price</span>
                   </div>
                   <div className="font-black text-base sm:text-lg" style={{ color: 'var(--text-primary)' }}>{displayPrice}</div>
                   {result.priceAnalysis && (
-                    <div className="text-[10px] font-bold mt-1 px-2 py-0.5 rounded-full inline-block truncate max-w-full" style={{ background: 'rgba(0,255,122,0.1)', color: 'var(--green-accent-from)' }}>
+                    <div className="text-[10px] font-bold mt-1 px-2 py-0.5 rounded-full inline-block truncate max-w-full" style={{ background: 'rgba(0,80,40,0.08)', color: 'var(--green-accent-from)' }}>
                       {result.priceAnalysis}
                     </div>
                   )}
@@ -458,62 +458,62 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
 
                 <div className="p-3.5 rounded-xl text-center" style={{ background: 'rgba(252,211,77,0.06)', border: '1px solid rgba(252,211,77,0.12)' }}>
                   <div className="flex items-center justify-center gap-1 mb-1">
-                    <Star className="w-3.5 h-3.5" style={{ color: '#FCD34D', fill: '#FCD34D' }} />
-                    <span className="text-[10px] uppercase font-black tracking-wider" style={{ color: '#FCD34D' }}>Rating</span>
+                    <Star className="w-3.5 h-3.5" style={{ color: '#F59E0B', fill: '#F59E0B' }} />
+                    <span className="text-[10px] uppercase font-black tracking-wider" style={{ color: '#F59E0B' }}>Rating</span>
                   </div>
                   <div className="font-black text-base sm:text-lg" style={{ color: 'var(--text-primary)' }}>
                     {result.extractedRating ? `${result.extractedRating} / 5` : '4.3 / 5'}
                   </div>
-                  <div className="text-[10px] font-bold mt-1 px-2 py-0.5 rounded-full inline-block" style={{ background: 'rgba(252,211,77,0.1)', color: '#FCD34D' }}>
+                  <div className="text-[10px] font-bold mt-1 px-2 py-0.5 rounded-full inline-block" style={{ background: 'rgba(245,158,11,0.08)', color: '#F59E0B' }}>
                     Verified Score
                   </div>
                 </div>
 
-                <div className="col-span-2 p-3.5 rounded-xl" style={{ background: 'rgba(56,189,248,0.06)', border: '1px solid rgba(56,189,248,0.12)' }}>
+                <div className="col-span-2 p-3.5 rounded-xl" style={{ background: 'rgba(14,165,233,0.04)', border: '1px solid rgba(14,165,233,0.08)' }}>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] uppercase font-black tracking-wider flex items-center gap-1.5" style={{ color: '#38BDF8' }}>
+                    <span className="text-[10px] uppercase font-black tracking-wider flex items-center gap-1.5" style={{ color: '#0EA5E9' }}>
                       <TrendingUp className="w-3.5 h-3.5" /> Reviews Analyzed
                     </span>
                     <span className="font-black text-xs" style={{ color: 'var(--text-secondary)' }}>
                       {result.extractedReviewCount ? `${result.extractedReviewCount.toLocaleString()}` : 'Live Sample'}
                     </span>
                   </div>
-                  <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(56,189,248,0.1)' }}>
-                    <div className="h-full rounded-full w-4/5" style={{ background: 'linear-gradient(90deg, #0EA5E9, #38BDF8)', boxShadow: '0 0 8px rgba(56,189,248,0.4)' }} />
+                  <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(14,165,233,0.07)' }}>
+                    <div className="h-full rounded-full w-4/5" style={{ background: 'linear-gradient(90deg, #0EA5E9, #0EA5E9)', boxShadow: '0 0 8px rgba(56,189,248,0.4)' }} />
                   </div>
                 </div>
               </div>
 
               {/* Buyer Sentiment */}
               {result.sentimentBreakdown && (
-                <div className="p-4 rounded-xl space-y-3" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <div className="p-4 rounded-xl space-y-3" style={{ background: 'rgba(0,60,30,0.03)', border: '1px solid rgba(0,60,30,0.05)' }}>
                   <div className="flex items-center justify-between text-xs font-extrabold">
                     <span className="flex items-center gap-1.5" style={{ color: 'var(--text-secondary)' }}>
-                      <Compass className="w-4 h-4" style={{ color: '#818CF8' }} />
+                      <Compass className="w-4 h-4" style={{ color: '#6366F1' }} />
                       Buyer Sentiment
                     </span>
                     <span className="font-black" style={{ color: 'var(--green-accent-from)' }}>{result.sentimentBreakdown.positive}% Positive</span>
                   </div>
-                  <div className="h-2.5 rounded-full overflow-hidden flex gap-0.5" style={{ background: 'rgba(255,255,255,0.06)' }}>
-                    <div style={{ width: `${result.sentimentBreakdown.positive}%`, background: 'linear-gradient(90deg, #00D668, #00FF7A)', borderRadius: '9999px', boxShadow: '0 0 8px rgba(0,255,122,0.4)' }} />
-                    <div style={{ width: `${result.sentimentBreakdown.neutral}%`, background: '#FCD34D', borderRadius: '9999px' }} />
-                    <div style={{ width: `${result.sentimentBreakdown.negative}%`, background: '#FB7185', borderRadius: '9999px' }} />
+                  <div className="h-2.5 rounded-full overflow-hidden flex gap-0.5" style={{ background: 'rgba(0,60,30,0.05)' }}>
+                    <div style={{ width: `${result.sentimentBreakdown.positive}%`, background: 'linear-gradient(90deg, #00A854, #00C966)', borderRadius: '9999px', boxShadow: '0 0 8px rgba(0,160,70,0.2)' }} />
+                    <div style={{ width: `${result.sentimentBreakdown.neutral}%`, background: '#F59E0B', borderRadius: '9999px' }} />
+                    <div style={{ width: `${result.sentimentBreakdown.negative}%`, background: '#F43F5E', borderRadius: '9999px' }} />
                   </div>
                   <div className="flex justify-between text-[10px] font-bold" style={{ color: 'var(--text-dim)' }}>
                     <span style={{ color: 'var(--green-accent-from)' }}>👍 {result.sentimentBreakdown.positive}%</span>
-                    <span style={{ color: '#FCD34D' }}>😐 {result.sentimentBreakdown.neutral}%</span>
-                    <span style={{ color: '#FB7185' }}>👎 {result.sentimentBreakdown.negative}%</span>
+                    <span style={{ color: '#F59E0B' }}>😐 {result.sentimentBreakdown.neutral}%</span>
+                    <span style={{ color: '#F43F5E' }}>👎 {result.sentimentBreakdown.negative}%</span>
                   </div>
                 </div>
               )}
 
               {/* Hash & Seller */}
-              <div className="p-3.5 rounded-xl space-y-2 text-xs" style={{ background: 'rgba(0,255,122,0.04)', border: '1px solid rgba(0,255,122,0.08)' }}>
+              <div className="p-3.5 rounded-xl space-y-2 text-xs" style={{ background: 'rgba(0,160,70,0.03)', border: '1px solid rgba(0,80,40,0.07)' }}>
                 <div className="flex items-center justify-between">
                   <span className="font-bold uppercase tracking-wider text-[10px]" style={{ color: 'var(--text-dim)' }}>Seller:</span>
                   <span className="font-bold truncate max-w-[150px]" style={{ color: 'var(--text-secondary)' }}>{result.sellerName || 'Direct Marketplace'}</span>
                 </div>
-                <div className="flex items-center justify-between pt-2" style={{ borderTop: '1px solid rgba(0,255,122,0.08)' }}>
+                <div className="flex items-center justify-between pt-2" style={{ borderTop: '1px solid rgba(0,80,40,0.07)' }}>
                   <span className="font-bold uppercase tracking-wider text-[10px] flex items-center gap-1" style={{ color: 'var(--text-dim)' }}>
                     <Hash className="w-3 h-3" />Audit Hash:
                   </span>
@@ -562,7 +562,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                 {/* Score */}
                 <div
                   className="text-center shrink-0 self-end sm:self-center p-4 rounded-xl min-w-[110px] relative z-10"
-                  style={{ background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.08)' }}
+                  style={{ background: 'rgba(0,40,20,0.05)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.08)' }}
                 >
                   <div className="text-5xl font-black font-mono tracking-tight animate-halo-pulse" style={{ color: vc.accent }}>
                     {displayScore}
@@ -575,9 +575,9 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
               {((displayLove && displayLove.length > 0) || (displayDislike && displayDislike.length > 0)) && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {displayLove && displayLove.length > 0 && (
-                    <div className="p-4 sm:p-5 rounded-xl" style={{ background: 'rgba(0,255,122,0.05)', border: '1px solid rgba(0,255,122,0.12)' }}>
+                    <div className="p-4 sm:p-5 rounded-xl" style={{ background: 'rgba(0,160,70,0.04)', border: '1px solid rgba(0,80,40,0.08)' }}>
                       <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider mb-3" style={{ color: 'var(--green-accent-from)' }}>
-                        <span className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: 'rgba(0,255,122,0.15)', border: '1px solid rgba(0,255,122,0.25)' }}>
+                        <span className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: 'rgba(0,80,40,0.1)', border: '1px solid rgba(0,160,70,0.18)' }}>
                           <ThumbsUp className="w-3.5 h-3.5" style={{ color: 'var(--green-accent-from)' }} />
                         </span>
                         What Buyers Love
@@ -595,16 +595,16 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
 
                   {displayDislike && displayDislike.length > 0 && (
                     <div className="p-4 sm:p-5 rounded-xl" style={{ background: 'rgba(251,113,133,0.05)', border: '1px solid rgba(251,113,133,0.12)' }}>
-                      <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider mb-3" style={{ color: '#FB7185' }}>
+                      <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider mb-3" style={{ color: '#F43F5E' }}>
                         <span className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: 'rgba(251,113,133,0.12)', border: '1px solid rgba(251,113,133,0.25)' }}>
-                          <ThumbsDown className="w-3.5 h-3.5" style={{ color: '#FB7185' }} />
+                          <ThumbsDown className="w-3.5 h-3.5" style={{ color: '#F43F5E' }} />
                         </span>
                         Critical Flaws & Warnings
                       </div>
                       <ul className="space-y-2">
                         {displayDislike.map((pt, i) => (
                           <li key={i} className="text-xs flex items-start gap-2.5 font-medium leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-                            <span className="w-1.5 h-1.5 rounded-full shrink-0 mt-1.5" style={{ background: '#FB7185' }} />
+                            <span className="w-1.5 h-1.5 rounded-full shrink-0 mt-1.5" style={{ background: '#F43F5E' }} />
                             <span>{pt}</span>
                           </li>
                         ))}
@@ -617,9 +617,9 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
               {/* HIDDEN PATTERN + AI SURPRISE */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="p-4 sm:p-5 rounded-xl" style={{ background: 'rgba(129,140,248,0.05)', border: '1px solid rgba(129,140,248,0.12)' }}>
-                  <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider mb-2" style={{ color: '#818CF8' }}>
+                  <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider mb-2" style={{ color: '#6366F1' }}>
                     <span className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: 'rgba(129,140,248,0.12)', border: '1px solid rgba(129,140,248,0.25)' }}>
-                      <Eye className="w-3.5 h-3.5" style={{ color: '#818CF8' }} />
+                      <Eye className="w-3.5 h-3.5" style={{ color: '#6366F1' }} />
                     </span>
                     Hidden Pattern
                   </div>
@@ -627,9 +627,9 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                 </div>
 
                 <div className="p-4 sm:p-5 rounded-xl" style={{ background: 'rgba(252,211,77,0.05)', border: '1px solid rgba(252,211,77,0.12)' }}>
-                  <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider mb-2" style={{ color: '#FCD34D' }}>
-                    <span className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: 'rgba(252,211,77,0.1)', border: '1px solid rgba(252,211,77,0.25)' }}>
-                      <Zap className="w-3.5 h-3.5" style={{ color: '#FCD34D' }} />
+                  <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider mb-2" style={{ color: '#F59E0B' }}>
+                    <span className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.18)' }}>
+                      <Zap className="w-3.5 h-3.5" style={{ color: '#F59E0B' }} />
                     </span>
                     What Surprised Our AI
                   </div>
@@ -659,17 +659,17 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
           {/* Review Flags */}
           <div className="rounded-2xl p-5 sm:p-6" style={{ background: 'var(--bg-card)', border: '1px solid rgba(251,113,133,0.1)' }}>
             <h4 className="text-xs font-black uppercase tracking-wider mb-4 flex items-center gap-2" style={{ color: 'var(--text-muted)' }}>
-              <Flame className="w-4 h-4" style={{ color: '#FB7185' }} />
+              <Flame className="w-4 h-4" style={{ color: '#F43F5E' }} />
               Review & Merchant Red Flags
             </h4>
             <div className="space-y-2.5">
               {result.reviewFlags && result.reviewFlags.length > 0 ? result.reviewFlags.map((flag, idx) => (
                 <div key={idx} className="flex items-start gap-3 p-3.5 rounded-xl" style={{
-                  background: flag.severity === 'high' ? 'rgba(251,113,133,0.07)' : flag.severity === 'medium' ? 'rgba(252,211,77,0.07)' : 'rgba(255,255,255,0.03)',
-                  border: flag.severity === 'high' ? '1px solid rgba(251,113,133,0.18)' : flag.severity === 'medium' ? '1px solid rgba(252,211,77,0.18)' : '1px solid rgba(255,255,255,0.06)',
+                  background: flag.severity === 'high' ? 'rgba(244,63,94,0.06)' : flag.severity === 'medium' ? 'rgba(245,158,11,0.06)' : 'rgba(0,60,30,0.03)',
+                  border: flag.severity === 'high' ? '1px solid rgba(251,113,133,0.18)' : flag.severity === 'medium' ? '1px solid rgba(252,211,77,0.18)' : '1px solid rgba(0,60,30,0.05)',
                 }}>
                   <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" style={{
-                    color: flag.severity === 'high' ? '#FB7185' : flag.severity === 'medium' ? '#FCD34D' : 'var(--text-muted)'
+                    color: flag.severity === 'high' ? '#F43F5E' : flag.severity === 'medium' ? '#F59E0B' : 'var(--text-muted)'
                   }} />
                   <div>
                     <p className="text-xs font-bold" style={{ color: 'var(--text-primary)' }}>{flag.type}</p>
@@ -677,7 +677,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                   </div>
                 </div>
               )) : (
-                <div className="flex items-center gap-3 p-3.5 rounded-xl" style={{ background: 'rgba(0,255,122,0.06)', border: '1px solid rgba(0,255,122,0.15)' }}>
+                <div className="flex items-center gap-3 p-3.5 rounded-xl" style={{ background: 'rgba(0,160,70,0.05)', border: '1px solid rgba(0,80,40,0.1)' }}>
                   <CheckCircle2 className="w-4 h-4 shrink-0" style={{ color: 'var(--green-accent-from)' }} />
                   <p className="text-xs font-bold" style={{ color: 'var(--green-accent-from)' }}>No suspicious review manipulation detected.</p>
                 </div>
@@ -686,14 +686,14 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
           </div>
 
           {/* AI Recommendations */}
-          <div className="rounded-2xl p-5 sm:p-6" style={{ background: 'var(--bg-card)', border: '1px solid rgba(0,255,122,0.08)' }}>
+          <div className="rounded-2xl p-5 sm:p-6" style={{ background: 'var(--bg-card)', border: '1px solid rgba(0,80,40,0.07)' }}>
             <h4 className="text-xs font-black uppercase tracking-wider mb-4 flex items-center gap-2" style={{ color: 'var(--text-muted)' }}>
-              <Lightbulb className="w-4 h-4" style={{ color: '#FCD34D' }} />
+              <Lightbulb className="w-4 h-4" style={{ color: '#F59E0B' }} />
               AI Action Recommendations
             </h4>
             <ul className="space-y-2.5">
               {result.recommendations && result.recommendations.map((rec, idx) => (
-                <li key={idx} className="flex items-start gap-3 p-3.5 rounded-xl" style={{ background: 'rgba(0,255,122,0.04)', border: '1px solid rgba(0,255,122,0.08)' }}>
+                <li key={idx} className="flex items-start gap-3 p-3.5 rounded-xl" style={{ background: 'rgba(0,160,70,0.03)', border: '1px solid rgba(0,80,40,0.07)' }}>
                   <ChevronRight className="w-4 h-4 shrink-0 mt-0.5" style={{ color: 'var(--green-accent-from)' }} />
                   <span className="text-xs font-medium leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{rec}</span>
                 </li>
@@ -704,13 +704,13 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
           {/* Forensic Reasoning */}
           <div className="rounded-2xl p-5 sm:p-6 md:col-span-2 xl:col-span-1" style={{ background: 'var(--bg-card)', border: '1px solid rgba(129,140,248,0.1)' }}>
             <h4 className="text-xs font-black uppercase tracking-wider mb-4 flex items-center gap-2" style={{ color: 'var(--text-muted)' }}>
-              <Sparkles className="w-4 h-4" style={{ color: '#818CF8' }} />
+              <Sparkles className="w-4 h-4" style={{ color: '#6366F1' }} />
               Forensic Inspection Reasoning
             </h4>
             <ul className="space-y-2.5">
               {result.xaiReasoning && result.xaiReasoning.map((reason, idx) => (
                 <li key={idx} className="flex items-start gap-3 p-3.5 rounded-xl" style={{ background: 'rgba(129,140,248,0.05)', border: '1px solid rgba(129,140,248,0.1)' }}>
-                  <span className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5" style={{ background: 'rgba(129,140,248,0.15)', color: '#818CF8' }}>{idx + 1}</span>
+                  <span className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5" style={{ background: 'rgba(129,140,248,0.15)', color: '#6366F1' }}>{idx + 1}</span>
                   <span className="text-xs font-medium leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{reason}</span>
                 </li>
               ))}

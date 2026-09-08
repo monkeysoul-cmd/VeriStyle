@@ -42,13 +42,13 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
             className="flex items-center justify-between px-4 sm:px-5 py-2.5 rounded-2xl transition-all duration-500"
             style={{
               background: scrolled
-                ? 'rgba(4, 9, 7, 0.92)'
-                : 'rgba(4, 9, 7, 0.78)',
+                ? 'rgba(255, 255, 255, 0.92)'
+                : 'rgba(255, 255, 255, 0.78)',
               boxShadow: scrolled
-                ? '0 4px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,255,122,0.1), 0 0 20px rgba(0,255,122,0.04)'
-                : '0 2px 12px rgba(0,0,0,0.3), 0 0 0 1px rgba(0,255,122,0.06)',
+                ? '0 1px 24px rgba(0,40,20,0.08), 0 0 0 1px rgba(0,80,40,0.06)'
+                : '0 1px 8px rgba(0,40,20,0.04), 0 0 0 1px rgba(0,80,40,0.04)',
               backdropFilter: 'blur(40px) saturate(160%)',
-              border: '1px solid rgba(0, 255, 122, 0.08)',
+              border: '1px solid rgba(0, 80, 40, 0.06)',
             }}
             initial={{ y: -24, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -62,13 +62,13 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
               <motion.div
                 className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0 relative"
                 style={{
-                  background: 'linear-gradient(135deg, #00FF7A, #00D668)',
-                  boxShadow: '0 0 16px rgba(0,255,122,0.4), 0 4px 12px rgba(0,0,0,0.4)',
+                  background: 'linear-gradient(135deg, #00C966, #00A854)',
+                  boxShadow: '0 2px 12px rgba(0,160,70,0.3), 0 4px 12px rgba(0,40,20,0.1)',
                 }}
                 whileHover={{ rotate: 6, scale: 1.08 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 15 }}
               >
-                <VeriLensIcon className="w-4 h-4 sm:w-5 sm:h-5 text-[#040907]" />
+                <VeriLensIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </motion.div>
               <div className="flex flex-col leading-none">
                 <span
@@ -77,14 +77,14 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
                 >
                   VeriStyle
                 </span>
-                <span className="text-[9px] font-bold uppercase tracking-[0.15em] text-[var(--green-accent-from)] opacity-70">
+                <span className="text-[9px] font-bold uppercase tracking-[0.15em] opacity-70" style={{ color: 'var(--green-accent-from)' }}>
                   AI Authenticator
                 </span>
               </div>
             </button>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-1 p-1 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(0,255,122,0.07)' }}>
+            <div className="hidden md:flex items-center gap-1 p-1 rounded-xl" style={{ background: 'rgba(0,60,30,0.03)', border: '1px solid rgba(0,80,40,0.06)' }}>
               {navItems.map((item) => (
                 <button
                   key={item.id}
@@ -96,7 +96,7 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
                     <motion.div
                       layoutId="active-tab-bg"
                       className="absolute inset-0 rounded-lg"
-                      style={{ background: 'rgba(0,255,122,0.08)', border: '1px solid rgba(0,255,122,0.15)' }}
+                      style={{ background: 'rgba(0,160,70,0.06)', border: '1px solid rgba(0,160,70,0.12)' }}
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -105,7 +105,7 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
                     <motion.div
                       layoutId="active-tab-dot"
                       className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full"
-                      style={{ background: 'var(--green-accent-from)', boxShadow: '0 0 6px rgba(0,255,122,0.8)' }}
+                      style={{ background: 'var(--green-accent-from)', boxShadow: '0 0 4px rgba(0,160,70,0.5)' }}
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -116,10 +116,10 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
             {/* Right Actions */}
             <div className="flex items-center gap-2.5">
               {/* Status badge */}
-              <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full" style={{ background: 'rgba(0,255,122,0.06)', border: '1px solid rgba(0,255,122,0.12)' }}>
+              <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full" style={{ background: 'rgba(0,160,70,0.05)', border: '1px solid rgba(0,160,70,0.12)' }}>
                 <span className="relative flex w-1.5 h-1.5">
-                  <span className="absolute inset-0 rounded-full bg-[var(--green-accent-from)] animate-ping opacity-75" />
-                  <span className="relative rounded-full w-1.5 h-1.5 bg-[var(--green-accent-from)]" />
+                  <span className="absolute inset-0 rounded-full animate-ping opacity-75" style={{ background: 'var(--green-accent-from)' }} />
+                  <span className="relative rounded-full w-1.5 h-1.5" style={{ background: 'var(--green-accent-from)' }} />
                 </span>
                 <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--green-accent-from)' }}>Live</span>
               </div>
@@ -140,7 +140,7 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
               <motion.button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="md:hidden p-2 rounded-xl transition-colors cursor-pointer"
-                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(0,255,122,0.1)', color: 'var(--text-primary)' }}
+                style={{ background: 'rgba(0,60,30,0.04)', border: '1px solid rgba(0,80,40,0.08)', color: 'var(--text-primary)' }}
                 whileTap={{ scale: 0.9 }}
               >
                 {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -164,10 +164,10 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
               <div
                 className="rounded-2xl p-3 flex flex-col gap-1"
                 style={{
-                  background: 'rgba(4, 9, 7, 0.96)',
-                  border: '1px solid rgba(0,255,122,0.12)',
+                  background: 'rgba(255, 255, 255, 0.96)',
+                  border: '1px solid rgba(0,80,40,0.08)',
                   backdropFilter: 'blur(40px)',
-                  boxShadow: '0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(0,255,122,0.08)',
+                  boxShadow: '0 12px 40px rgba(0,40,20,0.12), 0 0 0 1px rgba(0,80,40,0.04)',
                 }}
               >
                 {navItems.map((item, i) => (
@@ -177,8 +177,8 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
                     className="flex items-center px-4 py-3 rounded-xl text-base font-semibold transition-all text-left cursor-pointer"
                     style={{
                       color: currentTab === item.id ? 'var(--green-accent-from)' : 'var(--text-secondary)',
-                      background: currentTab === item.id ? 'rgba(0,255,122,0.08)' : 'transparent',
-                      border: currentTab === item.id ? '1px solid rgba(0,255,122,0.14)' : '1px solid transparent',
+                      background: currentTab === item.id ? 'rgba(0,160,70,0.06)' : 'transparent',
+                      border: currentTab === item.id ? '1px solid rgba(0,160,70,0.1)' : '1px solid transparent',
                     }}
                     initial={{ opacity: 0, x: -16 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -187,7 +187,7 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
                     {item.label}
                   </motion.button>
                 ))}
-                <div className="h-px mx-2 my-1" style={{ background: 'rgba(0,255,122,0.08)' }} />
+                <div className="h-px mx-2 my-1" style={{ background: 'rgba(0,80,40,0.06)' }} />
                 <motion.button
                   onClick={() => { onQuickStart(); handleNav('dashboard'); }}
                   className="flex justify-center items-center gap-2 px-4 py-3.5 rounded-xl text-base font-bold active:scale-95 transition-all cursor-pointer btn-neon"
@@ -205,7 +205,7 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
             {/* Overlay */}
             <motion.div
               className="fixed inset-0 z-30 md:hidden"
-              style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}
+              style={{ background: 'rgba(0,40,20,0.15)', backdropFilter: 'blur(4px)' }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}

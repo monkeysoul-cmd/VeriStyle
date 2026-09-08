@@ -40,30 +40,30 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
 
   const getVerdictStyle = (score: number) => {
     if (score >= 80) return {
-      badge: { background: 'rgba(0,255,122,0.1)', border: '1px solid rgba(0,255,122,0.25)', color: 'var(--green-accent-from)' },
-      bar: '#00D668',
-      barGlow: 'rgba(0,255,122,0.4)',
+      badge: { background: 'rgba(0,80,40,0.08)', border: '1px solid rgba(0,160,70,0.18)', color: 'var(--green-accent-from)' },
+      bar: '#00A854',
+      barGlow: 'rgba(0,160,70,0.2)',
       dot: 'var(--green-accent-from)',
-      cardBorder: 'rgba(0,255,122,0.12)',
-      cardBorderHover: 'rgba(0,255,122,0.28)',
+      cardBorder: 'rgba(0,80,40,0.08)',
+      cardBorderHover: 'rgba(0,160,70,0.2)',
       label: 'AUTHENTIC',
       icon: ShieldCheck,
     };
     if (score >= 50) return {
-      badge: { background: 'rgba(252,211,77,0.1)', border: '1px solid rgba(252,211,77,0.25)', color: '#FCD34D' },
-      bar: '#D97706',
-      barGlow: 'rgba(252,211,77,0.4)',
-      dot: '#FCD34D',
-      cardBorder: 'rgba(252,211,77,0.1)',
-      cardBorderHover: 'rgba(252,211,77,0.25)',
+      badge: { background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.18)', color: '#F59E0B' },
+      bar: '#B45309',
+      barGlow: 'rgba(245,158,11,0.2)',
+      dot: '#F59E0B',
+      cardBorder: 'rgba(245,158,11,0.08)',
+      cardBorderHover: 'rgba(245,158,11,0.18)',
       label: 'SUSPICIOUS',
       icon: AlertTriangle,
     };
     return {
-      badge: { background: 'rgba(251,113,133,0.1)', border: '1px solid rgba(251,113,133,0.25)', color: '#FB7185' },
-      bar: '#E11D48',
+      badge: { background: 'rgba(251,113,133,0.1)', border: '1px solid rgba(251,113,133,0.25)', color: '#F43F5E' },
+      bar: '#DC2626',
       barGlow: 'rgba(251,113,133,0.4)',
-      dot: '#FB7185',
+      dot: '#F43F5E',
       cardBorder: 'rgba(251,113,133,0.1)',
       cardBorderHover: 'rgba(251,113,133,0.25)',
       label: 'COUNTERFEIT',
@@ -78,7 +78,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
         {/* Header */}
         <motion.div
           className="flex flex-col md:flex-row md:items-center justify-between gap-5 pb-8"
-          style={{ borderBottom: '1px solid rgba(0,255,122,0.07)' }}
+          style={{ borderBottom: '1px solid rgba(0,80,40,0.06)' }}
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -103,7 +103,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
             {history.length > 0 && (
               <div
                 className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold"
-                style={{ background: 'rgba(0,255,122,0.07)', border: '1px solid rgba(0,255,122,0.1)', color: 'var(--text-muted)' }}
+                style={{ background: 'rgba(0,80,40,0.06)', border: '1px solid rgba(0,80,40,0.08)', color: 'var(--text-muted)' }}
               >
                 <DatabaseZap className="w-3.5 h-3.5" style={{ color: 'var(--green-accent-from)' }} />
                 {history.length} record{history.length !== 1 ? 's' : ''}
@@ -115,8 +115,8 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
                 className="px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer"
                 style={{
                   background: 'rgba(251,113,133,0.08)',
-                  border: '1px solid rgba(251,113,133,0.2)',
-                  color: '#FB7185',
+                  border: '1px solid rgba(244,63,94,0.15)',
+                  color: '#F43F5E',
                 }}
                 whileHover={{ scale: 1.02, background: 'rgba(251,113,133,0.14)' }}
                 whileTap={{ scale: 0.97 }}
@@ -190,7 +190,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
                   <div className="flex items-center justify-between gap-2 flex-wrap">
                     <div
                       className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold"
-                      style={{ background: 'rgba(0,255,122,0.06)', border: '1px solid rgba(0,255,122,0.1)', color: 'var(--text-muted)' }}
+                      style={{ background: 'rgba(0,160,70,0.05)', border: '1px solid rgba(0,80,40,0.08)', color: 'var(--text-muted)' }}
                     >
                       <Hash className="w-3 h-3" />
                       {item.verificationHash.slice(0, 14)}…
@@ -208,7 +208,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
                   <div className="flex items-center gap-4">
                     <div
                       className="w-16 h-16 rounded-xl overflow-hidden shrink-0 flex items-center justify-center"
-                      style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
+                      style={{ background: 'rgba(0,60,30,0.03)', border: '1px solid rgba(0,60,30,0.05)' }}
                     >
                       {item.imageUrl ? (
                         <img
@@ -263,7 +263,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
                   <div
                     className="flex items-center justify-between text-xs font-bold transition-colors pt-3"
                     style={{
-                      borderTop: '1px solid rgba(255,255,255,0.05)',
+                      borderTop: '1px solid rgba(0,60,30,0.04)',
                       color: 'var(--text-dim)',
                     }}
                   >
@@ -279,14 +279,14 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
         ) : (
           <motion.div
             className="py-20 rounded-2xl text-center space-y-4"
-            style={{ background: 'var(--bg-surface-1)', border: '1px solid rgba(0,255,122,0.07)' }}
+            style={{ background: 'var(--bg-surface-1)', border: '1px solid rgba(0,80,40,0.06)' }}
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
           >
             <div
               className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-2"
-              style={{ background: 'rgba(0,255,122,0.07)', border: '1px solid rgba(0,255,122,0.12)' }}
+              style={{ background: 'rgba(0,80,40,0.06)', border: '1px solid rgba(0,80,40,0.08)' }}
             >
               <History className="w-7 h-7" style={{ color: 'var(--text-muted)' }} />
             </div>
