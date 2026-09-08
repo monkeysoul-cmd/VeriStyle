@@ -41,21 +41,21 @@ export const VeriLensLogo: React.FC<VeriLensLogoProps> = ({
             className="relative z-10"
           >
             {/* Outer Scanning Bracket Corners (Lens Reticle) */}
-            <path d="M3 8V5A2 2 0 0 1 5 3H8" stroke="#818CF8" strokeWidth="1.5" strokeLinecap="round" />
-            <path d="M16 3H19A2 2 0 0 1 21 5V8" stroke="#818CF8" strokeWidth="1.5" strokeLinecap="round" />
-            <path d="M21 16V19A2 2 0 0 1 19 21H16" stroke="#34D399" strokeWidth="1.5" strokeLinecap="round" />
-            <path d="M8 21H5A2 2 0 0 1 3 19V16" stroke="#34D399" strokeWidth="1.5" strokeLinecap="round" />
+            <path d="M3 8V5A2 2 0 0 1 5 3H8" stroke="#6366F1" strokeWidth="1.5" strokeLinecap="round" />
+            <path d="M16 3H19A2 2 0 0 1 21 5V8" stroke="#6366F1" strokeWidth="1.5" strokeLinecap="round" />
+            <path d="M21 16V19A2 2 0 0 1 19 21H16" stroke="#10B981" strokeWidth="1.5" strokeLinecap="round" />
+            <path d="M8 21H5A2 2 0 0 1 3 19V16" stroke="#10B981" strokeWidth="1.5" strokeLinecap="round" />
             
             {/* Center Lens Iris Circle */}
             <circle cx="12" cy="12" r="5" stroke="url(#verilens-grad)" strokeWidth="1.5" className="animate-pulse" />
             
             {/* Authenticity Verification Checkmark inside Lens */}
-            <path d="M9.5 12L11.2 13.7L14.8 10" stroke="#34D399" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M9.5 12L11.2 13.7L14.8 10" stroke="#10B981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
 
             <defs>
               <linearGradient id="verilens-grad" x1="7" y1="7" x2="17" y2="17" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#818CF8" />
-                <stop offset="1" stopColor="#34D399" />
+                <stop stopColor="#6366F1" />
+                <stop offset="1" stopColor="#10B981" />
               </linearGradient>
             </defs>
           </svg>

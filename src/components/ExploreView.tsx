@@ -94,7 +94,7 @@ export const ExploreView: React.FC = () => {
               className="italic"
               style={{
                 fontFamily: 'var(--font-serif)',
-                background: 'linear-gradient(135deg, #00FF7A, #00D668)',
+                background: 'linear-gradient(135deg, #00C966, #00A854)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -136,7 +136,7 @@ export const ExploreView: React.FC = () => {
         {/* Filters Row */}
         <motion.div
           className="flex flex-col sm:flex-row items-center gap-4 p-4 rounded-2xl"
-          style={{ background: 'var(--bg-surface-2)', border: '1px solid rgba(0,255,122,0.07)' }}
+          style={{ background: 'var(--bg-surface-2)', border: '1px solid rgba(0,80,40,0.06)' }}
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -191,14 +191,14 @@ export const ExploreView: React.FC = () => {
               style={
                 activeTag === label
                   ? {
-                      background: 'linear-gradient(135deg, #00FF7A, #00D668)',
-                      color: '#040907',
+                      background: 'linear-gradient(135deg, #00C966, #00A854)',
+                      color: '#FFFFFF',
                       border: 'none',
-                      boxShadow: '0 0 20px rgba(0,255,122,0.35), 0 4px 12px rgba(0,0,0,0.4)',
+                      boxShadow: '0 0 20px rgba(0,160,70,0.25), 0 4px 12px rgba(0,40,20,0.05)',
                     }
                   : {
-                      background: 'rgba(0,255,122,0.04)',
-                      border: '1px solid rgba(0,255,122,0.1)',
+                      background: 'rgba(0,160,70,0.03)',
+                      border: '1px solid rgba(0,80,40,0.08)',
                       color: 'var(--text-muted)',
                     }
               }
@@ -218,7 +218,7 @@ export const ExploreView: React.FC = () => {
             <button
               onClick={() => { setSearch(''); setSelectedCategory('All'); setActiveTag(null); }}
               className="ml-2 px-2.5 py-0.5 rounded-full text-[11px] cursor-pointer transition-all"
-              style={{ background: 'rgba(251,113,133,0.1)', border: '1px solid rgba(251,113,133,0.2)', color: '#FB7185' }}
+              style={{ background: 'rgba(251,113,133,0.1)', border: '1px solid rgba(244,63,94,0.15)', color: '#F43F5E' }}
             >
               Clear filters
             </button>
@@ -248,14 +248,14 @@ export const ExploreView: React.FC = () => {
             <motion.div
               key="empty"
               className="text-center py-20 space-y-4 rounded-2xl"
-              style={{ background: 'var(--bg-surface-1)', border: '1px solid rgba(0,255,122,0.07)' }}
+              style={{ background: 'var(--bg-surface-1)', border: '1px solid rgba(0,80,40,0.06)' }}
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
             >
               <div
                 className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-2"
-                style={{ background: 'rgba(0,255,122,0.07)', border: '1px solid rgba(0,255,122,0.12)' }}
+                style={{ background: 'rgba(0,80,40,0.06)', border: '1px solid rgba(0,80,40,0.08)' }}
               >
                 <Search className="w-7 h-7" style={{ color: 'var(--text-muted)' }} />
               </div>
