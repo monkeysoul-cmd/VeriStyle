@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Search, ShieldCheck, AlertTriangle, XCircle, Loader2, Sparkles,
   CheckCircle2, RefreshCw, Star, Tag, TrendingUp, ExternalLink,
@@ -12,27 +12,28 @@ import { UrlAnalysisResult } from '../types';
 interface UrlAnalyzerProps {
   onAnalyzeComplete?: (result: UrlAnalysisResult) => void;
   standalone?: boolean;
+  initialUrl?: string;
 }
 
-// ── Dark score bar ─────────────────────────────────────────────────────────────
+// ── Score bar ─────────────────────────────────────────────────────────────
 const ScoreBar: React.FC<{ label: string; value: number; highlight?: boolean; delay?: number }> = ({
   label, value, highlight = false, delay = 0
 }) => {
-  const color = value >= 80 ? '#00C966' : value >= 50 ? '#F59E0B' : '#F43F5E';
-  const glow = value >= 80 ? 'rgba(0,160,70,0.25)' : value >= 50 ? 'rgba(252,211,77,0.35)' : 'rgba(251,113,133,0.35)';
+  const color = value >= 80 ? '#059669' : value >= 50 ? '#F59E0B' : '#F43F5E';
+  const glow = value >= 80 ? 'rgba(52,216,138,0.25)' : value >= 50 ? 'rgba(245,158,11,0.25)' : 'rgba(251,113,133,0.25)';
   return (
     <div
       className="p-3 rounded-xl transition-all duration-300"
       style={{
-        background: highlight ? 'rgba(0,160,70,0.04)' : 'rgba(0,60,30,0.03)',
-        border: highlight ? '1px solid rgba(0,80,40,0.08)' : '1px solid rgba(0,60,30,0.04)',
+        background: highlight ? 'rgba(52,216,138,0.05)' : 'rgba(0,0,0,0.02)',
+        border: highlight ? '1px solid rgba(52,216,138,0.15)' : '1px solid rgba(0,0,0,0.04)',
       }}
     >
       <div className="flex justify-between items-center mb-2">
         <span className="text-xs font-semibold" style={{ color: 'var(--text-secondary)' }}>{label}</span>
         <span className="text-xs font-black font-mono" style={{ color }}>{value}%</span>
       </div>
-      <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(0,60,30,0.05)' }}>
+      <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(0,0,0,0.04)' }}>
         <motion.div
           className="h-full rounded-full"
           style={{ background: `linear-gradient(90deg, ${color}88, ${color})`, boxShadow: `0 0 8px ${glow}` }}
@@ -45,8 +46,8 @@ const ScoreBar: React.FC<{ label: string; value: number; highlight?: boolean; de
   );
 };
 
-export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, standalone = true }) => {
-  const [url, setUrl] = useState('');
+export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, standalone = true, initialUrl = '' }) => {
+  const [url, setUrl] = useState(initialUrl);
   const [status, setStatus] = useState<'input' | 'loading' | 'result' | 'error'>('input');
   const [loadingStep, setLoadingStep] = useState(0);
   const [errorMsg, setErrorMsg] = useState('');
@@ -54,6 +55,12 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
   const [imageSrc, setImageSrc] = useState<string>('');
   const [proxyAttempted, setProxyAttempted] = useState(false);
   const [imageFailed, setImageFailed] = useState(false);
+
+  useEffect(() => {
+    if (initialUrl) {
+      setUrl(initialUrl);
+    }
+  }, [initialUrl]);
 
   const loadingSteps = [
     'Connecting to e-commerce platform & decrypting listing...',
@@ -125,26 +132,26 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
     return (
       <div className="w-full max-w-[850px] mx-auto">
         <div
-          className="flex items-center gap-2 rounded-2xl p-2 relative z-50 transition-all"
+          className="flex items-center gap-2 rounded-2xl p-2 relative z-50 transition-all duration-300 group focus-within:ring-4 focus-within:ring-[rgba(52,216,138,0.15)] focus-within:border-[rgba(52,216,138,0.4)]"
           style={{
-            background: 'rgba(13, 25, 18, 0.95)',
-            border: '1px solid rgba(0,160,70,0.12)',
-            boxShadow: '0 8px 40px rgba(0,40,20,0.06), 0 0 0 1px rgba(0,80,40,0.07)',
+            background: 'rgba(255, 255, 255, 0.96)',
+            border: '1px solid rgba(0, 0, 0, 0.08)',
+            boxShadow: '0 12px 36px -8px rgba(0, 20, 10, 0.07), 0 1px 3px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.9)',
+            backdropFilter: 'blur(24px) saturate(180%)',
           }}
         >
-          <div className="pl-3 sm:pl-4 flex-shrink-0" style={{ color: 'var(--text-dim)' }}>
-            <Search className="w-4 h-4 sm:w-5 sm:h-5" />
+          <div className="pl-3 sm:pl-4 flex-shrink-0 text-slate-400 group-hover:text-[var(--green-primary)] transition-colors">
+            <Search className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600" />
           </div>
           <input
             type="url"
-            placeholder="Paste a product link from Amazon, Flipkart, Myntra..."
+            placeholder="Paste a product link from Amazon, Flipkart, Myntra, AJIO..."
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleAnalyze()}
-            className="flex-1 bg-transparent py-2.5 sm:py-3 px-2 sm:px-3 text-sm sm:text-base min-w-0 focus:outline-none font-mono"
+            className="flex-1 bg-transparent py-2.5 sm:py-3 px-2 sm:px-3 text-sm sm:text-base min-w-0 focus:outline-none font-sans text-slate-800 placeholder:text-slate-400 font-medium"
             style={{
-              color: 'var(--text-primary)',
-              caretColor: 'var(--green-accent-from)',
+              caretColor: 'var(--green-primary)',
             }}
             autoComplete="off"
             spellCheck="false"
@@ -276,49 +283,49 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
     const isAuthentic = displayScore >= 80;
     const isSuspicious = displayScore >= 50 && displayScore < 80;
 
-    // Dark luxury verdict config
+    // Luxury verdict config
     const vc = isAuthentic
       ? {
-          bg: 'rgba(0,30,15,0.98)',
-          border: 'rgba(0,160,70,0.18)',
-          glow: 'rgba(0,160,70,0.2)',
-          accent: '#00C966',
-          arcColor: '#00A854',
-          iconBg: 'rgba(0,80,40,0.08)',
-          iconBorder: 'rgba(0,160,70,0.18)',
-          icon: <ShieldCheck className="w-7 h-7" style={{ color: '#00C966' }} />,
-          badgeBg: 'rgba(0,80,40,0.08)',
-          badgeBorder: 'rgba(0,160,70,0.18)',
-          badgeText: '#00C966',
+          bg: 'linear-gradient(135deg, rgba(236,253,245,0.95), rgba(209,250,229,0.85))',
+          border: 'rgba(52,216,138,0.35)',
+          glow: 'rgba(52,216,138,0.25)',
+          accent: '#059669',
+          arcColor: '#047857',
+          iconBg: 'rgba(52,216,138,0.15)',
+          iconBorder: 'rgba(52,216,138,0.3)',
+          icon: <ShieldCheck className="w-7 h-7" style={{ color: '#059669' }} />,
+          badgeBg: 'rgba(5,150,105,0.12)',
+          badgeBorder: 'rgba(5,150,105,0.25)',
+          badgeText: '#047857',
           badgeLabel: 'VERIFIED AUTHENTIC',
         }
       : isSuspicious
       ? {
-          bg: 'rgba(30,20,0,0.98)',
-          border: 'rgba(245,158,11,0.18)',
-          glow: 'rgba(245,158,11,0.18)',
-          accent: '#F59E0B',
+          bg: 'linear-gradient(135deg, rgba(254,243,199,0.95), rgba(253,230,138,0.85))',
+          border: 'rgba(245,158,11,0.35)',
+          glow: 'rgba(245,158,11,0.25)',
+          accent: '#D97706',
           arcColor: '#B45309',
-          iconBg: 'rgba(245,158,11,0.08)',
-          iconBorder: 'rgba(245,158,11,0.18)',
-          icon: <AlertTriangle className="w-7 h-7" style={{ color: '#F59E0B' }} />,
-          badgeBg: 'rgba(245,158,11,0.08)',
-          badgeBorder: 'rgba(245,158,11,0.18)',
-          badgeText: '#F59E0B',
+          iconBg: 'rgba(245,158,11,0.15)',
+          iconBorder: 'rgba(245,158,11,0.3)',
+          icon: <AlertTriangle className="w-7 h-7" style={{ color: '#D97706' }} />,
+          badgeBg: 'rgba(217,119,6,0.12)',
+          badgeBorder: 'rgba(217,119,6,0.25)',
+          badgeText: '#B45309',
           badgeLabel: 'SUSPICIOUS / AT RISK',
         }
       : {
-          bg: 'rgba(30,0,8,0.98)',
-          border: 'rgba(251,113,133,0.25)',
-          glow: 'rgba(251,113,133,0.25)',
-          accent: '#F43F5E',
-          arcColor: '#DC2626',
-          iconBg: 'rgba(251,113,133,0.1)',
-          iconBorder: 'rgba(251,113,133,0.25)',
-          icon: <XCircle className="w-7 h-7" style={{ color: '#F43F5E' }} />,
-          badgeBg: 'rgba(251,113,133,0.1)',
-          badgeBorder: 'rgba(251,113,133,0.25)',
-          badgeText: '#F43F5E',
+          bg: 'linear-gradient(135deg, rgba(255,228,230,0.95), rgba(254,205,211,0.85))',
+          border: 'rgba(244,63,94,0.35)',
+          glow: 'rgba(244,63,94,0.25)',
+          accent: '#E11D48',
+          arcColor: '#BE123C',
+          iconBg: 'rgba(244,63,94,0.15)',
+          iconBorder: 'rgba(244,63,94,0.3)',
+          icon: <XCircle className="w-7 h-7" style={{ color: '#E11D48' }} />,
+          badgeBg: 'rgba(225,29,72,0.12)',
+          badgeBorder: 'rgba(225,29,72,0.25)',
+          badgeText: '#BE123C',
           badgeLabel: 'LIKELY COUNTERFEIT',
         };
 

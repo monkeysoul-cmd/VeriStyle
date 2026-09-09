@@ -91,13 +91,9 @@ export const ExploreView: React.FC = () => {
           >
             Explore{' '}
             <span
-              className="italic"
+              className="italic text-gradient-brand"
               style={{
                 fontFamily: 'var(--font-serif)',
-                background: 'linear-gradient(135deg, #00C966, #00A854)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
               }}
             >
               All Products.
@@ -116,7 +112,7 @@ export const ExploreView: React.FC = () => {
           transition={{ duration: 0.5, delay: 0.1 }}
         >
           <div className="relative flex-1">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5" style={{ color: 'var(--text-dim)' }} />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
             <input
               type="text"
               value={search}
@@ -136,13 +132,13 @@ export const ExploreView: React.FC = () => {
         {/* Filters Row */}
         <motion.div
           className="flex flex-col sm:flex-row items-center gap-4 p-4 rounded-2xl"
-          style={{ background: 'var(--bg-surface-2)', border: '1px solid rgba(0,80,40,0.06)' }}
+          style={{ background: 'var(--bg-surface-2)', border: '1px solid rgba(0,0,0,0.06)' }}
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <div className="flex items-center gap-2 text-sm font-bold w-full sm:w-auto" style={{ color: 'var(--text-muted)' }}>
-            <SlidersHorizontal className="w-4 h-4" style={{ color: 'var(--green-accent-from)' }} />
+            <SlidersHorizontal className="w-4 h-4 text-emerald-600" />
             Filters:
           </div>
 
@@ -154,9 +150,9 @@ export const ExploreView: React.FC = () => {
                 onChange={e => setSelectedCategory(e.target.value as ProductCategory | 'All')}
                 className="input-dark appearance-none pl-4 pr-10 py-2.5 rounded-xl text-sm font-medium cursor-pointer"
               >
-                {categories.map(c => <option key={c} value={c} style={{ background: '#0D1912' }}>{c === 'All' ? 'All Categories' : c}</option>)}
+                {categories.map(c => <option key={c} value={c}>{c === 'All' ? 'All Categories' : c}</option>)}
               </select>
-              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style={{ color: 'var(--text-dim)' }} />
+              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none text-slate-400" />
             </div>
 
             {/* Sort */}
@@ -166,11 +162,11 @@ export const ExploreView: React.FC = () => {
                 onChange={e => setSortBy(e.target.value as SortOption)}
                 className="input-dark appearance-none pl-4 pr-10 py-2.5 rounded-xl text-sm font-medium cursor-pointer"
               >
-                <option value="trust-score" style={{ background: '#0D1912' }}>Sort by: Trust Score</option>
-                <option value="rating" style={{ background: '#0D1912' }}>Sort by: Rating</option>
-                <option value="reviews" style={{ background: '#0D1912' }}>Sort by: Most Reviewed</option>
+                <option value="trust-score">Sort by: Trust Score</option>
+                <option value="rating">Sort by: Rating</option>
+                <option value="reviews">Sort by: Most Reviewed</option>
               </select>
-              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style={{ color: 'var(--text-dim)' }} />
+              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none text-slate-400" />
             </div>
           </div>
         </motion.div>
@@ -191,18 +187,19 @@ export const ExploreView: React.FC = () => {
               style={
                 activeTag === label
                   ? {
-                      background: 'linear-gradient(135deg, #00C966, #00A854)',
+                      background: 'linear-gradient(135deg, #059669, #34D88A)',
                       color: '#FFFFFF',
                       border: 'none',
-                      boxShadow: '0 0 20px rgba(0,160,70,0.25), 0 4px 12px rgba(0,40,20,0.05)',
+                      boxShadow: '0 4px 16px rgba(52,216,138,0.3)',
                     }
                   : {
-                      background: 'rgba(0,160,70,0.03)',
-                      border: '1px solid rgba(0,80,40,0.08)',
-                      color: 'var(--text-muted)',
+                      background: 'rgba(255,255,255,0.85)',
+                      border: '1px solid rgba(0,0,0,0.06)',
+                      color: 'var(--text-secondary)',
+                      boxShadow: '0 1px 4px rgba(0,0,0,0.02)',
                     }
               }
-              whileHover={{ scale: 1.04 }}
+              whileHover={{ scale: 1.04, y: -1 }}
               whileTap={{ scale: 0.97 }}
             >
               {icon} {label}
