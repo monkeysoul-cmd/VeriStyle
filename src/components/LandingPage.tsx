@@ -48,6 +48,7 @@ function useCounter(target: number, duration: number = 1800, isVisible: boolean 
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [sampleUrl, setSampleUrl] = useState<string>('');
   const howItWorks = useScrollReveal();
   const bentoSection = useScrollReveal();
   const faqSection = useScrollReveal();
@@ -80,53 +81,61 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
   return (
     <div className="w-full flex flex-col min-h-screen" style={{ background: 'var(--bg-base)' }}>
 
-      {/* ═══ 1. HERO SECTION ═══════════════════════════════════ */}
+      {/* ═══ 1. HERO SECTION — Premium warm gradient with multi-color orbs ═══ */}
       <section
         className="relative w-full flex flex-col items-center justify-center overflow-hidden px-4 pt-[140px] sm:pt-[180px] lg:pt-[196px] pb-20 sm:pb-28"
-        style={{ background: 'var(--hero-bg)' }}
+        style={{ background: 'linear-gradient(180deg, #F8F6F1 0%, #F5F3EE 30%, #F2EFE8 60%, #FAFAF8 100%)' }}
       >
-        {/* Hex grid background */}
-        <div className="absolute inset-0 hex-grid-bg opacity-100 pointer-events-none" />
+        {/* Ambient morphing orbs */}
+        <div
+          className="absolute top-[5%] left-[5%] w-[500px] h-[500px] ambient-orb ambient-orb-green animate-morph"
+          style={{ animationDelay: '0s' }}
+        />
+        <div
+          className="absolute top-[15%] right-[8%] w-[400px] h-[400px] ambient-orb ambient-orb-indigo animate-morph"
+          style={{ animationDelay: '3s' }}
+        />
+        <div
+          className="absolute bottom-[10%] left-[20%] w-[350px] h-[350px] ambient-orb ambient-orb-gold animate-morph"
+          style={{ animationDelay: '5s' }}
+        />
+        <div
+          className="absolute bottom-[5%] right-[15%] w-[300px] h-[300px] ambient-orb ambient-orb-rose animate-morph"
+          style={{ animationDelay: '7s' }}
+        />
 
-        {/* Animated mesh blobs */}
-        <div
-          className="absolute top-[10%] left-[8%] w-[500px] h-[500px] rounded-full blur-3xl animate-breathe pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(0,180,80,0.06) 0%, transparent 70%)' }}
-        />
-        <div
-          className="absolute bottom-[5%] right-[5%] w-[400px] h-[400px] rounded-full blur-3xl pointer-events-none animate-float-slow"
-          style={{ background: 'radial-gradient(circle, rgba(0,160,70,0.05) 0%, transparent 70%)', animationDelay: '2s' }}
-        />
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full blur-3xl pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse, rgba(0,180,80,0.04) 0%, transparent 65%)' }}
-        />
+        {/* Dot grid overlay */}
+        <div className="absolute inset-0 dot-grid-bg opacity-60 pointer-events-none" />
 
-        {/* Scanline sweep */}
+        {/* Prismatic scanline */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div
             className="absolute left-0 right-0 h-[1px] animate-scanline-v"
-            style={{ background: 'linear-gradient(90deg, transparent, rgba(0,160,70,0.2), transparent)' }}
+            style={{ background: 'linear-gradient(90deg, transparent, rgba(52,216,138,0.15), rgba(129,140,248,0.12), rgba(251,191,36,0.08), transparent)' }}
           />
         </div>
 
         <div className="relative z-10 w-full max-w-6xl mx-auto px-2 sm:px-6 text-center flex flex-col items-center">
 
-          {/* Badge */}
+          {/* Badge — multi-tone */}
           <motion.div
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full mb-8"
-            style={{ background: 'rgba(0,160,70,0.06)', border: '1px solid rgba(0,160,70,0.15)' }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-8"
+            style={{
+              background: 'linear-gradient(135deg, rgba(52,216,138,0.06), rgba(129,140,248,0.04))',
+              border: '1px solid rgba(52,216,138,0.15)',
+              backdropFilter: 'blur(8px)',
+            }}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <Sparkles className="w-3.5 h-3.5" style={{ color: 'var(--green-accent-from)' }} />
-            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--green-accent-from)' }}>
+            <Sparkles className="w-3.5 h-3.5" style={{ color: 'var(--green-primary)' }} />
+            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--green-primary)' }}>
               Multimodal AI Fashion Verification
             </span>
           </motion.div>
 
-          {/* Main Headline */}
+          {/* Main Headline — multi-color gradient */}
           <motion.h1
             className="text-[40px] leading-[1.05] sm:text-[58px] md:text-[72px] font-extrabold tracking-tight mb-6"
             style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}
@@ -140,7 +149,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
               className="italic"
               style={{
                 fontFamily: 'var(--font-serif)',
-                background: 'linear-gradient(135deg, #00B85C 0%, #008A44 50%, #10B981 100%)',
+                background: 'linear-gradient(135deg, #34D88A 0%, #00B864 30%, #818CF8 70%, #A78BFA 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -173,7 +182,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
             transition={{ duration: 0.8, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
           >
             <div className="animate-focus-glow rounded-2xl">
-              <UrlAnalyzer standalone={false} />
+              <UrlAnalyzer standalone={false} initialUrl={sampleUrl} />
             </div>
           </motion.div>
 
@@ -185,32 +194,40 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.9 }}
           >
-            <span className="font-medium">Try:</span>
-            {['amazon.in/nike-jordan', 'flipkart.com/gucci-bag', 'myntra.com/yeezy'].map((chip, i) => (
+            <span className="font-medium text-xs">Try:</span>
+            {[
+              { label: 'amazon.in/nike-jordan', url: 'https://www.amazon.in/Nike-Air-Jordan-Retro-Sneakers/dp/B0CKW79YQ4' },
+              { label: 'flipkart.com/gucci-bag', url: 'https://www.flipkart.com/gucci-leather-handbag-dionysus/p/itm2894721' },
+              { label: 'myntra.com/yeezy', url: 'https://www.myntra.com/casual-shoes/adidas/yeezy-boost-350-v2-sneakers/19482910/buy' }
+            ].map((item, i) => (
               <motion.button
-                key={chip}
+                key={item.label}
+                onClick={() => setSampleUrl(item.url)}
                 className="px-3 py-1 rounded-full text-xs font-medium cursor-pointer transition-all"
                 style={{
-                  background: 'rgba(0,160,70,0.04)',
-                  border: '1px solid rgba(0,80,40,0.1)',
+                  background: 'rgba(255,255,255,0.7)',
+                  border: '1px solid rgba(0,0,0,0.06)',
                   color: 'var(--text-muted)',
                   fontFamily: 'var(--font-mono)',
+                  boxShadow: '0 1px 4px rgba(0,0,0,0.02)',
                 }}
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.95 + i * 0.08 }}
                 whileHover={{
                   scale: 1.05,
-                  color: 'var(--green-accent-from)',
-                  borderColor: 'rgba(0,160,70,0.25)',
+                  background: 'rgba(52,216,138,0.08)',
+                  borderColor: 'rgba(52,216,138,0.3)',
+                  color: 'var(--green-primary)',
                 }}
+                whileTap={{ scale: 0.95 }}
               >
-                {chip}
+                {item.label}
               </motion.button>
             ))}
           </motion.div>
 
-          {/* Hero stat pills */}
+          {/* Hero stat pills — glass morphism */}
           <motion.div
             className="flex flex-wrap items-center justify-center gap-3 mt-10"
             initial={{ opacity: 0, y: 12 }}
@@ -218,38 +235,49 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
             transition={{ duration: 0.6, delay: 1.1 }}
           >
             {[
-              { label: '99.4% Accuracy', icon: TrendingUp },
-              { label: '2.3M+ Scans', icon: Activity },
-              { label: '8 Platforms', icon: Globe },
-              { label: '1,200+ Brands', icon: Star },
-            ].map(({ label, icon: Icon }) => (
-              <div
+              { label: '99.4% Accuracy', icon: TrendingUp, color: '#34D88A' },
+              { label: '2.3M+ Scans', icon: Activity, color: '#818CF8' },
+              { label: '8 Platforms', icon: Globe, color: '#FBBF24' },
+              { label: '1,200+ Brands', icon: Star, color: '#FB7185' },
+            ].map(({ label, icon: Icon, color }) => (
+              <motion.div
                 key={label}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold"
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold"
                 style={{
-                  background: '#FFFFFF',
-                  border: '1px solid rgba(0,80,40,0.07)',
+                  background: 'rgba(255,255,255,0.75)',
+                  border: '1px solid rgba(0,0,0,0.05)',
                   color: 'var(--text-secondary)',
-                  boxShadow: '0 1px 4px rgba(0,40,20,0.04)',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                  backdropFilter: 'blur(12px)',
                 }}
+                whileHover={{ scale: 1.05, y: -2 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 20 }}
               >
-                <Icon className="w-3.5 h-3.5" style={{ color: 'var(--green-accent-from)' }} />
+                <Icon className="w-3.5 h-3.5" style={{ color }} />
                 {label}
-              </div>
+              </motion.div>
             ))}
           </motion.div>
         </div>
       </section>
 
-      {/* ═══ 2. STATS COUNTERS SECTION ══════════════════════════ */}
-      <section ref={statsSection.ref} className="w-full py-16 px-4 relative" style={{ background: '#FFFFFF', borderTop: '1px solid rgba(0,80,40,0.06)', borderBottom: '1px solid rgba(0,80,40,0.06)' }}>
-        <div className="max-w-5xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8">
+      {/* ═══ 2. STATS COUNTERS — DARK CONTRAST SECTION ═══ */}
+      <section
+        ref={statsSection.ref}
+        className="w-full py-20 px-4 relative overflow-hidden dark-section"
+      >
+        {/* Ambient orbs on dark */}
+        <div className="absolute top-[-20%] left-[-10%] w-[400px] h-[400px] rounded-full blur-3xl pointer-events-none" style={{ background: 'rgba(52,216,138,0.06)' }} />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[350px] h-[350px] rounded-full blur-3xl pointer-events-none" style={{ background: 'rgba(129,140,248,0.05)' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full blur-3xl pointer-events-none" style={{ background: 'rgba(245,200,66,0.03)' }} />
+
+        <div className="max-w-5xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
           {[
-            { value: scansCount, suffix: '+', label: 'Total Scans', prefix: '' },
-            { value: accuracyCount / 10, suffix: '%', label: 'Accuracy Rate', prefix: '' },
-            { value: platformsCount, suffix: '', label: 'Supported Platforms', prefix: '' },
-            { value: brandsCount, suffix: '+', label: 'Brand Templates', prefix: '' },
-          ].map(({ value, suffix, label, prefix }, i) => (
+            { value: scansCount, suffix: '+', label: 'Total Scans', prefix: '', color: '#34D88A' },
+            { value: accuracyCount / 10, suffix: '%', label: 'Accuracy Rate', prefix: '', color: '#818CF8' },
+            { value: platformsCount, suffix: '', label: 'Supported Platforms', prefix: '', color: '#FBBF24' },
+            { value: brandsCount, suffix: '+', label: 'Brand Templates', prefix: '', color: '#FB7185' },
+          ].map(({ value, suffix, label, prefix, color }, i) => (
             <motion.div
               key={label}
               className="text-center"
@@ -258,28 +286,26 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
               transition={{ duration: 0.6, delay: i * 0.1 }}
             >
               <div
-                className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight mb-1"
+                className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight mb-2"
                 style={{
                   fontFamily: 'var(--font-heading)',
-                  background: 'linear-gradient(135deg, #00B85C, #008A44)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
+                  color,
+                  textShadow: `0 0 30px ${color}33`,
                 }}
               >
                 {prefix}{i === 0 ? (value >= 1000000 ? `${(value / 1000000).toFixed(1)}M` : value.toLocaleString()) : value.toFixed(i === 1 ? 1 : 0)}{suffix}
               </div>
-              <div className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>{label}</div>
+              <div className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'rgba(255,255,255,0.5)' }}>{label}</div>
             </motion.div>
           ))}
         </div>
       </section>
 
-      {/* ═══ 3. STORES MARQUEE ════════════════════════════════ */}
-      <section className="w-full py-10 overflow-hidden" style={{ background: '#FFFFFF', borderBottom: '1px solid rgba(0,80,40,0.06)' }}>
+      {/* ═══ 3. STORES MARQUEE — on light ═══ */}
+      <section className="w-full py-10 overflow-hidden" style={{ background: 'var(--bg-base)', borderBottom: '1px solid rgba(0,0,0,0.04)' }}>
         <div
           className="animate-marquee flex items-center gap-14 w-max"
-          style={{ opacity: 0.5 }}
+          style={{ opacity: 0.45 }}
         >
           {[...stores, ...stores].map((store, i) => (
             <div key={`${store.name}-${i}`} className="flex items-center gap-2.5 font-bold text-lg shrink-0" style={{ color: 'var(--text-secondary)' }}>
@@ -295,7 +321,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
         </div>
       </section>
 
-      {/* ═══ 4. HOW IT WORKS ═══════════════════════════════════ */}
+      {/* ═══ 4. HOW IT WORKS — Premium cards with color accents ═══ */}
       <section
         className="w-full py-24 sm:py-32 px-4 sm:px-6 lg:px-8"
         id="how-it-works"
@@ -312,7 +338,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
               className="text-[32px] sm:text-[46px] font-bold tracking-tight mb-4"
               style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}
             >
-              Four Steps to <span className="italic" style={{ fontFamily: 'var(--font-serif)', background: 'linear-gradient(135deg, #00B85C, #008A44)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Certainty.</span>
+              Four Steps to <span className="italic" style={{ fontFamily: 'var(--font-serif)', background: 'linear-gradient(135deg, #34D88A, #00B864)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Certainty.</span>
             </h2>
             <p className="text-lg max-w-2xl mx-auto" style={{ color: 'var(--text-muted)' }}>
               Combining visual inspection with NLP review analysis for unmatched authenticity scoring.
@@ -320,21 +346,21 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 relative">
-            {/* Connecting line */}
+            {/* Connecting line — gradient */}
             <div
               className="hidden lg:block absolute top-16 left-[12%] right-[12%] h-px z-0"
-              style={{ borderTop: '1.5px dashed rgba(0,80,40,0.12)' }}
+              style={{ background: 'linear-gradient(90deg, #34D88A33, #818CF833, #FBBF2433, #FB718533)' }}
             />
 
             {[
-              { step: 1, title: 'Find Product', desc: 'Copy the URL of any fashion item from our 8 supported stores.', icon: Search, color: '#00B85C' },
-              { step: 2, title: 'Paste URL', desc: "Paste the link into VeriStyle's AI analyzer bar above.", icon: ScanLine, color: '#0EA5E9' },
-              { step: 3, title: 'Data Extraction', desc: 'We fetch images, price history, and reviews in real-time.', icon: Brain, color: '#8B5CF6' },
-              { step: 4, title: 'Get Verdict', desc: 'Receive an instant authenticity score with detailed breakdown.', icon: CheckCircle2, color: '#F59E0B' },
+              { step: 1, title: 'Find Product', desc: 'Copy the URL of any fashion item from our 8 supported stores.', icon: Search, color: '#34D88A', glowColor: 'rgba(52,216,138,0.08)' },
+              { step: 2, title: 'Paste URL', desc: "Paste the link into VeriStyle's AI analyzer bar above.", icon: ScanLine, color: '#818CF8', glowColor: 'rgba(129,140,248,0.08)' },
+              { step: 3, title: 'Data Extraction', desc: 'We fetch images, price history, and reviews in real-time.', icon: Brain, color: '#FBBF24', glowColor: 'rgba(251,191,36,0.08)' },
+              { step: 4, title: 'Get Verdict', desc: 'Receive an instant authenticity score with detailed breakdown.', icon: CheckCircle2, color: '#FB7185', glowColor: 'rgba(251,113,133,0.08)' },
             ].map((item, idx) => (
               <motion.div
                 key={idx}
-                className="relative z-10 neon-card p-7 flex flex-col"
+                className="relative z-10 neon-card p-7 flex flex-col card-shine"
                 initial={{ opacity: 0, y: 28 }}
                 animate={howItWorks.isVisible ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: idx * 0.12, ease: [0.16, 1, 0.3, 1] }}
@@ -346,8 +372,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
                 <div
                   className="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
                   style={{
-                    background: `${item.color}10`,
+                    background: item.glowColor,
                     border: `1px solid ${item.color}20`,
+                    boxShadow: `0 4px 16px ${item.color}10`,
                   }}
                 >
                   <item.icon className="w-6 h-6" style={{ color: item.color }} />
@@ -360,11 +387,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
         </div>
       </section>
 
-      {/* ═══ 5. BENTO FEATURES GRID ═══════════════════════════ */}
+      {/* ═══ 5. BENTO FEATURES GRID — Premium multi-color ═══ */}
       <section
         className="w-full py-24 sm:py-32 px-4 sm:px-6 lg:px-8"
         ref={bentoSection.ref}
-        style={{ background: 'var(--bg-surface-1)', borderTop: '1px solid rgba(0,80,40,0.05)' }}
+        style={{ background: 'var(--bg-surface-1)', borderTop: '1px solid rgba(0,0,0,0.04)' }}
       >
         <div className="max-w-7xl mx-auto space-y-14">
           <div className="text-center max-w-3xl mx-auto">
@@ -379,7 +406,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
               Image & Review{' '}
               <span
                 className="italic"
-                style={{ fontFamily: 'var(--font-serif)', background: 'linear-gradient(135deg, #00B85C, #008A44)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}
+                style={{ fontFamily: 'var(--font-serif)', background: 'linear-gradient(135deg, #34D88A, #818CF8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}
               >
                 Forensics.
               </span>
@@ -391,27 +418,28 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
 
-            {/* Card 1: NLP Intelligence — large */}
+            {/* Card 1: NLP Intelligence — large indigo accent */}
             <motion.div
-              className="lg:col-span-2 p-8 sm:p-10 rounded-2xl flex flex-col justify-between relative overflow-hidden"
+              className="lg:col-span-2 p-8 sm:p-10 rounded-2xl flex flex-col justify-between relative overflow-hidden card-shine"
               style={{
-                background: 'linear-gradient(135deg, rgba(99,102,241,0.04) 0%, #FFFFFF 60%)',
-                border: '1px solid rgba(99,102,241,0.1)',
+                background: 'linear-gradient(135deg, rgba(129,140,248,0.04) 0%, #FFFFFF 60%)',
+                border: '1px solid rgba(129,140,248,0.10)',
                 boxShadow: 'var(--card-shadow)',
               }}
               initial={{ opacity: 0, y: 24 }}
               animate={bentoSection.isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.1 }}
             >
-              <div className="absolute top-0 right-0 w-48 h-48 rounded-full blur-3xl pointer-events-none" style={{ background: 'rgba(99,102,241,0.04)' }} />
+              <div className="absolute top-0 right-0 w-48 h-48 rounded-full blur-3xl pointer-events-none" style={{ background: 'rgba(129,140,248,0.05)' }} />
+              <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full blur-3xl pointer-events-none" style={{ background: 'rgba(167,139,250,0.04)' }} />
               <div>
                 <div
                   className="w-11 h-11 rounded-xl flex items-center justify-center mb-5"
-                  style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.14)' }}
+                  style={{ background: 'rgba(129,140,248,0.08)', border: '1px solid rgba(129,140,248,0.14)' }}
                 >
-                  <FileText className="w-5 h-5" style={{ color: '#6366F1' }} />
+                  <FileText className="w-5 h-5" style={{ color: '#818CF8' }} />
                 </div>
-                <div className="mono-label mb-3" style={{ color: '#6366F1' }}>Natural Language Forensics</div>
+                <div className="mono-label mb-3" style={{ color: '#818CF8' }}>Natural Language Forensics</div>
                 <h3
                   className="text-2xl sm:text-3xl font-extrabold mb-4 tracking-tight"
                   style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}
@@ -422,38 +450,38 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
                   Our system inspects thousands of customer reviews, isolating suspicious keyword repetition, artificial sentiment clusters, and paid bot activity to deliver true buyer consensus.
                 </p>
               </div>
-              <div className="mt-8 pt-6 flex flex-wrap items-center gap-5 text-xs font-bold" style={{ borderTop: '1px solid rgba(99,102,241,0.08)', color: '#6366F1' }}>
+              <div className="mt-8 pt-6 flex flex-wrap items-center gap-5 text-xs font-bold" style={{ borderTop: '1px solid rgba(129,140,248,0.08)', color: '#818CF8' }}>
                 <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> Perplexity Entropy Scoring</span>
                 <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> Sentiment-Rating Coherence</span>
                 <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> Bot Syndicate Detection</span>
               </div>
             </motion.div>
 
-            {/* Card 2: Confidence Score */}
+            {/* Card 2: Confidence Score — green glow */}
             <motion.div
               className="rounded-2xl p-8 flex flex-col items-center justify-center text-center relative overflow-hidden"
               style={{
-                background: 'linear-gradient(135deg, #F0FFF5 0%, #E8F9EE 100%)',
-                border: '1px solid rgba(0,160,70,0.12)',
-                boxShadow: '0 4px 24px rgba(0,40,20,0.06)',
+                background: 'linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)',
+                border: '1px solid rgba(52,216,138,0.15)',
+                boxShadow: '0 4px 24px rgba(0,0,0,0.04)',
               }}
               initial={{ opacity: 0, scale: 0.95 }}
               animate={bentoSection.isVisible ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <div className="absolute top-0 right-0 w-32 h-32 rounded-full blur-2xl pointer-events-none animate-breathe" style={{ background: 'rgba(0,160,70,0.06)' }} />
+              <div className="absolute top-0 right-0 w-32 h-32 rounded-full blur-2xl pointer-events-none animate-breathe" style={{ background: 'rgba(52,216,138,0.08)' }} />
               <div
                 className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4 animate-glow-pulse"
-                style={{ background: 'rgba(0,160,70,0.08)', border: '1px solid rgba(0,160,70,0.15)' }}
+                style={{ background: 'rgba(52,216,138,0.08)', border: '1px solid rgba(52,216,138,0.18)' }}
               >
-                <Shield className="w-7 h-7" style={{ color: 'var(--green-accent-from)' }} />
+                <Shield className="w-7 h-7" style={{ color: '#34D88A' }} />
               </div>
               <div className="mono-label mb-2">Real-Time Metric</div>
               <h3 className="text-xl font-bold mb-3" style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}>Confidence Score</h3>
               <div
                 className="text-6xl sm:text-7xl font-black my-4 font-mono"
                 style={{
-                  background: 'linear-gradient(135deg, #00B85C, #008A44)',
+                  background: 'linear-gradient(135deg, #34D88A, #00B864)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
@@ -461,17 +489,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
               >
                 98.4%
               </div>
-              <div className="px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider" style={{ background: 'rgba(0,160,70,0.08)', border: '1px solid rgba(0,160,70,0.18)', color: 'var(--green-accent-from)' }}>
+              <div className="px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider" style={{ background: 'rgba(52,216,138,0.10)', border: '1px solid rgba(52,216,138,0.20)', color: '#00B864' }}>
                 Verified Authentic
               </div>
             </motion.div>
 
-            {/* Card 3: Bot Shield */}
+            {/* Card 3: Bot Shield — amber accent */}
             <motion.div
-              className="rounded-2xl p-8 relative overflow-hidden"
+              className="rounded-2xl p-8 relative overflow-hidden card-shine"
               style={{
-                background: 'linear-gradient(135deg, rgba(245,158,11,0.04) 0%, #FFFFFF 60%)',
-                border: '1px solid rgba(245,158,11,0.1)',
+                background: 'linear-gradient(135deg, rgba(251,191,36,0.04) 0%, #FFFFFF 60%)',
+                border: '1px solid rgba(251,191,36,0.10)',
               }}
               initial={{ opacity: 0, y: 24 }}
               animate={bentoSection.isVisible ? { opacity: 1, y: 0 } : {}}
@@ -479,16 +507,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
             >
               <div
                 className="w-11 h-11 rounded-xl flex items-center justify-center mb-4"
-                style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.14)' }}
+                style={{ background: 'rgba(251,191,36,0.08)', border: '1px solid rgba(251,191,36,0.14)' }}
               >
-                <AlertTriangle className="w-5 h-5" style={{ color: '#F59E0B' }} />
+                <AlertTriangle className="w-5 h-5" style={{ color: '#FBBF24' }} />
               </div>
-              <div className="mono-label mb-2" style={{ color: '#F59E0B' }}>Bot Shield</div>
+              <div className="mono-label mb-2" style={{ color: '#D97706' }}>Bot Shield</div>
               <h3 className="text-xl font-bold mb-2" style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}>Review Spam Detection</h3>
               <p className="text-sm mb-6 leading-relaxed" style={{ color: 'var(--text-muted)' }}>
                 Flags sponsored syndicates and deceptive 5-star blitzes in real time.
               </p>
-              <div className="space-y-3 p-4 rounded-xl" style={{ background: 'rgba(245,158,11,0.04)', border: '1px solid rgba(245,158,11,0.08)' }}>
+              <div className="space-y-3 p-4 rounded-xl" style={{ background: 'rgba(251,191,36,0.04)', border: '1px solid rgba(251,191,36,0.08)' }}>
                 <div className="flex justify-between text-xs font-bold" style={{ color: '#D97706' }}>
                   <span>Organic Vocabulary Rate</span>
                   <span>94.8%</span>
@@ -496,7 +524,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
                 <div className="metric-track">
                   <motion.div
                     className="h-full rounded-full"
-                    style={{ background: 'linear-gradient(90deg, #D97706, #F59E0B)', boxShadow: '0 0 6px rgba(245,158,11,0.25)' }}
+                    style={{ background: 'linear-gradient(90deg, #D97706, #FBBF24)', boxShadow: '0 0 8px rgba(251,191,36,0.30)' }}
                     initial={{ width: 0 }}
                     animate={bentoSection.isVisible ? { width: '94.8%' } : { width: 0 }}
                     transition={{ duration: 1.3, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
@@ -505,27 +533,27 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
               </div>
             </motion.div>
 
-            {/* Card 4: Computer Vision — large */}
+            {/* Card 4: Computer Vision — sky accent, large */}
             <motion.div
-              className="lg:col-span-2 p-8 sm:p-10 rounded-2xl relative overflow-hidden"
+              className="lg:col-span-2 p-8 sm:p-10 rounded-2xl relative overflow-hidden card-shine"
               style={{
-                background: 'linear-gradient(135deg, rgba(14,165,233,0.04) 0%, #FFFFFF 60%)',
-                border: '1px solid rgba(14,165,233,0.1)',
+                background: 'linear-gradient(135deg, rgba(56,189,248,0.04) 0%, #FFFFFF 60%)',
+                border: '1px solid rgba(56,189,248,0.10)',
               }}
               initial={{ opacity: 0, y: 24 }}
               animate={bentoSection.isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <div className="absolute top-0 right-0 w-36 h-36 rounded-full blur-3xl pointer-events-none" style={{ background: 'rgba(14,165,233,0.04)' }} />
+              <div className="absolute top-0 right-0 w-36 h-36 rounded-full blur-3xl pointer-events-none" style={{ background: 'rgba(56,189,248,0.05)' }} />
               <div className="flex items-center gap-3 mb-6">
                 <div
                   className="w-11 h-11 rounded-xl flex items-center justify-center"
-                  style={{ background: 'rgba(14,165,233,0.08)', border: '1px solid rgba(14,165,233,0.14)' }}
+                  style={{ background: 'rgba(56,189,248,0.08)', border: '1px solid rgba(56,189,248,0.14)' }}
                 >
-                  <ScanLine className="w-5 h-5" style={{ color: '#0EA5E9' }} />
+                  <ScanLine className="w-5 h-5" style={{ color: '#38BDF8' }} />
                 </div>
                 <div>
-                  <div className="mono-label" style={{ color: '#0EA5E9' }}>Computer Vision Forensics</div>
+                  <div className="mono-label" style={{ color: '#38BDF8' }}>Computer Vision Forensics</div>
                   <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight" style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}>
                     Micro-Stitching & Material Analysis
                   </h3>
@@ -538,8 +566,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
                   { title: 'Fabric Texture Match', desc: 'HSV color profiles and weave patterns matched against master textile databases.' },
                   { title: 'Serial Code Validation', desc: 'Serial number formatting cross-checked against brand registries in real-time.' },
                 ].map(({ title, desc }) => (
-                  <div key={title} className="p-4 rounded-xl" style={{ background: 'rgba(14,165,233,0.03)', border: '1px solid rgba(14,165,233,0.07)' }}>
-                    <p className="text-xs font-bold uppercase tracking-wider mb-1.5" style={{ color: '#0EA5E9' }}>{title}</p>
+                  <div key={title} className="p-4 rounded-xl transition-all duration-300 hover:translate-y-[-2px]" style={{ background: 'rgba(56,189,248,0.03)', border: '1px solid rgba(56,189,248,0.07)' }}>
+                    <p className="text-xs font-bold uppercase tracking-wider mb-1.5" style={{ color: '#38BDF8' }}>{title}</p>
                     <p className="text-sm leading-relaxed" style={{ color: 'var(--text-muted)' }}>{desc}</p>
                   </div>
                 ))}
@@ -550,14 +578,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
         </div>
       </section>
 
-      {/* ═══ 6. FAQ ════════════════════════════════════════════ */}
+      {/* ═══ 6. FAQ — DARK SECTION for contrast ═══ */}
       <section
-        className="w-full py-24 sm:py-32 px-4"
+        className="w-full py-24 sm:py-32 px-4 relative overflow-hidden dark-section"
         id="faq"
         ref={faqSection.ref}
-        style={{ background: 'var(--bg-base)', borderTop: '1px solid rgba(0,80,40,0.05)' }}
       >
-        <div className="max-w-3xl mx-auto space-y-12">
+        {/* Dark ambient orbs */}
+        <div className="absolute top-[10%] right-[10%] w-[400px] h-[400px] rounded-full blur-3xl pointer-events-none animate-morph" style={{ background: 'rgba(52,216,138,0.04)', animationDelay: '2s' }} />
+        <div className="absolute bottom-[10%] left-[5%] w-[350px] h-[350px] rounded-full blur-3xl pointer-events-none animate-morph" style={{ background: 'rgba(129,140,248,0.04)', animationDelay: '4s' }} />
+
+        <div className="max-w-3xl mx-auto space-y-12 relative z-10">
           <motion.div
             className="text-center flex flex-col items-center"
             initial={{ opacity: 0, y: 20 }}
@@ -566,23 +597,23 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
           >
             <div
               className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5"
-              style={{ background: 'rgba(0,160,70,0.06)', border: '1px solid rgba(0,160,70,0.12)' }}
+              style={{ background: 'rgba(52,216,138,0.08)', border: '1px solid rgba(52,216,138,0.15)' }}
             >
-              <HelpCircle className="w-6 h-6" style={{ color: 'var(--green-accent-from)' }} />
+              <HelpCircle className="w-6 h-6" style={{ color: '#34D88A' }} />
             </div>
             <h2
               className="text-[32px] sm:text-[44px] font-extrabold tracking-tight"
-              style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}
+              style={{ fontFamily: 'var(--font-heading)', color: '#F1F5F9' }}
             >
               Frequently Asked{' '}
               <span
                 className="italic"
-                style={{ fontFamily: 'var(--font-serif)', background: 'linear-gradient(135deg, #00B85C, #008A44)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}
+                style={{ fontFamily: 'var(--font-serif)', background: 'linear-gradient(135deg, #34D88A, #6EE7B7)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}
               >
                 Questions.
               </span>
             </h2>
-            <p className="text-sm sm:text-base mt-3" style={{ color: 'var(--text-muted)' }}>
+            <p className="text-sm sm:text-base mt-3" style={{ color: 'rgba(255,255,255,0.5)' }}>
               Everything you need to know about our multimodal authenticity verification.
             </p>
           </motion.div>
@@ -593,9 +624,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
                 key={i}
                 className="rounded-2xl overflow-hidden"
                 style={{
-                  background: openFaq === i ? '#FFFFFF' : 'var(--bg-surface-1)',
-                  border: openFaq === i ? '1px solid rgba(0,160,70,0.12)' : '1px solid rgba(0,80,40,0.06)',
-                  boxShadow: openFaq === i ? '0 2px 12px rgba(0,40,20,0.06)' : 'none',
+                  background: openFaq === i ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.03)',
+                  border: openFaq === i ? '1px solid rgba(52,216,138,0.15)' : '1px solid rgba(255,255,255,0.06)',
+                  backdropFilter: 'blur(12px)',
                   transition: 'all 0.3s ease',
                 }}
                 initial={{ opacity: 0, y: 16 }}
@@ -606,14 +637,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   className="w-full px-6 py-5 text-left flex justify-between items-center transition-colors cursor-pointer"
                 >
-                  <span className="font-bold text-[15px] pr-4" style={{ fontFamily: 'var(--font-heading)', color: openFaq === i ? 'var(--text-primary)' : 'var(--text-secondary)' }}>
+                  <span className="font-bold text-[15px] pr-4" style={{ fontFamily: 'var(--font-heading)', color: openFaq === i ? '#34D88A' : 'rgba(255,255,255,0.7)' }}>
                     {faq.q}
                   </span>
                   <motion.div
                     animate={{ rotate: openFaq === i ? 180 : 0 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <ChevronDown className="w-5 h-5 shrink-0" style={{ color: 'var(--green-accent-from)' }} />
+                    <ChevronDown className="w-5 h-5 shrink-0" style={{ color: '#34D88A' }} />
                   </motion.div>
                 </button>
                 <AnimatePresence initial={false}>
@@ -628,8 +659,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
                       <div
                         className="px-6 pb-6 pt-2 text-sm leading-relaxed mx-6 mt-2 mb-3 rounded-xl"
                         style={{
-                          color: 'var(--text-muted)',
-                          borderTop: '1px solid rgba(0,80,40,0.06)',
+                          color: 'rgba(255,255,255,0.5)',
+                          borderTop: '1px solid rgba(255,255,255,0.06)',
                         }}
                       >
                         <div className="pt-4">{faq.a}</div>
@@ -643,13 +674,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
         </div>
       </section>
 
-      {/* ═══ 7. BOTTOM CTA BANNER ══════════════════════════════ */}
+      {/* ═══ 7. BOTTOM CTA BANNER — warm light with premium gradient ═══ */}
       <section
-        className="w-full py-20 px-4 text-center relative overflow-hidden"
-        style={{ background: 'var(--bg-surface-1)', borderTop: '1px solid rgba(0,80,40,0.05)' }}
+        className="w-full py-24 px-4 text-center relative overflow-hidden"
+        style={{ background: 'linear-gradient(180deg, var(--bg-surface-1), var(--bg-base))' }}
       >
-        <div className="absolute inset-0 hex-grid-bg opacity-50 pointer-events-none" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] rounded-full blur-3xl pointer-events-none" style={{ background: 'rgba(0,160,70,0.04)' }} />
+        {/* Ambient premium orbs */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] rounded-full blur-3xl pointer-events-none" style={{ background: 'rgba(52,216,138,0.05)' }} />
+        <div className="absolute bottom-0 left-[10%] w-[300px] h-[300px] rounded-full blur-3xl pointer-events-none animate-morph" style={{ background: 'rgba(129,140,248,0.04)' }} />
+        <div className="absolute bottom-0 right-[10%] w-[250px] h-[250px] rounded-full blur-3xl pointer-events-none animate-morph" style={{ background: 'rgba(251,191,36,0.04)', animationDelay: '3s' }} />
+
+        <div className="absolute inset-0 dot-grid-bg opacity-30 pointer-events-none" />
         <div className="relative z-10 max-w-2xl mx-auto">
           <div className="section-badge mx-auto mb-6">
             <Lock className="w-3 h-3" />
@@ -663,17 +698,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
             <br />
             <span
               className="italic"
-              style={{ fontFamily: 'var(--font-serif)', background: 'linear-gradient(135deg, #00B85C, #10B981)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}
+              style={{ fontFamily: 'var(--font-serif)', background: 'linear-gradient(135deg, #34D88A, #818CF8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}
             >
               No signup required.
             </span>
           </h2>
-          <p className="text-base mb-8" style={{ color: 'var(--text-muted)' }}>
+          <p className="text-base mb-10" style={{ color: 'var(--text-muted)' }}>
             Paste any product link or upload an image to get your detailed forensic analysis report in seconds.
           </p>
           <motion.button
             onClick={onViewProducts}
-            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl text-base font-bold cursor-pointer btn-neon"
+            className="inline-flex items-center gap-2.5 px-8 py-4 rounded-2xl text-base font-bold cursor-pointer btn-neon"
             whileHover={{ scale: 1.04, y: -2 }}
             whileTap={{ scale: 0.97 }}
           >
