@@ -109,9 +109,30 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
   };
 
   const getVerdictColors = (score: number) => {
-    if (score >= 80) return { bg: 'rgba(0,80,40,0.06)', border: 'rgba(0,160,70,0.15)', accent: '#00C966', glow: 'rgba(0,160,70,0.2)', arc: '#00A854', label: 'VERIFIED AUTHENTIC' };
-    if (score >= 50) return { bg: 'rgba(245,158,11,0.06)', border: 'rgba(245,158,11,0.15)', accent: '#F59E0B', glow: 'rgba(245,158,11,0.2)', arc: '#D97706', label: 'SUSPICIOUS' };
-    return { bg: 'rgba(244,63,94,0.06)', border: 'rgba(244,63,94,0.15)', accent: '#F43F5E', glow: 'rgba(244,63,94,0.2)', arc: '#DC2626', label: 'LIKELY COUNTERFEIT' };
+    if (score >= 80) return {
+      bg: 'linear-gradient(135deg, rgba(240,253,244,0.96) 0%, rgba(236,253,245,0.85) 45%, rgba(209,250,229,0.55) 100%)',
+      border: 'rgba(52,216,138,0.32)',
+      accent: '#00B864',
+      glow: 'rgba(52,216,138,0.22)',
+      arc: '#00C06B',
+      label: 'VERIFIED AUTHENTIC'
+    };
+    if (score >= 50) return {
+      bg: 'linear-gradient(135deg, rgba(254,252,232,0.96) 0%, rgba(254,243,199,0.85) 45%, rgba(253,230,138,0.55) 100%)',
+      border: 'rgba(245,158,11,0.32)',
+      accent: '#D97706',
+      glow: 'rgba(245,158,11,0.22)',
+      arc: '#F59E0B',
+      label: 'SUSPICIOUS'
+    };
+    return {
+      bg: 'linear-gradient(135deg, rgba(255,241,242,0.96) 0%, rgba(255,228,230,0.85) 45%, rgba(254,205,211,0.55) 100%)',
+      border: 'rgba(244,63,94,0.32)',
+      accent: '#E11D48',
+      glow: 'rgba(244,63,94,0.22)',
+      arc: '#FB7185',
+      label: 'LIKELY COUNTERFEIT'
+    };
   };
 
   return (
@@ -154,7 +175,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
         </div>
 
         {/* URL Analyzer */}
-        <div className="w-full max-w-[860px] mx-auto">
+        <div className="w-full max-w-5xl mx-auto">
           <UrlAnalyzer standalone={false} onAnalyzeComplete={onSaveToVault} />
         </div>
 
