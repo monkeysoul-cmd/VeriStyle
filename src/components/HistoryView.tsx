@@ -28,13 +28,15 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
   const [filterVerdict, setFilterVerdict] = useState<string>('ALL');
 
   const filteredHistory = history.filter(item => {
-    const matchesSearch = item.itemName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          item.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          item.verificationHash.toLowerCase().includes(searchTerm.toLowerCase());
+    const searchLower = (searchTerm || '').toLowerCase().trim();
+    const itemName = (item?.itemName || '').toLowerCase();
+    const brand = (item?.brand || '').toLowerCase();
+    const hash = (item?.verificationHash || '').toLowerCase();
+    const matchesSearch = !searchLower || itemName.includes(searchLower) || brand.includes(searchLower) || hash.includes(searchLower);
     if (filterVerdict === 'ALL') return matchesSearch;
-    if (filterVerdict === 'AUTHENTIC') return matchesSearch && item.trustScore >= 80;
-    if (filterVerdict === 'COUNTERFEIT') return matchesSearch && item.trustScore < 50;
-    if (filterVerdict === 'SUSPICIOUS') return matchesSearch && item.trustScore >= 50 && item.trustScore < 80;
+    if (filterVerdict === 'AUTHENTIC') return matchesSearch && (item.trustScore ?? 0) >= 80;
+    if (filterVerdict === 'COUNTERFEIT') return matchesSearch && (item.trustScore ?? 0) < 50;
+    if (filterVerdict === 'SUSPICIOUS') return matchesSearch && (item.trustScore ?? 0) >= 50 && (item.trustScore ?? 0) < 80;
     return matchesSearch;
   });
 
@@ -193,7 +195,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
                       style={{ background: 'rgba(0,160,70,0.05)', border: '1px solid rgba(0,80,40,0.08)', color: 'var(--text-muted)' }}
                     >
                       <Hash className="w-3 h-3" />
-                      {item.verificationHash.slice(0, 14)}…
+                      {(item.verificationHash || '0xverified').slice(0, 14)}…
                     </div>
                     <div
                       className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider"

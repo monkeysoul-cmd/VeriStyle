@@ -52,10 +52,13 @@ export const ExploreView: React.FC = () => {
     if (activeTag) {
       list = list.filter(p => p.tags.includes(tagFilterMap[activeTag]));
     }
+    const parsePrice = (val: string) => parseFloat(String(val).replace(/[^0-9.]/g, '')) || 0;
     list.sort((a, b) => {
       if (sortBy === 'trust-score') return b.trustScore - a.trustScore;
       if (sortBy === 'rating') return b.rating - a.rating;
       if (sortBy === 'reviews') return b.reviewCount - a.reviewCount;
+      if (sortBy === 'price-low') return parsePrice(a.price) - parsePrice(b.price);
+      if (sortBy === 'price-high') return parsePrice(b.price) - parsePrice(a.price);
       return 0;
     });
     return list;
@@ -165,6 +168,8 @@ export const ExploreView: React.FC = () => {
                 <option value="trust-score">Sort by: Trust Score</option>
                 <option value="rating">Sort by: Rating</option>
                 <option value="reviews">Sort by: Most Reviewed</option>
+                <option value="price-low">Sort by: Price: Low to High</option>
+                <option value="price-high">Sort by: Price: High to Low</option>
               </select>
               <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none text-slate-400" />
             </div>
