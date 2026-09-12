@@ -7,9 +7,18 @@ export default async function handler(req: any, res: any) {
     return res.status(200).end();
   }
 
-  let imageUrl = req.query?.url || req.params?.url;
-  if (!imageUrl || typeof imageUrl !== "string" || !imageUrl.startsWith("http")) {
+  let rawUrl = req.query?.url || req.params?.url;
+  if (!rawUrl || typeof rawUrl !== "string") {
     return res.status(400).json({ error: "Valid image URL is required" });
+  }
+
+  let imageUrl = rawUrl.trim();
+  try {
+    imageUrl = decodeURIComponent(imageUrl);
+  } catch (_) {}
+
+  if (!imageUrl.startsWith("http")) {
+    return res.status(400).json({ error: "Valid HTTP image URL is required" });
   }
 
   // Upgrade to HTTPS
@@ -28,15 +37,12 @@ export default async function handler(req: any, res: any) {
   try {
     const response = await fetch(imageUrl, {
       headers: {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
-        "Accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+        "Accept": "image/avif,image/webp,image/apng,image/*,*/*;q=0.8",
         "Accept-Language": "en-US,en;q=0.9",
         "Referer": referer,
-        "Sec-Fetch-Dest": "image",
-        "Sec-Fetch-Mode": "no-cors",
-        "Sec-Fetch-Site": "cross-site",
       },
-      signal: AbortSignal.timeout(10000),
+      signal: AbortSignal.timeout(8000),
       redirect: "follow",
     });
 
@@ -50,16 +56,16 @@ export default async function handler(req: any, res: any) {
     res.setHeader("X-Content-Type-Options", "nosniff");
 
     const arrayBuffer = await response.arrayBuffer();
-    
-    // Verify it's actually image data (not an error page HTML)
     const buffer = Buffer.from(arrayBuffer);
+
+    // Verify it's actually image data (not an error page HTML)
     if (buffer.length < 1000 && buffer.toString("utf-8", 0, 50).includes("<html")) {
       return res.status(404).json({ error: "Upstream returned HTML instead of image" });
     }
-    
+
     return res.status(200).send(buffer);
   } catch (err: any) {
     console.error("[ImageProxy] Error:", err.message);
-    return res.status(500).json({ error: "Internal error fetching image" });
+    return res.status(500).json({ error: "Internal error fetching image", message: err.message });
   }
 }
