@@ -115,7 +115,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
           />
         </div>
 
-        <div className="relative z-10 w-full max-w-6xl mx-auto px-2 sm:px-6 text-center flex flex-col items-center">
+        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-4 sm:px-6 text-center flex flex-col items-center">
 
           {/* Badge — multi-tone */}
           <motion.div
@@ -181,7 +181,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="animate-focus-glow rounded-2xl">
+            <div className="animate-focus-glow rounded-2xl w-full text-left">
               <UrlAnalyzer standalone={false} initialUrl={sampleUrl} />
             </div>
           </motion.div>

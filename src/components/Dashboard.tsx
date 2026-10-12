@@ -175,7 +175,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
         </div>
 
         {/* URL Analyzer */}
-        <div className="w-full max-w-5xl mx-auto">
+        <div className="w-full max-w-[1400px] mx-auto text-left">
           <UrlAnalyzer standalone={false} onAnalyzeComplete={onSaveToVault} />
         </div>
 
