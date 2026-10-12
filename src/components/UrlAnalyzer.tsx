@@ -5,7 +5,7 @@ import {
   BadgeCheck, Flame, BarChart3, Lightbulb, ShoppingBag,
   Building2, Store, ThumbsUp, ThumbsDown, Eye, Compass, Zap,
   Activity, Hash, ArrowRight, ScanLine, Brain, ChevronRight,
-  Copy, Check
+  Copy, Check, MessageSquare, Quote
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { UrlAnalysisResult } from '../types';
@@ -87,6 +87,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
   const [errorMsg, setErrorMsg] = useState('');
   const [result, setResult] = useState<UrlAnalysisResult | null>(null);
   const [imageSrc, setImageSrc] = useState<string>('');
+  const [activeImgIdx, setActiveImgIdx] = useState(0);
   const [proxyAttempted, setProxyAttempted] = useState(false);
   const [imageFailed, setImageFailed] = useState(false);
   const [copiedHash, setCopiedHash] = useState(false);
@@ -116,6 +117,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
     setErrorMsg('');
     setProxyAttempted(false);
     setImageFailed(false);
+    setActiveImgIdx(0);
 
     const interval = setInterval(() => {
       setLoadingStep(prev => (prev < 4 ? prev + 1 : prev));
@@ -145,6 +147,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
       setResult(data);
       const rawImg = (data.imageUrl || (data.productImages && data.productImages[0]) || '').trim();
       setImageSrc(rawImg ? rawImg.replace(/^http:\/\//i, 'https://') : '');
+      setActiveImgIdx(0);
       setStatus('result');
       if (onAnalyzeComplete) onAnalyzeComplete(data);
     } catch (err: any) {
@@ -159,9 +162,21 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
     if (!proxyAttempted && imageSrc && imageSrc.startsWith('http') && !imageSrc.includes('/api/image-proxy')) {
       setProxyAttempted(true);
       setImageSrc(`/api/image-proxy?url=${encodeURIComponent(imageSrc)}`);
+    } else if (result?.productImages && result.productImages.length > activeImgIdx + 1) {
+      const nextIdx = activeImgIdx + 1;
+      setActiveImgIdx(nextIdx);
+      setProxyAttempted(false);
+      setImageSrc(result.productImages[nextIdx]);
     } else {
       setImageFailed(true);
     }
+  };
+
+  const handleSelectThumbnail = (idx: number, src: string) => {
+    setActiveImgIdx(idx);
+    setProxyAttempted(false);
+    setImageFailed(false);
+    setImageSrc(src);
   };
 
   const handleReset = () => {
@@ -170,6 +185,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
     setResult(null);
     setErrorMsg('');
     setImageSrc('');
+    setActiveImgIdx(0);
     setProxyAttempted(false);
     setImageFailed(false);
   };
@@ -343,7 +359,9 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
     const displayTitle = result.itemName || `${result.brand || 'Product'} Item`;
     const displayBrand = result.companyName || result.brand || 'Verified Brand';
     const displayPrice = result.extractedPrice || result.estimatedRetailValue || '₹1,299';
-    const displayScore = Math.max(0, Math.min(100, Math.round(Number(result.trustScore) || 80)));
+    const displayScore = typeof result.trustScore === 'number' && !isNaN(result.trustScore)
+      ? Math.max(0, Math.min(100, Math.round(result.trustScore)))
+      : 75;
     const displayVerdict = result.verdict || (displayScore >= 80 ? 'VERIFIED AUTHENTIC' : (displayScore >= 50 ? 'SUSPICIOUS REVIEW / RISK' : 'LIKELY COUNTERFEIT'));
 
     const toSafeArray = (val: any, fallback: string[]): string[] => {
@@ -578,6 +596,36 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                 </div>
               </div>
 
+              {/* Multi-Image Gallery Thumbnails if available */}
+              {result.productImages && result.productImages.length > 1 && (
+                <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-0.5 no-scrollbar">
+                  {result.productImages.slice(0, 6).map((imgUrl, idx) => {
+                    const isSelected = activeImgIdx === idx;
+                    return (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => handleSelectThumbnail(idx, imgUrl)}
+                        className="w-12 h-12 rounded-xl overflow-hidden shrink-0 transition-all cursor-pointer relative"
+                        style={{
+                          border: isSelected ? '2px solid #00C06B' : '1px solid rgba(0,0,0,0.1)',
+                          boxShadow: isSelected ? '0 0 10px rgba(0,192,107,0.3)' : 'none',
+                          background: '#FFFFFF',
+                          transform: isSelected ? 'scale(1.05)' : 'scale(1)',
+                        }}
+                      >
+                        <img
+                          src={imgUrl}
+                          alt={`Thumbnail ${idx + 1}`}
+                          referrerPolicy="no-referrer"
+                          className="w-full h-full object-contain p-1"
+                        />
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
               {/* Price / Rating Telemetry Cards */}
               <div className="grid grid-cols-2 gap-3">
                 {/* Price Card (Emerald Theme) */}
@@ -655,7 +703,9 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                         boxShadow: '0 0 10px rgba(56,189,248,0.5)'
                       }}
                       initial={{ width: 0 }}
-                      animate={{ width: '85%' }}
+                      animate={{
+                        width: `${Math.min(100, Math.max(25, Math.round(Math.log10(Math.max(1, result.extractedReviewCount || 50)) * 22)))}%`
+                      }}
                       transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                     />
                   </div>
@@ -951,6 +1001,46 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
             </div>
           </div>
         </div>
+
+        {/* ── LIVE CUSTOMER REVIEWS & FEEDBACK ─────── */}
+        {result.sampleReviews && result.sampleReviews.length > 0 && (
+          <div
+            className="rounded-3xl p-6 transition-all hover:shadow-md"
+            style={{
+              background: 'linear-gradient(145deg, rgba(255,255,255,0.96), rgba(240,249,255,0.6))',
+              border: '1px solid rgba(56,189,248,0.22)',
+              boxShadow: '0 4px 20px rgba(14,165,233,0.03)'
+            }}
+          >
+            <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+              <h4 className="text-xs font-black uppercase tracking-wider flex items-center gap-2 text-sky-800">
+                <MessageSquare className="w-4 h-4 text-sky-600" />
+                Live Customer Reviews & Authenticity Feedback
+              </h4>
+              <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-sky-50 text-sky-700 border border-sky-200">
+                {result.extractedReviewCount ? `${result.extractedReviewCount.toLocaleString()} Verified Ratings` : 'Organic Consumer Samples'}
+              </span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              {result.sampleReviews.map((rev, idx) => (
+                <div
+                  key={idx}
+                  className="p-4 rounded-2xl flex items-start gap-3 transition-all hover:translate-y-[-2px]"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.9)',
+                    border: '1px solid rgba(56,189,248,0.16)',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
+                  }}
+                >
+                  <Quote className="w-4 h-4 text-sky-500 shrink-0 mt-0.5 opacity-70" />
+                  <div className="text-xs font-medium leading-relaxed text-slate-700">
+                    {rev}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* ── BOTTOM DETAIL CARDS (RED FLAGS, RECOMMENDATIONS & REASONING) ─────── */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
