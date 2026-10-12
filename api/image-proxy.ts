@@ -35,16 +35,34 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
-    const response = await fetch(imageUrl, {
-      headers: {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-        "Accept": "image/avif,image/webp,image/apng,image/*,*/*;q=0.8",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Referer": referer,
-      },
-      signal: AbortSignal.timeout(8000),
-      redirect: "follow",
-    });
+    let response: Response;
+    try {
+      response = await fetch(imageUrl, {
+        headers: {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+          "Accept": "image/avif,image/webp,image/apng,image/*,*/*;q=0.8",
+          "Accept-Language": "en-US,en;q=0.9",
+          "Referer": referer,
+        },
+        signal: AbortSignal.timeout(8000),
+        redirect: "follow",
+      });
+    } catch (fetchErr: any) {
+      if (imageUrl.includes("m.media-amazon.com")) {
+        const mirrorUrl = imageUrl.replace("m.media-amazon.com", "images-eu.ssl-images-amazon.com");
+        response = await fetch(mirrorUrl, {
+          headers: {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+            "Accept": "image/*,*/*;q=0.8",
+            "Referer": referer,
+          },
+          signal: AbortSignal.timeout(6000),
+          redirect: "follow",
+        });
+      } else {
+        throw fetchErr;
+      }
+    }
 
     if (!response.ok) {
       return res.status(response.status).json({ error: "Failed to fetch upstream image" });
