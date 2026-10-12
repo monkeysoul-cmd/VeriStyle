@@ -41,7 +41,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onView }) => 
         {/* Trust Score top-right */}
         <div className="absolute top-3 right-12">
           <span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--text-primary)] text-white border border-gray-800 shadow-sm">
-            {product.trustScore}/100
+            {product.trustScore}
           </span>
         </div>
 

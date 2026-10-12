@@ -72,9 +72,8 @@ const ScoreDonut: React.FC<{ score: number; label: string }> = ({ score, label }
           </linearGradient>
         </defs>
       </svg>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
         <span className="text-3xl font-extrabold text-[var(--text-primary)] leading-none">{score}</span>
-        <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-0.5">/ 100</span>
       </div>
       <span className="text-xs font-bold text-[var(--green-primary)] tracking-wide uppercase mt-2">{label}</span>
     </div>
@@ -177,7 +176,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
                 <div className="inline-flex items-center gap-4 px-5 py-3 rounded-2xl bg-[var(--green-primary)]/5 border border-[var(--green-primary)]/20">
                   <div className="text-center">
                     <p className="text-[10px] text-[var(--green-primary)] uppercase tracking-widest font-bold mb-1">Trust Score</p>
-                    <p className="text-3xl font-extrabold text-[var(--green-primary)] leading-none">{product.trustScore}<span className="text-sm text-gray-500 font-bold">/100</span></p>
+                    <p className="text-3xl font-extrabold text-[var(--green-primary)] leading-none">{product.trustScore}</p>
                   </div>
                   <div className="w-px h-12 bg-gray-200" />
                   <div>
@@ -353,7 +352,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
               Sentiment is generated from buyer-review snippets VeriLens analyzed. Review total includes available counts from verified resale platforms.
             </p>
 
-            <div className="grid grid-cols-3 gap-3 pt-2">
+            <div className="grid grid-cols-2 gap-3 pt-2">
               <div className="text-center">
                 <p className="text-2xl font-black text-[var(--text-primary)]">{product.sentimentBreakdown.reviewsAnalyzed.toLocaleString()}</p>
                 <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wide mt-1">Reviews Analyzed</p>
@@ -361,10 +360,6 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
               <div className="text-center">
                 <p className="text-2xl font-black text-[var(--text-primary)]">{product.sentimentBreakdown.storesChecked}</p>
                 <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wide mt-1">Platforms Checked</p>
-              </div>
-              <div className="text-center">
-                <p className="text-2xl font-black text-[var(--text-primary)]">{product.sentimentBreakdown.accuracyRate}%</p>
-                <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wide mt-1">Accuracy Rate</p>
               </div>
             </div>
 
