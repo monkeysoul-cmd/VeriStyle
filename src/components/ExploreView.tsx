@@ -89,14 +89,18 @@ export const ExploreView: React.FC = () => {
             Smart Product Discovery
           </div>
           <h1
-            className="text-4xl sm:text-5xl font-extrabold tracking-tight"
+            className="text-4xl sm:text-5xl font-black tracking-tight"
             style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}
           >
             Explore{' '}
             <span
-              className="italic text-gradient-brand"
+              className="italic"
               style={{
                 fontFamily: 'var(--font-serif)',
+                background: 'linear-gradient(135deg, #00C865 0%, #05DF72 40%, #6366F1 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
               }}
             >
               All Products.
@@ -121,7 +125,7 @@ export const ExploreView: React.FC = () => {
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search brands, categories, or products..."
-              className="input-dark w-full pl-12 pr-4 py-3.5 rounded-2xl text-sm"
+              className="w-full pl-12 pr-4 py-3.5 rounded-2xl text-sm bg-white border border-slate-200/80 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 shadow-xs text-slate-800 placeholder:text-slate-400 font-medium transition-all"
             />
           </div>
           <button
@@ -134,14 +138,13 @@ export const ExploreView: React.FC = () => {
 
         {/* Filters Row */}
         <motion.div
-          className="flex flex-col sm:flex-row items-center gap-4 p-4 rounded-2xl"
-          style={{ background: 'var(--bg-surface-2)', border: '1px solid rgba(0,0,0,0.06)' }}
+          className="flex flex-col sm:flex-row items-center gap-4 p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <div className="flex items-center gap-2 text-sm font-bold w-full sm:w-auto" style={{ color: 'var(--text-muted)' }}>
-            <SlidersHorizontal className="w-4 h-4 text-emerald-600" />
+          <div className="flex items-center gap-2 text-sm font-bold w-full sm:w-auto text-slate-600">
+            <SlidersHorizontal className="w-4 h-4 text-emerald-500" />
             Filters:
           </div>
 
@@ -151,7 +154,7 @@ export const ExploreView: React.FC = () => {
               <select
                 value={selectedCategory}
                 onChange={e => setSelectedCategory(e.target.value as ProductCategory | 'All')}
-                className="input-dark appearance-none pl-4 pr-10 py-2.5 rounded-xl text-sm font-medium cursor-pointer"
+                className="appearance-none pl-4 pr-10 py-2.5 rounded-xl text-sm font-semibold cursor-pointer bg-slate-50 border border-slate-200/80 text-slate-700 hover:border-emerald-500/40 focus:outline-none focus:border-emerald-500 transition-all"
               >
                 {categories.map(c => <option key={c} value={c}>{c === 'All' ? 'All Categories' : c}</option>)}
               </select>
@@ -163,7 +166,7 @@ export const ExploreView: React.FC = () => {
               <select
                 value={sortBy}
                 onChange={e => setSortBy(e.target.value as SortOption)}
-                className="input-dark appearance-none pl-4 pr-10 py-2.5 rounded-xl text-sm font-medium cursor-pointer"
+                className="appearance-none pl-4 pr-10 py-2.5 rounded-xl text-sm font-semibold cursor-pointer bg-slate-50 border border-slate-200/80 text-slate-700 hover:border-emerald-500/40 focus:outline-none focus:border-emerald-500 transition-all"
               >
                 <option value="trust-score">Sort by: Trust Score</option>
                 <option value="rating">Sort by: Rating</option>
@@ -192,16 +195,16 @@ export const ExploreView: React.FC = () => {
               style={
                 activeTag === label
                   ? {
-                      background: 'linear-gradient(135deg, #059669, #34D88A)',
+                      background: 'linear-gradient(135deg, #00C865, #05DF72)',
                       color: '#FFFFFF',
                       border: 'none',
-                      boxShadow: '0 4px 16px rgba(52,216,138,0.3)',
+                      boxShadow: '0 4px 16px rgba(0,200,101,0.3)',
                     }
                   : {
-                      background: 'rgba(255,255,255,0.85)',
-                      border: '1px solid rgba(0,0,0,0.06)',
+                      background: 'rgba(255,255,255,0.92)',
+                      border: '1px solid rgba(15,23,42,0.08)',
                       color: 'var(--text-secondary)',
-                      boxShadow: '0 1px 4px rgba(0,0,0,0.02)',
+                      boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
                     }
               }
               whileHover={{ scale: 1.04, y: -1 }}

@@ -62,53 +62,50 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
               <motion.div
                 className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0 relative"
                 style={{
-                  background: 'linear-gradient(135deg, #34D88A, #00B864)',
-                  boxShadow: '0 3px 16px rgba(52,216,138,0.35), 0 4px 12px rgba(0,0,0,0.08)',
+                  background: 'linear-gradient(135deg, #05DF72, #00C865)',
+                  boxShadow: '0 4px 18px rgba(0, 200, 101, 0.35), 0 2px 6px rgba(0,0,0,0.06)',
                 }}
                 whileHover={{ rotate: 6, scale: 1.08 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 15 }}
               >
                 <VeriLensIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </motion.div>
-              <div className="flex flex-col leading-none">
+              <div className="flex flex-col leading-none text-left">
                 <span
-                  className="text-lg sm:text-xl font-bold tracking-tight"
+                  className="text-lg sm:text-xl font-extrabold tracking-tight"
                   style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}
                 >
                   VeriStyle
                 </span>
-                <span className="text-[9px] font-bold uppercase tracking-[0.15em]" style={{ color: 'var(--green-primary)', opacity: 0.7 }}>
+                <span className="text-[9px] font-black uppercase tracking-[0.16em] mt-0.5" style={{ color: 'var(--green-primary)' }}>
                   AI Authenticator
                 </span>
               </div>
             </button>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-1 p-1 rounded-xl" style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.04)' }}>
+            <div className="hidden md:flex items-center gap-1 p-1 rounded-xl" style={{ background: 'rgba(15,23,42,0.03)', border: '1px solid rgba(15,23,42,0.06)' }}>
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => handleNav(item.id)}
-                  className="relative px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 cursor-pointer"
-                  style={{ color: currentTab === item.id ? 'var(--green-primary)' : 'var(--text-muted)' }}
+                  className="relative px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer"
+                  style={{ color: currentTab === item.id ? '#0A0F1D' : 'var(--text-muted)' }}
                 >
                   {currentTab === item.id && (
                     <motion.div
                       layoutId="active-tab-bg"
                       className="absolute inset-0 rounded-lg"
-                      style={{ background: 'rgba(52,216,138,0.06)', border: '1px solid rgba(52,216,138,0.12)' }}
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                      style={{ background: '#FFFFFF', boxShadow: '0 2px 8px rgba(15,23,42,0.08), 0 0 0 1px rgba(15,23,42,0.05)' }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                     />
                   )}
-                  <span className="relative z-10">{item.label}</span>
-                  {currentTab === item.id && (
-                    <motion.div
-                      layoutId="active-tab-dot"
-                      className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full"
-                      style={{ background: 'var(--green-primary)', boxShadow: '0 0 6px rgba(52,216,138,0.5)' }}
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    />
-                  )}
+                  <span className="relative z-10 flex items-center gap-1.5">
+                    {item.label}
+                    {currentTab === item.id && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-[var(--green-primary)] shadow-[0_0_6px_var(--green-primary)]" />
+                    )}
+                  </span>
                 </button>
               ))}
             </div>
@@ -116,17 +113,17 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
             {/* Right Actions */}
             <div className="flex items-center gap-2.5">
               {/* Status badge — premium multi-glow */}
-              <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full" style={{ background: 'rgba(52,216,138,0.05)', border: '1px solid rgba(52,216,138,0.12)' }}>
-                <span className="relative flex w-1.5 h-1.5">
-                  <span className="absolute inset-0 rounded-full animate-ping opacity-75" style={{ background: '#34D88A' }} />
-                  <span className="relative rounded-full w-1.5 h-1.5" style={{ background: '#34D88A' }} />
+              <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full" style={{ background: 'rgba(0,200,101,0.06)', border: '1px solid rgba(0,200,101,0.2)' }}>
+                <span className="relative flex w-2 h-2">
+                  <span className="absolute inset-0 rounded-full animate-ping opacity-75" style={{ background: '#05DF72' }} />
+                  <span className="relative rounded-full w-2 h-2" style={{ background: '#00C865' }} />
                 </span>
-                <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--green-primary)' }}>Live</span>
+                <span className="text-[10px] font-black uppercase tracking-wider" style={{ color: 'var(--green-primary)' }}>Vision 2.5 Active</span>
               </div>
 
               <motion.button
                 onClick={() => { onQuickStart(); handleNav('dashboard'); }}
-                className="hidden md:flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-bold cursor-pointer btn-neon"
+                className="hidden md:flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wide cursor-pointer btn-neon"
                 whileHover={{ scale: 1.03, y: -1 }}
                 whileTap={{ scale: 0.96 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 20 }}

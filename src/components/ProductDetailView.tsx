@@ -55,40 +55,40 @@ const ScoreDonut: React.FC<{ score: number; label: string }> = ({ score, label }
       <svg width={radius * 2} height={radius * 2} className="-rotate-90">
         <circle
           cx={radius} cy={radius} r={normalizedRadius}
-          stroke="#f1f5f9" strokeWidth={stroke} fill="none"
+          stroke="#E2E8F0" strokeWidth={stroke} fill="none"
         />
         <circle
           cx={radius} cy={radius} r={normalizedRadius}
-          stroke="url(#scoreGradDetail)" strokeWidth={stroke} fill="none"
+          stroke="url(#scoreGradDetailSenior)" strokeWidth={stroke} fill="none"
           strokeLinecap="round"
           strokeDasharray={`${circumference} ${circumference}`}
           strokeDashoffset={offset}
           style={{ transition: 'stroke-dashoffset 1.4s cubic-bezier(0.16, 1, 0.3, 1)' }}
         />
         <defs>
-          <linearGradient id="scoreGradDetail" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="var(--green-accent-from)" />
-            <stop offset="100%" stopColor="var(--green-accent-to)" />
+          <linearGradient id="scoreGradDetailSenior" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#05DF72" />
+            <stop offset="100%" stopColor="#00C865" />
           </linearGradient>
         </defs>
       </svg>
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
-        <span className="text-3xl font-extrabold text-[var(--text-primary)] leading-none">{score}</span>
+        <span className="text-3xl font-black font-mono text-slate-900 leading-none">{score}</span>
       </div>
-      <span className="text-xs font-bold text-[var(--green-primary)] tracking-wide uppercase mt-2">{label}</span>
+      <span className="text-xs font-black text-emerald-600 tracking-wider uppercase mt-2">{label}</span>
     </div>
   );
 };
 
-const ScoreBar: React.FC<{ label: string; value: number; delay?: number }> = ({ label, value, delay = 0 }) => (
+const ScoreBar: React.FC<{ label: string; value: number; colorGrad?: string; delay?: number }> = ({ label, value, colorGrad = 'from-emerald-500 to-emerald-400', delay = 0 }) => (
   <div className="space-y-1.5">
-    <div className="flex justify-between items-center text-sm">
-      <span className="text-gray-700 font-bold">{label}</span>
-      <span className="text-[var(--green-primary)] font-black font-mono">{value}%</span>
+    <div className="flex justify-between items-center text-sm font-semibold">
+      <span className="text-slate-700">{label}</span>
+      <span className="text-emerald-600 font-black font-mono">{value}%</span>
     </div>
-    <div className="h-2.5 w-full bg-gray-100 rounded-full overflow-hidden">
+    <div className="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden">
       <motion.div
-        className="h-full rounded-full bg-gradient-to-r from-[var(--green-accent-from)] to-[var(--green-accent-to)]"
+        className={`h-full rounded-full bg-gradient-to-r ${colorGrad}`}
         initial={{ width: 0 }}
         animate={{ width: `${value}%` }}
         transition={{ duration: 1, delay, ease: [0.16, 1, 0.3, 1] }}
@@ -97,15 +97,15 @@ const ScoreBar: React.FC<{ label: string; value: number; delay?: number }> = ({ 
   </div>
 );
 
-const SentimentBar: React.FC<{ label: string; value: number; color: string; delay?: number }> = ({ label, value, color, delay = 0 }) => (
+const SentimentBar: React.FC<{ label: string; value: number; colorGrad: string; delay?: number }> = ({ label, value, colorGrad, delay = 0 }) => (
   <div className="space-y-1.5">
-    <div className="flex justify-between items-center text-sm">
-      <span className="text-gray-600 font-bold">{label}</span>
-      <span className="font-black font-mono text-[var(--text-primary)]">{value}%</span>
+    <div className="flex justify-between items-center text-sm font-semibold">
+      <span className="text-slate-600">{label}</span>
+      <span className="font-black font-mono text-slate-900">{value}%</span>
     </div>
-    <div className="h-2.5 w-full bg-gray-100 rounded-full overflow-hidden">
+    <div className="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden">
       <motion.div 
-        className={`h-full rounded-full ${color}`} 
+        className={`h-full rounded-full bg-gradient-to-r ${colorGrad}`} 
         initial={{ width: 0 }}
         animate={{ width: `${value}%` }}
         transition={{ duration: 1, delay, ease: [0.16, 1, 0.3, 1] }}
@@ -115,11 +115,11 @@ const SentimentBar: React.FC<{ label: string; value: number; color: string; dela
 );
 
 const badgeStyles: Record<string, string> = {
-  'Top Rated':    'bg-amber-100 text-amber-700 border-amber-200',
-  'Budget Pick':  'bg-blue-100 text-blue-700 border-blue-200',
-  'Trending':     'bg-indigo-100 text-indigo-700 border-indigo-200',
-  'Premium Pick': 'bg-[var(--green-primary)]/10 text-[var(--green-primary)] border-[var(--green-primary)]/20',
-  'Best Value':   'bg-teal-100 text-teal-700 border-teal-200',
+  'Top Rated':    'bg-amber-500/10 text-amber-700 border-amber-500/25',
+  'Budget Pick':  'bg-sky-500/10 text-sky-700 border-sky-500/25',
+  'Trending':     'bg-indigo-500/10 text-indigo-700 border-indigo-500/25',
+  'Premium Pick': 'bg-emerald-500/10 text-emerald-700 border-emerald-500/25',
+  'Best Value':   'bg-violet-500/10 text-violet-700 border-violet-500/25',
 };
 
 export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, onBack }) => {
@@ -259,10 +259,10 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
 
             {/* Dimension Bars */}
             <div className="flex-1 w-full space-y-6">
-              <ScoreBar label="Build Quality" value={product.scoreDimensions.buildQuality} delay={0.1} />
-              <ScoreBar label="Performance" value={product.scoreDimensions.performance} delay={0.2} />
-              <ScoreBar label="Value for Money" value={product.scoreDimensions.valueForMoney} delay={0.3} />
-              <ScoreBar label="User Satisfaction" value={product.scoreDimensions.userSatisfaction} delay={0.4} />
+              <ScoreBar label="Build Quality & Craftsmanship" value={product.scoreDimensions.buildQuality} colorGrad="from-emerald-500 to-emerald-400" delay={0.1} />
+              <ScoreBar label="Hardware & Material Performance" value={product.scoreDimensions.performance} colorGrad="from-indigo-500 to-indigo-400" delay={0.2} />
+              <ScoreBar label="Value for Money" value={product.scoreDimensions.valueForMoney} colorGrad="from-sky-500 to-sky-400" delay={0.3} />
+              <ScoreBar label="Buyer Consensus & Satisfaction" value={product.scoreDimensions.userSatisfaction} colorGrad="from-violet-500 to-violet-400" delay={0.4} />
             </div>
           </div>
         </section>
@@ -343,9 +343,9 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
             <h3 className="text-xl font-extrabold text-[var(--text-primary)]" style={{ fontFamily: 'var(--font-heading)' }}>Sentiment Breakdown</h3>
 
             <div className="space-y-5">
-              <SentimentBar label="Positive Feedback" value={product.sentimentBreakdown.positive} color="bg-[var(--green-primary)]" delay={0.1} />
-              <SentimentBar label="Neutral Feedback" value={product.sentimentBreakdown.neutral} color="bg-gray-400" delay={0.2} />
-              <SentimentBar label="Negative Feedback" value={product.sentimentBreakdown.negative} color="bg-red-400" delay={0.3} />
+              <SentimentBar label="Positive Feedback" value={product.sentimentBreakdown.positive} colorGrad="from-emerald-500 to-emerald-400" delay={0.1} />
+              <SentimentBar label="Neutral Feedback" value={product.sentimentBreakdown.neutral} colorGrad="from-slate-400 to-slate-300" delay={0.2} />
+              <SentimentBar label="Negative Feedback" value={product.sentimentBreakdown.negative} colorGrad="from-rose-500 to-rose-400" delay={0.3} />
             </div>
 
             <p className="text-[11px] text-gray-500 leading-relaxed p-3 rounded-xl bg-gray-50 border border-gray-100 font-medium">
