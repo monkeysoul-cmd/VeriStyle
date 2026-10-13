@@ -124,7 +124,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
           >
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
             <span className="text-[11px] font-semibold tracking-wide text-slate-700">
-              VeriLens 2.5 • AI Luxury Forensics
+              VeriLens AI 1.0 • Luxury Forensics
             </span>
           </motion.div>
 

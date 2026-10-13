@@ -46,7 +46,7 @@ export const Footer: React.FC = () => {
             </div>
 
             <p className="text-sm leading-relaxed max-w-xs text-slate-400 font-normal">
-              Real-time multimodal authenticity inspection powered by Google Gemini Vision. Detecting counterfeit fashion and manufactured reviews across major e-commerce platforms.
+              Real-time multimodal authenticity inspection powered by VeriLens AI 1.0. Detecting counterfeit fashion and manufactured reviews across major e-commerce platforms.
             </p>
 
             {/* Status badge */}
@@ -55,7 +55,7 @@ export const Footer: React.FC = () => {
                 <span className="absolute inset-0 rounded-full animate-ping opacity-75 bg-[#00C865]" />
                 <span className="relative rounded-full w-2 h-2 bg-[#00C865]" />
               </span>
-              <span className="text-xs font-bold text-emerald-400">Gemini 2.5 Flash Vision Active</span>
+              <span className="text-xs font-bold text-emerald-400">VeriLens AI 1.0 Active</span>
             </div>
 
             {/* Trust marks */}

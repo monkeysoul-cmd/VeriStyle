@@ -349,7 +349,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
             </div>
 
             <p className="text-[11px] text-gray-500 leading-relaxed p-3 rounded-xl bg-gray-50 border border-gray-100 font-medium">
-              Sentiment is generated from buyer-review snippets VeriLens analyzed. Review total includes available counts from verified resale platforms.
+              Sentiment is generated from buyer-review snippets VeriLens AI 1.0 analyzed. Review total includes available counts from verified resale platforms.
             </p>
 
             <div className="grid grid-cols-2 gap-3 pt-2">

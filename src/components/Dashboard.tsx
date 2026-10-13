@@ -94,7 +94,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
     setIsLoading(true);
     setAnalysisResult(null);
     const steps = [
-      'Initializing AI Engines...',
+      'Initializing VeriLens AI 1.0...',
       'Scanning Stitching & Material...',
       'Analyzing Hardware Electroplating...',
       'Processing Review NLP Forensics...',
@@ -394,7 +394,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                     {scanStep}
                   </h3>
                   <p className="text-sm max-w-sm font-mono" style={{ color: 'var(--text-muted)' }}>
-                    VeriLens AI engine is cross-referencing stitching vectors and review text entropy against verified master databases.
+                    VeriLens AI 1.0 engine is cross-referencing stitching vectors and review text entropy against verified master databases.
                   </p>
                 </div>
               </div>

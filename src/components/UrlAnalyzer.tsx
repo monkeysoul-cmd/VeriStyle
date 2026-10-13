@@ -642,7 +642,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                         </span>
                         <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#CBD5E1' }} />
                         <span style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--text-muted)' }}>
-                          Dual-Engine AI Inspection
+                          VeriLens AI 1.0 Inspection
                         </span>
                       </div>
 

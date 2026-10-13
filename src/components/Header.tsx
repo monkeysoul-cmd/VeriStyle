@@ -118,7 +118,7 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
                   <span className="absolute inset-0 rounded-full animate-ping opacity-75" style={{ background: '#05DF72' }} />
                   <span className="relative rounded-full w-2 h-2" style={{ background: '#00C865' }} />
                 </span>
-                <span className="text-[10px] font-black uppercase tracking-wider" style={{ color: 'var(--green-primary)' }}>Vision 2.5 Active</span>
+                <span className="text-[10px] font-black uppercase tracking-wider" style={{ color: 'var(--green-primary)' }}>VeriLens AI 1.0 Active</span>
               </div>
 
               <motion.button

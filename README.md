@@ -1,11 +1,11 @@
-# 🛡️ VeriStyle | VeriLens AI Authenticator
+# 🛡️ VeriStyle | VeriLens AI 1.0 Authenticator
 
 <div align="center">
 
   <h3>✨ Multimodal Fashion Authenticity & Review Forensics Platform ✨</h3>
 
   <p>
-    <b>Powered by VeriLens AI Multimodal Vision Transformer & NLP Perplexity Engine</b>
+    <b>Powered by VeriLens AI 1.0 Multimodal Vision Transformer & NLP Perplexity Engine</b>
   </p>
 
   <p>
@@ -43,7 +43,7 @@
 | :--- | :--- |
 | **Frontend UI** | React 19, TypeScript, Vite, TailwindCSS, Motion (Framer Motion) |
 | **Icons & Aesthetics** | Lucide React, Custom VeriLens SVG Reticle Design System |
-| **AI Neural Core** | VeriLens AI Multimodal Engine (Vision Transformer + NLP Forensics) |
+| **AI Neural Core** | VeriLens AI 1.0 Multimodal Engine (Vision Transformer + NLP Forensics) |
 | **Backend API** | Node.js / Express Server (`tsx`), REST Endpoints, OpenAPI Spec |
 | **Tooling & Build** | Bun / Node, esbuild, TypeScript Compiler (`tsc`) |
 

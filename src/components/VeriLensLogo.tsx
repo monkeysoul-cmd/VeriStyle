@@ -73,7 +73,7 @@ export const VeriLensLogo: React.FC<VeriLensLogoProps> = ({
             </span>
             <span className="px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center gap-1">
               <VeriLensIcon className="w-2.5 h-2.5 text-emerald-400" />
-              VeriLens AI
+              VeriLens AI 1.0
             </span>
           </div>
           <p className="text-[11px] text-slate-400 hidden sm:block">Fashion Authenticity & Review Forensics</p>
