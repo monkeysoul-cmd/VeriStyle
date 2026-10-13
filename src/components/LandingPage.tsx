@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import {
   Search, Sparkles, Brain, ScanLine, FileText, CheckCircle2,
   ChevronDown, HelpCircle, Shield, AlertTriangle, Zap, Eye,
-  ArrowRight, Lock, Cpu, ShieldCheck, Target, Activity
+  ArrowRight, Lock
 } from 'lucide-react';
 
 interface LandingPageProps {
@@ -58,250 +58,176 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
   return (
     <div className="w-full flex flex-col min-h-screen" style={{ background: 'var(--bg-base)' }}>
 
-      {/* ═══ 1. HERO SECTION — Modern Luxury Hologram with Theme Background Graphic ═══ */}
+      {/* ═══ 1. HERO SECTION — Minimalist Luxury Tech with Theme Background Graphic ═══ */}
       <section
-        className="relative w-full flex flex-col items-center justify-center overflow-hidden px-4 pt-[140px] sm:pt-[175px] lg:pt-[190px] pb-20 sm:pb-28"
+        className="relative w-full flex flex-col items-center justify-center overflow-hidden px-4 pt-[130px] sm:pt-[160px] lg:pt-[175px] pb-16 sm:pb-24"
         style={{
-          background: 'radial-gradient(circle at 50% -10%, rgba(0,200,101,0.08) 0%, rgba(99,102,241,0.04) 35%, transparent 70%), linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 50%, #F1F5F9 100%)',
+          background: 'radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0, 200, 101, 0.06) 0%, rgba(99, 102, 241, 0.02) 40%, transparent 80%), linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 70%, #FFFFFF 100%)',
         }}
       >
-        {/* Ambient morphing orbs */}
+        {/* Subtle diffuse ambient aura */}
         <div
-          className="absolute top-[5%] left-[5%] w-[520px] h-[520px] ambient-orb ambient-orb-green animate-morph"
-          style={{ animationDelay: '0s', opacity: 0.55 }}
-        />
-        <div
-          className="absolute top-[12%] right-[8%] w-[420px] h-[420px] ambient-orb ambient-orb-indigo animate-morph"
-          style={{ animationDelay: '3s', opacity: 0.45 }}
-        />
-        <div
-          className="absolute bottom-[10%] left-[20%] w-[360px] h-[360px] ambient-orb ambient-orb-gold animate-morph"
-          style={{ animationDelay: '5s', opacity: 0.35 }}
+          className="absolute -top-[10%] left-1/2 -translate-x-1/2 w-[700px] h-[400px] pointer-events-none rounded-full"
+          style={{
+            background: 'radial-gradient(circle, rgba(0, 200, 101, 0.08) 0%, rgba(99, 102, 241, 0.03) 40%, transparent 70%)',
+            filter: 'blur(60px)',
+          }}
         />
 
-        {/* ── Background Graphic of the Theme: 3D Holographic Luxury Bag & Sneaker CV Wireframe ── */}
+        {/* ── Background Graphic of the Theme: Minimalist Luxury Facet & Optical Biometric Calibration ── */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center z-0">
           <motion.div
-            className="relative w-full max-w-[1480px] h-full flex items-center justify-center"
-            initial={{ opacity: 0, scale: 1.04 }}
+            className="relative w-full max-w-[1400px] h-full flex items-center justify-center"
+            initial={{ opacity: 0, scale: 1.02 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.3, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           >
             <img
-              src="/hero-graphic.jpg"
-              alt="VeriStyle Multimodal Holographic Authentication"
-              className="w-full h-full object-cover sm:object-contain object-center select-none"
+              src="/minimal-hero-graphic.jpg"
+              alt="VeriStyle Minimalist AI Authentication"
+              className="w-full h-full object-contain object-center select-none"
               style={{
-                opacity: 0.32,
-                filter: 'contrast(1.08) saturate(1.18)',
-                maskImage: 'radial-gradient(ellipse 72% 65% at 50% 48%, black 20%, rgba(0,0,0,0.6) 55%, transparent 85%)',
-                WebkitMaskImage: 'radial-gradient(ellipse 72% 65% at 50% 48%, black 20%, rgba(0,0,0,0.6) 55%, transparent 85%)',
+                opacity: 0.45,
+                filter: 'contrast(1.02) brightness(1.02)',
+                maskImage: 'radial-gradient(ellipse 75% 65% at 50% 48%, black 25%, rgba(0,0,0,0.4) 60%, transparent 85%)',
+                WebkitMaskImage: 'radial-gradient(ellipse 75% 65% at 50% 48%, black 25%, rgba(0,0,0,0.4) 60%, transparent 85%)',
               }}
             />
-            {/* Holographic caustic refraction glow */}
-            <div className="absolute inset-0 bg-radial from-emerald-500/8 via-indigo-500/4 to-transparent pointer-events-none" />
           </motion.div>
         </div>
 
-        {/* Target Reticle Accents */}
-        <div className="absolute top-28 left-8 sm:left-16 pointer-events-none hidden md:flex items-center gap-2 text-slate-300 font-mono text-[10px] tracking-wider select-none">
-          <Target className="w-3.5 h-3.5 text-emerald-500" />
-          <span>SPECIMEN RETICLE: ACTIVE</span>
-        </div>
-        <div className="absolute top-28 right-8 sm:right-16 pointer-events-none hidden md:flex items-center gap-2 text-slate-300 font-mono text-[10px] tracking-wider select-none">
-          <Activity className="w-3.5 h-3.5 text-indigo-500" />
-          <span>CV RESOLUTION: 4K SUB-PIXEL</span>
-        </div>
+        {/* Fine architectural hairline grid overlay */}
+        <div
+          className="absolute inset-0 pointer-events-none z-0"
+          style={{
+            backgroundImage: 'linear-gradient(to right, rgba(15, 23, 42, 0.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(15, 23, 42, 0.02) 1px, transparent 1px)',
+            backgroundSize: '48px 48px',
+            maskImage: 'radial-gradient(ellipse 65% 55% at 50% 50%, black 20%, transparent 80%)',
+            WebkitMaskImage: 'radial-gradient(ellipse 65% 55% at 50% 50%, black 20%, transparent 80%)',
+          }}
+        />
 
-        {/* Dot grid overlay */}
-        <div className="absolute inset-0 dot-grid-bg opacity-35 pointer-events-none z-0" />
+        {/* ── Main Hero Content ── */}
+        <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 text-center flex flex-col items-center">
 
-        {/* Prismatic scanline */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-          <div
-            className="absolute left-0 right-0 h-[1px] animate-scanline-v"
-            style={{ background: 'linear-gradient(90deg, transparent, rgba(0,200,101,0.25), rgba(99,102,241,0.2), rgba(245,158,11,0.15), transparent)' }}
-          />
-        </div>
-
-        {/* ── Left Floating Telemetry HUD Card (Desktop) ── */}
-        <motion.div
-          className="absolute left-6 xl:left-14 top-[32%] z-10 p-4 rounded-2xl bg-white/85 border border-slate-200/80 shadow-xl backdrop-blur-md hidden lg:flex items-center gap-3.5"
-          initial={{ opacity: 0, x: -35 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.6, duration: 0.8 }}
-          whileHover={{ y: -3, scale: 1.02 }}
-        >
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-center text-emerald-600">
-            <ScanLine className="w-5 h-5" />
-          </div>
-          <div className="text-left">
-            <div className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <p className="text-[10px] font-mono font-bold uppercase tracking-wider text-emerald-700">CV Seam Inspection</p>
-            </div>
-            <p className="text-xs font-black text-slate-900 mt-0.5">Tolerance: ±0.02mm</p>
-            <span className="text-[9px] font-mono font-bold text-slate-400">99.8% SPEC MATCH</span>
-          </div>
-        </motion.div>
-
-        {/* ── Right Floating Telemetry HUD Card (Desktop) ── */}
-        <motion.div
-          className="absolute right-6 xl:right-14 top-[28%] z-10 p-4 rounded-2xl bg-white/85 border border-slate-200/80 shadow-xl backdrop-blur-md hidden lg:flex items-center gap-3.5"
-          initial={{ opacity: 0, x: 35 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.75, duration: 0.8 }}
-          whileHover={{ y: -3, scale: 1.02 }}
-        >
-          <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/25 flex items-center justify-center text-indigo-600">
-            <Cpu className="w-5 h-5" />
-          </div>
-          <div className="text-left">
-            <div className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
-              <p className="text-[10px] font-mono font-bold uppercase tracking-wider text-indigo-700">Gemini 2.5 Flash</p>
-            </div>
-            <p className="text-xs font-black text-slate-900 mt-0.5">Dual-Engine Forensic</p>
-            <span className="text-[9px] font-mono font-bold text-slate-400">NLP ENTROPY ACTIVE</span>
-          </div>
-        </motion.div>
-
-        {/* ── Main Hero Foreground Content ── */}
-        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-4 sm:px-6 text-center flex flex-col items-center">
-
-          {/* Badge — High-precision Senior Pill */}
+          {/* Minimalist Pill Badge */}
           <motion.div
-            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full mb-8 shadow-sm"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full mb-7 shadow-xs"
             style={{
-              background: 'linear-gradient(135deg, rgba(0,200,101,0.09) 0%, rgba(99,102,241,0.06) 100%)',
-              border: '1px solid rgba(0,200,101,0.25)',
-              backdropFilter: 'blur(12px)',
+              background: 'rgba(255, 255, 255, 0.85)',
+              border: '1px solid rgba(15, 23, 42, 0.08)',
+              backdropFilter: 'blur(10px)',
             }}
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <span className="relative flex w-2 h-2">
-              <span className="absolute inset-0 rounded-full animate-ping opacity-75 bg-[#00C865]" />
-              <span className="relative rounded-full w-2 h-2 bg-[#00C865]" />
-            </span>
-            <span className="text-xs font-black uppercase tracking-widest text-[#00A854]">
-              Multimodal AI Luxury Forensics
-            </span>
-            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-700 font-bold border border-emerald-500/20">
-              v2.5
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-[11px] font-semibold tracking-wide text-slate-700">
+              VeriLens 2.5 • AI Luxury Forensics
             </span>
           </motion.div>
 
-          {/* Main Headline — Modern High-Contrast Gradient */}
+          {/* Main Headline */}
           <motion.h1
-            className="text-[44px] leading-[1.03] sm:text-[62px] md:text-[80px] font-black tracking-tight mb-6"
+            className="text-[42px] leading-[1.08] sm:text-[60px] md:text-[72px] font-black tracking-tight mb-5"
             style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}
-            initial={{ opacity: 0, y: 28 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           >
-            Verify With Absolute
+            Verify luxury with absolute
             <br />
             <motion.span
               className="italic"
               style={{
                 fontFamily: 'var(--font-serif)',
-                background: 'linear-gradient(135deg, #00C865 0%, #05DF72 35%, #6366F1 75%, #8B5CF6 100%)',
+                background: 'linear-gradient(135deg, #00C865 0%, #05DF72 40%, #4F46E5 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
               }}
-              initial={{ opacity: 0, scale: 0.92 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.9, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.35 }}
             >
-              Certainty.
+              certainty.
             </motion.span>
           </motion.h1>
 
           {/* Sub-headline */}
           <motion.p
-            className="text-[16px] sm:text-[20px] max-w-2xl mb-11 leading-relaxed font-normal"
-            style={{ color: 'var(--text-muted)' }}
-            initial={{ opacity: 0, y: 16 }}
+            className="text-[15px] sm:text-[18px] max-w-xl mb-9 leading-relaxed text-slate-500 font-normal"
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
           >
-            Inspect any luxury fashion item or paste any product link for instant multimodal authentication. Powered by micro-stitching computer vision and natural language review forensics.
+            Instant multi-signal authentication for luxury fashion, footwear, and accessories. Paste any product URL or inspect high-resolution photos in seconds.
           </motion.p>
 
-          {/* URL Analyzer — terminal style wrapper */}
+          {/* URL Analyzer Card */}
           <motion.div
-            className="w-full mb-6"
-            initial={{ opacity: 0, y: 20, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="w-full mb-5"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="rounded-2xl w-full text-left shadow-xl shadow-slate-900/5">
+            <div className="rounded-2xl w-full text-left shadow-lg shadow-slate-900/4">
               <UrlAnalyzer standalone={false} initialUrl={sampleUrl} />
             </div>
           </motion.div>
 
-          {/* Try chips */}
+          {/* Quick Test Chips */}
           <motion.div
-            className="flex flex-wrap items-center justify-center gap-2 text-sm"
-            style={{ color: 'var(--text-muted)' }}
+            className="flex flex-wrap items-center justify-center gap-2 text-xs"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.9 }}
+            transition={{ duration: 0.4, delay: 0.6 }}
           >
-            <span className="font-bold text-xs uppercase tracking-wider text-slate-400">Quick Test:</span>
+            <span className="font-medium text-slate-400">Quick Test:</span>
             {[
               { label: 'amazon.in/nike-jordan', url: 'https://www.amazon.in/Nike-Air-Jordan-Retro-Sneakers/dp/B0CKW79YQ4' },
               { label: 'flipkart.com/gucci-bag', url: 'https://www.flipkart.com/gucci-leather-handbag-dionysus/p/itm2894721' },
               { label: 'myntra.com/yeezy', url: 'https://www.myntra.com/casual-shoes/adidas/yeezy-boost-350-v2-sneakers/19482910/buy' }
-            ].map((item, i) => (
+            ].map((item) => (
               <motion.button
                 key={item.label}
                 onClick={() => setSampleUrl(item.url)}
-                className="px-3.5 py-1.5 rounded-full text-xs font-semibold cursor-pointer transition-all"
-                style={{
-                  background: 'rgba(255,255,255,0.92)',
-                  border: '1px solid rgba(15, 23, 42, 0.08)',
-                  color: 'var(--text-secondary)',
-                  fontFamily: 'var(--font-mono)',
-                  boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
-                }}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.95 + i * 0.08 }}
-                whileHover={{
-                  scale: 1.04,
-                  background: 'rgba(0,200,101,0.08)',
-                  borderColor: 'rgba(0,200,101,0.35)',
-                  color: 'var(--green-primary)',
-                }}
-                whileTap={{ scale: 0.96 }}
+                className="px-3 py-1 rounded-full text-[11px] font-mono font-medium cursor-pointer transition-all bg-white/80 border border-slate-200/70 text-slate-600 hover:text-emerald-700 hover:border-emerald-300 hover:bg-emerald-50/50 shadow-xs"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
               >
                 {item.label}
               </motion.button>
             ))}
           </motion.div>
 
-          {/* Live Verification Telemetry Counters */}
+          {/* Minimalist Trust Signals */}
           <motion.div
-            className="mt-10 pt-8 border-t border-slate-200/60 w-full max-w-3xl grid grid-cols-2 sm:grid-cols-4 gap-4 text-center"
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.05, duration: 0.6 }}
+            className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[12px] text-slate-400 font-medium"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.7, duration: 0.5 }}
           >
-            {[
-              { label: 'Verified Items', value: '180,000+' },
-              { label: 'Model Precision', value: '99.4%' },
-              { label: 'Scan Latency', value: '< 1.4s' },
-              { label: 'Supported Stores', value: '8 Platforms' },
-            ].map((stat, i) => (
-              <div key={i} className="flex flex-col items-center">
-                <span className="text-lg sm:text-xl font-black font-mono text-slate-900 tracking-tight">{stat.value}</span>
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mt-0.5">{stat.label}</span>
-              </div>
-            ))}
+            <span className="flex items-center gap-1.5 text-slate-600">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              Sub-pixel Stitching Inspection
+            </span>
+            <span className="hidden sm:inline text-slate-300">•</span>
+            <span className="flex items-center gap-1.5 text-slate-600">
+              <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
+              NLP Review Forensics
+            </span>
+            <span className="hidden sm:inline text-slate-300">•</span>
+            <span className="flex items-center gap-1.5 text-slate-600">
+              <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
+              &lt; 1.4s Scan Latency
+            </span>
+            <span className="hidden sm:inline text-slate-300">•</span>
+            <span className="flex items-center gap-1.5 text-slate-600">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              Zero Data Retention
+            </span>
           </motion.div>
 
         </div>
