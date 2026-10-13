@@ -24,17 +24,17 @@ const ScoreBar: React.FC<{ label: string; value: number; highlight?: boolean; de
   const isHigh = safeVal >= 80;
   const isMid = safeVal >= 50 && safeVal < 80;
 
-  const color = isHigh ? '#00C06B' : isMid ? '#F59E0B' : '#FB7185';
+  const color = isHigh ? '#00C865' : isMid ? '#F59E0B' : '#F43F5E';
   const gradient = isHigh
-    ? 'linear-gradient(90deg, #34D88A, #00C06B)'
+    ? 'linear-gradient(90deg, #10F489, #00C865)'
     : isMid
     ? 'linear-gradient(90deg, #FBBF24, #F59E0B)'
-    : 'linear-gradient(90deg, #FDA4AF, #FB7185)';
+    : 'linear-gradient(90deg, #FB7185, #F43F5E)';
   const glow = isHigh
-    ? 'rgba(52,216,138,0.3)'
+    ? 'rgba(0,200,101,0.25)'
     : isMid
-    ? 'rgba(245,158,11,0.3)'
-    : 'rgba(251,113,133,0.3)';
+    ? 'rgba(245,158,11,0.25)'
+    : 'rgba(244,63,94,0.25)';
 
   const statusLabel = isHigh ? 'Master Spec' : isMid ? 'Tolerance' : 'Discrepancy';
 
@@ -406,50 +406,50 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
     // Modern Luxury Verdict Config
     const vc = isAuthentic
       ? {
-          gradient: 'linear-gradient(135deg, rgba(240,253,244,0.95) 0%, rgba(236,253,245,0.7) 100%)',
-          border: 'rgba(52,216,138,0.28)',
-          glow: 'rgba(52,216,138,0.2)',
-          accent: '#059669',
-          subAccent: '#047857',
-          arc: '#00C06B',
-          arcTrack: 'rgba(52,216,138,0.15)',
-          badgeBg: 'linear-gradient(135deg, rgba(52,216,138,0.15), rgba(45,212,191,0.08))',
-          badgeBorder: 'rgba(52,216,138,0.35)',
-          badgeText: '#047857',
+          gradient: 'linear-gradient(135deg, rgba(236,253,245,0.96) 0%, rgba(209,250,229,0.75) 45%, rgba(240,253,250,0.95) 100%)',
+          border: 'rgba(0, 200, 101, 0.35)',
+          glow: 'rgba(0, 200, 101, 0.25)',
+          accent: '#00C865',
+          subAccent: '#026330',
+          arc: '#00C865',
+          arcTrack: 'rgba(0, 200, 101, 0.12)',
+          badgeBg: 'linear-gradient(135deg, rgba(0, 200, 101, 0.14), rgba(6, 182, 212, 0.08))',
+          badgeBorder: 'rgba(0, 200, 101, 0.35)',
+          badgeText: '#026330',
           badgeLabel: 'VERIFIED AUTHENTIC',
           tierLabel: 'High Authenticity Index · Master Grade',
-          statusIcon: <ShieldCheck style={{ width: '16px', height: '16px', color: '#059669' }} />,
+          statusIcon: <ShieldCheck style={{ width: '16px', height: '16px', color: '#00C865' }} />,
         }
       : isSuspicious
       ? {
-          gradient: 'linear-gradient(135deg, rgba(254,252,232,0.95) 0%, rgba(254,243,199,0.7) 100%)',
-          border: 'rgba(245,158,11,0.28)',
-          glow: 'rgba(245,158,11,0.2)',
-          accent: '#D97706',
+          gradient: 'linear-gradient(135deg, rgba(254,252,232,0.96) 0%, rgba(254,243,199,0.75) 45%, rgba(255,251,235,0.95) 100%)',
+          border: 'rgba(245, 158, 11, 0.35)',
+          glow: 'rgba(245, 158, 11, 0.25)',
+          accent: '#F59E0B',
           subAccent: '#B45309',
           arc: '#F59E0B',
-          arcTrack: 'rgba(245,158,11,0.15)',
-          badgeBg: 'linear-gradient(135deg, rgba(254,243,199,0.6), rgba(253,230,138,0.3))',
-          badgeBorder: 'rgba(245,158,11,0.35)',
+          arcTrack: 'rgba(245, 158, 11, 0.12)',
+          badgeBg: 'linear-gradient(135deg, rgba(254, 243, 199, 0.8), rgba(253, 230, 138, 0.4))',
+          badgeBorder: 'rgba(245, 158, 11, 0.38)',
           badgeText: '#B45309',
-          badgeLabel: 'SUSPICIOUS / AT RISK',
+          badgeLabel: 'SUSPICIOUS / ELEVATED RISK',
           tierLabel: 'Moderate Risk · Review Discrepancy',
-          statusIcon: <AlertTriangle style={{ width: '16px', height: '16px', color: '#D97706' }} />,
+          statusIcon: <AlertTriangle style={{ width: '16px', height: '16px', color: '#F59E0B' }} />,
         }
       : {
-          gradient: 'linear-gradient(135deg, rgba(255,241,242,0.95) 0%, rgba(255,228,230,0.7) 100%)',
-          border: 'rgba(244,63,94,0.28)',
-          glow: 'rgba(244,63,94,0.2)',
-          accent: '#E11D48',
+          gradient: 'linear-gradient(135deg, rgba(255,241,242,0.96) 0%, rgba(255,228,230,0.75) 45%, rgba(255,245,245,0.95) 100%)',
+          border: 'rgba(244, 63, 94, 0.35)',
+          glow: 'rgba(244, 63, 94, 0.25)',
+          accent: '#F43F5E',
           subAccent: '#BE123C',
-          arc: '#FB7185',
-          arcTrack: 'rgba(244,63,94,0.15)',
-          badgeBg: 'linear-gradient(135deg, rgba(255,228,230,0.6), rgba(254,205,211,0.3))',
-          badgeBorder: 'rgba(244,63,94,0.35)',
+          arc: '#F43F5E',
+          arcTrack: 'rgba(244, 63, 94, 0.12)',
+          badgeBg: 'linear-gradient(135deg, rgba(255, 228, 230, 0.8), rgba(254, 205, 211, 0.4))',
+          badgeBorder: 'rgba(244, 63, 94, 0.38)',
           badgeText: '#BE123C',
           badgeLabel: 'LIKELY COUNTERFEIT',
-          tierLabel: 'High Counterfeit Anomaly · Spec Failure',
-          statusIcon: <XCircle style={{ width: '16px', height: '16px', color: '#E11D48' }} />,
+          tierLabel: 'Critical Counterfeit Failure · Replica Anomaly',
+          statusIcon: <XCircle style={{ width: '16px', height: '16px', color: '#F43F5E' }} />,
         };
 
     const qualityScores = [

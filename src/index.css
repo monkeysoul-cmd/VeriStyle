@@ -9,81 +9,100 @@
 }
 
 :root {
-  /* ─── Core Brand (warmer, richer green) ───────────────── */
-  --green-primary: #00C06B;
-  --green-dark: #009A55;
-  --green-light: #34D88A;
-  --green-accent-from: #34D88A;
-  --green-accent-to: #00B864;
-  --green-glow: rgba(52, 216, 138, 0.10);
-  --green-glow-strong: rgba(52, 216, 138, 0.20);
+  /* ─── Core Brand (Electric Emerald & Cyber Jade) ────────── */
+  --green-primary: #00C865;
+  --green-dark: #00964B;
+  --green-light: #22E780;
+  --green-accent-from: #05DF72;
+  --green-accent-to: #00B85C;
+  --green-glow: rgba(0, 200, 101, 0.16);
+  --green-glow-strong: rgba(0, 200, 101, 0.28);
 
-  /* ─── Premium Accent Palette ─────────────────────────── */
-  --accent-indigo: #818CF8;
-  --accent-violet: #A78BFA;
-  --accent-amber: #FBBF24;
-  --accent-rose: #FB7185;
-  --accent-sky: #38BDF8;
-  --accent-emerald: #34D399;
-  --accent-gold: #F5C842;
-  --accent-peach: #FCA5A5;
-  --accent-lavender: #C4B5FD;
-  --accent-teal: #2DD4BF;
+  /* ─── Premium Multi-Signal Accent Palette ────────────────── */
+  --accent-indigo: #6366F1;
+  --accent-violet: #8B5CF6;
+  --accent-amber: #F59E0B;
+  --accent-rose: #F43F5E;
+  --accent-sky: #0EA5E9;
+  --accent-cyan: #06B6D4;
+  --accent-emerald: #05DF72;
+  --accent-gold: #EAB308;
+  --accent-teal: #14B8A6;
 
-  /* ─── Light Surfaces (warm ivory tones) ──────────────── */
-  --bg-base: #FAFAF8;
-  --bg-surface-1: #F5F3EF;
-  --bg-surface-2: #EEEBE5;
-  --bg-surface-3: #E6E2DA;
+  /* ─── Modern Light Surfaces (Titanium & Crisp Slate) ───── */
+  --bg-base: #F8FAFC;
+  --bg-surface-1: #F1F5F9;
+  --bg-surface-2: #E2E8F0;
+  --bg-surface-3: #CBD5E1;
   --bg-card: #FFFFFF;
-  --bg-card-hover: #FDFCFA;
+  --bg-card-hover: #FFFFFF;
   --bg-elevated: #FFFFFF;
 
-  /* ─── Dark Surfaces (for contrast sections) ──────────── */
-  --bg-dark: #0C0F14;
-  --bg-dark-surface: #141821;
+  /* ─── Contrast & Telemetry Obsidian Surfaces ────────────── */
+  --bg-dark: #090D16;
+  --bg-dark-surface: #0F172A;
   --bg-dark-card: rgba(255, 255, 255, 0.04);
-  --bg-dark-card-hover: rgba(255, 255, 255, 0.07);
+  --bg-dark-card-hover: rgba(255, 255, 255, 0.08);
 
-  /* ─── Hero Gradient (warm cream with subtle color play) ─ */
-  --hero-bg: linear-gradient(180deg, #F8F6F1 0%, #F2EFE8 40%, #FAFAF8 100%);
-  --hero-mesh: radial-gradient(ellipse 60% 50% at 20% 40%, rgba(52,216,138,0.05) 0%, transparent 70%),
-               radial-gradient(ellipse 50% 40% at 80% 60%, rgba(129,140,248,0.04) 0%, transparent 70%);
+  /* ─── Hero Ambient Mesh ─────────────────────────────────── */
+  --hero-bg: radial-gradient(130% 100% at 50% 0%, #FFFFFF 0%, #F1F5F9 55%, #F8FAFC 100%);
+  --hero-mesh: radial-gradient(ellipse 65% 55% at 20% 30%, rgba(5, 223, 114, 0.08) 0%, transparent 70%),
+               radial-gradient(ellipse 55% 45% at 80% 50%, rgba(99, 102, 241, 0.07) 0%, transparent 70%),
+               radial-gradient(ellipse 45% 35% at 50% 80%, rgba(6, 182, 212, 0.05) 0%, transparent 70%);
 
-  /* ─── Text Colors ────────────────────────────────────── */
-  --text-primary: #111318;
-  --text-secondary: #3A3F4B;
-  --text-muted: #6B7280;
-  --text-dim: #9CA3AF;
+  /* ─── High-Contrast Typographic Hierarchy ───────────────── */
+  --text-primary: #0A0F1D;
+  --text-secondary: #273244;
+  --text-muted: #5A6A80;
+  --text-dim: #8E9DB0;
 
-  /* ─── Borders ────────────────────────────────────────── */
-  --border-subtle: rgba(0, 0, 0, 0.04);
-  --border-card: rgba(0, 0, 0, 0.06);
-  --border-card-hover: rgba(52, 216, 138, 0.20);
-  --border-glass: rgba(255, 255, 255, 0.12);
-  --border-bright: rgba(52, 216, 138, 0.35);
+  /* ─── Precision Borders ─────────────────────────────────── */
+  --border-subtle: rgba(15, 23, 42, 0.04);
+  --border-card: rgba(15, 23, 42, 0.08);
+  --border-card-hover: rgba(0, 200, 101, 0.32);
+  --border-glass: rgba(255, 255, 255, 0.6);
+  --border-bright: rgba(0, 200, 101, 0.45);
 
-  /* ─── Glassmorphism (premium frosted) ────────────────── */
-  --glass-bg: rgba(255, 255, 255, 0.65);
-  --glass-bg-light: rgba(255, 255, 255, 0.45);
-  --glass-border: rgba(255, 255, 255, 0.20);
-  --glass-blur: blur(40px) saturate(180%);
-  --nav-bg: rgba(255, 255, 255, 0.82);
+  /* ─── Glassmorphism (Crystal Titanium Blur) ─────────────── */
+  --glass-bg: rgba(255, 255, 255, 0.78);
+  --glass-bg-light: rgba(255, 255, 255, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.8);
+  --glass-blur: blur(28px) saturate(190%);
+  --nav-bg: rgba(255, 255, 255, 0.85);
 
-  /* ─── Page Sections ──────────────────────────────────── */
-  --page-light: #F5F3EF;
-  --page-dark: #FAFAF8;
+  /* ─── Page Sections ─────────────────────────────────────── */
+  --page-light: #F1F5F9;
+  --page-dark: #090D16;
 
-  /* ─── Shadows (warmer, more depth) ───────────────────── */
-  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.03), 0 6px 24px rgba(0, 0, 0, 0.05);
-  --card-shadow-hover: 0 8px 40px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
-  --glow-green: 0 0 20px rgba(52, 216, 138, 0.12), 0 0 50px rgba(52, 216, 138, 0.06);
-  --glow-green-strong: 0 0 30px rgba(52, 216, 138, 0.20), 0 0 70px rgba(52, 216, 138, 0.08);
-  --glow-indigo: 0 0 20px rgba(129, 140, 248, 0.15), 0 0 50px rgba(167, 139, 250, 0.06);
-  --glow-gold: 0 0 20px rgba(245, 200, 66, 0.12), 0 0 50px rgba(245, 200, 66, 0.05);
-  --glow-rose: 0 0 20px rgba(251, 113, 133, 0.12), 0 0 50px rgba(251, 113, 133, 0.05);
+  /* ─── Modern Layered Shadows ────────────────────────────── */
+  --card-shadow: 0 1px 2px 0 rgba(15, 23, 42, 0.03), 0 8px 24px -4px rgba(15, 23, 42, 0.05);
+  --card-shadow-hover: 0 16px 36px -6px rgba(15, 23, 42, 0.09), 0 2px 6px rgba(15, 23, 42, 0.04);
+  --glow-green: 0 0 24px rgba(0, 200, 101, 0.18), 0 0 54px rgba(0, 200, 101, 0.08);
+  --glow-green-strong: 0 0 34px rgba(0, 200, 101, 0.28), 0 0 74px rgba(0, 200, 101, 0.12);
+  --glow-indigo: 0 0 24px rgba(99, 102, 241, 0.18), 0 0 54px rgba(139, 92, 246, 0.08);
+  --glow-gold: 0 0 24px rgba(245, 158, 11, 0.18), 0 0 54px rgba(245, 158, 11, 0.08);
+  --glow-rose: 0 0 24px rgba(244, 63, 94, 0.18), 0 0 54px rgba(244, 63, 94, 0.08);
 
-  /* ─── Timing (luxurious easing) ──────────────────────── */
+  /* ─── Redesigned Analysis Report Color System ───────────── */
+  --report-auth-accent: #00C865;
+  --report-auth-bg: linear-gradient(135deg, rgba(236, 253, 245, 0.95) 0%, rgba(209, 250, 229, 0.65) 100%);
+  --report-auth-border: rgba(0, 200, 101, 0.28);
+  --report-auth-glow: rgba(0, 200, 101, 0.2);
+  --report-auth-text: #047857;
+
+  --report-susp-accent: #F59E0B;
+  --report-susp-bg: linear-gradient(135deg, rgba(254, 252, 232, 0.95) 0%, rgba(254, 243, 199, 0.65) 100%);
+  --report-susp-border: rgba(245, 158, 11, 0.28);
+  --report-susp-glow: rgba(245, 158, 11, 0.2);
+  --report-susp-text: #B45309;
+
+  --report-fake-accent: #F43F5E;
+  --report-fake-bg: linear-gradient(135deg, rgba(255, 241, 242, 0.95) 0%, rgba(255, 228, 230, 0.65) 100%);
+  --report-fake-border: rgba(244, 63, 94, 0.28);
+  --report-fake-glow: rgba(244, 63, 94, 0.2);
+  --report-fake-text: #BE123C;
+
+  /* ─── Luxurious Timing Curves ───────────────────────────── */
   --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -881,22 +900,71 @@ nav[class*="fixed"] {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   VERDICT COLOR SYSTEM
+   VERDICT COLOR SYSTEM & REPORT BADGES
    ═══════════════════════════════════════════════════════════ */
 
 .verdict-authentic {
-  background: linear-gradient(135deg, #ECFDF5, #D1FAE5);
-  border-color: rgba(52, 216, 138, 0.2);
+  background: var(--report-auth-bg);
+  border: 1px solid var(--report-auth-border);
+  box-shadow: 0 4px 24px -2px rgba(0, 200, 101, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 .verdict-suspicious {
-  background: linear-gradient(135deg, #FFFBEB, #FEF3C7);
-  border-color: rgba(251, 191, 36, 0.2);
+  background: var(--report-susp-bg);
+  border: 1px solid var(--report-susp-border);
+  box-shadow: 0 4px 24px -2px rgba(245, 158, 11, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 .verdict-counterfeit {
-  background: linear-gradient(135deg, #FFF1F2, #FFE4E6);
-  border-color: rgba(251, 113, 133, 0.2);
+  background: var(--report-fake-bg);
+  border: 1px solid var(--report-fake-border);
+  box-shadow: 0 4px 24px -2px rgba(244, 63, 94, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* Luxury Status Pills */
+.badge-authentic-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, rgba(0, 200, 101, 0.12), rgba(6, 182, 212, 0.08));
+  border: 1px solid rgba(0, 200, 101, 0.35);
+  color: #026330;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.badge-suspicious-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.14), rgba(251, 191, 36, 0.08));
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: #B45309;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.badge-counterfeit-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, rgba(244, 63, 94, 0.14), rgba(251, 113, 133, 0.08));
+  border: 1px solid rgba(244, 63, 94, 0.35);
+  color: #BE123C;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 /* ═══════════════════════════════════════════════════════════

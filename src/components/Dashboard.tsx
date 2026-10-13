@@ -24,6 +24,8 @@ import {
   Activity,
   Hash,
   ChevronRight,
+  Copy,
+  Check,
 } from 'lucide-react';
 import { AnalysisResult, SamplePreset, HeatmapPoint } from '../types';
 import { SAMPLE_PRESETS } from '../data/presets';
@@ -47,7 +49,17 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
   const [selectedHotspot, setSelectedHotspot] = useState<HeatmapPoint | null>(null);
   const [viewMode, setViewMode] = useState<'heatmap' | 'bounding_boxes' | 'raw'>('heatmap');
   const [showCertificateModal, setShowCertificateModal] = useState<boolean>(false);
+  const [copiedHash, setCopiedHash] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleCopyHash = (text: string) => {
+    if (!text) return;
+    try {
+      navigator.clipboard.writeText(text);
+      setCopiedHash(true);
+      setTimeout(() => setCopiedHash(false), 2000);
+    } catch (_) {}
+  };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -110,28 +122,43 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
 
   const getVerdictColors = (score: number) => {
     if (score >= 80) return {
-      bg: 'linear-gradient(135deg, rgba(240,253,244,0.96) 0%, rgba(236,253,245,0.85) 45%, rgba(209,250,229,0.55) 100%)',
-      border: 'rgba(52,216,138,0.32)',
-      accent: '#00B864',
-      glow: 'rgba(52,216,138,0.22)',
-      arc: '#00C06B',
-      label: 'VERIFIED AUTHENTIC'
+      bg: 'linear-gradient(135deg, rgba(236,253,245,0.96) 0%, rgba(209,250,229,0.75) 45%, rgba(240,253,250,0.95) 100%)',
+      border: 'rgba(0, 200, 101, 0.35)',
+      accent: '#00C865',
+      darkAccent: '#026330',
+      glow: 'rgba(0, 200, 101, 0.25)',
+      arc: '#00C865',
+      arcTrack: 'rgba(0, 200, 101, 0.12)',
+      label: 'VERIFIED AUTHENTIC',
+      badgeClass: 'badge-authentic-pill',
+      specTier: 'Grade A · Master Specification Conformance',
+      specNote: 'Multi-vector analysis confirms alignment with verified master luxury templates.'
     };
     if (score >= 50) return {
-      bg: 'linear-gradient(135deg, rgba(254,252,232,0.96) 0%, rgba(254,243,199,0.85) 45%, rgba(253,230,138,0.55) 100%)',
-      border: 'rgba(245,158,11,0.32)',
-      accent: '#D97706',
-      glow: 'rgba(245,158,11,0.22)',
+      bg: 'linear-gradient(135deg, rgba(254,252,232,0.96) 0%, rgba(254,243,199,0.75) 45%, rgba(255,251,235,0.95) 100%)',
+      border: 'rgba(245, 158, 11, 0.35)',
+      accent: '#F59E0B',
+      darkAccent: '#B45309',
+      glow: 'rgba(245, 158, 11, 0.25)',
       arc: '#F59E0B',
-      label: 'SUSPICIOUS'
+      arcTrack: 'rgba(245, 158, 11, 0.12)',
+      label: 'SUSPICIOUS / ELEVATED RISK',
+      badgeClass: 'badge-suspicious-pill',
+      specTier: 'Grade B · Moderate Variance Detected',
+      specNote: 'Detected anomalies in stitch pitch, hardware finishing, or unnatural buyer review syntax.'
     };
     return {
-      bg: 'linear-gradient(135deg, rgba(255,241,242,0.96) 0%, rgba(255,228,230,0.85) 45%, rgba(254,205,211,0.55) 100%)',
-      border: 'rgba(244,63,94,0.32)',
-      accent: '#E11D48',
-      glow: 'rgba(244,63,94,0.22)',
-      arc: '#FB7185',
-      label: 'LIKELY COUNTERFEIT'
+      bg: 'linear-gradient(135deg, rgba(255,241,242,0.96) 0%, rgba(255,228,230,0.75) 45%, rgba(255,245,245,0.95) 100%)',
+      border: 'rgba(244, 63, 94, 0.35)',
+      accent: '#F43F5E',
+      darkAccent: '#BE123C',
+      glow: 'rgba(244, 63, 94, 0.25)',
+      arc: '#F43F5E',
+      arcTrack: 'rgba(244, 63, 94, 0.12)',
+      label: 'LIKELY COUNTERFEIT',
+      badgeClass: 'badge-counterfeit-pill',
+      specTier: 'Grade F · Critical Forensic Spec Failure',
+      specNote: 'Hardware engraving, micro-stitching, and synthetic review signals strongly indicate unauthorized replica.'
     };
   };
 
@@ -140,37 +167,42 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
       <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-14 space-y-8">
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 pb-6" style={{ borderBottom: '1px solid rgba(0,80,40,0.06)' }}>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 pb-6" style={{ borderBottom: '1px solid rgba(15,23,42,0.08)' }}>
           <div>
-            <div className="section-badge mb-4">
+            <div className="section-badge mb-3">
               <Activity className="w-3.5 h-3.5" />
-              Live Verification Dashboard
+              Forensic Inspection Lab
             </div>
             <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight" style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}>
-              Apparel & Review Authenticator.
+              Multimodal Authenticity Studio
             </h1>
-            <p className="text-sm sm:text-base mt-2 max-w-xl" style={{ color: 'var(--text-muted)' }}>
-              Upload product imagery and paste reseller review text for deep multimodal evaluation.
+            <p className="text-sm sm:text-base mt-2 max-w-xl font-medium" style={{ color: 'var(--text-muted)' }}>
+              Cross-examine high-resolution apparel imagery and customer reviews against official master templates.
             </p>
           </div>
 
           {/* Preset Selector */}
           <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 hide-scrollbar w-full md:w-auto">
-            <span className="text-[10px] uppercase tracking-widest font-bold shrink-0" style={{ color: 'var(--text-dim)' }}>Quick Presets:</span>
-            {SAMPLE_PRESETS.slice(0, 3).map(preset => (
-              <button
-                key={preset.id}
-                onClick={() => handleSelectPreset(preset)}
-                className="px-3.5 py-1.5 rounded-full text-xs font-bold shrink-0 border transition-all cursor-pointer"
-                style={
-                  itemName === preset.title
-                    ? { background: 'linear-gradient(135deg, #00C966, #00A854)', color: '#FFFFFF', border: 'none', boxShadow: '0 0 16px rgba(0,160,70,0.2)' }
-                    : { background: 'rgba(0,160,70,0.04)', border: '1px solid rgba(0,80,40,0.08)', color: 'var(--text-muted)' }
-                }
-              >
-                {preset.title.split(' ')[0]} {preset.brand}
-              </button>
-            ))}
+            <span className="text-[10px] uppercase tracking-widest font-extrabold shrink-0" style={{ color: 'var(--text-dim)' }}>Specimens:</span>
+            {SAMPLE_PRESETS.map(preset => {
+              const isSelected = itemName === preset.title;
+              return (
+                <button
+                  key={preset.id}
+                  onClick={() => handleSelectPreset(preset)}
+                  className="px-3.5 py-1.5 rounded-full text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-2"
+                  style={
+                    isSelected
+                      ? { background: 'linear-gradient(135deg, #05DF72, #00C865)', color: '#FFFFFF', boxShadow: '0 4px 14px rgba(0,200,101,0.3)', border: 'none' }
+                      : { background: '#FFFFFF', border: '1px solid rgba(15,23,42,0.1)', color: 'var(--text-secondary)', boxShadow: '0 1px 3px rgba(15,23,42,0.03)' }
+                  }
+                >
+                  <span className={`w-2 h-2 rounded-full ${isSelected ? 'bg-white' : preset.expectedVerdict === 'VERIFIED AUTHENTIC' ? 'bg-emerald-500' : preset.expectedVerdict === 'LIKELY COUNTERFEIT' ? 'bg-rose-500' : 'bg-amber-500'}`} />
+                  <span>{preset.title.split(' ')[0]}</span>
+                  <span className={`text-[10px] opacity-75 font-mono ${isSelected ? 'text-white' : 'text-slate-500'}`}>{preset.brand}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -369,52 +401,79 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
 
             ) : analysisResult ? (
               /* ═══════════════════════════════════════════════════════════
-                 ANALYSIS REPORT — Premium Dark Redesign
+                 ANALYSIS REPORT — Senior Designer Overhaul
                  ═══════════════════════════════════════════════════════════ */
-              <div className="space-y-5 animate-fade-in-up">
+              <div className="space-y-6 animate-fade-in-up">
                 {(() => {
                   const vc = getVerdictColors(analysisResult.trustScore);
                   return (
                     <>
-                      {/* ── VERDICT HERO ─────────────────────────────── */}
+                      {/* ── VERDICT HERO CARD ────────────────────────── */}
                       <div
-                        className="relative overflow-hidden rounded-2xl p-6 sm:p-8"
-                        style={{ background: vc.bg, border: `1px solid ${vc.border}`, boxShadow: `0 0 60px ${vc.glow}20` }}
+                        className="relative overflow-hidden rounded-3xl p-6 sm:p-8 transition-all"
+                        style={{
+                          background: vc.bg,
+                          border: `1px solid ${vc.border}`,
+                          boxShadow: `0 12px 40px -10px ${vc.glow}, 0 2px 6px rgba(15,23,42,0.03), inset 0 1px 0 rgba(255,255,255,0.9)`,
+                        }}
                       >
-                        {/* Background glow */}
-                        <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full blur-3xl pointer-events-none" style={{ background: vc.glow, opacity: 0.15 }} />
-                        <div className="absolute inset-0 hex-grid-bg opacity-30 pointer-events-none" />
+                        {/* Background glow & mesh */}
+                        <div className="absolute -top-24 -right-24 w-80 h-80 rounded-full blur-3xl pointer-events-none opacity-30" style={{ background: vc.glow }} />
+                        <div className="absolute inset-0 dot-grid-bg opacity-30 pointer-events-none" />
 
-                        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-                          {/* Left: Item info */}
-                          <div className="space-y-2.5">
+                        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                          {/* Left: Product & Verdict Data */}
+                          <div className="space-y-3.5 max-w-xl">
                             <div className="flex items-center gap-2.5 flex-wrap">
-                              <span
-                                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-widest"
-                                style={{ background: `${vc.accent}15`, border: `1px solid ${vc.accent}35`, color: vc.accent }}
-                              >
-                                <ShieldCheck className="w-3 h-3" />
-                                {analysisResult.verdict}
+                              <span className={vc.badgeClass}>
+                                <ShieldCheck className="w-3.5 h-3.5" />
+                                {vc.label}
                               </span>
-                              <span className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--text-dim)' }}>
-                                Verification Complete
+                              <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 font-mono">
+                                {vc.specTier}
                               </span>
                             </div>
-                            <h2 className="text-2xl sm:text-3xl font-extrabold leading-tight" style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}>
-                              {analysisResult.itemName}
-                              <span className="ml-3 text-lg font-bold" style={{ color: 'var(--text-muted)' }}>{analysisResult.brand}</span>
-                            </h2>
-                            <p className="text-[10px] font-bold uppercase tracking-widest font-mono" style={{ color: 'var(--text-dim)' }}>
-                              {analysisResult.verificationHash} · {analysisResult.timestamp}
+
+                            <div>
+                              <h2 className="text-2xl sm:text-3xl font-extrabold leading-tight text-slate-900" style={{ fontFamily: 'var(--font-heading)' }}>
+                                {analysisResult.itemName}
+                              </h2>
+                              <div className="flex items-center gap-2 mt-1 flex-wrap">
+                                <span className="text-sm font-bold text-slate-600">{analysisResult.brand}</span>
+                                <span className="text-slate-300">·</span>
+                                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-white/70 border border-slate-200 text-slate-600">
+                                  {analysisResult.category}
+                                </span>
+                              </div>
+                            </div>
+
+                            <p className="text-xs text-slate-600 font-medium leading-relaxed">
+                              {vc.specNote}
                             </p>
+
+                            {/* Provenance Hash Chip */}
+                            <div className="flex items-center gap-3 pt-1 flex-wrap">
+                              <button
+                                onClick={() => handleCopyHash(analysisResult.verificationHash)}
+                                title="Click to copy cryptographic hash"
+                                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-mono font-bold bg-white/80 border border-slate-200/80 hover:border-slate-300 text-slate-700 hover:text-slate-900 transition-all cursor-pointer shadow-sm"
+                              >
+                                <Hash className="w-3.5 h-3.5 text-slate-400" />
+                                <span>{analysisResult.verificationHash}</span>
+                                {copiedHash ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-slate-400" />}
+                              </button>
+                              <span className="text-[11px] font-semibold text-slate-500 font-mono">
+                                {analysisResult.timestamp}
+                              </span>
+                            </div>
                           </div>
 
-                          {/* Right: Trust Ring + Actions */}
-                          <div className="flex items-center gap-5 shrink-0">
-                            <div className="relative w-28 h-28 sm:w-32 sm:h-32 animate-halo-pulse">
+                          {/* Right: Trust Radial Dial + Actions */}
+                          <div className="flex sm:flex-row items-center gap-6 shrink-0 bg-white/60 p-4 rounded-2xl border border-white/80 backdrop-blur-md shadow-sm">
+                            <div className="relative w-28 h-28 sm:w-32 sm:h-32">
                               <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
-                                <circle cx="50" cy="50" r="40" fill="none" strokeWidth="8" stroke="rgba(0,60,30,0.05)" />
-                                <circle cx="50" cy="50" r="44" fill="none" strokeWidth="1.5" stroke="rgba(0,60,30,0.03)" />
+                                <circle cx="50" cy="50" r="40" fill="none" strokeWidth="8" stroke={vc.arcTrack} />
+                                <circle cx="50" cy="50" r="46" fill="none" strokeWidth="1" stroke="rgba(15,23,42,0.06)" />
                                 <circle
                                   cx="50" cy="50" r="40"
                                   fill="none"
@@ -424,88 +483,166 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                                   strokeDasharray="251"
                                   strokeDashoffset={251 - (251 * analysisResult.trustScore) / 100}
                                   strokeLinecap="round"
-                                  style={{ filter: `drop-shadow(0 0 8px ${vc.glow})` }}
+                                  style={{ filter: `drop-shadow(0 0 10px ${vc.glow})` }}
                                 />
                               </svg>
                               <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
                                 <span className="text-3xl sm:text-4xl font-extrabold tracking-tight leading-none" style={{ color: vc.accent }}>
                                   {analysisResult.trustScore}
                                 </span>
-                                <span className="text-[9px] font-black uppercase tracking-widest mt-0.5" style={{ color: 'var(--text-dim)' }}>Trust %</span>
+                                <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 mt-1">Trust %</span>
                               </div>
                             </div>
 
-                            <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-2 shrink-0">
                               <button
                                 onClick={() => setShowCertificateModal(true)}
-                                className="px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer"
-                                style={{ background: 'rgba(0,60,30,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--text-secondary)' }}
-                                onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.1)')}
-                                onMouseLeave={e => (e.currentTarget.style.background = 'rgba(0,60,30,0.05)')}
+                                className="px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer bg-white hover:bg-slate-50 border border-slate-200 text-slate-800 shadow-sm hover:shadow"
                               >
-                                <QrCode className="w-4 h-4" />
+                                <QrCode className="w-4 h-4 text-emerald-600" />
                                 Certificate
                               </button>
                               <button
-                                className="px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer"
-                                style={{ background: 'rgba(0,60,30,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--text-secondary)' }}
-                                onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.1)')}
-                                onMouseLeave={e => (e.currentTarget.style.background = 'rgba(0,60,30,0.05)')}
+                                onClick={() => handleCopyHash(window.location.href)}
+                                className="px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer bg-white hover:bg-slate-50 border border-slate-200 text-slate-800 shadow-sm hover:shadow"
                               >
-                                <Share2 className="w-4 h-4" />
-                                Share
+                                <Share2 className="w-4 h-4 text-slate-500" />
+                                Share Report
                               </button>
                             </div>
                           </div>
                         </div>
                       </div>
 
-                      {/* ── AI CONFIDENCE + METRIC BREAKDOWN ────────── */}
-                      <div className="grid grid-cols-1 sm:grid-cols-12 gap-5">
-                        {/* Confidence */}
-                        <div className="sm:col-span-5 p-6 rounded-2xl space-y-4" style={{ background: 'var(--bg-card)', border: '1px solid rgba(0,80,40,0.07)' }}>
+                      {/* ── METRIC BREAKDOWN (CONFIDENCE + QUALITY SCORES) ── */}
+                      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                        {/* Left: AI Confidence Card */}
+                        <div
+                          className="lg:col-span-5 p-6 rounded-3xl space-y-4"
+                          style={{
+                            background: '#FFFFFF',
+                            border: '1px solid rgba(15,23,42,0.08)',
+                            boxShadow: 'var(--card-shadow)',
+                          }}
+                        >
                           <div className="flex items-center justify-between">
-                            <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: 'var(--text-dim)' }}>AI System Confidence</span>
-                            <span className="font-black font-mono text-xl" style={{ color: 'var(--green-accent-from)' }}>{analysisResult.aiConfidence}%</span>
+                            <span className="text-[11px] font-black uppercase tracking-wider text-slate-400">
+                              AI System Confidence
+                            </span>
+                            <span className="font-extrabold font-mono text-2xl text-emerald-600">
+                              {analysisResult.aiConfidence}%
+                            </span>
                           </div>
+
                           <div className="metric-track">
                             <div
                               className="metric-fill animate-fill-bar"
-                              style={{ width: `${analysisResult.aiConfidence}%` }}
+                              style={{
+                                width: `${analysisResult.aiConfidence}%`,
+                                background: 'linear-gradient(90deg, #10F489, #00C865)',
+                                boxShadow: '0 0 10px rgba(0,200,101,0.3)',
+                              }}
                             />
                           </div>
-                          <p className="text-[12px] leading-relaxed" style={{ color: 'var(--text-muted)' }}>
-                            The AI model cross-referenced {analysisResult.aiConfidence >= 85 ? 'high-fidelity' : 'baseline'} pattern libraries with {analysisResult.aiConfidence >= 85 ? 'strong' : 'moderate'} signal convergence.
-                          </p>
+
+                          <div className="space-y-2 pt-1">
+                            <p className="text-xs text-slate-600 leading-relaxed font-medium">
+                              Vision algorithms matched against luxury master baselines with <strong className="text-slate-800">{analysisResult.aiConfidence >= 85 ? 'high-confidence signal convergence' : 'standard statistical bounds'}</strong>.
+                            </p>
+                            <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100">
+                              <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+                                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Resale Verdict</span>
+                                <span className="text-xs font-extrabold text-slate-800">{analysisResult.resaleMarketVerdict || 'Verified Resale Grade'}</span>
+                              </div>
+                              <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+                                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Est. Value</span>
+                                <span className="text-xs font-extrabold font-mono text-emerald-600">{analysisResult.estimatedRetailValue || '$1,200 USD'}</span>
+                              </div>
+                            </div>
+                          </div>
                         </div>
 
-                        {/* Detailed Metrics */}
-                        <div className="sm:col-span-7 p-6 rounded-2xl space-y-4" style={{ background: 'var(--bg-card)', border: '1px solid rgba(0,80,40,0.07)' }}>
-                          <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: 'var(--text-dim)' }}>
-                            {analysisResult.imageUrl ? 'Visual Craftsmanship Scores' : 'NLP Signal Metrics'}
-                          </span>
+                        {/* Right: Multi-Vector Craftsmanship / NLP Scores */}
+                        <div
+                          className="lg:col-span-7 p-6 rounded-3xl space-y-4"
+                          style={{
+                            background: '#FFFFFF',
+                            border: '1px solid rgba(15,23,42,0.08)',
+                            boxShadow: 'var(--card-shadow)',
+                          }}
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="text-[11px] font-black uppercase tracking-wider text-slate-400">
+                              {analysisResult.imageUrl ? 'Visual Craftsmanship Forensics' : 'NLP Linguistic Signals'}
+                            </span>
+                            <span className="text-xs font-bold font-mono text-slate-400">5-Point Multi-Vector</span>
+                          </div>
 
                           {analysisResult.imageUrl ? (
-                            <div className="space-y-3.5">
+                            <div className="space-y-3">
                               {[
-                                { label: 'Stitching Pitch', value: analysisResult.detailedScores.stitchingQuality, color: 'var(--green-accent-from)', glow: 'rgba(0,160,70,0.2)' },
-                                { label: 'Hardware Engraving', value: analysisResult.detailedScores.hardwareAuthenticity, color: '#6366F1', glow: 'rgba(129,140,248,0.4)' },
-                                { label: 'Care Tag Typography', value: analysisResult.detailedScores.typographyAccuracy, color: '#38BDF8', glow: 'rgba(56,189,248,0.4)' },
-                                { label: 'Material Texture', value: analysisResult.detailedScores.fabricTextureMatch, color: '#A78BFA', glow: 'rgba(167,139,250,0.4)' },
+                                {
+                                  label: 'Stitching Pitch & Tension',
+                                  value: analysisResult.detailedScores.stitchingQuality,
+                                  color: '#00C865',
+                                  gradient: 'linear-gradient(90deg, #10F489, #00C865)',
+                                  tag: analysisResult.detailedScores.stitchingQuality >= 80 ? 'Master Spec' : 'Variance',
+                                },
+                                {
+                                  label: 'Hardware & Electroplating',
+                                  value: analysisResult.detailedScores.hardwareAuthenticity,
+                                  color: '#6366F1',
+                                  gradient: 'linear-gradient(90deg, #818CF8, #6366F1)',
+                                  tag: analysisResult.detailedScores.hardwareAuthenticity >= 80 ? 'Genuine Finish' : 'Tolerance',
+                                },
+                                {
+                                  label: 'Typography & Serial Kerning',
+                                  value: analysisResult.detailedScores.typographyAccuracy,
+                                  color: '#0EA5E9',
+                                  gradient: 'linear-gradient(90deg, #38BDF8, #0EA5E9)',
+                                  tag: analysisResult.detailedScores.typographyAccuracy >= 80 ? 'Authentic Font' : 'Anomaly',
+                                },
+                                {
+                                  label: 'Fabric & Grain Texture Match',
+                                  value: analysisResult.detailedScores.fabricTextureMatch,
+                                  color: '#8B5CF6',
+                                  gradient: 'linear-gradient(90deg, #C084FC, #8B5CF6)',
+                                  tag: analysisResult.detailedScores.fabricTextureMatch >= 80 ? 'High Fidelity' : 'Discrepancy',
+                                },
+                                {
+                                  label: 'Serial Code & RFID Tag Validation',
+                                  value: analysisResult.detailedScores.serialCodeValidation,
+                                  color: '#F59E0B',
+                                  gradient: 'linear-gradient(90deg, #FBBF24, #F59E0B)',
+                                  tag: analysisResult.detailedScores.serialCodeValidation >= 80 ? 'Verified Database' : 'Unconfirmed',
+                                },
                               ].map((metric, i) => (
                                 <div key={i} className="space-y-1.5">
-                                  <div className="flex items-center justify-between text-[12px]">
-                                    <span className="font-bold" style={{ color: 'var(--text-secondary)' }}>{metric.label}</span>
-                                    <span className="font-black font-mono" style={{ color: metric.color }}>{metric.value}%</span>
+                                  <div className="flex items-center justify-between text-xs">
+                                    <div className="flex items-center gap-2">
+                                      <span className="font-bold text-slate-700">{metric.label}</span>
+                                      <span
+                                        className="text-[9px] font-black uppercase px-2 py-0.5 rounded-md"
+                                        style={{
+                                          background: `${metric.color}14`,
+                                          color: metric.color,
+                                          border: `1px solid ${metric.color}30`,
+                                        }}
+                                      >
+                                        {metric.tag}
+                                      </span>
+                                    </div>
+                                    <span className="font-extrabold font-mono" style={{ color: metric.color }}>
+                                      {metric.value}%
+                                    </span>
                                   </div>
-                                  <div className="metric-track">
+                                  <div className="h-2 rounded-full overflow-hidden p-0.5 bg-slate-100">
                                     <div
-                                      className="metric-fill"
+                                      className="h-full rounded-full transition-all duration-1000 ease-out"
                                       style={{
                                         width: `${metric.value}%`,
-                                        background: `linear-gradient(90deg, ${metric.color}66, ${metric.color})`,
-                                        boxShadow: `0 0 8px ${metric.glow}`,
-                                        transitionDelay: `${i * 100}ms`,
+                                        background: metric.gradient,
+                                        boxShadow: `0 0 8px ${metric.color}40`,
                                       }}
                                     />
                                   </div>
@@ -515,13 +652,13 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                           ) : (
                             <div className="grid grid-cols-2 gap-4 pt-1">
                               {[
-                                { label: 'Linguistic Perplexity', value: analysisResult.detailedScores.reviewPerplexity, sub: 'Organic syntactic entropy', color: '#6366F1', bg: 'rgba(99,102,241,0.04)', border: 'rgba(129,140,248,0.12)' },
-                                { label: 'Sentiment Coherence', value: analysisResult.detailedScores.reviewSentimentAlignment, sub: 'Authentic buyer tone', color: 'var(--green-accent-from)', bg: 'rgba(0,160,70,0.05)', border: 'rgba(0,80,40,0.08)' },
+                                { label: 'Linguistic Perplexity', value: analysisResult.detailedScores.reviewPerplexity, sub: 'Organic vocabulary entropy', color: '#6366F1', bg: 'rgba(99,102,241,0.06)', border: 'rgba(99,102,241,0.18)' },
+                                { label: 'Sentiment Coherence', value: analysisResult.detailedScores.reviewSentimentAlignment, sub: 'Authentic consumer phrasing', color: '#00C865', bg: 'rgba(0,200,101,0.06)', border: 'rgba(0,200,101,0.18)' },
                               ].map(({ label, value, sub, color, bg, border }) => (
-                                <div key={label} className="p-4 rounded-xl space-y-1" style={{ background: bg, border: `1px solid ${border}` }}>
-                                  <span className="text-[10px] font-black uppercase tracking-widest block" style={{ color }}>{label}</span>
-                                  <span className="text-2xl font-black font-mono" style={{ color }}>{value}%</span>
-                                  <span className="text-[11px] font-medium block" style={{ color: 'var(--text-muted)' }}>{sub}</span>
+                                <div key={label} className="p-4 rounded-2xl space-y-1" style={{ background: bg, border: `1px solid ${border}` }}>
+                                  <span className="text-[10px] font-black uppercase tracking-wider block" style={{ color }}>{label}</span>
+                                  <span className="text-3xl font-extrabold font-mono" style={{ color }}>{value}%</span>
+                                  <span className="text-xs font-medium text-slate-600 block">{sub}</span>
                                 </div>
                               ))}
                             </div>
@@ -529,53 +666,65 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                         </div>
                       </div>
 
-                      {/* ── VISUAL IMAGE INSPECTOR ───────────────────── */}
+                      {/* ── INTERACTIVE IMAGE INSPECTION SUITE ────────── */}
                       {analysisResult.imageUrl && (
-                        <div className="rounded-2xl overflow-hidden" style={{ background: 'var(--bg-card)', border: '1px solid rgba(0,80,40,0.07)' }}>
-                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-6 sm:px-8 py-5" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                        <div
+                          className="rounded-3xl overflow-hidden"
+                          style={{
+                            background: '#FFFFFF',
+                            border: '1px solid rgba(15,23,42,0.08)',
+                            boxShadow: 'var(--card-shadow)',
+                          }}
+                        >
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-6 sm:px-8 py-5 border-b border-slate-100">
                             <div className="flex items-center gap-3">
-                              <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: 'rgba(0,80,40,0.07)', border: '1px solid rgba(0,80,40,0.1)' }}>
-                                <Eye className="w-4 h-4" style={{ color: 'var(--green-accent-from)' }} />
+                              <div className="w-10 h-10 rounded-2xl flex items-center justify-center bg-emerald-50 border border-emerald-100">
+                                <Eye className="w-5 h-5 text-emerald-600" />
                               </div>
                               <div>
-                                <h3 className="text-[14px] font-extrabold" style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}>Image Inspection Map</h3>
-                                <p className="text-[11px] font-bold font-mono" style={{ color: 'var(--text-dim)' }}>{analysisResult.heatmapPoints.length} hotspots detected</p>
+                                <h3 className="text-base font-extrabold text-slate-900" style={{ fontFamily: 'var(--font-heading)' }}>
+                                  Interactive Computer Vision Canvas
+                                </h3>
+                                <p className="text-xs font-semibold text-slate-400 font-mono">
+                                  {analysisResult.heatmapPoints.length} forensic inspection points identified
+                                </p>
                               </div>
                             </div>
+
                             {/* Mode toggles */}
-                            <div className="flex items-center p-1 rounded-xl gap-0.5 text-[11px] font-black" style={{ background: 'rgba(0,60,30,0.03)', border: '1px solid rgba(0,60,30,0.05)' }}>
+                            <div className="flex items-center p-1 rounded-2xl gap-1 text-xs font-bold bg-slate-100 border border-slate-200">
                               {(['heatmap', 'bounding_boxes', 'raw'] as const).map((mode) => (
                                 <button
                                   key={mode}
                                   onClick={() => setViewMode(mode)}
-                                  className="px-3.5 py-1.5 rounded-lg transition-all uppercase tracking-wide cursor-pointer"
+                                  className="px-3.5 py-1.5 rounded-xl transition-all uppercase tracking-wider cursor-pointer"
                                   style={viewMode === mode
-                                    ? { background: 'rgba(0,80,40,0.08)', color: 'var(--green-accent-from)', border: '1px solid rgba(0,160,70,0.15)' }
-                                    : { color: 'var(--text-dim)' }
+                                    ? { background: '#FFFFFF', color: '#0A0F1D', boxShadow: '0 2px 8px rgba(15,23,42,0.08)' }
+                                    : { color: 'var(--text-muted)' }
                                   }
                                 >
-                                  {mode === 'bounding_boxes' ? 'Boxes' : mode}
+                                  {mode === 'bounding_boxes' ? 'Bounding Boxes' : mode === 'heatmap' ? 'Heatmap' : 'Raw View'}
                                 </button>
                               ))}
                             </div>
                           </div>
 
-                          {/* Canvas */}
-                          <div className="relative w-full min-h-[360px] flex items-center justify-center p-6" style={{ background: 'rgba(0,40,20,0.04)', borderBottom: '1px solid rgba(0,60,30,0.03)' }}>
+                          {/* Canvas Area */}
+                          <div className="relative w-full min-h-[380px] flex items-center justify-center p-6 bg-slate-50/70 border-b border-slate-100">
                             <img
                               src={analysisResult.imageUrl}
                               alt={analysisResult.itemName}
                               referrerPolicy="no-referrer"
-                              className="max-h-[420px] w-auto object-contain rounded-xl"
-                              style={{ filter: 'brightness(0.9) contrast(1.1)' }}
+                              className="max-h-[440px] w-auto object-contain rounded-2xl shadow-md"
+                              style={{ filter: 'brightness(0.98) contrast(1.04)' }}
                             />
                             {viewMode === 'heatmap' && (
-                              <div className="absolute inset-0 rounded-b-none pointer-events-none" style={{ background: 'linear-gradient(135deg, rgba(0,80,40,0.07), rgba(99,102,241,0.04), rgba(252,211,77,0.04))', mixBlendMode: 'multiply' }} />
+                              <div className="absolute inset-0 pointer-events-none rounded-b-none" style={{ background: 'radial-gradient(ellipse at center, rgba(0,200,101,0.08) 0%, rgba(99,102,241,0.06) 50%, rgba(245,158,11,0.04) 100%)', mixBlendMode: 'multiply' }} />
                             )}
                             {viewMode !== 'raw' && analysisResult.heatmapPoints.map(point => {
                               const isSelected = selectedHotspot?.id === point.id;
                               const isCritical = point.severity === 'critical' || point.severity === 'high';
-                              const col = isCritical ? '#F43F5E' : '#00C966';
+                              const col = isCritical ? '#F43F5E' : '#00C865';
                               return (
                                 <div
                                   key={point.id}
@@ -584,18 +733,21 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                                     left: `${point.x}%`, top: `${point.y}%`,
                                     width: `${point.width}%`, height: `${point.height}%`,
                                     position: 'absolute',
-                                    border: `1.5px solid ${col}`,
-                                    background: `${col}12`,
-                                    borderRadius: '6px',
+                                    border: `2px solid ${col}`,
+                                    background: `${col}18`,
+                                    borderRadius: '8px',
                                     cursor: 'pointer',
-                                    transition: 'all 0.2s',
-                                    boxShadow: isSelected ? `0 0 16px ${col}50` : 'none',
-                                    transform: isSelected ? 'scale(1.04)' : 'scale(1)',
-                                    zIndex: isSelected ? 20 : 10,
+                                    transition: 'all 0.25s',
+                                    boxShadow: isSelected ? `0 0 20px ${col}60, inset 0 0 10px ${col}20` : `0 0 8px ${col}30`,
+                                    transform: isSelected ? 'scale(1.05)' : 'scale(1)',
+                                    zIndex: isSelected ? 30 : 15,
                                   }}
                                   className="flex items-start justify-start p-1"
                                 >
-                                  <span className="text-[8px] font-black px-1.5 py-0.5 rounded whitespace-nowrap" style={{ background: col, color: '#FFFFFF', marginTop: '-14px', marginLeft: '-4px' }}>
+                                  <span
+                                    className="text-[9px] font-black px-2 py-0.5 rounded-md whitespace-nowrap shadow-sm"
+                                    style={{ background: col, color: '#FFFFFF', marginTop: '-16px', marginLeft: '-4px' }}
+                                  >
                                     {point.label}
                                   </span>
                                 </div>
@@ -603,27 +755,29 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                             })}
                           </div>
 
-                          {/* Hotspot detail */}
-                          <div className="p-6 sm:p-8 grid grid-cols-1 sm:grid-cols-12 gap-5">
-                            <div className="sm:col-span-5 space-y-2">
-                              <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: 'var(--text-dim)' }}>Select Hotspot</span>
-                              <div className="flex flex-col gap-1.5 max-h-[200px] overflow-y-auto pr-1">
+                          {/* Hotspot detail panel */}
+                          <div className="p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-5">
+                            <div className="lg:col-span-5 space-y-2">
+                              <span className="text-[11px] font-black uppercase tracking-wider text-slate-400">
+                                Select Inspection Hotspot
+                              </span>
+                              <div className="flex flex-col gap-2 max-h-[220px] overflow-y-auto pr-1">
                                 {analysisResult.heatmapPoints.map(point => {
                                   const isSelected = selectedHotspot?.id === point.id;
                                   const isCritical = point.severity === 'critical' || point.severity === 'high';
-                                  const col = isCritical ? '#F43F5E' : '#00C966';
+                                  const col = isCritical ? '#F43F5E' : '#00C865';
                                   return (
                                     <button
                                       key={point.id}
                                       onClick={() => setSelectedHotspot(point)}
-                                      className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-left text-[12px] font-bold cursor-pointer transition-all"
+                                      className="w-full flex items-center justify-between px-4 py-3 rounded-2xl text-left text-xs font-bold cursor-pointer transition-all"
                                       style={isSelected
-                                        ? { background: `${col}0F`, border: `1px solid ${col}30`, color: col }
-                                        : { background: 'rgba(0,60,30,0.03)', border: '1px solid rgba(0,60,30,0.05)', color: 'var(--text-muted)' }
+                                        ? { background: `${col}12`, border: `1px solid ${col}40`, color: col, boxShadow: `0 2px 10px ${col}18` }
+                                        : { background: '#F8FAFC', border: '1px solid rgba(15,23,42,0.06)', color: 'var(--text-secondary)' }
                                       }
                                     >
                                       <span className="truncate">{point.label}</span>
-                                      <span className="text-[10px] font-black px-2 py-0.5 rounded-full ml-2 shrink-0" style={{ background: `${col}15`, color: col }}>
+                                      <span className="text-[10px] font-black px-2.5 py-0.5 rounded-full ml-2 shrink-0 font-mono" style={{ background: `${col}18`, color: col }}>
                                         {point.confidence}%
                                       </span>
                                     </button>
@@ -632,30 +786,37 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                               </div>
                             </div>
 
-                            <div className="sm:col-span-7">
+                            <div className="lg:col-span-7">
                               {selectedHotspot ? (() => {
                                 const isCritical = selectedHotspot.severity === 'critical' || selectedHotspot.severity === 'high';
-                                const col = isCritical ? '#F43F5E' : '#00C966';
+                                const col = isCritical ? '#F43F5E' : '#00C865';
                                 return (
-                                  <div className="h-full rounded-xl p-5 space-y-3 relative overflow-hidden" style={{ background: `${col}08`, border: `1px solid ${col}20` }}>
-                                    <div className="absolute top-0 left-0 w-full h-0.5" style={{ background: `linear-gradient(90deg, ${col}, transparent)` }} />
+                                  <div
+                                    className="h-full rounded-2xl p-6 space-y-3 relative overflow-hidden"
+                                    style={{ background: `${col}08`, border: `1px solid ${col}25` }}
+                                  >
+                                    <div className="absolute top-0 left-0 w-full h-1" style={{ background: `linear-gradient(90deg, ${col}, transparent)` }} />
                                     <div className="flex items-start justify-between gap-3 pt-1">
                                       <div>
-                                        <span className="font-extrabold text-[14px] block" style={{ color: 'var(--text-primary)' }}>{selectedHotspot.label}</span>
-                                        <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--text-dim)' }}>{selectedHotspot.category}</span>
+                                        <h4 className="font-extrabold text-base text-slate-900">{selectedHotspot.label}</h4>
+                                        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">
+                                          Category: {selectedHotspot.category} · {selectedHotspot.anomalyType}
+                                        </span>
                                       </div>
-                                      <span className="text-[10px] font-black px-2.5 py-1 rounded-lg shrink-0" style={{ background: `${col}15`, color: col }}>
-                                        {selectedHotspot.confidence}% conf.
+                                      <span className="text-[10px] font-black uppercase px-2.5 py-1 rounded-lg shrink-0 font-mono" style={{ background: `${col}18`, color: col }}>
+                                        {selectedHotspot.confidence}% Confidence
                                       </span>
                                     </div>
-                                    <p className="text-[13px] leading-relaxed" style={{ color: 'var(--text-muted)' }}>{selectedHotspot.description}</p>
+                                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+                                      {selectedHotspot.description}
+                                    </p>
                                   </div>
                                 );
                               })() : (
-                                <div className="h-full rounded-xl p-5 flex items-center justify-center text-center" style={{ background: 'rgba(255,255,255,0.02)', border: '1px dashed rgba(255,255,255,0.07)' }}>
+                                <div className="h-full rounded-2xl p-6 flex items-center justify-center text-center bg-slate-50 border border-dashed border-slate-200">
                                   <div className="space-y-1">
-                                    <Maximize2 className="w-6 h-6 mx-auto" style={{ color: 'var(--text-dim)' }} />
-                                    <p className="text-[12px] font-bold" style={{ color: 'var(--text-dim)' }}>Click a hotspot to inspect</p>
+                                    <Maximize2 className="w-6 h-6 mx-auto text-slate-400" />
+                                    <p className="text-xs font-bold text-slate-500">Click any hotspot to examine micro-structure</p>
                                   </div>
                                 </div>
                               )}
@@ -666,123 +827,143 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
 
                       {/* ── NLP REVIEW FORENSICS ─────────────────────── */}
                       {analysisResult.reviewText && (
-                        <div className="rounded-2xl overflow-hidden" style={{ background: 'var(--bg-card)', border: '1px solid rgba(129,140,248,0.12)' }}>
-                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-6 sm:px-8 py-5" style={{ borderBottom: '1px solid rgba(129,140,248,0.08)' }}>
+                        <div
+                          className="rounded-3xl overflow-hidden"
+                          style={{
+                            background: '#FFFFFF',
+                            border: '1px solid rgba(15,23,42,0.08)',
+                            boxShadow: 'var(--card-shadow)',
+                          }}
+                        >
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-6 sm:px-8 py-5 border-b border-slate-100">
                             <div className="flex items-center gap-3">
-                              <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: 'rgba(129,140,248,0.1)', border: '1px solid rgba(129,140,248,0.2)' }}>
-                                <FileText className="w-4 h-4" style={{ color: '#6366F1' }} />
+                              <div className="w-10 h-10 rounded-2xl flex items-center justify-center bg-indigo-50 border border-indigo-100">
+                                <FileText className="w-5 h-5 text-indigo-600" />
                               </div>
                               <div>
-                                <h3 className="text-[14px] font-extrabold" style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}>NLP Linguistic Forensics</h3>
-                                <p className="text-[11px] font-bold font-mono" style={{ color: 'var(--text-dim)' }}>{analysisResult.reviewText.length} chars · review authenticity analysis</p>
+                                <h3 className="text-base font-extrabold text-slate-900" style={{ fontFamily: 'var(--font-heading)' }}>
+                                  NLP Linguistic & Review Forensics
+                                </h3>
+                                <p className="text-xs font-semibold text-slate-400 font-mono">
+                                  {analysisResult.reviewText.length} characters analyzed · Synthetic bot pattern scan
+                                </p>
                               </div>
                             </div>
                             <span
-                              className="self-start sm:self-auto text-[11px] font-black px-3 py-1.5 rounded-full"
+                              className="self-start sm:self-auto text-xs font-extrabold px-3.5 py-1.5 rounded-full"
                               style={
                                 analysisResult.fakeReviewProbability > 50
-                                  ? { background: 'rgba(251,113,133,0.1)', border: '1px solid rgba(251,113,133,0.25)', color: '#F43F5E' }
-                                  : { background: 'rgba(0,80,40,0.08)', border: '1px solid rgba(0,160,70,0.18)', color: 'var(--green-accent-from)' }
+                                  ? { background: 'rgba(244,63,94,0.1)', border: '1px solid rgba(244,63,94,0.3)', color: '#F43F5E' }
+                                  : { background: 'rgba(0,200,101,0.1)', border: '1px solid rgba(0,200,101,0.3)', color: '#00C865' }
                               }
                             >
-                              {analysisResult.fakeReviewProbability > 50 ? '⚠ High Synthetic Risk' : '✓ Likely Organic'}
+                              {analysisResult.fakeReviewProbability > 50 ? '⚠ High Synthetic Risk' : '✓ Likely Organic Phrasing'}
                             </span>
                           </div>
 
                           <div className="p-6 sm:p-8 space-y-6">
-                            {/* Review Quote */}
-                            <div className="relative rounded-xl p-5" style={{ background: 'rgba(129,140,248,0.05)', border: '1px solid rgba(129,140,248,0.1)' }}>
-                              <div className="absolute top-4 left-5 text-4xl font-serif leading-none select-none" style={{ color: 'rgba(129,140,248,0.3)' }}>"</div>
-                              <div className="text-[10px] font-black uppercase tracking-widest mb-2" style={{ color: '#6366F1' }}>Analyzed Review</div>
-                              <p className="text-[13px] italic leading-relaxed pl-1 pr-4" style={{ color: 'var(--text-secondary)' }}>
-                                {analysisResult.reviewText}
+                            {/* Review Quote Card */}
+                            <div className="relative rounded-2xl p-6 bg-slate-50 border border-slate-100">
+                              <div className="text-[10px] font-black uppercase tracking-wider text-indigo-600 mb-2">Analyzed Review Corpus</div>
+                              <p className="text-sm italic text-slate-700 leading-relaxed pl-1 pr-4">
+                                "{analysisResult.reviewText}"
                               </p>
                             </div>
 
-                            {/* Synthetic probability */}
-                            <div className="p-5 rounded-xl space-y-4" style={{ background: 'rgba(129,140,248,0.05)', border: '1px solid rgba(129,140,248,0.1)' }}>
+                            {/* Synthetic Bot Probability Bar */}
+                            <div className="p-6 rounded-2xl bg-indigo-50/40 border border-indigo-100/80 space-y-4">
                               <div className="flex items-center justify-between">
                                 <div>
-                                  <span className="text-[13px] font-black" style={{ color: 'var(--text-primary)' }}>Bot / Synthetic Probability</span>
-                                  <p className="text-[11px] mt-0.5" style={{ color: 'var(--text-muted)' }}>How likely this review was AI- or bot-generated</p>
+                                  <span className="text-sm font-extrabold text-slate-900">Bot / Machine Generation Likelihood</span>
+                                  <p className="text-xs text-slate-500 mt-0.5">Calculated through vocabulary entropy and promotional phrase repetition</p>
                                 </div>
-                                <span className="text-3xl font-black font-mono" style={{ color: analysisResult.fakeReviewProbability > 50 ? '#F43F5E' : '#6366F1' }}>
+                                <span className="text-3xl font-extrabold font-mono" style={{ color: analysisResult.fakeReviewProbability > 50 ? '#F43F5E' : '#6366F1' }}>
                                   {analysisResult.fakeReviewProbability}%
                                 </span>
                               </div>
-                              <div className="relative w-full h-3 rounded-full overflow-hidden" style={{ background: 'rgba(0,60,30,0.05)' }}>
+
+                              <div className="relative w-full h-3 rounded-full overflow-hidden bg-slate-200">
                                 <div
                                   className="absolute top-0 left-0 h-full rounded-full transition-all duration-1000 ease-out"
                                   style={{
                                     width: `${analysisResult.fakeReviewProbability}%`,
                                     background: analysisResult.fakeReviewProbability > 50
-                                      ? 'linear-gradient(90deg, #DC2626, #F43F5E)'
-                                      : 'linear-gradient(90deg, #6366F1, #6366F1)',
-                                    boxShadow: `0 0 10px ${analysisResult.fakeReviewProbability > 50 ? 'rgba(251,113,133,0.5)' : 'rgba(129,140,248,0.5)'}`,
+                                      ? 'linear-gradient(90deg, #F59E0B, #F43F5E)'
+                                      : 'linear-gradient(90deg, #00C865, #6366F1)',
+                                    boxShadow: `0 0 10px ${analysisResult.fakeReviewProbability > 50 ? 'rgba(244,63,94,0.4)' : 'rgba(99,102,241,0.4)'}`,
                                   }}
                                 />
-                                <div className="absolute top-0 left-1/2 w-px h-full" style={{ background: 'rgba(255,255,255,0.2)' }} />
+                                <div className="absolute top-0 left-1/2 w-0.5 h-full bg-slate-400" />
                               </div>
-                              <div className="flex justify-between text-[10px] font-bold" style={{ color: 'var(--text-dim)' }}>
-                                <span>Organic</span>
-                                <span>50% threshold</span>
-                                <span>Synthetic</span>
+
+                              <div className="flex justify-between text-[10px] font-extrabold font-mono text-slate-400">
+                                <span>Organic Consumer (0%)</span>
+                                <span>50% Risk Threshold</span>
+                                <span>Automated Bot (100%)</span>
                               </div>
 
                               {analysisResult.reviewFlags && analysisResult.reviewFlags.length > 0 && (
-                                <div className="pt-3 space-y-2" style={{ borderTop: '1px solid rgba(129,140,248,0.1)' }}>
-                                  <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: 'var(--text-dim)' }}>Detected Flags</span>
+                                <div className="pt-3 space-y-2 border-t border-indigo-100">
+                                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Detected Linguistic Flags</span>
                                   {analysisResult.reviewFlags.map((flag, idx) => (
-                                    <div key={idx} className="flex items-start gap-2.5 p-3 rounded-xl text-[12px]" style={
-                                      flag.severity === 'high'
-                                        ? { background: 'rgba(244,63,94,0.06)', border: '1px solid rgba(251,113,133,0.15)' }
-                                        : { background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(252,211,77,0.15)' }
-                                    }>
-                                      <AlertTriangle className="w-3.5 h-3.5 shrink-0 mt-0.5" style={{ color: flag.severity === 'high' ? '#F43F5E' : '#F59E0B' }} />
+                                    <div
+                                      key={idx}
+                                      className="flex items-start gap-3 p-3.5 rounded-xl text-xs"
+                                      style={
+                                        flag.severity === 'high'
+                                          ? { background: 'rgba(244,63,94,0.06)', border: '1px solid rgba(244,63,94,0.2)' }
+                                          : { background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.2)' }
+                                      }
+                                    >
+                                      <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" style={{ color: flag.severity === 'high' ? '#F43F5E' : '#F59E0B' }} />
                                       <div>
-                                        <span className="font-black" style={{ color: 'var(--text-primary)' }}>{flag.type}: </span>
-                                        <span style={{ color: 'var(--text-muted)' }}>{flag.explanation}</span>
+                                        <span className="font-extrabold text-slate-900">{flag.type}: </span>
+                                        <span className="text-slate-600">{flag.explanation}</span>
                                       </div>
                                     </div>
                                   ))}
                                 </div>
                               )}
+
                               {(!analysisResult.reviewFlags || analysisResult.reviewFlags.length === 0) && (
-                                <div className="pt-3" style={{ borderTop: '1px solid rgba(0,80,40,0.07)' }}>
-                                  <div className="flex items-center gap-2 text-[12px] font-bold p-3 rounded-xl" style={{ background: 'rgba(0,80,40,0.06)', border: '1px solid rgba(0,80,40,0.1)', color: 'var(--green-accent-from)' }}>
-                                    <CheckCircle2 className="w-4 h-4 shrink-0" />
-                                    <span>No synthetic patterns detected — organic human phrasing verified</span>
+                                <div className="pt-3 border-t border-emerald-100">
+                                  <div className="flex items-center gap-2 text-xs font-bold p-3.5 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-700">
+                                    <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
+                                    <span>Zero synthetic bots detected — authentic human phrasing verified across linguistic markers</span>
                                   </div>
                                 </div>
                               )}
                             </div>
 
-                            {/* Notes + Recommendations */}
+                            {/* Reasoning + Recommendations */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                              <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(0,60,30,0.05)' }}>
-                                <div className="px-5 py-3.5 flex items-center gap-2" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', background: 'rgba(255,255,255,0.02)' }}>
-                                  <Layers className="w-4 h-4" style={{ color: 'var(--text-dim)' }} />
-                                  <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: 'var(--text-dim)' }}>AI Linguistic Notes</span>
+                              <div className="rounded-2xl p-5 bg-slate-50 border border-slate-100 space-y-3">
+                                <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-slate-700">
+                                  <Layers className="w-4 h-4 text-slate-400" />
+                                  AI Linguistic Findings
                                 </div>
-                                <ul className="p-5 space-y-3">
+                                <ul className="space-y-2.5">
                                   {analysisResult.xaiReasoning.map((reason, idx) => (
-                                    <li key={idx} className="flex items-start gap-3">
-                                      <span className="w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-black shrink-0 mt-0.5" style={{ background: 'rgba(0,60,30,0.05)', color: 'var(--text-dim)' }}>{idx + 1}</span>
-                                      <span className="text-[13px] leading-relaxed" style={{ color: 'var(--text-muted)' }}>{reason}</span>
+                                    <li key={idx} className="flex items-start gap-2.5 text-xs text-slate-600 leading-relaxed font-medium">
+                                      <span className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5 bg-white border border-slate-200 text-slate-700">
+                                        {idx + 1}
+                                      </span>
+                                      <span>{reason}</span>
                                     </li>
                                   ))}
                                 </ul>
                               </div>
-                              <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(0,80,40,0.08)' }}>
-                                <div className="px-5 py-3.5 flex items-center gap-2" style={{ borderBottom: '1px solid rgba(0,80,40,0.07)', background: 'rgba(0,160,70,0.03)' }}>
-                                  <CheckCircle2 className="w-4 h-4" style={{ color: 'var(--green-accent-from)' }} />
-                                  <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: 'var(--green-accent-from)' }}>AI Recommendations</span>
+
+                              <div className="rounded-2xl p-5 bg-emerald-50/50 border border-emerald-100 space-y-3">
+                                <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-emerald-800">
+                                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                                  Recommended Next Steps
                                 </div>
-                                <ul className="p-5 space-y-3">
+                                <ul className="space-y-2.5">
                                   {analysisResult.recommendations.map((rec, idx) => (
-                                    <li key={idx} className="flex items-start gap-3">
-                                      <ChevronRight className="w-4 h-4 shrink-0 mt-0.5" style={{ color: 'var(--green-accent-from)' }} />
-                                      <span className="text-[13px] leading-relaxed" style={{ color: 'var(--text-muted)' }}>{rec}</span>
+                                    <li key={idx} className="flex items-start gap-2 text-xs text-slate-700 leading-relaxed font-medium">
+                                      <ChevronRight className="w-4 h-4 shrink-0 mt-0.5 text-emerald-600" />
+                                      <span>{rec}</span>
                                     </li>
                                   ))}
                                 </ul>
@@ -792,43 +973,54 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                         </div>
                       )}
 
-                      {/* ── IMAGE-ONLY findings ──────────────────────── */}
+                      {/* ── IMAGE-ONLY FINDINGS (WHEN NO REVIEW TEXT) ── */}
                       {analysisResult.imageUrl && !analysisResult.reviewText && (
-                        <div className="rounded-2xl overflow-hidden" style={{ background: 'var(--bg-card)', border: '1px solid rgba(0,80,40,0.07)' }}>
-                          <div className="flex items-center gap-3 px-6 sm:px-8 py-5" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                            <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: 'rgba(0,80,40,0.07)', border: '1px solid rgba(0,80,40,0.1)' }}>
-                              <ShieldCheck className="w-4 h-4" style={{ color: 'var(--green-accent-from)' }} />
+                        <div
+                          className="rounded-3xl overflow-hidden p-6 sm:p-8 space-y-5"
+                          style={{
+                            background: '#FFFFFF',
+                            border: '1px solid rgba(15,23,42,0.08)',
+                            boxShadow: 'var(--card-shadow)',
+                          }}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-2xl flex items-center justify-center bg-emerald-50 border border-emerald-100">
+                              <ShieldCheck className="w-5 h-5 text-emerald-600" />
                             </div>
                             <div>
-                              <h3 className="text-[14px] font-extrabold" style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}>Visual Craftsmanship & Next Steps</h3>
-                              <p className="text-[11px] font-bold font-mono" style={{ color: 'var(--text-dim)' }}>Key inspection findings</p>
+                              <h3 className="text-base font-extrabold text-slate-900" style={{ fontFamily: 'var(--font-heading)' }}>
+                                Visual Craftsmanship Synthesis
+                              </h3>
+                              <p className="text-xs font-medium text-slate-400 font-mono">Expert summary of optical anomalies</p>
                             </div>
                           </div>
-                          <div className="p-6 sm:p-8 grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(0,60,30,0.05)' }}>
-                              <div className="px-5 py-3.5 flex items-center gap-2" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', background: 'rgba(255,255,255,0.02)' }}>
-                                <Layers className="w-4 h-4" style={{ color: 'var(--text-dim)' }} />
-                                <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: 'var(--text-dim)' }}>Key Inspection Findings</span>
-                              </div>
-                              <ul className="p-5 space-y-3">
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div className="rounded-2xl p-5 bg-slate-50 border border-slate-100 space-y-3">
+                              <span className="text-xs font-black uppercase tracking-wider text-slate-700 block">
+                                Key Inspection Points
+                              </span>
+                              <ul className="space-y-2">
                                 {analysisResult.xaiReasoning.map((reason, idx) => (
-                                  <li key={idx} className="flex items-start gap-3">
-                                    <span className="w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-black shrink-0 mt-0.5" style={{ background: 'rgba(0,60,30,0.05)', color: 'var(--text-dim)' }}>{idx + 1}</span>
-                                    <span className="text-[13px] leading-relaxed" style={{ color: 'var(--text-muted)' }}>{reason}</span>
+                                  <li key={idx} className="flex items-start gap-2.5 text-xs text-slate-600 leading-relaxed font-medium">
+                                    <span className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5 bg-white border border-slate-200 text-slate-700">
+                                      {idx + 1}
+                                    </span>
+                                    <span>{reason}</span>
                                   </li>
                                 ))}
                               </ul>
                             </div>
-                            <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(0,80,40,0.08)' }}>
-                              <div className="px-5 py-3.5 flex items-center gap-2" style={{ borderBottom: '1px solid rgba(0,80,40,0.07)', background: 'rgba(0,160,70,0.03)' }}>
-                                <CheckCircle2 className="w-4 h-4" style={{ color: 'var(--green-accent-from)' }} />
-                                <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: 'var(--green-accent-from)' }}>Recommended Next Steps</span>
-                              </div>
-                              <ul className="p-5 space-y-3">
+
+                            <div className="rounded-2xl p-5 bg-emerald-50/50 border border-emerald-100 space-y-3">
+                              <span className="text-xs font-black uppercase tracking-wider text-emerald-800 block">
+                                Recommended Action Protocol
+                              </span>
+                              <ul className="space-y-2">
                                 {analysisResult.recommendations.map((rec, idx) => (
-                                  <li key={idx} className="flex items-start gap-3">
-                                    <ChevronRight className="w-4 h-4 shrink-0 mt-0.5" style={{ color: 'var(--green-accent-from)' }} />
-                                    <span className="text-[13px] leading-relaxed" style={{ color: 'var(--text-muted)' }}>{rec}</span>
+                                  <li key={idx} className="flex items-start gap-2 text-xs text-slate-700 leading-relaxed font-medium">
+                                    <ChevronRight className="w-4 h-4 shrink-0 mt-0.5 text-emerald-600" />
+                                    <span>{rec}</span>
                                   </li>
                                 ))}
                               </ul>
