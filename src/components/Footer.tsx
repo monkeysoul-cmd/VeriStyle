@@ -31,31 +31,31 @@ export const Footer: React.FC = () => {
               <div
                 className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
                 style={{
-                  background: 'linear-gradient(135deg, #05DF72 0%, #00C865 100%)',
-                  boxShadow: '0 4px 20px rgba(0,200,101,0.35)',
+                  background: 'linear-gradient(135deg, #00F08B 0%, #00C865 50%, #00E5FF 100%)',
+                  boxShadow: '0 4px 20px rgba(0,240,139,0.35)',
                 }}
               >
-                <VeriLensIcon className="w-5 h-5 text-white" />
+                <VeriLensIcon className="w-5 h-5 text-slate-950" />
               </div>
               <div className="flex flex-col leading-none">
                 <span className="text-xl font-black tracking-tight text-white" style={{ fontFamily: 'var(--font-heading)' }}>
                   VeriStyle
                 </span>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#05DF72] opacity-90 mt-0.5">AI Authenticator</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#00F08B] mt-0.5">AI Forensic Lab</span>
               </div>
             </div>
 
             <p className="text-sm leading-relaxed max-w-xs text-slate-400 font-normal">
-              Real-time multimodal authenticity inspection powered by VeriLens AI 1.0. Detecting counterfeit fashion and manufactured reviews across major e-commerce platforms.
+              Real-time multimodal authenticity inspection powered by VeriLens AI 1.0. Detecting counterfeit luxury fashion, hardware flaws, and manufactured reviews.
             </p>
 
             {/* Status badge */}
-            <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25">
+            <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30">
               <span className="relative flex w-2 h-2">
-                <span className="absolute inset-0 rounded-full animate-ping opacity-75 bg-[#00C865]" />
-                <span className="relative rounded-full w-2 h-2 bg-[#00C865]" />
+                <span className="absolute inset-0 rounded-full animate-ping opacity-75 bg-[#00F08B]" />
+                <span className="relative rounded-full w-2 h-2 bg-[#00F08B] shadow-[0_0_8px_#00F08B]" />
               </span>
-              <span className="text-xs font-bold text-emerald-400">VeriLens AI 1.0 Active</span>
+              <span className="text-xs font-mono font-bold text-emerald-400">VeriLens AI 1.0 • Online</span>
             </div>
 
             {/* Trust marks */}

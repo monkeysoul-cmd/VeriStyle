@@ -9,98 +9,101 @@
 }
 
 :root {
-  /* ─── Core Brand (Electric Emerald & Cyber Jade) ────────── */
-  --green-primary: #00C865;
-  --green-dark: #00964B;
-  --green-light: #22E780;
-  --green-accent-from: #05DF72;
-  --green-accent-to: #00B85C;
-  --green-glow: rgba(0, 200, 101, 0.16);
-  --green-glow-strong: rgba(0, 200, 101, 0.28);
+  /* ─── Core Brand (Cyber Emerald, Electric Mint & Obsidian) ─ */
+  --green-primary: #00F08B;
+  --green-dark: #027A3D;
+  --green-light: #54FFB5;
+  --green-accent-from: #00F08B;
+  --green-accent-to: #00C865;
+  --green-glow: rgba(0, 240, 139, 0.22);
+  --green-glow-strong: rgba(0, 240, 139, 0.42);
 
-  /* ─── Premium Multi-Signal Accent Palette ────────────────── */
+  /* ─── Modern Multi-Signal Forensic Accents ────────────────── */
+  --accent-cyan: #00E5FF;
+  --accent-sky: #0EA5E9;
   --accent-indigo: #6366F1;
   --accent-violet: #8B5CF6;
-  --accent-amber: #F59E0B;
-  --accent-rose: #F43F5E;
-  --accent-sky: #0EA5E9;
-  --accent-cyan: #06B6D4;
-  --accent-emerald: #05DF72;
-  --accent-gold: #EAB308;
+  --accent-amber: #FFB800;
+  --accent-gold: #F59E0B;
+  --accent-rose: #FF1E56;
+  --accent-crimson: #E11D48;
   --accent-teal: #14B8A6;
 
-  /* ─── Modern Light Surfaces (Titanium & Crisp Slate) ───── */
-  --bg-base: #F8FAFC;
+  /* ─── Modern Luxury Surfaces (Titanium Pearl & Obsidian) ─── */
+  --bg-base: #F8FAFD;
   --bg-surface-1: #F1F5F9;
-  --bg-surface-2: #E2E8F0;
-  --bg-surface-3: #CBD5E1;
+  --bg-surface-2: #E8EEF5;
+  --bg-surface-3: #D9E2EC;
   --bg-card: #FFFFFF;
   --bg-card-hover: #FFFFFF;
   --bg-elevated: #FFFFFF;
 
   /* ─── Contrast & Telemetry Obsidian Surfaces ────────────── */
-  --bg-dark: #090D16;
-  --bg-dark-surface: #0F172A;
-  --bg-dark-card: rgba(255, 255, 255, 0.04);
-  --bg-dark-card-hover: rgba(255, 255, 255, 0.08);
+  --bg-dark: #080C14;
+  --bg-dark-surface: #0E1626;
+  --bg-dark-card: rgba(255, 255, 255, 0.05);
+  --bg-dark-card-hover: rgba(255, 255, 255, 0.09);
 
   /* ─── Hero Ambient Mesh ─────────────────────────────────── */
-  --hero-bg: radial-gradient(130% 100% at 50% 0%, #FFFFFF 0%, #F1F5F9 55%, #F8FAFC 100%);
-  --hero-mesh: radial-gradient(ellipse 65% 55% at 20% 30%, rgba(5, 223, 114, 0.08) 0%, transparent 70%),
-               radial-gradient(ellipse 55% 45% at 80% 50%, rgba(99, 102, 241, 0.07) 0%, transparent 70%),
-               radial-gradient(ellipse 45% 35% at 50% 80%, rgba(6, 182, 212, 0.05) 0%, transparent 70%);
+  --hero-bg: radial-gradient(130% 100% at 50% 0%, #FFFFFF 0%, #F1F6FB 55%, #F8FAFD 100%);
+  --hero-mesh: radial-gradient(ellipse 65% 55% at 20% 30%, rgba(0, 240, 139, 0.10) 0%, transparent 70%),
+               radial-gradient(ellipse 55% 45% at 80% 50%, rgba(99, 102, 241, 0.09) 0%, transparent 70%),
+               radial-gradient(ellipse 45% 35% at 50% 80%, rgba(0, 229, 255, 0.08) 0%, transparent 70%);
 
   /* ─── High-Contrast Typographic Hierarchy ───────────────── */
-  --text-primary: #0A0F1D;
-  --text-secondary: #273244;
-  --text-muted: #5A6A80;
-  --text-dim: #8E9DB0;
+  --text-primary: #070B14;
+  --text-secondary: #1E293B;
+  --text-muted: #53647A;
+  --text-dim: #8494A8;
 
-  /* ─── Precision Borders ─────────────────────────────────── */
-  --border-subtle: rgba(15, 23, 42, 0.04);
+  /* ─── Precision Laser & Specular Borders ─────────────────── */
+  --border-subtle: rgba(15, 23, 42, 0.05);
   --border-card: rgba(15, 23, 42, 0.08);
-  --border-card-hover: rgba(0, 200, 101, 0.32);
-  --border-glass: rgba(255, 255, 255, 0.6);
-  --border-bright: rgba(0, 200, 101, 0.45);
+  --border-card-hover: rgba(0, 240, 139, 0.40);
+  --border-glass: rgba(255, 255, 255, 0.85);
+  --border-bright: rgba(0, 240, 139, 0.55);
 
-  /* ─── Glassmorphism (Crystal Titanium Blur) ─────────────── */
-  --glass-bg: rgba(255, 255, 255, 0.78);
-  --glass-bg-light: rgba(255, 255, 255, 0.55);
-  --glass-border: rgba(255, 255, 255, 0.8);
-  --glass-blur: blur(28px) saturate(190%);
-  --nav-bg: rgba(255, 255, 255, 0.85);
+  /* ─── Glassmorphism (Prismatic Crystal Blur) ─────────────── */
+  --glass-bg: rgba(255, 255, 255, 0.84);
+  --glass-bg-light: rgba(255, 255, 255, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.9);
+  --glass-blur: blur(32px) saturate(200%);
+  --nav-bg: rgba(255, 255, 255, 0.88);
 
   /* ─── Page Sections ─────────────────────────────────────── */
   --page-light: #F1F5F9;
-  --page-dark: #090D16;
+  --page-dark: #080C14;
 
-  /* ─── Modern Layered Shadows ────────────────────────────── */
-  --card-shadow: 0 1px 2px 0 rgba(15, 23, 42, 0.03), 0 8px 24px -4px rgba(15, 23, 42, 0.05);
-  --card-shadow-hover: 0 16px 36px -6px rgba(15, 23, 42, 0.09), 0 2px 6px rgba(15, 23, 42, 0.04);
-  --glow-green: 0 0 24px rgba(0, 200, 101, 0.18), 0 0 54px rgba(0, 200, 101, 0.08);
-  --glow-green-strong: 0 0 34px rgba(0, 200, 101, 0.28), 0 0 74px rgba(0, 200, 101, 0.12);
-  --glow-indigo: 0 0 24px rgba(99, 102, 241, 0.18), 0 0 54px rgba(139, 92, 246, 0.08);
-  --glow-gold: 0 0 24px rgba(245, 158, 11, 0.18), 0 0 54px rgba(245, 158, 11, 0.08);
-  --glow-rose: 0 0 24px rgba(244, 63, 94, 0.18), 0 0 54px rgba(244, 63, 94, 0.08);
+  /* ─── Modern Multi-Layered Shadows ──────────────────────── */
+  --card-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.03), 0 10px 30px -4px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 1);
+  --card-shadow-hover: 0 20px 45px -8px rgba(15, 23, 42, 0.12), 0 4px 12px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(255, 255, 255, 1);
+  --glow-green: 0 0 26px rgba(0, 240, 139, 0.28), 0 0 60px rgba(0, 240, 139, 0.14);
+  --glow-green-strong: 0 0 40px rgba(0, 240, 139, 0.42), 0 0 85px rgba(0, 240, 139, 0.20);
+  --glow-indigo: 0 0 26px rgba(99, 102, 241, 0.24), 0 0 60px rgba(139, 92, 246, 0.12);
+  --glow-gold: 0 0 26px rgba(255, 184, 0, 0.26), 0 0 60px rgba(245, 158, 11, 0.12);
+  --glow-rose: 0 0 26px rgba(255, 30, 86, 0.26), 0 0 60px rgba(244, 63, 94, 0.12);
 
-  /* ─── Redesigned Analysis Report Color System ───────────── */
-  --report-auth-accent: #00C865;
-  --report-auth-bg: linear-gradient(135deg, rgba(236, 253, 245, 0.95) 0%, rgba(209, 250, 229, 0.65) 100%);
-  --report-auth-border: rgba(0, 200, 101, 0.28);
-  --report-auth-glow: rgba(0, 200, 101, 0.2);
-  --report-auth-text: #047857;
+  /* ─── New Senior Designer Analysis Report Color System ──── */
+  --report-auth-accent: #00F08B;
+  --report-auth-dark: #026633;
+  --report-auth-bg: linear-gradient(135deg, rgba(238, 253, 245, 0.98) 0%, rgba(215, 252, 232, 0.85) 45%, rgba(240, 253, 248, 0.96) 100%);
+  --report-auth-border: rgba(0, 240, 139, 0.45);
+  --report-auth-glow: rgba(0, 240, 139, 0.32);
+  --report-auth-text: #035429;
 
-  --report-susp-accent: #F59E0B;
-  --report-susp-bg: linear-gradient(135deg, rgba(254, 252, 232, 0.95) 0%, rgba(254, 243, 199, 0.65) 100%);
-  --report-susp-border: rgba(245, 158, 11, 0.28);
-  --report-susp-glow: rgba(245, 158, 11, 0.2);
-  --report-susp-text: #B45309;
+  --report-susp-accent: #FFB800;
+  --report-susp-dark: #92400E;
+  --report-susp-bg: linear-gradient(135deg, rgba(255, 253, 240, 0.98) 0%, rgba(254, 246, 210, 0.85) 45%, rgba(255, 251, 232, 0.96) 100%);
+  --report-susp-border: rgba(255, 184, 0, 0.45);
+  --report-susp-glow: rgba(255, 184, 0, 0.32);
+  --report-susp-text: #854D0E;
 
-  --report-fake-accent: #F43F5E;
-  --report-fake-bg: linear-gradient(135deg, rgba(255, 241, 242, 0.95) 0%, rgba(255, 228, 230, 0.65) 100%);
-  --report-fake-border: rgba(244, 63, 94, 0.28);
-  --report-fake-glow: rgba(244, 63, 94, 0.2);
-  --report-fake-text: #BE123C;
+  --report-fake-accent: #FF1E56;
+  --report-fake-dark: #881337;
+  --report-fake-bg: linear-gradient(135deg, rgba(255, 242, 245, 0.98) 0%, rgba(255, 226, 233, 0.85) 45%, rgba(255, 245, 247, 0.96) 100%);
+  --report-fake-border: rgba(255, 30, 86, 0.45);
+  --report-fake-glow: rgba(255, 30, 86, 0.32);
+  --report-fake-text: #9F1239;
 
   /* ─── Luxurious Timing Curves ───────────────────────────── */
   --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
@@ -718,49 +721,64 @@ nav[class*="fixed"] {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   PREMIUM BUTTON SYSTEM
+   PREMIUM BUTTON SYSTEM (Senior Designer Luxury Tech)
    ═══════════════════════════════════════════════════════════ */
 
-/* Green primary CTA — with prismatic shimmer */
+/* Cyber Emerald primary CTA — with prismatic shimmer & specular bevel */
 .btn-neon {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #34D88A, #00B864, #009A55);
-  color: #FFFFFF;
-  font-weight: 700;
-  border: none;
+  background: linear-gradient(135deg, #00F08B 0%, #00C865 45%, #027A3D 100%);
+  color: #032A15;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 0.875rem;
   transition: all 0.35s var(--ease-luxe);
-  box-shadow: 0 2px 16px rgba(52, 216, 138, 0.30), 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px -2px rgba(0, 240, 139, 0.45), 0 2px 6px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.65);
 }
 
 .btn-neon:hover {
-  box-shadow: 0 6px 28px rgba(52, 216, 138, 0.40), 0 8px 32px rgba(0, 0, 0, 0.10);
+  background: linear-gradient(135deg, #24FF9D 0%, #00DF72 45%, #028C46 100%);
+  box-shadow: 0 8px 32px rgba(0, 240, 139, 0.55), 0 4px 12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.85);
   transform: translateY(-2px);
+  color: #021E0F;
 }
 
 .btn-neon:active {
   transform: scale(0.97);
+  box-shadow: 0 2px 10px rgba(0, 240, 139, 0.35);
 }
 
 .btn-neon::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(105deg, transparent 25%, rgba(255,255,255,0.25) 40%, rgba(255,255,255,0.35) 50%, rgba(255,255,255,0.25) 60%, transparent 75%);
+  background: linear-gradient(105deg, transparent 25%, rgba(255,255,255,0.4) 45%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.4) 55%, transparent 75%);
   background-size: 200% 100%;
-  animation: shimmer 3s linear infinite;
+  animation: shimmer 3.5s linear infinite;
   pointer-events: none;
 }
 
-/* Ghost / outline button — warm tint */
+/* Ghost / outline button — titanium pearl */
 .btn-ghost {
   position: relative;
   overflow: hidden;
-  background: rgba(52, 216, 138, 0.04);
-  border: 1px solid rgba(52, 216, 138, 0.15);
-  color: var(--green-primary);
-  font-weight: 600;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  color: var(--text-primary);
+  font-weight: 700;
+  border-radius: 0.875rem;
   transition: all 0.35s var(--ease-luxe);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+
+.btn-ghost:hover {
+  background: #FFFFFF;
+  border-color: rgba(0, 240, 139, 0.5);
+  box-shadow: 0 4px 18px rgba(0, 240, 139, 0.15), 0 2px 6px rgba(15, 23, 42, 0.04);
+  color: var(--green-dark);
+  transform: translateY(-1px);
 }
 
 .btn-ghost:hover {
@@ -900,89 +918,238 @@ nav[class*="fixed"] {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   VERDICT COLOR SYSTEM & REPORT BADGES
+   VERDICT COLOR SYSTEM & REPORT BADGES (Senior Designer Suite)
    ═══════════════════════════════════════════════════════════ */
 
 .verdict-authentic {
   background: var(--report-auth-bg);
   border: 1px solid var(--report-auth-border);
-  box-shadow: 0 4px 24px -2px rgba(0, 200, 101, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  box-shadow: 0 16px 48px -12px rgba(0, 240, 139, 0.28), 0 2px 8px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
 .verdict-suspicious {
   background: var(--report-susp-bg);
   border: 1px solid var(--report-susp-border);
-  box-shadow: 0 4px 24px -2px rgba(245, 158, 11, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  box-shadow: 0 16px 48px -12px rgba(255, 184, 0, 0.28), 0 2px 8px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
 .verdict-counterfeit {
   background: var(--report-fake-bg);
   border: 1px solid var(--report-fake-border);
-  box-shadow: 0 4px 24px -2px rgba(244, 63, 94, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  box-shadow: 0 16px 48px -12px rgba(255, 30, 86, 0.28), 0 2px 8px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
-/* Luxury Status Pills */
+/* Luxury Status Pills — High-End Prismatic Badges */
 .badge-authentic-pill {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 12px;
+  gap: 7px;
+  padding: 5px 14px;
   border-radius: 9999px;
-  background: linear-gradient(135deg, rgba(0, 200, 101, 0.12), rgba(6, 182, 212, 0.08));
-  border: 1px solid rgba(0, 200, 101, 0.35);
-  color: #026330;
+  background: linear-gradient(135deg, rgba(0, 240, 139, 0.18), rgba(0, 229, 255, 0.10));
+  border: 1px solid rgba(0, 240, 139, 0.50);
+  color: #02572B;
   font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  font-weight: 900;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
+  box-shadow: 0 2px 10px rgba(0, 240, 139, 0.20), inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .badge-suspicious-pill {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 12px;
+  gap: 7px;
+  padding: 5px 14px;
   border-radius: 9999px;
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.14), rgba(251, 191, 36, 0.08));
-  border: 1px solid rgba(245, 158, 11, 0.35);
-  color: #B45309;
+  background: linear-gradient(135deg, rgba(255, 184, 0, 0.18), rgba(245, 158, 11, 0.10));
+  border: 1px solid rgba(255, 184, 0, 0.50);
+  color: #854D0E;
   font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  font-weight: 900;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
+  box-shadow: 0 2px 10px rgba(255, 184, 0, 0.20), inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .badge-counterfeit-pill {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 12px;
+  gap: 7px;
+  padding: 5px 14px;
   border-radius: 9999px;
-  background: linear-gradient(135deg, rgba(244, 63, 94, 0.14), rgba(251, 113, 133, 0.08));
-  border: 1px solid rgba(244, 63, 94, 0.35);
-  color: #BE123C;
+  background: linear-gradient(135deg, rgba(255, 30, 86, 0.18), rgba(225, 29, 72, 0.10));
+  border: 1px solid rgba(255, 30, 86, 0.50);
+  color: #9F1239;
   font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  font-weight: 900;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
+  box-shadow: 0 2px 10px rgba(255, 30, 86, 0.20), inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 /* ═══════════════════════════════════════════════════════════
-   METRIC PROGRESS TRACKS
+   MODERN OBJECT 1: HOLOGRAPHIC PROVENANCE SEAL
+   ═══════════════════════════════════════════════════════════ */
+.holographic-seal {
+  position: relative;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  padding: 3px;
+  background: conic-gradient(from 0deg, #00F08B, #00E5FF, #8B5CF6, #FFB800, #FF1E56, #00F08B);
+  box-shadow: 0 0 24px rgba(0, 240, 139, 0.35), 0 8px 30px rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: gentle-rotate 12s linear infinite;
+}
+
+.holographic-seal-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #FFFFFF 0%, #F1F6FB 100%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05), inset 0 -2px 6px rgba(0, 240, 139, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.holographic-seal-inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 30%, rgba(255, 255, 255, 0.8) 50%, transparent 70%);
+  animation: shimmer 4s linear infinite;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MODERN OBJECT 2: FORENSIC LENS HUD & OPTICAL RETICLE
+   ═══════════════════════════════════════════════════════════ */
+.forensic-hud {
+  position: relative;
+  border-radius: 1.5rem;
+  background: #FFFFFF;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 20px 50px -15px rgba(15, 23, 42, 0.08), inset 0 1px 0 #FFFFFF;
+  overflow: hidden;
+}
+
+.hud-bracket-tl,
+.hud-bracket-tr,
+.hud-bracket-bl,
+.hud-bracket-br {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+  z-index: 20;
+}
+.hud-bracket-tl { top: 12px; left: 12px; border-top: 2px solid var(--green-primary); border-left: 2px solid var(--green-primary); }
+.hud-bracket-tr { top: 12px; right: 12px; border-top: 2px solid var(--green-primary); border-right: 2px solid var(--green-primary); }
+.hud-bracket-bl { bottom: 12px; left: 12px; border-bottom: 2px solid var(--green-primary); border-left: 2px solid var(--green-primary); }
+.hud-bracket-br { bottom: 12px; right: 12px; border-bottom: 2px solid var(--green-primary); border-right: 2px solid var(--green-primary); }
+
+.hud-laser-sweep {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0, 240, 139, 0.8), rgba(0, 229, 255, 0.9), transparent);
+  box-shadow: 0 0 12px rgba(0, 240, 139, 0.6), 0 0 24px rgba(0, 229, 255, 0.4);
+  animation: scanline-v 3.2s ease-in-out infinite;
+  z-index: 15;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MODERN OBJECT 3: TACTILE SPECIMEN DOCK
+   ═══════════════════════════════════════════════════════════ */
+.specimen-dock {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(15, 23, 42, 0.09);
+  border-radius: 9999px;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 4px 20px -4px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1);
+  overflow-x: auto;
+}
+
+.specimen-capsule {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  transition: all 0.3s var(--ease-luxe);
+  cursor: pointer;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.specimen-capsule:hover {
+  background: rgba(15, 23, 42, 0.04);
+  color: var(--text-primary);
+}
+
+.specimen-capsule.active {
+  background: linear-gradient(135deg, #00F08B 0%, #00C865 100%);
+  color: #032A15;
+  box-shadow: 0 4px 16px rgba(0, 240, 139, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MODERN OBJECT 4: CONCENTRIC BIOMETRIC DIAL
+   ═══════════════════════════════════════════════════════════ */
+.biometric-dial-shell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.biometric-tick-ring {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px dashed rgba(15, 23, 42, 0.12);
+  pointer-events: none;
+  animation: gentle-rotate 30s linear infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   METRIC PROGRESS TRACKS & LASER BEAMS
    ═══════════════════════════════════════════════════════════ */
 
 .metric-track {
-  background: rgba(0, 0, 0, 0.04);
-  height: 6px;
+  background: rgba(15, 23, 42, 0.05);
+  height: 8px;
   border-radius: 9999px;
   overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.06);
 }
 
 .metric-fill {
   height: 100%;
   border-radius: 9999px;
-  background: linear-gradient(90deg, var(--green-dark), var(--green-accent-from));
-  box-shadow: 0 0 8px rgba(52, 216, 138, 0.25);
+  background: linear-gradient(90deg, #00F08B, #00E5FF);
+  box-shadow: 0 0 10px rgba(0, 240, 139, 0.45);
   transition: width 1.2s var(--ease-spring);
 }
 
@@ -993,9 +1160,9 @@ nav[class*="fixed"] {
 .status-dot-green {
   width: 8px;
   height: 8px;
-  background: var(--green-accent-from);
+  background: #00F08B;
   border-radius: 9999px;
-  box-shadow: 0 0 8px rgba(52, 216, 138, 0.4);
+  box-shadow: 0 0 10px rgba(0, 240, 139, 0.6);
   animation: pulse-ring 2s ease infinite;
 }
 
@@ -1007,25 +1174,26 @@ nav[class*="fixed"] {
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.08em;
-  font-weight: 500;
-  color: var(--green-primary);
+  font-weight: 600;
+  color: var(--green-dark);
   text-transform: uppercase;
 }
 
 .section-badge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 14px;
+  gap: 7px;
+  padding: 5px 15px;
   border-radius: 9999px;
-  background: linear-gradient(135deg, rgba(52,216,138,0.06), rgba(129,140,248,0.04));
-  border: 1px solid rgba(52, 216, 138, 0.15);
+  background: linear-gradient(135deg, rgba(0, 240, 139, 0.12), rgba(99, 102, 241, 0.08));
+  border: 1px solid rgba(0, 240, 139, 0.35);
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--green-primary);
-  backdrop-filter: blur(8px);
+  color: var(--green-dark);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 2px 8px rgba(0, 240, 139, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 /* ═══════════════════════════════════════════════════════════

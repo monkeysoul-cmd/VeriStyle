@@ -195,10 +195,10 @@ export const ExploreView: React.FC = () => {
               style={
                 activeTag === label
                   ? {
-                      background: 'linear-gradient(135deg, #00C865, #05DF72)',
-                      color: '#FFFFFF',
+                      background: 'linear-gradient(135deg, #00F08B 0%, #00C865 100%)',
+                      color: '#0A0F1D',
                       border: 'none',
-                      boxShadow: '0 4px 16px rgba(0,200,101,0.3)',
+                      boxShadow: '0 4px 18px rgba(0,240,139,0.35)',
                     }
                   : {
                       background: 'rgba(255,255,255,0.92)',

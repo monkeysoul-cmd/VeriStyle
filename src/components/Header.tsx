@@ -57,28 +57,29 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
             {/* Logo */}
             <button
               onClick={() => handleNav('landing')}
-              className="inline-flex items-center gap-2.5 group shrink-0"
+              className="inline-flex items-center gap-2.5 group shrink-0 cursor-pointer"
             >
               <motion.div
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0 relative"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0 relative overflow-hidden"
                 style={{
-                  background: 'linear-gradient(135deg, #05DF72, #00C865)',
-                  boxShadow: '0 4px 18px rgba(0, 200, 101, 0.35), 0 2px 6px rgba(0,0,0,0.06)',
+                  background: 'linear-gradient(135deg, #00F08B 0%, #00C865 50%, #00E5FF 100%)',
+                  boxShadow: '0 4px 20px rgba(0, 240, 139, 0.4), inset 0 1px 0 rgba(255,255,255,0.6)',
                 }}
                 whileHover={{ rotate: 6, scale: 1.08 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 15 }}
               >
-                <VeriLensIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent pointer-events-none" />
+                <VeriLensIcon className="w-4 h-4 sm:w-5 sm:h-5 text-slate-950 relative z-10" />
               </motion.div>
               <div className="flex flex-col leading-none text-left">
                 <span
-                  className="text-lg sm:text-xl font-extrabold tracking-tight"
+                  className="text-lg sm:text-xl font-black tracking-tight"
                   style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}
                 >
                   VeriStyle
                 </span>
-                <span className="text-[9px] font-black uppercase tracking-[0.16em] mt-0.5" style={{ color: 'var(--green-primary)' }}>
-                  AI Authenticator
+                <span className="text-[9px] font-black uppercase tracking-[0.2em] mt-0.5" style={{ color: 'var(--green-cyber)' }}>
+                  AI Forensic Lab
                 </span>
               </div>
             </button>
@@ -96,14 +97,14 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
                     <motion.div
                       layoutId="active-tab-bg"
                       className="absolute inset-0 rounded-lg"
-                      style={{ background: '#FFFFFF', boxShadow: '0 2px 8px rgba(15,23,42,0.08), 0 0 0 1px rgba(15,23,42,0.05)' }}
+                      style={{ background: '#FFFFFF', boxShadow: '0 2px 10px rgba(0,240,139,0.15), 0 0 0 1px rgba(0,240,139,0.2)' }}
                       transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                     />
                   )}
                   <span className="relative z-10 flex items-center gap-1.5">
                     {item.label}
                     {currentTab === item.id && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-[var(--green-primary)] shadow-[0_0_6px_var(--green-primary)]" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#00F08B] shadow-[0_0_8px_rgba(0,240,139,0.9)]" />
                     )}
                   </span>
                 </button>
@@ -112,13 +113,22 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
 
             {/* Right Actions */}
             <div className="flex items-center gap-2.5">
-              {/* Status badge — premium multi-glow */}
-              <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full" style={{ background: 'rgba(0,200,101,0.06)', border: '1px solid rgba(0,200,101,0.2)' }}>
+              {/* Status badge — forensic telemetry capsule */}
+              <div
+                className="hidden lg:flex items-center gap-2 px-3.5 py-1.5 rounded-full"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(0,240,139,0.08) 0%, rgba(0,229,255,0.05) 100%)',
+                  border: '1px solid rgba(0,240,139,0.3)',
+                  boxShadow: '0 2px 10px rgba(0,240,139,0.1)',
+                }}
+              >
                 <span className="relative flex w-2 h-2">
-                  <span className="absolute inset-0 rounded-full animate-ping opacity-75" style={{ background: '#05DF72' }} />
-                  <span className="relative rounded-full w-2 h-2" style={{ background: '#00C865' }} />
+                  <span className="absolute inset-0 rounded-full animate-ping opacity-75" style={{ background: '#00F08B' }} />
+                  <span className="relative rounded-full w-2 h-2" style={{ background: '#00F08B', boxShadow: '0 0 8px #00F08B' }} />
                 </span>
-                <span className="text-[10px] font-black uppercase tracking-wider" style={{ color: 'var(--green-primary)' }}>VeriLens AI 1.0 Active</span>
+                <span className="text-[10px] font-black uppercase tracking-wider font-mono text-emerald-800">
+                  VeriLens AI 1.0 • Online
+                </span>
               </div>
 
               <motion.button

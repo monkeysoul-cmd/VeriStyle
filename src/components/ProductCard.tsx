@@ -22,21 +22,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onView }) => 
   const getScoreBadge = (score: number) => {
     if (score >= 90) {
       return {
-        bg: 'bg-emerald-50 text-emerald-700 border-emerald-200/80',
-        dot: 'bg-emerald-500',
+        bg: 'bg-emerald-50 text-emerald-900 border-emerald-300 shadow-[0_0_10px_rgba(0,240,139,0.25)]',
+        dot: 'bg-[#00F08B] shadow-[0_0_6px_#00F08B]',
         label: 'SPEC A',
       };
     }
     if (score >= 75) {
       return {
-        bg: 'bg-indigo-50 text-indigo-700 border-indigo-200/80',
-        dot: 'bg-indigo-500',
+        bg: 'bg-indigo-50 text-indigo-900 border-indigo-300 shadow-[0_0_10px_rgba(99,102,241,0.2)]',
+        dot: 'bg-[#6366F1] shadow-[0_0_6px_#6366F1]',
         label: 'SPEC B',
       };
     }
     return {
-      bg: 'bg-amber-50 text-amber-700 border-amber-200/80',
-      dot: 'bg-amber-500',
+      bg: 'bg-amber-50 text-amber-900 border-amber-300 shadow-[0_0_10px_rgba(255,184,0,0.25)]',
+      dot: 'bg-[#FFB800] shadow-[0_0_6px_#FFB800]',
       label: 'RISK',
     };
   };
