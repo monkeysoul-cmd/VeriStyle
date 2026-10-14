@@ -42,33 +42,48 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
 
   const getVerdictStyle = (score: number) => {
     if (score >= 80) return {
-      badge: { background: 'rgba(0,200,101,0.1)', border: '1px solid rgba(0,200,101,0.25)', color: '#00A854' },
-      bar: '#00C865',
-      barGlow: 'rgba(0,200,101,0.3)',
-      dot: '#00C865',
+      badge: {
+        background: 'linear-gradient(135deg, rgba(0,240,139,0.14) 0%, rgba(0,200,101,0.08) 100%)',
+        border: '1px solid rgba(0,240,139,0.4)',
+        color: '#027A3D',
+        boxShadow: '0 0 10px rgba(0,240,139,0.15)',
+      },
+      bar: '#00F08B',
+      barGlow: 'rgba(0,240,139,0.45)',
+      dot: '#00F08B',
       cardBorder: 'rgba(15,23,42,0.08)',
-      cardBorderHover: 'rgba(0,200,101,0.4)',
-      label: 'AUTHENTIC',
+      cardBorderHover: 'rgba(0,240,139,0.45)',
+      label: 'VERIFIED AUTHENTIC',
       icon: ShieldCheck,
     };
     if (score >= 50) return {
-      badge: { background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.25)', color: '#D97706' },
-      bar: '#F59E0B',
-      barGlow: 'rgba(245,158,11,0.3)',
-      dot: '#F59E0B',
+      badge: {
+        background: 'linear-gradient(135deg, rgba(255,184,0,0.14) 0%, rgba(245,158,11,0.08) 100%)',
+        border: '1px solid rgba(255,184,0,0.4)',
+        color: '#92400E',
+        boxShadow: '0 0 10px rgba(255,184,0,0.15)',
+      },
+      bar: '#FFB800',
+      barGlow: 'rgba(255,184,0,0.45)',
+      dot: '#FFB800',
       cardBorder: 'rgba(15,23,42,0.08)',
-      cardBorderHover: 'rgba(245,158,11,0.4)',
-      label: 'SUSPICIOUS',
+      cardBorderHover: 'rgba(255,184,0,0.45)',
+      label: 'SUSPICIOUS SPECIMEN',
       icon: AlertTriangle,
     };
     return {
-      badge: { background: 'rgba(244,63,94,0.12)', border: '1px solid rgba(244,63,94,0.25)', color: '#E11D48' },
-      bar: '#F43F5E',
-      barGlow: 'rgba(244,63,94,0.3)',
-      dot: '#F43F5E',
+      badge: {
+        background: 'linear-gradient(135deg, rgba(255,30,86,0.14) 0%, rgba(244,63,94,0.08) 100%)',
+        border: '1px solid rgba(255,30,86,0.4)',
+        color: '#9F1239',
+        boxShadow: '0 0 10px rgba(255,30,86,0.15)',
+      },
+      bar: '#FF1E56',
+      barGlow: 'rgba(255,30,86,0.45)',
+      dot: '#FF1E56',
       cardBorder: 'rgba(15,23,42,0.08)',
-      cardBorderHover: 'rgba(244,63,94,0.4)',
-      label: 'COUNTERFEIT',
+      cardBorderHover: 'rgba(255,30,86,0.45)',
+      label: 'COUNTERFEIT ALERT',
       icon: XCircle,
     };
   };
@@ -241,18 +256,18 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
                   {/* Score bar */}
                   <div className="space-y-2">
                     <div className="flex justify-between items-center text-xs">
-                      <span className="font-bold uppercase tracking-wider text-slate-400">Authenticity Trust Score</span>
+                      <span className="font-bold uppercase tracking-wider text-slate-400">Authenticity Trust Gauge</span>
                       <span className="font-black font-mono text-base" style={{ color: vs.dot }}>
                         {item.trustScore}%
                       </span>
                     </div>
-                    <div className="h-2 w-full rounded-full bg-slate-100 overflow-hidden">
+                    <div className="metric-track">
                       <div
-                        className="h-full rounded-full transition-all duration-700"
+                        className="metric-fill transition-all duration-700"
                         style={{
                           width: `${item.trustScore}%`,
-                          background: `linear-gradient(90deg, ${vs.bar}99, ${vs.bar})`,
-                          boxShadow: `0 0 8px ${vs.barGlow}`,
+                          background: `linear-gradient(90deg, ${vs.bar}88, ${vs.bar})`,
+                          boxShadow: `0 0 12px ${vs.barGlow}`,
                         }}
                       />
                     </div>

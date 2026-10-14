@@ -122,43 +122,46 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
 
   const getVerdictColors = (score: number) => {
     if (score >= 80) return {
-      bg: 'linear-gradient(135deg, rgba(236,253,245,0.96) 0%, rgba(209,250,229,0.75) 45%, rgba(240,253,250,0.95) 100%)',
-      border: 'rgba(0, 200, 101, 0.35)',
-      accent: '#00C865',
-      darkAccent: '#026330',
-      glow: 'rgba(0, 200, 101, 0.25)',
-      arc: '#00C865',
-      arcTrack: 'rgba(0, 200, 101, 0.12)',
+      bg: 'linear-gradient(135deg, rgba(238,253,245,0.98) 0%, rgba(215,252,232,0.85) 45%, rgba(240,253,248,0.96) 100%)',
+      border: 'rgba(0, 240, 139, 0.45)',
+      accent: '#00F08B',
+      darkAccent: '#02572B',
+      glow: 'rgba(0, 240, 139, 0.35)',
+      arc: '#00F08B',
+      arcGrad: ['#54FFB5', '#00F08B', '#028C46'],
+      arcTrack: 'rgba(0, 240, 139, 0.12)',
       label: 'VERIFIED AUTHENTIC',
       badgeClass: 'badge-authentic-pill',
       specTier: 'Grade A · Master Specification Conformance',
-      specNote: 'Multi-vector analysis confirms alignment with verified master luxury templates.'
+      specNote: 'Multi-vector vision & NLP analysis confirms 100% alignment with verified luxury brand master templates.'
     };
     if (score >= 50) return {
-      bg: 'linear-gradient(135deg, rgba(254,252,232,0.96) 0%, rgba(254,243,199,0.75) 45%, rgba(255,251,235,0.95) 100%)',
-      border: 'rgba(245, 158, 11, 0.35)',
-      accent: '#F59E0B',
-      darkAccent: '#B45309',
-      glow: 'rgba(245, 158, 11, 0.25)',
-      arc: '#F59E0B',
-      arcTrack: 'rgba(245, 158, 11, 0.12)',
+      bg: 'linear-gradient(135deg, rgba(255,253,240,0.98) 0%, rgba(254,246,210,0.85) 45%, rgba(255,251,232,0.96) 100%)',
+      border: 'rgba(255, 184, 0, 0.45)',
+      accent: '#FFB800',
+      darkAccent: '#854D0E',
+      glow: 'rgba(255, 184, 0, 0.35)',
+      arc: '#FFB800',
+      arcGrad: ['#FDE047', '#FFB800', '#D97706'],
+      arcTrack: 'rgba(255, 184, 0, 0.14)',
       label: 'SUSPICIOUS / ELEVATED RISK',
       badgeClass: 'badge-suspicious-pill',
       specTier: 'Grade B · Moderate Variance Detected',
-      specNote: 'Detected anomalies in stitch pitch, hardware finishing, or unnatural buyer review syntax.'
+      specNote: 'Detected anomalies in stitch pitch, hardware finishing, or unnatural buyer review vocabulary entropy.'
     };
     return {
-      bg: 'linear-gradient(135deg, rgba(255,241,242,0.96) 0%, rgba(255,228,230,0.75) 45%, rgba(255,245,245,0.95) 100%)',
-      border: 'rgba(244, 63, 94, 0.35)',
-      accent: '#F43F5E',
-      darkAccent: '#BE123C',
-      glow: 'rgba(244, 63, 94, 0.25)',
-      arc: '#F43F5E',
-      arcTrack: 'rgba(244, 63, 94, 0.12)',
+      bg: 'linear-gradient(135deg, rgba(255,242,245,0.98) 0%, rgba(255,226,233,0.85) 45%, rgba(255,245,247,0.96) 100%)',
+      border: 'rgba(255, 30, 86, 0.45)',
+      accent: '#FF1E56',
+      darkAccent: '#9F1239',
+      glow: 'rgba(255, 30, 86, 0.35)',
+      arc: '#FF1E56',
+      arcGrad: ['#FDA4AF', '#FF1E56', '#BE123C'],
+      arcTrack: 'rgba(255, 30, 86, 0.14)',
       label: 'LIKELY COUNTERFEIT',
       badgeClass: 'badge-counterfeit-pill',
       specTier: 'Grade F · Critical Forensic Spec Failure',
-      specNote: 'Hardware engraving, micro-stitching, and synthetic review signals strongly indicate unauthorized replica.'
+      specNote: 'Hardware engraving, micro-stitching pitch, and synthetic review signals strongly indicate unauthorized replica.'
     };
   };
 
@@ -167,39 +170,44 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
       <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-14 space-y-8">
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 pb-6" style={{ borderBottom: '1px solid rgba(15,23,42,0.08)' }}>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 pb-6 border-b border-slate-200/80">
           <div>
             <div className="section-badge mb-3">
               <Activity className="w-3.5 h-3.5" />
-              Forensic Inspection Lab
+              Forensic Inspection Lab · VeriLens 1.0
             </div>
-            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight" style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}>
+            <h1 className="text-3xl sm:text-4xl font-black tracking-tight" style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}>
               Multimodal Authenticity Studio
             </h1>
             <p className="text-sm sm:text-base mt-2 max-w-xl font-medium" style={{ color: 'var(--text-muted)' }}>
-              Cross-examine high-resolution apparel imagery and customer reviews against official master templates.
+              Cross-examine high-resolution apparel imagery and customer reviews against official master templates with AI optics.
             </p>
           </div>
 
-          {/* Preset Selector */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 hide-scrollbar w-full md:w-auto">
-            <span className="text-[10px] uppercase tracking-widest font-extrabold shrink-0" style={{ color: 'var(--text-dim)' }}>Specimens:</span>
+          {/* Modern Object: Tactile Specimen Capsule Dock */}
+          <div className="specimen-dock max-w-full">
+            <span className="text-[10px] uppercase tracking-widest font-black shrink-0 px-2 text-slate-400">Specimens:</span>
             {SAMPLE_PRESETS.map(preset => {
               const isSelected = itemName === preset.title;
+              const isAuth = preset.expectedVerdict === 'VERIFIED AUTHENTIC';
+              const isCounterfeit = preset.expectedVerdict === 'LIKELY COUNTERFEIT';
+              const dotColor = isAuth ? '#00F08B' : isCounterfeit ? '#FF1E56' : '#FFB800';
               return (
                 <button
                   key={preset.id}
                   onClick={() => handleSelectPreset(preset)}
-                  className="px-3.5 py-1.5 rounded-full text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-2"
-                  style={
-                    isSelected
-                      ? { background: 'linear-gradient(135deg, #05DF72, #00C865)', color: '#FFFFFF', boxShadow: '0 4px 14px rgba(0,200,101,0.3)', border: 'none' }
-                      : { background: '#FFFFFF', border: '1px solid rgba(15,23,42,0.1)', color: 'var(--text-secondary)', boxShadow: '0 1px 3px rgba(15,23,42,0.03)' }
-                  }
+                  className={`specimen-capsule ${isSelected ? 'active' : ''}`}
                 >
-                  <span className={`w-2 h-2 rounded-full ${isSelected ? 'bg-white' : preset.expectedVerdict === 'VERIFIED AUTHENTIC' ? 'bg-emerald-500' : preset.expectedVerdict === 'LIKELY COUNTERFEIT' ? 'bg-rose-500' : 'bg-amber-500'}`} />
+                  <span className="relative flex w-2 h-2">
+                    {isSelected && (
+                      <span className="absolute inset-0 rounded-full animate-ping opacity-75" style={{ background: dotColor }} />
+                    )}
+                    <span className="relative rounded-full w-2 h-2" style={{ background: dotColor }} />
+                  </span>
                   <span>{preset.title.split(' ')[0]}</span>
-                  <span className={`text-[10px] opacity-75 font-mono ${isSelected ? 'text-white' : 'text-slate-500'}`}>{preset.brand}</span>
+                  <span className={`text-[10px] opacity-80 font-mono font-bold ${isSelected ? 'text-emerald-950' : 'text-slate-400'}`}>
+                    {preset.brand}
+                  </span>
                 </button>
               );
             })}
@@ -406,105 +414,158 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
               <div className="space-y-6 animate-fade-in-up">
                 {(() => {
                   const vc = getVerdictColors(analysisResult.trustScore);
+                  const isAuth = analysisResult.trustScore >= 80;
+                  const isSusp = analysisResult.trustScore >= 50 && analysisResult.trustScore < 80;
+                  const gradId = `verdict-arc-${analysisResult.id || 'scan'}`;
                   return (
                     <>
-                      {/* ── VERDICT HERO CARD ────────────────────────── */}
+                      {/* ── VERDICT HERO CARD (Senior Designer Luxury Redesign) ── */}
                       <div
                         className="relative overflow-hidden rounded-3xl p-6 sm:p-8 transition-all"
                         style={{
                           background: vc.bg,
-                          border: `1px solid ${vc.border}`,
-                          boxShadow: `0 12px 40px -10px ${vc.glow}, 0 2px 6px rgba(15,23,42,0.03), inset 0 1px 0 rgba(255,255,255,0.9)`,
+                          border: `1.5px solid ${vc.border}`,
+                          boxShadow: `0 20px 50px -12px ${vc.glow}, 0 2px 10px rgba(15,23,42,0.04), inset 0 1px 0 rgba(255,255,255,1)`,
                         }}
                       >
-                        {/* Background glow & mesh */}
-                        <div className="absolute -top-24 -right-24 w-80 h-80 rounded-full blur-3xl pointer-events-none opacity-30" style={{ background: vc.glow }} />
-                        <div className="absolute inset-0 dot-grid-bg opacity-30 pointer-events-none" />
+                        {/* Background diffuse ambient aura & micro-dot grid */}
+                        <div className="absolute -top-28 -right-28 w-96 h-96 rounded-full blur-3xl pointer-events-none opacity-40" style={{ background: vc.glow }} />
+                        <div className="absolute -bottom-20 -left-20 w-80 h-80 rounded-full blur-3xl pointer-events-none opacity-20" style={{ background: vc.accent }} />
+                        <div className="absolute inset-0 dot-grid-bg opacity-25 pointer-events-none" />
 
-                        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                          {/* Left: Product & Verdict Data */}
-                          <div className="space-y-3.5 max-w-xl">
-                            <div className="flex items-center gap-2.5 flex-wrap">
-                              <span className={vc.badgeClass}>
-                                <ShieldCheck className="w-3.5 h-3.5" />
-                                {vc.label}
-                              </span>
-                              <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 font-mono">
-                                {vc.specTier}
+                        <div className="relative z-10 flex flex-col xl:flex-row xl:items-center justify-between gap-8">
+                          
+                          {/* Left: Product & Verdict Data + Holographic Digital Seal */}
+                          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 max-w-2xl">
+                            
+                            {/* Modern Object: Holographic Provenance Seal */}
+                            <div className="shrink-0 hidden sm:flex flex-col items-center gap-2">
+                              <div className="holographic-seal">
+                                <div className="holographic-seal-inner">
+                                  <ShieldCheck className="w-7 h-7" style={{ color: vc.accent }} />
+                                  <span className="text-[8px] font-black uppercase tracking-widest mt-0.5 text-slate-800 font-mono">
+                                    {isAuth ? 'VERIFIED' : isSusp ? 'REVIEW' : 'FLAGGED'}
+                                  </span>
+                                  <span className="text-[6.5px] font-mono font-bold text-slate-500">SEAL 1.0</span>
+                                </div>
+                              </div>
+                              <span className="text-[9px] font-mono font-bold tracking-wider text-slate-500 uppercase">
+                                Provenance
                               </span>
                             </div>
 
-                            <div>
-                              <h2 className="text-2xl sm:text-3xl font-extrabold leading-tight text-slate-900" style={{ fontFamily: 'var(--font-heading)' }}>
-                                {analysisResult.itemName}
-                              </h2>
-                              <div className="flex items-center gap-2 mt-1 flex-wrap">
-                                <span className="text-sm font-bold text-slate-600">{analysisResult.brand}</span>
-                                <span className="text-slate-300">·</span>
-                                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-white/70 border border-slate-200 text-slate-600">
-                                  {analysisResult.category}
+                            {/* Data block */}
+                            <div className="space-y-3">
+                              <div className="flex items-center gap-2.5 flex-wrap">
+                                <span className={vc.badgeClass}>
+                                  <ShieldCheck className="w-3.5 h-3.5 shrink-0" />
+                                  {vc.label}
+                                </span>
+                                <span className="text-[11px] font-black uppercase tracking-wider font-mono text-slate-600 bg-white/70 px-2.5 py-0.5 rounded-full border border-slate-200/80">
+                                  {vc.specTier}
+                                </span>
+                              </div>
+
+                              <div>
+                                <h2 className="text-2xl sm:text-3xl font-black leading-tight text-slate-900 tracking-tight" style={{ fontFamily: 'var(--font-heading)' }}>
+                                  {analysisResult.itemName}
+                                </h2>
+                                <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                                  <span className="text-sm font-extrabold text-slate-800">{analysisResult.brand}</span>
+                                  <span className="text-slate-300">·</span>
+                                  <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-white/80 border border-slate-200 text-slate-700 shadow-2xs">
+                                    {analysisResult.category}
+                                  </span>
+                                  <span className="text-slate-300">·</span>
+                                  <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-white/80 border border-slate-200 text-slate-600">
+                                    Multi-Signal Grounded
+                                  </span>
+                                </div>
+                              </div>
+
+                              <p className="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed max-w-lg">
+                                {vc.specNote}
+                              </p>
+
+                              {/* Cryptographic Provenance Hash & Timestamp */}
+                              <div className="flex items-center gap-2.5 pt-1 flex-wrap">
+                                <button
+                                  onClick={() => handleCopyHash(analysisResult.verificationHash)}
+                                  title="Click to copy cryptographic SHA-256 hash"
+                                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-mono font-bold bg-white/90 border border-slate-300/80 hover:border-emerald-500 text-slate-800 transition-all cursor-pointer shadow-xs group"
+                                >
+                                  <Hash className="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-600 transition-colors" />
+                                  <span>{analysisResult.verificationHash}</span>
+                                  {copiedHash ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-slate-400" />}
+                                </button>
+                                <span className="text-[11px] font-bold text-slate-500 font-mono">
+                                  {analysisResult.timestamp}
                                 </span>
                               </div>
                             </div>
-
-                            <p className="text-xs text-slate-600 font-medium leading-relaxed">
-                              {vc.specNote}
-                            </p>
-
-                            {/* Provenance Hash Chip */}
-                            <div className="flex items-center gap-3 pt-1 flex-wrap">
-                              <button
-                                onClick={() => handleCopyHash(analysisResult.verificationHash)}
-                                title="Click to copy cryptographic hash"
-                                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-mono font-bold bg-white/80 border border-slate-200/80 hover:border-slate-300 text-slate-700 hover:text-slate-900 transition-all cursor-pointer shadow-sm"
-                              >
-                                <Hash className="w-3.5 h-3.5 text-slate-400" />
-                                <span>{analysisResult.verificationHash}</span>
-                                {copiedHash ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-slate-400" />}
-                              </button>
-                              <span className="text-[11px] font-semibold text-slate-500 font-mono">
-                                {analysisResult.timestamp}
-                              </span>
-                            </div>
                           </div>
 
-                          {/* Right: Trust Radial Dial + Actions */}
-                          <div className="flex sm:flex-row items-center gap-6 shrink-0 bg-white/60 p-4 rounded-2xl border border-white/80 backdrop-blur-md shadow-sm">
-                            <div className="relative w-28 h-28 sm:w-32 sm:h-32">
+                          {/* Right: Modern Object: Concentric Biometric Trust Gauge & Actions */}
+                          <div className="flex sm:flex-row items-center gap-6 shrink-0 bg-white/85 p-5 rounded-3xl border border-white/90 backdrop-blur-xl shadow-lg shadow-slate-900/5">
+                            
+                            {/* Biometric Concentric Gauge */}
+                            <div className="relative w-32 h-32 sm:w-36 sm:h-36 flex items-center justify-center">
+                              {/* Outer calibration dashed tick track */}
+                              <div className="biometric-tick-ring" style={{ borderColor: vc.border }} />
+
                               <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                                <defs>
+                                  <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stopColor={vc.arcGrad[0]} />
+                                    <stop offset="50%" stopColor={vc.arcGrad[1]} />
+                                    <stop offset="100%" stopColor={vc.arcGrad[2]} />
+                                  </linearGradient>
+                                </defs>
+
+                                {/* Background track */}
                                 <circle cx="50" cy="50" r="40" fill="none" strokeWidth="8" stroke={vc.arcTrack} />
                                 <circle cx="50" cy="50" r="46" fill="none" strokeWidth="1" stroke="rgba(15,23,42,0.06)" />
+
+                                {/* Foreground active gradient arc */}
                                 <circle
                                   cx="50" cy="50" r="40"
                                   fill="none"
                                   strokeWidth="8"
                                   className="animate-draw-arc"
-                                  stroke={vc.arc}
+                                  stroke={`url(#${gradId})`}
                                   strokeDasharray="251"
                                   strokeDashoffset={251 - (251 * analysisResult.trustScore) / 100}
                                   strokeLinecap="round"
                                   style={{ filter: `drop-shadow(0 0 10px ${vc.glow})` }}
                                 />
                               </svg>
+
+                              {/* Center core */}
                               <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                                <span className="text-3xl sm:text-4xl font-extrabold tracking-tight leading-none" style={{ color: vc.accent }}>
+                                <span
+                                  className="text-3xl sm:text-4xl font-black tracking-tight leading-none"
+                                  style={{ color: vc.accent }}
+                                >
                                   {analysisResult.trustScore}
                                 </span>
-                                <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 mt-1">Trust %</span>
+                                <span className="text-[9px] font-black uppercase tracking-widest text-slate-500 mt-1">
+                                  Trust %
+                                </span>
                               </div>
                             </div>
 
-                            <div className="flex flex-col gap-2 shrink-0">
+                            {/* Action Buttons */}
+                            <div className="flex flex-col gap-2.5 shrink-0">
                               <button
                                 onClick={() => setShowCertificateModal(true)}
-                                className="px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer bg-white hover:bg-slate-50 border border-slate-200 text-slate-800 shadow-sm hover:shadow"
+                                className="px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer bg-white hover:bg-slate-50 border border-slate-200 text-slate-900 shadow-xs hover:shadow hover:border-emerald-500"
                               >
                                 <QrCode className="w-4 h-4 text-emerald-600" />
                                 Certificate
                               </button>
                               <button
                                 onClick={() => handleCopyHash(window.location.href)}
-                                className="px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer bg-white hover:bg-slate-50 border border-slate-200 text-slate-800 shadow-sm hover:shadow"
+                                className="px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer bg-white hover:bg-slate-50 border border-slate-200 text-slate-900 shadow-xs hover:shadow"
                               >
                                 <Share2 className="w-4 h-4 text-slate-500" />
                                 Share Report
@@ -526,10 +587,13 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                           }}
                         >
                           <div className="flex items-center justify-between">
-                            <span className="text-[11px] font-black uppercase tracking-wider text-slate-400">
-                              AI System Confidence
-                            </span>
-                            <span className="font-extrabold font-mono text-2xl text-emerald-600">
+                            <div className="flex items-center gap-2">
+                              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                              <span className="text-[11px] font-black uppercase tracking-wider text-slate-500">
+                                AI System Confidence
+                              </span>
+                            </div>
+                            <span className="font-black font-mono text-2xl" style={{ color: '#00F08B' }}>
                               {analysisResult.aiConfidence}%
                             </span>
                           </div>
@@ -539,24 +603,24 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                               className="metric-fill animate-fill-bar"
                               style={{
                                 width: `${analysisResult.aiConfidence}%`,
-                                background: 'linear-gradient(90deg, #10F489, #00C865)',
-                                boxShadow: '0 0 10px rgba(0,200,101,0.3)',
+                                background: 'linear-gradient(90deg, #00F08B, #00E5FF)',
+                                boxShadow: '0 0 14px rgba(0,240,139,0.5)',
                               }}
                             />
                           </div>
 
                           <div className="space-y-2 pt-1">
                             <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                              Vision algorithms matched against luxury master baselines with <strong className="text-slate-800">{analysisResult.aiConfidence >= 85 ? 'high-confidence signal convergence' : 'standard statistical bounds'}</strong>.
+                              Vision algorithms matched against luxury master baselines with <strong className="text-slate-900">{analysisResult.aiConfidence >= 85 ? 'high-confidence signal convergence' : 'standard statistical bounds'}</strong>.
                             </p>
-                            <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100">
-                              <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
-                                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Resale Verdict</span>
-                                <span className="text-xs font-extrabold text-slate-800">{analysisResult.resaleMarketVerdict || 'Verified Resale Grade'}</span>
+                            <div className="grid grid-cols-2 gap-2.5 pt-2 border-t border-slate-100">
+                              <div className="p-3 rounded-2xl bg-slate-50 border border-slate-100/80">
+                                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Resale Grade</span>
+                                <span className="text-xs font-black text-slate-900">{analysisResult.resaleMarketVerdict || 'Verified Resale Grade'}</span>
                               </div>
-                              <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
-                                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Est. Value</span>
-                                <span className="text-xs font-extrabold font-mono text-emerald-600">{analysisResult.estimatedRetailValue || '$1,200 USD'}</span>
+                              <div className="p-3 rounded-2xl bg-emerald-50/50 border border-emerald-100/80">
+                                <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 block">Est. Market Value</span>
+                                <span className="text-xs font-black font-mono text-emerald-700">{analysisResult.estimatedRetailValue || '$1,200 USD'}</span>
                               </div>
                             </div>
                           </div>
@@ -572,34 +636,36 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                           }}
                         >
                           <div className="flex items-center justify-between">
-                            <span className="text-[11px] font-black uppercase tracking-wider text-slate-400">
+                            <span className="text-[11px] font-black uppercase tracking-wider text-slate-500">
                               {analysisResult.imageUrl ? 'Visual Craftsmanship Forensics' : 'NLP Linguistic Signals'}
                             </span>
-                            <span className="text-xs font-bold font-mono text-slate-400">5-Point Multi-Vector</span>
+                            <span className="text-xs font-extrabold font-mono text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
+                              5-Point Multi-Vector
+                            </span>
                           </div>
 
                           {analysisResult.imageUrl ? (
-                            <div className="space-y-3">
+                            <div className="space-y-3.5">
                               {[
                                 {
                                   label: 'Stitching Pitch & Tension',
                                   value: analysisResult.detailedScores.stitchingQuality,
-                                  color: '#00C865',
-                                  gradient: 'linear-gradient(90deg, #10F489, #00C865)',
+                                  color: '#00F08B',
+                                  gradient: 'linear-gradient(90deg, #54FFB5, #00F08B)',
                                   tag: analysisResult.detailedScores.stitchingQuality >= 80 ? 'Master Spec' : 'Variance',
                                 },
                                 {
                                   label: 'Hardware & Electroplating',
                                   value: analysisResult.detailedScores.hardwareAuthenticity,
-                                  color: '#6366F1',
-                                  gradient: 'linear-gradient(90deg, #818CF8, #6366F1)',
+                                  color: '#00E5FF',
+                                  gradient: 'linear-gradient(90deg, #38BDF8, #00E5FF)',
                                   tag: analysisResult.detailedScores.hardwareAuthenticity >= 80 ? 'Genuine Finish' : 'Tolerance',
                                 },
                                 {
                                   label: 'Typography & Serial Kerning',
                                   value: analysisResult.detailedScores.typographyAccuracy,
-                                  color: '#0EA5E9',
-                                  gradient: 'linear-gradient(90deg, #38BDF8, #0EA5E9)',
+                                  color: '#6366F1',
+                                  gradient: 'linear-gradient(90deg, #818CF8, #6366F1)',
                                   tag: analysisResult.detailedScores.typographyAccuracy >= 80 ? 'Authentic Font' : 'Anomaly',
                                 },
                                 {
@@ -612,27 +678,27 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                                 {
                                   label: 'Serial Code & RFID Tag Validation',
                                   value: analysisResult.detailedScores.serialCodeValidation,
-                                  color: '#F59E0B',
-                                  gradient: 'linear-gradient(90deg, #FBBF24, #F59E0B)',
+                                  color: '#FFB800',
+                                  gradient: 'linear-gradient(90deg, #FDE047, #FFB800)',
                                   tag: analysisResult.detailedScores.serialCodeValidation >= 80 ? 'Verified Database' : 'Unconfirmed',
                                 },
                               ].map((metric, i) => (
                                 <div key={i} className="space-y-1.5">
                                   <div className="flex items-center justify-between text-xs">
                                     <div className="flex items-center gap-2">
-                                      <span className="font-bold text-slate-700">{metric.label}</span>
+                                      <span className="font-bold text-slate-800">{metric.label}</span>
                                       <span
                                         className="text-[9px] font-black uppercase px-2 py-0.5 rounded-md"
                                         style={{
-                                          background: `${metric.color}14`,
-                                          color: metric.color,
-                                          border: `1px solid ${metric.color}30`,
+                                          background: `${metric.color}15`,
+                                          color: metric.color === '#00F08B' ? '#027A3D' : metric.color === '#00E5FF' ? '#0369A1' : metric.color,
+                                          border: `1px solid ${metric.color}35`,
                                         }}
                                       >
                                         {metric.tag}
                                       </span>
                                     </div>
-                                    <span className="font-extrabold font-mono" style={{ color: metric.color }}>
+                                    <span className="font-black font-mono" style={{ color: metric.color === '#00F08B' ? '#027A3D' : metric.color }}>
                                       {metric.value}%
                                     </span>
                                   </div>
@@ -642,7 +708,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                                       style={{
                                         width: `${metric.value}%`,
                                         background: metric.gradient,
-                                        boxShadow: `0 0 8px ${metric.color}40`,
+                                        boxShadow: `0 0 10px ${metric.color}60`,
                                       }}
                                     />
                                   </div>
@@ -652,13 +718,13 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                           ) : (
                             <div className="grid grid-cols-2 gap-4 pt-1">
                               {[
-                                { label: 'Linguistic Perplexity', value: analysisResult.detailedScores.reviewPerplexity, sub: 'Organic vocabulary entropy', color: '#6366F1', bg: 'rgba(99,102,241,0.06)', border: 'rgba(99,102,241,0.18)' },
-                                { label: 'Sentiment Coherence', value: analysisResult.detailedScores.reviewSentimentAlignment, sub: 'Authentic consumer phrasing', color: '#00C865', bg: 'rgba(0,200,101,0.06)', border: 'rgba(0,200,101,0.18)' },
+                                { label: 'Linguistic Perplexity', value: analysisResult.detailedScores.reviewPerplexity, sub: 'Organic vocabulary entropy', color: '#6366F1', bg: 'rgba(99,102,241,0.06)', border: 'rgba(99,102,241,0.22)' },
+                                { label: 'Sentiment Coherence', value: analysisResult.detailedScores.reviewSentimentAlignment, sub: 'Authentic consumer phrasing', color: '#00F08B', bg: 'rgba(0,240,139,0.06)', border: 'rgba(0,240,139,0.25)' },
                               ].map(({ label, value, sub, color, bg, border }) => (
                                 <div key={label} className="p-4 rounded-2xl space-y-1" style={{ background: bg, border: `1px solid ${border}` }}>
-                                  <span className="text-[10px] font-black uppercase tracking-wider block" style={{ color }}>{label}</span>
-                                  <span className="text-3xl font-extrabold font-mono" style={{ color }}>{value}%</span>
-                                  <span className="text-xs font-medium text-slate-600 block">{sub}</span>
+                                  <span className="text-[10px] font-black uppercase tracking-wider block" style={{ color: color === '#00F08B' ? '#027A3D' : color }}>{label}</span>
+                                  <span className="text-3xl font-black font-mono" style={{ color: color === '#00F08B' ? '#027A3D' : color }}>{value}%</span>
+                                  <span className="text-xs font-semibold text-slate-600 block">{sub}</span>
                                 </div>
                               ))}
                             </div>
@@ -709,22 +775,42 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                             </div>
                           </div>
 
-                          {/* Canvas Area */}
-                          <div className="relative w-full min-h-[380px] flex items-center justify-center p-6 bg-slate-50/70 border-b border-slate-100">
+                          {/* Canvas Area with Modern Object: Forensic Lens HUD */}
+                          <div className="relative w-full min-h-[400px] flex items-center justify-center p-8 bg-slate-50/80 border-b border-slate-100 overflow-hidden group">
+                            {/* Optical Viewfinder Corner Brackets */}
+                            <div className="hud-bracket-tl" />
+                            <div className="hud-bracket-tr" />
+                            <div className="hud-bracket-bl" />
+                            <div className="hud-bracket-br" />
+
+                            {/* Animated Laser Sweep Beam */}
+                            <div className="hud-laser-sweep" />
+
+                            {/* Telemetry HUD top overlay */}
+                            <div className="absolute top-3 left-4 right-4 flex items-center justify-between text-[10px] font-mono font-bold text-slate-400 pointer-events-none z-20">
+                              <span className="flex items-center gap-1.5 bg-white/80 px-2.5 py-1 rounded-full border border-slate-200/60 shadow-2xs">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                                4K MULTISPECTRAL SENSOR · λ: 532nm
+                              </span>
+                              <span className="hidden sm:inline bg-white/80 px-2.5 py-1 rounded-full border border-slate-200/60 shadow-2xs">
+                                OPTICAL ZOOM: 1.0X · HUD ACTIVE
+                              </span>
+                            </div>
+
                             <img
                               src={analysisResult.imageUrl}
                               alt={analysisResult.itemName}
                               referrerPolicy="no-referrer"
-                              className="max-h-[440px] w-auto object-contain rounded-2xl shadow-md"
-                              style={{ filter: 'brightness(0.98) contrast(1.04)' }}
+                              className="max-h-[440px] w-auto object-contain rounded-2xl shadow-lg transition-transform duration-500 group-hover:scale-[1.01]"
+                              style={{ filter: 'brightness(0.98) contrast(1.05)' }}
                             />
                             {viewMode === 'heatmap' && (
-                              <div className="absolute inset-0 pointer-events-none rounded-b-none" style={{ background: 'radial-gradient(ellipse at center, rgba(0,200,101,0.08) 0%, rgba(99,102,241,0.06) 50%, rgba(245,158,11,0.04) 100%)', mixBlendMode: 'multiply' }} />
+                              <div className="absolute inset-0 pointer-events-none rounded-b-none" style={{ background: 'radial-gradient(ellipse at center, rgba(0,240,139,0.12) 0%, rgba(99,102,241,0.08) 50%, rgba(255,184,0,0.06) 100%)', mixBlendMode: 'multiply' }} />
                             )}
                             {viewMode !== 'raw' && analysisResult.heatmapPoints.map(point => {
                               const isSelected = selectedHotspot?.id === point.id;
                               const isCritical = point.severity === 'critical' || point.severity === 'high';
-                              const col = isCritical ? '#F43F5E' : '#00C865';
+                              const col = isCritical ? '#FF1E56' : '#00F08B';
                               return (
                                 <div
                                   key={point.id}
@@ -735,18 +821,24 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                                     position: 'absolute',
                                     border: `2px solid ${col}`,
                                     background: `${col}18`,
-                                    borderRadius: '8px',
+                                    borderRadius: '10px',
                                     cursor: 'pointer',
                                     transition: 'all 0.25s',
-                                    boxShadow: isSelected ? `0 0 20px ${col}60, inset 0 0 10px ${col}20` : `0 0 8px ${col}30`,
+                                    boxShadow: isSelected ? `0 0 25px ${col}80, inset 0 0 12px ${col}30` : `0 0 10px ${col}40`,
                                     transform: isSelected ? 'scale(1.05)' : 'scale(1)',
                                     zIndex: isSelected ? 30 : 15,
                                   }}
                                   className="flex items-start justify-start p-1"
                                 >
                                   <span
-                                    className="text-[9px] font-black px-2 py-0.5 rounded-md whitespace-nowrap shadow-sm"
-                                    style={{ background: col, color: '#FFFFFF', marginTop: '-16px', marginLeft: '-4px' }}
+                                    className="text-[9px] font-black px-2.5 py-0.5 rounded-md whitespace-nowrap shadow-sm"
+                                    style={{
+                                      background: col,
+                                      color: isCritical ? '#FFFFFF' : '#032A15',
+                                      marginTop: '-18px',
+                                      marginLeft: '-4px',
+                                      boxShadow: `0 2px 8px ${col}60`,
+                                    }}
                                   >
                                     {point.label}
                                   </span>
@@ -757,27 +849,30 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
 
                           {/* Hotspot detail panel */}
                           <div className="p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-5">
-                            <div className="lg:col-span-5 space-y-2">
-                              <span className="text-[11px] font-black uppercase tracking-wider text-slate-400">
+                            <div className="lg:col-span-5 space-y-2.5">
+                              <span className="text-[11px] font-black uppercase tracking-wider text-slate-500">
                                 Select Inspection Hotspot
                               </span>
                               <div className="flex flex-col gap-2 max-h-[220px] overflow-y-auto pr-1">
                                 {analysisResult.heatmapPoints.map(point => {
                                   const isSelected = selectedHotspot?.id === point.id;
                                   const isCritical = point.severity === 'critical' || point.severity === 'high';
-                                  const col = isCritical ? '#F43F5E' : '#00C865';
+                                  const col = isCritical ? '#FF1E56' : '#00F08B';
                                   return (
                                     <button
                                       key={point.id}
                                       onClick={() => setSelectedHotspot(point)}
-                                      className="w-full flex items-center justify-between px-4 py-3 rounded-2xl text-left text-xs font-bold cursor-pointer transition-all"
+                                      className="w-full flex items-center justify-between px-4 py-3 rounded-2xl text-left text-xs font-black cursor-pointer transition-all"
                                       style={isSelected
-                                        ? { background: `${col}12`, border: `1px solid ${col}40`, color: col, boxShadow: `0 2px 10px ${col}18` }
-                                        : { background: '#F8FAFC', border: '1px solid rgba(15,23,42,0.06)', color: 'var(--text-secondary)' }
+                                        ? { background: `${col}15`, border: `1px solid ${col}60`, color: isCritical ? '#9F1239' : '#02572B', boxShadow: `0 4px 14px ${col}25` }
+                                        : { background: '#F8FAFD', border: '1px solid rgba(15,23,42,0.06)', color: 'var(--text-secondary)' }
                                       }
                                     >
                                       <span className="truncate">{point.label}</span>
-                                      <span className="text-[10px] font-black px-2.5 py-0.5 rounded-full ml-2 shrink-0 font-mono" style={{ background: `${col}18`, color: col }}>
+                                      <span
+                                        className="text-[10px] font-black px-2.5 py-0.5 rounded-full ml-2 shrink-0 font-mono"
+                                        style={{ background: `${col}20`, color: isCritical ? '#9F1239' : '#02572B' }}
+                                      >
                                         {point.confidence}%
                                       </span>
                                     </button>
@@ -850,20 +945,20 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                               </div>
                             </div>
                             <span
-                              className="self-start sm:self-auto text-xs font-extrabold px-3.5 py-1.5 rounded-full"
+                              className="self-start sm:self-auto text-xs font-black px-3.5 py-1.5 rounded-full"
                               style={
                                 analysisResult.fakeReviewProbability > 50
-                                  ? { background: 'rgba(244,63,94,0.1)', border: '1px solid rgba(244,63,94,0.3)', color: '#F43F5E' }
-                                  : { background: 'rgba(0,200,101,0.1)', border: '1px solid rgba(0,200,101,0.3)', color: '#00C865' }
+                                  ? { background: 'rgba(255,30,86,0.12)', border: '1px solid rgba(255,30,86,0.4)', color: '#9F1239' }
+                                  : { background: 'rgba(0,240,139,0.14)', border: '1px solid rgba(0,240,139,0.4)', color: '#02572B' }
                               }
                             >
-                              {analysisResult.fakeReviewProbability > 50 ? '⚠ High Synthetic Risk' : '✓ Likely Organic Phrasing'}
+                              {analysisResult.fakeReviewProbability > 50 ? '⚠ High Synthetic Risk' : '✓ Verified Organic Phrasing'}
                             </span>
                           </div>
 
                           <div className="p-6 sm:p-8 space-y-6">
                             {/* Review Quote Card */}
-                            <div className="relative rounded-2xl p-6 bg-slate-50 border border-slate-100">
+                            <div className="relative rounded-2xl p-6 bg-slate-50/80 border border-slate-100">
                               <div className="text-[10px] font-black uppercase tracking-wider text-indigo-600 mb-2">Analyzed Review Corpus</div>
                               <p className="text-sm italic text-slate-700 leading-relaxed pl-1 pr-4">
                                 "{analysisResult.reviewText}"
@@ -877,7 +972,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                                   <span className="text-sm font-extrabold text-slate-900">Bot / Machine Generation Likelihood</span>
                                   <p className="text-xs text-slate-500 mt-0.5">Calculated through vocabulary entropy and promotional phrase repetition</p>
                                 </div>
-                                <span className="text-3xl font-extrabold font-mono" style={{ color: analysisResult.fakeReviewProbability > 50 ? '#F43F5E' : '#6366F1' }}>
+                                <span className="text-3xl font-black font-mono" style={{ color: analysisResult.fakeReviewProbability > 50 ? '#FF1E56' : '#6366F1' }}>
                                   {analysisResult.fakeReviewProbability}%
                                 </span>
                               </div>
@@ -888,15 +983,15 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                                   style={{
                                     width: `${analysisResult.fakeReviewProbability}%`,
                                     background: analysisResult.fakeReviewProbability > 50
-                                      ? 'linear-gradient(90deg, #F59E0B, #F43F5E)'
-                                      : 'linear-gradient(90deg, #00C865, #6366F1)',
-                                    boxShadow: `0 0 10px ${analysisResult.fakeReviewProbability > 50 ? 'rgba(244,63,94,0.4)' : 'rgba(99,102,241,0.4)'}`,
+                                      ? 'linear-gradient(90deg, #FFB800, #FF1E56)'
+                                      : 'linear-gradient(90deg, #00F08B, #6366F1)',
+                                    boxShadow: `0 0 14px ${analysisResult.fakeReviewProbability > 50 ? 'rgba(255,30,86,0.6)' : 'rgba(0,240,139,0.5)'}`,
                                   }}
                                 />
                                 <div className="absolute top-0 left-1/2 w-0.5 h-full bg-slate-400" />
                               </div>
 
-                              <div className="flex justify-between text-[10px] font-extrabold font-mono text-slate-400">
+                              <div className="flex justify-between text-[10px] font-black font-mono text-slate-400">
                                 <span>Organic Consumer (0%)</span>
                                 <span>50% Risk Threshold</span>
                                 <span>Automated Bot (100%)</span>
@@ -911,11 +1006,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                                       className="flex items-start gap-3 p-3.5 rounded-xl text-xs"
                                       style={
                                         flag.severity === 'high'
-                                          ? { background: 'rgba(244,63,94,0.06)', border: '1px solid rgba(244,63,94,0.2)' }
-                                          : { background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.2)' }
+                                          ? { background: 'rgba(255,30,86,0.06)', border: '1px solid rgba(255,30,86,0.25)' }
+                                          : { background: 'rgba(255,184,0,0.06)', border: '1px solid rgba(255,184,0,0.25)' }
                                       }
                                     >
-                                      <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" style={{ color: flag.severity === 'high' ? '#F43F5E' : '#F59E0B' }} />
+                                      <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" style={{ color: flag.severity === 'high' ? '#FF1E56' : '#FFB800' }} />
                                       <div>
                                         <span className="font-extrabold text-slate-900">{flag.type}: </span>
                                         <span className="text-slate-600">{flag.explanation}</span>
@@ -927,7 +1022,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
 
                               {(!analysisResult.reviewFlags || analysisResult.reviewFlags.length === 0) && (
                                 <div className="pt-3 border-t border-emerald-100">
-                                  <div className="flex items-center gap-2 text-xs font-bold p-3.5 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-700">
+                                  <div className="flex items-center gap-2 text-xs font-bold p-3.5 rounded-xl bg-emerald-50/80 border border-emerald-200/80 text-emerald-800">
                                     <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
                                     <span>Zero synthetic bots detected — authentic human phrasing verified across linguistic markers</span>
                                   </div>

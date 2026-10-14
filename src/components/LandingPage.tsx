@@ -110,21 +110,28 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
         {/* ── Main Hero Content ── */}
         <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 text-center flex flex-col items-center">
 
-          {/* Minimalist Pill Badge */}
+          {/* Forensic Telemetry Capsule */}
           <motion.div
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full mb-7 shadow-xs"
+            className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full mb-7 relative"
             style={{
-              background: 'rgba(255, 255, 255, 0.85)',
-              border: '1px solid rgba(15, 23, 42, 0.08)',
-              backdropFilter: 'blur(10px)',
+              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 253, 244, 0.8))',
+              border: '1px solid rgba(0, 240, 139, 0.35)',
+              boxShadow: '0 4px 20px rgba(0, 240, 139, 0.12), inset 0 1px 0 rgba(255,255,255,0.8)',
+              backdropFilter: 'blur(12px)',
             }}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-[11px] font-semibold tracking-wide text-slate-700">
-              VeriLens AI 1.0 • Luxury Forensics
+            <span className="relative flex w-2 h-2">
+              <span className="absolute inset-0 rounded-full animate-ping opacity-75 bg-[#00F08B]" />
+              <span className="relative rounded-full w-2 h-2 bg-[#00F08B] shadow-[0_0_8px_#00F08B]" />
+            </span>
+            <span className="text-[11px] font-black uppercase tracking-widest font-mono text-emerald-900">
+              VeriLens AI 1.0 • Multimodal Forensic Studio
+            </span>
+            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-800 font-bold">
+              λ: 532nm
             </span>
           </motion.div>
 
@@ -142,7 +149,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
               className="italic"
               style={{
                 fontFamily: 'var(--font-serif)',
-                background: 'linear-gradient(135deg, #00C865 0%, #05DF72 40%, #4F46E5 100%)',
+                background: 'linear-gradient(135deg, #00A854 0%, #00F08B 30%, #00E5FF 65%, #6366F1 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -397,64 +404,107 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
               </div>
             </motion.div>
 
-            {/* Card 2: Confidence Score — Titanium Obsidian Radial */}
+            {/* Card 2: Confidence Score — Titanium Obsidian Biometric Dial */}
             <motion.div
-              className="rounded-3xl p-8 flex flex-col items-center justify-center text-center relative overflow-hidden bg-slate-900 border border-emerald-500/30 shadow-xl"
+              className="rounded-3xl p-8 flex flex-col items-center justify-center text-center relative overflow-hidden bg-slate-950 border border-emerald-500/40 shadow-2xl group"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={bentoSection.isVisible ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full blur-3xl pointer-events-none bg-emerald-500/20" />
-              <div
-                className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4 bg-emerald-500/15 border border-emerald-500/30"
-              >
-                <Shield className="w-7 h-7 text-emerald-400" />
+              {/* Diffuse cyber emerald & cyan glow */}
+              <div className="absolute -top-12 -right-12 w-48 h-48 rounded-full blur-3xl pointer-events-none bg-emerald-500/25" />
+              <div className="absolute -bottom-12 -left-12 w-48 h-48 rounded-full blur-3xl pointer-events-none bg-cyan-500/20" />
+
+              {/* Concentric Biometric Tick Ring */}
+              <div className="relative mb-3 flex items-center justify-center">
+                <div
+                  className="w-16 h-16 rounded-full flex items-center justify-center relative"
+                  style={{
+                    background: 'radial-gradient(circle, rgba(0,240,139,0.18) 0%, rgba(15,23,42,0.8) 100%)',
+                    border: '1px solid rgba(0,240,139,0.4)',
+                    boxShadow: '0 0 24px rgba(0,240,139,0.3)',
+                  }}
+                >
+                  <Shield className="w-8 h-8 text-[#00F08B]" />
+                </div>
               </div>
-              <div className="mono-label mb-2 text-emerald-400">High-Precision Metric</div>
-              <h3 className="text-xl font-bold mb-1 text-white" style={{ fontFamily: 'var(--font-heading)' }}>
+
+              <div className="mono-label mb-2 text-[#00F08B] tracking-widest font-black text-[10px]">
+                CALIBRATED BIOMETRIC CONSENSUS
+              </div>
+              <h3 className="text-xl font-bold mb-1 text-white tracking-tight" style={{ fontFamily: 'var(--font-heading)' }}>
                 Authenticity Confidence
               </h3>
+              
               <div
                 className="text-6xl sm:text-7xl font-black my-4 font-mono tracking-tight"
                 style={{
-                  background: 'linear-gradient(135deg, #05DF72 0%, #00C865 100%)',
+                  background: 'linear-gradient(135deg, #00F08B 0%, #00E5FF 50%, #54FFB5 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
+                  filter: 'drop-shadow(0 4px 16px rgba(0,240,139,0.35))',
                 }}
               >
                 98.4%
               </div>
-              <div className="px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
-                Verified Authentic
+
+              <div
+                className="px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider flex items-center gap-2"
+                style={{
+                  background: 'rgba(0, 240, 139, 0.15)',
+                  color: '#54FFB5',
+                  border: '1px solid rgba(0, 240, 139, 0.4)',
+                  boxShadow: '0 0 12px rgba(0, 240, 139, 0.2)',
+                }}
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-[#00F08B] animate-ping" />
+                Verified Authentic • Grade A+
               </div>
             </motion.div>
 
-            {/* Card 3: Bot Shield — Amber */}
+            {/* Card 3: Bot Shield — Solar Topaz / Champagne Gold */}
             <motion.div
-              className="rounded-3xl p-8 relative overflow-hidden bg-white/95 border border-amber-500/15 shadow-sm hover:shadow-xl transition-all duration-300"
+              className="rounded-3xl p-8 relative overflow-hidden bg-white/95 border border-amber-500/20 shadow-sm hover:shadow-xl transition-all duration-300"
               initial={{ opacity: 0, y: 24 }}
               animate={bentoSection.isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
+              <div className="absolute top-0 right-0 w-36 h-36 rounded-full blur-3xl pointer-events-none bg-amber-500/10" />
               <div
-                className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4 bg-amber-500/10 border border-amber-500/20"
+                className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4 bg-amber-500/10 border border-amber-500/30"
+                style={{ boxShadow: '0 4px 16px rgba(255, 184, 0, 0.15)' }}
               >
-                <AlertTriangle className="w-6 h-6 text-amber-500" />
+                <AlertTriangle className="w-6 h-6 text-[#D97706]" />
               </div>
-              <div className="mono-label mb-2 text-amber-600">Bot Shield Engine</div>
-              <h3 className="text-xl font-bold mb-2" style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}>Review Spam Detection</h3>
-              <p className="text-sm mb-6 leading-relaxed" style={{ color: 'var(--text-muted)' }}>
-                Detects coordinated bot rings and fabricated five-star rating spikes in real time.
+              <div className="mono-label mb-2 text-[#B45309] font-black">SOLAR TOPAZ BOT SHIELD</div>
+              <h3 className="text-xl font-bold mb-2 text-slate-900" style={{ fontFamily: 'var(--font-heading)' }}>
+                Review Spam & Bot Detection
+              </h3>
+              <p className="text-sm mb-6 leading-relaxed text-slate-500">
+                Detects coordinated bot syndicates, sponsored rating spikes, and artificial sentiment anomalies in real time.
               </p>
-              <div className="space-y-3 p-4 rounded-2xl bg-amber-500/5 border border-amber-500/10">
-                <div className="flex justify-between text-xs font-bold text-amber-700">
-                  <span>Organic Vocabulary Rate</span>
-                  <span>94.8%</span>
+              
+              <div
+                className="space-y-3 p-4 rounded-2xl"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(255,184,0,0.06) 0%, rgba(245,158,11,0.03) 100%)',
+                  border: '1px solid rgba(255,184,0,0.25)',
+                }}
+              >
+                <div className="flex justify-between text-xs font-bold text-amber-900">
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                    Organic Vocabulary Rate
+                  </span>
+                  <span className="font-mono font-black text-amber-700">94.8%</span>
                 </div>
-                <div className="h-2 w-full rounded-full bg-slate-100 overflow-hidden">
+                <div className="metric-track">
                   <motion.div
-                    className="h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-400"
+                    className="metric-fill"
+                    style={{
+                      background: 'linear-gradient(90deg, #FFB800 0%, #F59E0B 100%)',
+                    }}
                     initial={{ width: 0 }}
                     animate={bentoSection.isVisible ? { width: '94.8%' } : { width: 0 }}
                     transition={{ duration: 1.3, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
@@ -463,23 +513,24 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
               </div>
             </motion.div>
 
-            {/* Card 4: Computer Vision — Sky Blue */}
+            {/* Card 4: Computer Vision — Luminescent Cyan with Forensic Reticles */}
             <motion.div
-              className="lg:col-span-2 p-8 sm:p-10 rounded-3xl relative overflow-hidden bg-white/95 border border-sky-500/15 shadow-sm hover:shadow-xl transition-all duration-300"
+              className="lg:col-span-2 p-8 sm:p-10 rounded-3xl relative overflow-hidden bg-white/95 border border-cyan-500/20 shadow-sm hover:shadow-xl transition-all duration-300"
               initial={{ opacity: 0, y: 24 }}
               animate={bentoSection.isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <div className="flex items-center gap-3 mb-6">
+              <div className="flex items-center gap-3.5 mb-6">
                 <div
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center bg-sky-500/10 border border-sky-500/20"
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center bg-cyan-500/10 border border-cyan-500/30"
+                  style={{ boxShadow: '0 4px 16px rgba(0, 229, 255, 0.15)' }}
                 >
-                  <ScanLine className="w-6 h-6 text-sky-500" />
+                  <ScanLine className="w-6 h-6 text-cyan-600" />
                 </div>
                 <div>
-                  <div className="mono-label text-sky-600">Computer Vision Forensics</div>
-                  <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight" style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}>
-                    Micro-Stitching & Material Texture Analysis
+                  <div className="mono-label text-cyan-700 font-bold">OPTICAL HUD INSPECTION • λ: 532nm</div>
+                  <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900" style={{ fontFamily: 'var(--font-heading)' }}>
+                    Sub-Pixel Craftsmanship & Texture Forensics
                   </h3>
                 </div>
               </div>
@@ -490,9 +541,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
                   { title: 'Weave & Grain Texture Match', desc: 'HSV color profiles and weave patterns matched against master textile databases.' },
                   { title: 'Serial Cryptography Validation', desc: 'Serial number formatting cross-checked against brand registries in real-time.' },
                 ].map(({ title, desc }) => (
-                  <div key={title} className="p-4 rounded-2xl bg-sky-500/5 border border-sky-500/10 transition-all duration-300 hover:translate-y-[-2px]">
-                    <p className="text-xs font-bold uppercase tracking-wider mb-1.5 text-sky-700">{title}</p>
-                    <p className="text-sm leading-relaxed" style={{ color: 'var(--text-muted)' }}>{desc}</p>
+                  <div
+                    key={title}
+                    className="p-4 rounded-2xl transition-all duration-300 hover:translate-y-[-2px] relative"
+                    style={{
+                      background: 'rgba(0, 229, 255, 0.04)',
+                      border: '1px solid rgba(0, 229, 255, 0.15)',
+                    }}
+                  >
+                    <p className="text-xs font-black uppercase tracking-wider mb-1.5 text-cyan-800">{title}</p>
+                    <p className="text-sm leading-relaxed text-slate-600">{desc}</p>
                   </div>
                 ))}
               </div>

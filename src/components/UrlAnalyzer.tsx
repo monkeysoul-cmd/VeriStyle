@@ -24,17 +24,18 @@ const ScoreBar: React.FC<{ label: string; value: number; highlight?: boolean; de
   const isHigh = safeVal >= 80;
   const isMid = safeVal >= 50 && safeVal < 80;
 
-  const color = isHigh ? '#00C865' : isMid ? '#F59E0B' : '#F43F5E';
+  const color = isHigh ? '#00F08B' : isMid ? '#FFB800' : '#FF1E56';
+  const textCol = isHigh ? '#02572B' : isMid ? '#854D0E' : '#9F1239';
   const gradient = isHigh
-    ? 'linear-gradient(90deg, #10F489, #00C865)'
+    ? 'linear-gradient(90deg, #54FFB5, #00F08B)'
     : isMid
-    ? 'linear-gradient(90deg, #FBBF24, #F59E0B)'
-    : 'linear-gradient(90deg, #FB7185, #F43F5E)';
+    ? 'linear-gradient(90deg, #FDE047, #FFB800)'
+    : 'linear-gradient(90deg, #FDA4AF, #FF1E56)';
   const glow = isHigh
-    ? 'rgba(0,200,101,0.25)'
+    ? 'rgba(0,240,139,0.35)'
     : isMid
-    ? 'rgba(245,158,11,0.25)'
-    : 'rgba(244,63,94,0.25)';
+    ? 'rgba(255,184,0,0.35)'
+    : 'rgba(255,30,86,0.35)';
 
   const statusLabel = isHigh ? 'Master Spec' : isMid ? 'Tolerance' : 'Discrepancy';
 
@@ -43,12 +44,12 @@ const ScoreBar: React.FC<{ label: string; value: number; highlight?: boolean; de
       className="p-3.5 rounded-xl transition-all duration-300 group hover:shadow-sm"
       style={{
         background: highlight
-          ? 'linear-gradient(135deg, rgba(52,216,138,0.06), rgba(45,212,191,0.04))'
-          : 'rgba(255,255,255,0.7)',
+          ? 'linear-gradient(135deg, rgba(0,240,139,0.08), rgba(0,229,255,0.05))'
+          : 'rgba(255,255,255,0.8)',
         border: highlight
-          ? '1px solid rgba(52,216,138,0.2)'
-          : '1px solid rgba(0,0,0,0.05)',
-        backdropFilter: 'blur(8px)',
+          ? '1px solid rgba(0,240,139,0.35)'
+          : '1px solid rgba(15,23,42,0.06)',
+        backdropFilter: 'blur(10px)',
       }}
     >
       <div className="flex justify-between items-center mb-2">
@@ -57,17 +58,17 @@ const ScoreBar: React.FC<{ label: string; value: number; highlight?: boolean; de
           <span
             className="text-[9px] font-black uppercase px-2 py-0.5 rounded-md tracking-wider"
             style={{
-              background: `${color}14`,
-              color,
-              border: `1px solid ${color}28`,
+              background: `${color}18`,
+              color: textCol,
+              border: `1px solid ${color}35`,
             }}
           >
             {statusLabel}
           </span>
-          <span className="text-xs font-black font-mono" style={{ color }}>{safeVal}%</span>
+          <span className="text-xs font-black font-mono" style={{ color: textCol }}>{safeVal}%</span>
         </div>
       </div>
-      <div className="h-2 rounded-full overflow-hidden p-0.5" style={{ background: 'rgba(0,0,0,0.04)' }}>
+      <div className="h-2 rounded-full overflow-hidden p-0.5" style={{ background: 'rgba(15,23,42,0.05)' }}>
         <motion.div
           className="h-full rounded-full"
           style={{ background: gradient, boxShadow: `0 0 10px ${glow}` }}
@@ -406,50 +407,50 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
     // Modern Luxury Verdict Config
     const vc = isAuthentic
       ? {
-          gradient: 'linear-gradient(135deg, rgba(236,253,245,0.96) 0%, rgba(209,250,229,0.75) 45%, rgba(240,253,250,0.95) 100%)',
-          border: 'rgba(0, 200, 101, 0.35)',
-          glow: 'rgba(0, 200, 101, 0.25)',
-          accent: '#00C865',
-          subAccent: '#026330',
-          arc: '#00C865',
-          arcTrack: 'rgba(0, 200, 101, 0.12)',
-          badgeBg: 'linear-gradient(135deg, rgba(0, 200, 101, 0.14), rgba(6, 182, 212, 0.08))',
-          badgeBorder: 'rgba(0, 200, 101, 0.35)',
-          badgeText: '#026330',
+          gradient: 'linear-gradient(135deg, rgba(238,253,245,0.98) 0%, rgba(215,252,232,0.85) 45%, rgba(240,253,248,0.96) 100%)',
+          border: 'rgba(0, 240, 139, 0.45)',
+          glow: 'rgba(0, 240, 139, 0.35)',
+          accent: '#00F08B',
+          subAccent: '#02572B',
+          arc: '#00F08B',
+          arcTrack: 'rgba(0, 240, 139, 0.12)',
+          badgeBg: 'linear-gradient(135deg, rgba(0, 240, 139, 0.18), rgba(0, 229, 255, 0.10))',
+          badgeBorder: 'rgba(0, 240, 139, 0.50)',
+          badgeText: '#02572B',
           badgeLabel: 'VERIFIED AUTHENTIC',
           tierLabel: 'High Authenticity Index · Master Grade',
-          statusIcon: <ShieldCheck style={{ width: '16px', height: '16px', color: '#00C865' }} />,
+          statusIcon: <ShieldCheck style={{ width: '16px', height: '16px', color: '#00F08B' }} />,
         }
       : isSuspicious
       ? {
-          gradient: 'linear-gradient(135deg, rgba(254,252,232,0.96) 0%, rgba(254,243,199,0.75) 45%, rgba(255,251,235,0.95) 100%)',
-          border: 'rgba(245, 158, 11, 0.35)',
-          glow: 'rgba(245, 158, 11, 0.25)',
-          accent: '#F59E0B',
-          subAccent: '#B45309',
-          arc: '#F59E0B',
-          arcTrack: 'rgba(245, 158, 11, 0.12)',
-          badgeBg: 'linear-gradient(135deg, rgba(254, 243, 199, 0.8), rgba(253, 230, 138, 0.4))',
-          badgeBorder: 'rgba(245, 158, 11, 0.38)',
-          badgeText: '#B45309',
+          gradient: 'linear-gradient(135deg, rgba(255,253,240,0.98) 0%, rgba(254,246,210,0.85) 45%, rgba(255,251,232,0.96) 100%)',
+          border: 'rgba(255, 184, 0, 0.45)',
+          glow: 'rgba(255, 184, 0, 0.35)',
+          accent: '#FFB800',
+          subAccent: '#854D0E',
+          arc: '#FFB800',
+          arcTrack: 'rgba(255, 184, 0, 0.14)',
+          badgeBg: 'linear-gradient(135deg, rgba(255, 184, 0, 0.18), rgba(245, 158, 11, 0.10))',
+          badgeBorder: 'rgba(255, 184, 0, 0.50)',
+          badgeText: '#854D0E',
           badgeLabel: 'SUSPICIOUS / ELEVATED RISK',
           tierLabel: 'Moderate Risk · Review Discrepancy',
-          statusIcon: <AlertTriangle style={{ width: '16px', height: '16px', color: '#F59E0B' }} />,
+          statusIcon: <AlertTriangle style={{ width: '16px', height: '16px', color: '#FFB800' }} />,
         }
       : {
-          gradient: 'linear-gradient(135deg, rgba(255,241,242,0.96) 0%, rgba(255,228,230,0.75) 45%, rgba(255,245,245,0.95) 100%)',
-          border: 'rgba(244, 63, 94, 0.35)',
-          glow: 'rgba(244, 63, 94, 0.25)',
-          accent: '#F43F5E',
-          subAccent: '#BE123C',
-          arc: '#F43F5E',
-          arcTrack: 'rgba(244, 63, 94, 0.12)',
-          badgeBg: 'linear-gradient(135deg, rgba(255, 228, 230, 0.8), rgba(254, 205, 211, 0.4))',
-          badgeBorder: 'rgba(244, 63, 94, 0.38)',
-          badgeText: '#BE123C',
+          gradient: 'linear-gradient(135deg, rgba(255,242,245,0.98) 0%, rgba(255,226,233,0.85) 45%, rgba(255,245,247,0.96) 100%)',
+          border: 'rgba(255, 30, 86, 0.45)',
+          glow: 'rgba(255, 30, 86, 0.35)',
+          accent: '#FF1E56',
+          subAccent: '#9F1239',
+          arc: '#FF1E56',
+          arcTrack: 'rgba(255, 30, 86, 0.14)',
+          badgeBg: 'linear-gradient(135deg, rgba(255, 30, 86, 0.18), rgba(225, 29, 72, 0.10))',
+          badgeBorder: 'rgba(255, 30, 86, 0.50)',
+          badgeText: '#9F1239',
           badgeLabel: 'LIKELY COUNTERFEIT',
           tierLabel: 'Critical Counterfeit Failure · Replica Anomaly',
-          statusIcon: <XCircle style={{ width: '16px', height: '16px', color: '#F43F5E' }} />,
+          statusIcon: <XCircle style={{ width: '16px', height: '16px', color: '#FF1E56' }} />,
         };
 
     const qualityScores = [
@@ -758,8 +759,9 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                       {/* Hero Gauge & Verdict Readout (EXTRA HIGHLIGHTED) */}
                       <div className="flex items-center gap-5 my-2.5">
                         
-                        {/* Glowing Circular Gauge */}
-                        <div style={{ position: 'relative', width: '144px', height: '144px', flexShrink: 0 }}>
+                        {/* Glowing Circular Gauge with Modern Object: Biometric Concentric Ring */}
+                        <div style={{ position: 'relative', width: '144px', height: '144px', flexShrink: 0 }} className="flex items-center justify-center">
+                          <div className="biometric-tick-ring" style={{ borderColor: vc.border }} />
                           <svg width="144" height="144" viewBox="0 0 144 144" style={{ transform: 'rotate(-90deg)' }}>
                             <circle cx="72" cy="72" r={arcRadius} fill="none" strokeWidth="10" stroke={vc.arcTrack} />
                             <motion.circle
@@ -771,7 +773,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                               initial={{ strokeDashoffset: arcCircumference }}
                               animate={{ strokeDashoffset: arcCircumference - (arcCircumference * displayScore) / 100 }}
                               transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
-                              style={{ filter: `drop-shadow(0 0 12px ${vc.glow})` }}
+                              style={{ filter: `drop-shadow(0 0 14px ${vc.glow})` }}
                             />
                           </svg>
                           <div style={{
