@@ -108,134 +108,140 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
         />
 
         {/* ── Main Hero Content ── */}
-        <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 text-center flex flex-col items-center">
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 text-center flex flex-col items-center">
 
-          {/* Forensic Telemetry Capsule */}
-          <motion.div
-            className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full mb-7 relative"
-            style={{
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 253, 244, 0.8))',
-              border: '1px solid rgba(0, 240, 139, 0.35)',
-              boxShadow: '0 4px 20px rgba(0, 240, 139, 0.12), inset 0 1px 0 rgba(255,255,255,0.8)',
-              backdropFilter: 'blur(12px)',
-            }}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            <span className="relative flex w-2 h-2">
-              <span className="absolute inset-0 rounded-full animate-ping opacity-75 bg-[#00F08B]" />
-              <span className="relative rounded-full w-2 h-2 bg-[#00F08B] shadow-[0_0_8px_#00F08B]" />
-            </span>
-            <span className="text-[11px] font-black uppercase tracking-widest font-mono text-emerald-900">
-              VeriLens AI 1.0 • Multimodal Forensic Studio
-            </span>
-            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-800 font-bold">
-              λ: 532nm
-            </span>
-          </motion.div>
-
-          {/* Main Headline */}
-          <motion.h1
-            className="text-[42px] leading-[1.08] sm:text-[60px] md:text-[72px] font-black tracking-tight mb-5"
-            style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          >
-            Verify luxury with absolute
-            <br />
-            <motion.span
-              className="italic"
+          {/* Centered Hero Heading & Intro */}
+          <div className="max-w-4xl mx-auto flex flex-col items-center">
+            {/* Forensic Telemetry Capsule */}
+            <motion.div
+              className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full mb-7 relative"
               style={{
-                fontFamily: 'var(--font-serif)',
-                background: 'linear-gradient(135deg, #00A854 0%, #00F08B 30%, #00E5FF 65%, #6366F1 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
+                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 253, 244, 0.8))',
+                border: '1px solid rgba(0, 240, 139, 0.35)',
+                boxShadow: '0 4px 20px rgba(0, 240, 139, 0.12), inset 0 1px 0 rgba(255,255,255,0.8)',
+                backdropFilter: 'blur(12px)',
               }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.35 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
             >
-              certainty.
-            </motion.span>
-          </motion.h1>
+              <span className="relative flex w-2 h-2">
+                <span className="absolute inset-0 rounded-full animate-ping opacity-75 bg-[#00F08B]" />
+                <span className="relative rounded-full w-2 h-2 bg-[#00F08B] shadow-[0_0_8px_#00F08B]" />
+              </span>
+              <span className="text-[11px] font-black uppercase tracking-widest font-mono text-emerald-900">
+                VeriLens AI 1.0 • Multimodal Forensic Studio
+              </span>
+              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-800 font-bold">
+                λ: 532nm
+              </span>
+            </motion.div>
 
-          {/* Sub-headline */}
-          <motion.p
-            className="text-[15px] sm:text-[18px] max-w-xl mb-9 leading-relaxed text-slate-500 font-normal"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            Instant multi-signal authentication for luxury fashion, footwear, and accessories. Paste any product URL or inspect high-resolution photos in seconds.
-          </motion.p>
+            {/* Main Headline */}
+            <motion.h1
+              className="text-[42px] leading-[1.08] sm:text-[60px] md:text-[72px] font-black tracking-tight mb-5"
+              style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            >
+              Verify luxury with absolute
+              <br />
+              <motion.span
+                className="italic"
+                style={{
+                  fontFamily: 'var(--font-serif)',
+                  background: 'linear-gradient(135deg, #00A854 0%, #00F08B 30%, #00E5FF 65%, #6366F1 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.35 }}
+              >
+                certainty.
+              </motion.span>
+            </motion.h1>
 
-          {/* URL Analyzer Card */}
+            {/* Sub-headline */}
+            <motion.p
+              className="text-[15px] sm:text-[18px] max-w-xl mb-9 leading-relaxed text-slate-500 font-normal"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              Instant multi-signal authentication for luxury fashion, footwear, and accessories. Paste any product URL or inspect high-resolution photos in seconds.
+            </motion.p>
+          </div>
+
+          {/* URL Analyzer Card — Broadened sideways to ~1180px - 1200px for multi-column forensic cards */}
           <motion.div
-            className="w-full mb-5"
+            className="w-full max-w-[1200px] mx-auto mb-6"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="rounded-2xl w-full text-left shadow-lg shadow-slate-900/4">
+            <div className="w-full text-left">
               <UrlAnalyzer standalone={false} initialUrl={sampleUrl} />
             </div>
           </motion.div>
 
-          {/* Quick Test Chips */}
-          <motion.div
-            className="flex flex-wrap items-center justify-center gap-2 text-xs"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, delay: 0.6 }}
-          >
-            <span className="font-medium text-slate-400">Quick Test:</span>
-            {[
-              { label: 'amazon.in/nike-jordan', url: 'https://www.amazon.in/Nike-Air-Jordan-Retro-Sneakers/dp/B0CKW79YQ4' },
-              { label: 'flipkart.com/gucci-bag', url: 'https://www.flipkart.com/gucci-leather-handbag-dionysus/p/itm2894721' },
-              { label: 'myntra.com/yeezy', url: 'https://www.myntra.com/casual-shoes/adidas/yeezy-boost-350-v2-sneakers/19482910/buy' }
-            ].map((item) => (
-              <motion.button
-                key={item.label}
-                onClick={() => setSampleUrl(item.url)}
-                className="px-3 py-1 rounded-full text-[11px] font-mono font-medium cursor-pointer transition-all bg-white/80 border border-slate-200/70 text-slate-600 hover:text-emerald-700 hover:border-emerald-300 hover:bg-emerald-50/50 shadow-xs"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                {item.label}
-              </motion.button>
-            ))}
-          </motion.div>
+          {/* Centered Quick Test Chips & Trust Signals */}
+          <div className="max-w-3xl mx-auto flex flex-col items-center">
+            {/* Quick Test Chips */}
+            <motion.div
+              className="flex flex-wrap items-center justify-center gap-2 text-xs"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.6 }}
+            >
+              <span className="font-medium text-slate-400">Quick Test:</span>
+              {[
+                { label: 'amazon.in/nike-jordan', url: 'https://www.amazon.in/Nike-Air-Jordan-Retro-Sneakers/dp/B0CKW79YQ4' },
+                { label: 'flipkart.com/gucci-bag', url: 'https://www.flipkart.com/gucci-leather-handbag-dionysus/p/itm2894721' },
+                { label: 'myntra.com/yeezy', url: 'https://www.myntra.com/casual-shoes/adidas/yeezy-boost-350-v2-sneakers/19482910/buy' }
+              ].map((item) => (
+                <motion.button
+                  key={item.label}
+                  onClick={() => setSampleUrl(item.url)}
+                  className="px-3 py-1 rounded-full text-[11px] font-mono font-medium cursor-pointer transition-all bg-white/80 border border-slate-200/70 text-slate-600 hover:text-emerald-700 hover:border-emerald-300 hover:bg-emerald-50/50 shadow-xs"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  {item.label}
+                </motion.button>
+              ))}
+            </motion.div>
 
-          {/* Minimalist Trust Signals */}
-          <motion.div
-            className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[12px] text-slate-400 font-medium"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.7, duration: 0.5 }}
-          >
-            <span className="flex items-center gap-1.5 text-slate-600">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-              Sub-pixel Stitching Inspection
-            </span>
-            <span className="hidden sm:inline text-slate-300">•</span>
-            <span className="flex items-center gap-1.5 text-slate-600">
-              <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
-              NLP Review Forensics
-            </span>
-            <span className="hidden sm:inline text-slate-300">•</span>
-            <span className="flex items-center gap-1.5 text-slate-600">
-              <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
-              &lt; 1.4s Scan Latency
-            </span>
-            <span className="hidden sm:inline text-slate-300">•</span>
-            <span className="flex items-center gap-1.5 text-slate-600">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-              Zero Data Retention
-            </span>
-          </motion.div>
+            {/* Minimalist Trust Signals */}
+            <motion.div
+              className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[12px] text-slate-400 font-medium"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.7, duration: 0.5 }}
+            >
+              <span className="flex items-center gap-1.5 text-slate-600">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                Sub-pixel Stitching Inspection
+              </span>
+              <span className="hidden sm:inline text-slate-300">•</span>
+              <span className="flex items-center gap-1.5 text-slate-600">
+                <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
+                NLP Review Forensics
+              </span>
+              <span className="hidden sm:inline text-slate-300">•</span>
+              <span className="flex items-center gap-1.5 text-slate-600">
+                <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
+                &lt; 1.4s Scan Latency
+              </span>
+              <span className="hidden sm:inline text-slate-300">•</span>
+              <span className="flex items-center gap-1.5 text-slate-600">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                Zero Data Retention
+              </span>
+            </motion.div>
+          </div>
 
         </div>
       </section>
