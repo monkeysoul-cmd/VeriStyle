@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { UrlAnalyzer } from './UrlAnalyzer';
 import {
   Upload,
@@ -34,23 +34,50 @@ import { VeriLensIcon } from './VeriLensIcon';
 interface DashboardProps {
   onRunAnalysis: (data: { imageUrl: string; reviewText: string; brand?: string; category?: string; itemName?: string }) => Promise<AnalysisResult>;
   initialPreset?: SamplePreset | null;
+  initialResult?: AnalysisResult | null;
   onSaveToVault?: (result: AnalysisResult) => void;
 }
 
-export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPreset, onSaveToVault }) => {
-  const [imageUrl, setImageUrl] = useState<string>(initialPreset?.imageUrl || '');
-  const [reviewText, setReviewText] = useState<string>(initialPreset?.defaultReview || '');
-  const [itemName, setItemName] = useState<string>(initialPreset?.title || '');
-  const [brand, setBrand] = useState<string>(initialPreset?.brand || '');
-  const [category, setCategory] = useState<string>(initialPreset?.category || '');
+export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPreset, initialResult, onSaveToVault }) => {
+  const [imageUrl, setImageUrl] = useState<string>(initialPreset?.imageUrl || initialResult?.imageUrl || '');
+  const [reviewText, setReviewText] = useState<string>(initialPreset?.defaultReview || initialResult?.reviewText || '');
+  const [itemName, setItemName] = useState<string>(initialPreset?.title || initialResult?.itemName || '');
+  const [brand, setBrand] = useState<string>(initialPreset?.brand || initialResult?.brand || '');
+  const [category, setCategory] = useState<string>(initialPreset?.category || initialResult?.category || '');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [scanStep, setScanStep] = useState<string>('Initializing...');
-  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
-  const [selectedHotspot, setSelectedHotspot] = useState<HeatmapPoint | null>(null);
+  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(initialResult || null);
+  const [selectedHotspot, setSelectedHotspot] = useState<HeatmapPoint | null>(initialResult?.heatmapPoints?.[0] || null);
   const [viewMode, setViewMode] = useState<'heatmap' | 'bounding_boxes' | 'raw'>('heatmap');
   const [showCertificateModal, setShowCertificateModal] = useState<boolean>(false);
   const [copiedHash, setCopiedHash] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (initialPreset) {
+      setImageUrl(initialPreset.imageUrl || '');
+      setReviewText(initialPreset.defaultReview || '');
+      setItemName(initialPreset.title || '');
+      setBrand(initialPreset.brand || '');
+      setCategory(initialPreset.category || '');
+      setAnalysisResult(null);
+      setSelectedHotspot(null);
+    }
+  }, [initialPreset]);
+
+  useEffect(() => {
+    if (initialResult) {
+      setAnalysisResult(initialResult);
+      setImageUrl(initialResult.imageUrl || '');
+      setReviewText(initialResult.reviewText || '');
+      setItemName(initialResult.itemName || '');
+      setBrand(initialResult.brand || '');
+      setCategory(initialResult.category || '');
+      if (initialResult.heatmapPoints && initialResult.heatmapPoints.length > 0) {
+        setSelectedHotspot(initialResult.heatmapPoints[0]);
+      }
+    }
+  }, [initialResult]);
 
   const handleCopyHash = (text: string) => {
     if (!text) return;

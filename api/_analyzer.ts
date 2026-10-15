@@ -1,10 +1,10 @@
-// Shared Analyzer Module for VeriStyle Universal Forensic Authenticity Engine
 export {
   runUniversalGeminiForensics,
   runUniversalGeminiForensics as analyzeUrlForensics,
   sanitizeProductUrl,
   extractMetadataFromUrl
 } from "./analyze-url";
+export { runMultimodalAuthenticityForensics } from "./analyze-authenticity";
 
 import { GoogleGenAI } from "@google/genai";
 

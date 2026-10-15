@@ -8,8 +8,9 @@ import {
 } from 'lucide-react';
 
 interface LandingPageProps {
-  onStartAnalysis: () => void;
+  onStartAnalysis?: () => void;
   onViewProducts?: () => void;
+  onSaveToVault?: (result: any) => void;
 }
 
 // Scroll reveal hook
@@ -29,7 +30,7 @@ function useScrollReveal() {
   return { ref, isVisible };
 }
 
-export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
+export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onViewProducts, onSaveToVault }) => {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [sampleUrl, setSampleUrl] = useState<string>('');
   const howItWorks = useScrollReveal();
@@ -183,7 +184,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
             transition={{ duration: 0.6, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
           >
             <div className="w-full text-left">
-              <UrlAnalyzer standalone={false} initialUrl={sampleUrl} />
+              <UrlAnalyzer standalone={false} initialUrl={sampleUrl} onAnalyzeComplete={onSaveToVault} />
             </div>
           </motion.div>
 
@@ -694,16 +695,27 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onViewProducts }) => {
           <p className="text-base sm:text-lg mb-10" style={{ color: 'var(--text-muted)' }}>
             Paste any product link or upload an image to generate your detailed forensic analysis report in seconds.
           </p>
-          <motion.button
-            onClick={onViewProducts}
-            className="inline-flex items-center gap-2.5 px-8 py-4 rounded-2xl text-base font-bold cursor-pointer btn-neon shadow-lg shadow-emerald-500/20"
-            whileHover={{ scale: 1.04, y: -2 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            <Eye className="w-5 h-5" />
-            Explore Verified Catalog
-            <ArrowRight className="w-5 h-5" />
-          </motion.button>
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <motion.button
+              onClick={onStartAnalysis}
+              className="inline-flex items-center gap-2.5 px-8 py-4 rounded-2xl text-base font-bold cursor-pointer btn-neon shadow-lg shadow-emerald-500/20"
+              whileHover={{ scale: 1.04, y: -2 }}
+              whileTap={{ scale: 0.97 }}
+            >
+              <Sparkles className="w-5 h-5" />
+              Open Inspection Studio
+              <ArrowRight className="w-5 h-5" />
+            </motion.button>
+            <motion.button
+              onClick={onViewProducts}
+              className="inline-flex items-center gap-2.5 px-8 py-4 rounded-2xl text-base font-bold cursor-pointer bg-white border border-slate-200 text-slate-800 hover:border-emerald-500/40 hover:text-emerald-700 shadow-sm"
+              whileHover={{ scale: 1.04, y: -2 }}
+              whileTap={{ scale: 0.97 }}
+            >
+              <Eye className="w-5 h-5" />
+              Explore Verified Catalog
+            </motion.button>
+          </div>
         </div>
       </section>
 

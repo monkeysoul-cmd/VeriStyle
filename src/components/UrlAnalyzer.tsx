@@ -173,6 +173,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
   };
 
   const handleImageError = () => {
+    setFailedThumbnails(prev => ({ ...prev, [activeImgIdx]: true }));
     if (!proxyAttempted && imageSrc && imageSrc.startsWith('http') && !imageSrc.includes('/api/image-proxy')) {
       setProxyAttempted(true);
       setImageSrc(`/api/image-proxy?url=${encodeURIComponent(imageSrc)}`);
@@ -477,9 +478,6 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
     // SVG arc geometry: r=58, circumference ≈ 364.42
     const arcRadius = 58;
     const arcCircumference = 2 * Math.PI * arcRadius;
-
-    // Filter valid thumbnail images
-    const availableImages = (result.productImages || []).filter((_, idx) => !failedThumbnails[idx]);
 
     return (
       <motion.div
@@ -1125,15 +1123,15 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                   </div>
 
                   {/* Thumbnails */}
-                  {!imageFailed && availableImages.length > 1 && (
+                  {!imageFailed && (result.productImages || []).length > 1 && (
                     <div className="flex items-center gap-1.5 overflow-x-auto pb-1 mb-1 no-scrollbar">
-                      {availableImages.slice(0, 6).map((imgUrl, idx) => {
-                        if (failedThumbnails[idx]) return null;
-                        const isSelected = activeImgIdx === idx;
+                      {(result.productImages || []).slice(0, 8).map((imgUrl, originalIdx) => {
+                        if (failedThumbnails[originalIdx]) return null;
+                        const isSelected = activeImgIdx === originalIdx;
                         return (
                           <button
-                            key={idx} type="button"
-                            onClick={() => handleSelectThumbnail(idx, imgUrl)}
+                            key={originalIdx} type="button"
+                            onClick={() => handleSelectThumbnail(originalIdx, imgUrl)}
                             className="w-10 h-10 rounded-lg overflow-hidden shrink-0 transition-all cursor-pointer"
                             style={{
                               border: isSelected ? '2px solid #00C06B' : '1px solid rgba(0,0,0,0.1)',
@@ -1145,9 +1143,8 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                               src={imgUrl}
                               alt=""
                               referrerPolicy="no-referrer"
-                              onError={(e) => {
-                                setFailedThumbnails(prev => ({ ...prev, [idx]: true }));
-                                e.currentTarget.style.display = 'none';
+                              onError={() => {
+                                setFailedThumbnails(prev => ({ ...prev, [originalIdx]: true }));
                               }}
                               className="w-full h-full object-contain p-1"
                             />

@@ -11,6 +11,7 @@ import { INITIAL_HISTORY, SAMPLE_PRESETS } from './data/presets';
 export default function App() {
   const [currentTab, setCurrentTab] = useState<'landing' | 'dashboard' | 'history' | 'products'>('landing');
   const [selectedPreset, setSelectedPreset] = useState<SamplePreset | null>(null);
+  const [selectedResult, setSelectedResult] = useState<AnalysisResult | null>(null);
   const [history, setHistory] = useState<AnalysisResult[]>([]);
 
   useEffect(() => {
@@ -129,6 +130,7 @@ export default function App() {
   };
 
   const handleStartAnalysisWithPreset = (preset?: SamplePreset) => {
+    setSelectedResult(null);
     if (preset) {
       setSelectedPreset(preset);
     } else {
@@ -138,7 +140,8 @@ export default function App() {
   };
 
   const handleSelectFromHistory = (result: AnalysisResult) => {
-    // Load result into dashboard
+    setSelectedPreset(null);
+    setSelectedResult(result);
     setCurrentTab('dashboard');
   };
 
@@ -154,8 +157,9 @@ export default function App() {
         <main id="main-content">
           {currentTab === 'landing' && (
             <LandingPage
-              onStartAnalysis={handleStartAnalysisWithPreset}
+              onStartAnalysis={() => handleStartAnalysisWithPreset()}
               onViewProducts={() => setCurrentTab('products')}
+              onSaveToVault={handleSaveToVault}
             />
           )}
 
@@ -163,6 +167,7 @@ export default function App() {
             <Dashboard
               onRunAnalysis={handleRunAnalysis}
               initialPreset={selectedPreset}
+              initialResult={selectedResult}
               onSaveToVault={handleSaveToVault}
             />
           )}

@@ -484,7 +484,7 @@ export async function directScrapeProduct(cleanUrl: string): Promise<DirectScrap
 
   // 4. Amazon ASIN Guaranteed CDN High-Res Image Mirrors
   if (platform === "amazon" && asin) {
-    const cdnPrimary = `https://m.media-amazon.com/images/P/${asin}.01._SCLZZZZZZZ_SX900_.jpg`;
+    const cdnPrimary = `https://images-eu.ssl-images-amazon.com/images/P/${asin}.01._SCLZZZZZZZ_SX900_.jpg`;
     const cdnSecondary = `https://images-eu.ssl-images-amazon.com/images/P/${asin}.01.LZZZZZZZ.jpg`;
     if (!data.images.includes(cdnPrimary)) data.images.push(cdnPrimary);
     if (!data.images.includes(cdnSecondary)) data.images.push(cdnSecondary);
@@ -605,7 +605,7 @@ export async function runUniversalGeminiForensics(rawUrl: string): Promise<any> 
   let resolvedImages = directData.images.filter((img) => isValidProductImage(img));
   if (resolvedImages.length === 0 && platform === "amazon" && asin) {
     resolvedImages = [
-      `https://m.media-amazon.com/images/P/${asin}.01._SCLZZZZZZZ_SX900_.jpg`,
+      `https://images-eu.ssl-images-amazon.com/images/P/${asin}.01._SCLZZZZZZZ_SX900_.jpg`,
       `https://images-eu.ssl-images-amazon.com/images/P/${asin}.01.LZZZZZZZ.jpg`
     ];
   }
@@ -690,7 +690,8 @@ Return ONLY valid JSON matching this schema:
     "gemini-2.5-flash",
     "gemini-3.5-flash",
     "gemini-3.5-flash-lite",
-    "gemini-3.1-flash-lite"
+    "gemini-3.1-flash-lite",
+    "gemini-3.6-flash"
   ];
 
   for (const modelName of candidateModels) {

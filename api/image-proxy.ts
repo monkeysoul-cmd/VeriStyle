@@ -24,11 +24,16 @@ export default async function handler(req: any, res: any) {
   // Upgrade to HTTPS
   imageUrl = imageUrl.replace(/^http:\/\//i, "https://");
 
+  // Prevent ECONNRESET on m.media-amazon.com by using images-eu.ssl-images-amazon.com mirror
+  if (imageUrl.includes("m.media-amazon.com")) {
+    imageUrl = imageUrl.replace("m.media-amazon.com", "images-eu.ssl-images-amazon.com");
+  }
+
   // Determine the best Referer header based on the image CDN
   let referer = "https://www.google.com/";
   if (imageUrl.includes("flixcart.com") || imageUrl.includes("flipkart.com")) {
     referer = "https://www.flipkart.com/";
-  } else if (imageUrl.includes("amazon.com") || imageUrl.includes("media-amazon.com")) {
+  } else if (imageUrl.includes("amazon.") || imageUrl.includes("media-amazon.com") || imageUrl.includes("ssl-images-amazon.com")) {
     referer = "https://www.amazon.in/";
   } else if (imageUrl.includes("myntra") || imageUrl.includes("myntassets")) {
     referer = "https://www.myntra.com/";
@@ -48,8 +53,8 @@ export default async function handler(req: any, res: any) {
         redirect: "follow",
       });
     } catch (fetchErr: any) {
-      if (imageUrl.includes("m.media-amazon.com")) {
-        const mirrorUrl = imageUrl.replace("m.media-amazon.com", "images-eu.ssl-images-amazon.com");
+      if (imageUrl.includes("media-amazon.com") && !imageUrl.includes("images-eu.ssl-images-amazon.com")) {
+        const mirrorUrl = imageUrl.replace("media-amazon.com", "images-eu.ssl-images-amazon.com");
         response = await fetch(mirrorUrl, {
           headers: {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
