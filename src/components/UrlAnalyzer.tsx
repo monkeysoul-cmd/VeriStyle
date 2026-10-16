@@ -288,45 +288,22 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4 }}
         >
-          {/* Top animated gradient bar */}
+          {/* Top accent bar */}
           <div
-            className="absolute top-0 left-0 right-0 h-[3px] animate-shimmer"
-            style={{
-              background: 'linear-gradient(90deg, #34D88A, #818CF8, #FBBF24, #34D88A)',
-              backgroundSize: '200% 100%'
-            }}
-          />
-          {/* Center ambient glow */}
-          <div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full blur-3xl pointer-events-none"
-            style={{ background: 'radial-gradient(circle, rgba(52,216,138,0.12) 0%, rgba(129,140,248,0.06) 50%, transparent 70%)' }}
+            className="absolute top-0 left-0 right-0 h-[2px] bg-emerald-600"
           />
 
-          {/* Holographic Tri-spinner */}
-          <div className="relative w-22 h-22 mx-auto mb-6 flex items-center justify-center">
+          {/* Center spinner */}
+          <div className="relative w-12 h-12 mx-auto mb-5 flex items-center justify-center">
             <div
-              className="absolute inset-0 rounded-full border-2 border-t-[#00C06B] border-r-transparent border-b-[#818CF8] border-l-transparent animate-spin"
-              style={{ animationDuration: '2.5s' }}
+              className="w-10 h-10 rounded-full border-2 border-slate-200 border-t-emerald-600 animate-spin"
             />
-            <div
-              className="absolute inset-2.5 rounded-full border-2 border-t-transparent border-r-[#FBBF24] border-b-transparent border-l-[#FB7185] animate-spin"
-              style={{ animationDuration: '1.8s', animationDirection: 'reverse' }}
-            />
-            <div
-              className="w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg"
-              style={{
-                background: 'linear-gradient(135deg, rgba(52,216,138,0.15), rgba(129,140,248,0.1))',
-                border: '1px solid rgba(52,216,138,0.3)',
-              }}
-            >
-              <Brain className="w-5 h-5 animate-pulse" style={{ color: 'var(--green-primary)' }} />
-            </div>
           </div>
 
-          <h3 className="text-xl font-bold mb-1.5 relative z-10" style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}>
-            Analyzing Product Forensics
+          <h3 className="text-lg font-bold mb-1.5 relative z-10 text-slate-900" style={{ fontFamily: 'var(--font-heading)' }}>
+            Analyzing Product Listing
           </h3>
-          <p className="text-xs mb-8 max-w-md mx-auto truncate relative z-10 font-mono px-4 py-1 rounded-full inline-block" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.05)', color: 'var(--text-muted)' }}>
+          <p className="text-xs mb-6 max-w-md mx-auto truncate relative z-10 font-mono px-3 py-1 rounded bg-slate-100 border border-slate-200 text-slate-600 inline-block">
             {url}
           </p>
 
@@ -337,7 +314,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                 className="flex items-center gap-3 p-3 rounded-xl transition-all duration-300"
                 style={{
                   background: idx === loadingStep
-                    ? 'linear-gradient(90deg, rgba(52,216,138,0.08), rgba(129,140,248,0.04))'
+                    ? 'rgba(52,216,138,0.08)'
                     : idx < loadingStep
                     ? 'rgba(52,216,138,0.03)'
                     : 'transparent',
@@ -576,7 +553,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                   {seg.icon}
                   <span>{seg.label}</span>
                   <span
-                    className="text-[9px] px-1.5 py-0.2 rounded-full font-black ml-0.5"
+                    className="text-[9px] px-1.5 py-0.2 rounded font-black ml-0.5"
                     style={{
                       background: activeSegment === seg.id ? 'rgba(255,255,255,0.22)' : 'rgba(0,0,0,0.06)',
                       color: activeSegment === seg.id ? '#FFFFFF' : '#64748B',
@@ -596,7 +573,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
 
 
         {/* ═══════════════════════════════════════════════════════════════
-            PARTITION 1 (PRIORITY 01) — MASTER FORENSIC VERDICT & TRUST SCORE HERO
+            PARTITION 1 (PRIORITY 01): MASTER FORENSIC VERDICT & TRUST SCORE HERO
             ═══════════════════════════════════════════════════════════════ */}
         {(activeSegment === 'all' || activeSegment === 'verdict') && (
           <div className="space-y-2">
@@ -661,8 +638,8 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
 
                       {/* Metadata Row */}
                       <div className="flex items-center gap-2.5 flex-wrap text-left pt-0.5" style={{ fontSize: '0.725rem', color: 'var(--text-secondary)' }}>
-                        <span className="inline-flex items-center gap-1.5 font-bold px-2.5 py-1 rounded-lg" style={{ background: 'rgba(99,102,241,0.08)', color: '#4F46E5', border: '1px solid rgba(99,102,241,0.18)' }}>
-                          <Building2 style={{ width: '12px', height: '12px' }} />
+                        <span className="inline-flex items-center gap-1.5 font-bold px-2.5 py-1 rounded-md" style={{ background: '#F1F5F9', color: '#0F172A', border: '1px solid #CBD5E1' }}>
+                          <Building2 style={{ width: '12px', height: '12px', color: '#475569' }} />
                           {displayBrand}
                         </span>
                         {result.sellerName && (
@@ -856,8 +833,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
 
 
         {/* ═══════════════════════════════════════════════════════════════
-            PARTITION 2 (PRIORITY 02) — CRITICAL SECURITY AUDIT, AI ACTION RECOMMENDATIONS & FORENSIC REASONING
-            "Review & Merchant Security Audit , AI Action Recommendations, Forensic Inspection Reasoning are in single page and information more concise and well placed"
+            PARTITION 2 (PRIORITY 02): CRITICAL SECURITY AUDIT, ACTION RECOMMENDATIONS & REASONING
             ═══════════════════════════════════════════════════════════════ */}
         {(activeSegment === 'all' || activeSegment === 'security') && (
           <div className="space-y-2">
@@ -896,7 +872,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                         </>
                       )}
                     </h4>
-                    <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full" style={{ background: displayFlags && displayFlags.length > 0 ? 'rgba(251,113,133,0.15)' : 'rgba(52,216,138,0.15)', color: displayFlags && displayFlags.length > 0 ? '#BE123C' : '#047857' }}>
+                    <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md" style={{ background: displayFlags && displayFlags.length > 0 ? 'rgba(251,113,133,0.15)' : 'rgba(52,216,138,0.15)', color: displayFlags && displayFlags.length > 0 ? '#BE123C' : '#047857' }}>
                       {displayFlags && displayFlags.length > 0 ? `${displayFlags.length} Flags` : 'Clearance Pass'}
                     </span>
                   </div>
@@ -965,9 +941,9 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                   <div className="report-section-header mb-3">
                     <h4 className="report-section-title" style={{ color: '#047857' }}>
                       <Lightbulb style={{ width: '15px', height: '15px', color: '#10B981' }} />
-                      AI Action Recommendations
+                      Action Recommendations
                     </h4>
-                    <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full" style={{ background: 'rgba(52,216,138,0.15)', color: '#047857' }}>
+                    <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md" style={{ background: 'rgba(52,216,138,0.15)', color: '#047857' }}>
                       Buyer Protocol
                     </span>
                   </div>
@@ -982,7 +958,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                         }}
                       >
                         <span
-                          className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 text-[10px] font-black"
+                          className="w-5 h-5 rounded-md flex items-center justify-center shrink-0 mt-0.5 text-[10px] font-black"
                           style={{ background: 'rgba(52,216,138,0.2)', color: '#008746' }}
                         >
                           {idx + 1}
@@ -998,18 +974,18 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
               <div
                 className="report-bento-card p-4 sm:p-5 flex flex-col justify-between text-left"
                 style={{
-                  background: 'linear-gradient(145deg, rgba(255,255,255,0.98), rgba(245,243,255,0.75))',
-                  borderColor: 'rgba(129,140,248,0.25)',
+                  background: '#FFFFFF',
+                  borderColor: 'rgba(15,23,42,0.1)',
                 }}
               >
                 <div>
                   <div className="report-section-header mb-3">
-                    <h4 className="report-section-title" style={{ color: '#4338CA' }}>
-                      <Sparkles style={{ width: '15px', height: '15px', color: '#818CF8' }} />
+                    <h4 className="report-section-title" style={{ color: '#0F172A' }}>
+                      <Sparkles style={{ width: '15px', height: '15px', color: '#059669' }} />
                       Forensic Inspection Reasoning
                     </h4>
-                    <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full" style={{ background: 'rgba(129,140,248,0.15)', color: '#4338CA' }}>
-                      AI Evidence
+                    <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md" style={{ background: '#F1F5F9', color: '#0F172A' }}>
+                      Inspection Evidence
                     </span>
                   </div>
                   <ul className="space-y-2.5 list-none p-0 m-0 text-left">
@@ -1019,12 +995,12 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                         className="p-3 rounded-xl flex items-start gap-2.5 hover:translate-x-0.5 transition-all text-left"
                         style={{
                           background: 'rgba(255,255,255,0.92)',
-                          border: '1px solid rgba(129,140,248,0.2)',
+                          border: '1px solid #E2E8F0',
                         }}
                       >
                         <span
-                          className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 text-[10px] font-black"
-                          style={{ background: 'rgba(129,140,248,0.2)', color: '#6366F1' }}
+                          className="w-5 h-5 rounded-md flex items-center justify-center shrink-0 mt-0.5 text-[10px] font-black"
+                          style={{ background: '#F1F5F9', color: '#0F172A' }}
                         >
                           {idx + 1}
                         </span>
@@ -1041,8 +1017,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
 
 
         {/* ═══════════════════════════════════════════════════════════════
-            PARTITION 3 (PRIORITY 03) — COMMERCIAL & LINGUISTIC TELEMETRY
-            "Market Economics & Pricing and Sentiment Coherence & NLP in same page only one page"
+            PARTITION 3 (PRIORITY 03): COMMERCIAL & LINGUISTIC TELEMETRY
             ═══════════════════════════════════════════════════════════════ */}
         {(activeSegment === 'all' || activeSegment === 'market') && (
           <div className="space-y-2">
@@ -1064,7 +1039,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                       <ShoppingBag style={{ width: '14px', height: '14px', color: '#059669' }} />
                       Inspected Product Media
                     </h4>
-                    <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider" style={{ background: 'rgba(52,216,138,0.12)', color: '#047857' }}>
+                    <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wider" style={{ background: 'rgba(52,216,138,0.12)', color: '#047857' }}>
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                       Live Specimen
                     </span>
@@ -1103,13 +1078,13 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                         </div>
                         <span className="text-xs font-bold text-slate-800">{displayBrand}</span>
                         <span className="text-[11px] truncate max-w-[190px] text-slate-500">{displayTitle}</span>
-                        <div className="mt-1.5 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200">
+                        <div className="mt-1.5 inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200">
                           <Sparkles className="w-2.5 h-2.5 text-emerald-600" /> Catalog Verified
                         </div>
                       </div>
                     )}
                     <div
-                      className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider flex items-center gap-1"
+                      className="absolute top-2 right-2 px-2 py-0.5 rounded-md text-[9px] font-extrabold uppercase tracking-wider flex items-center gap-1"
                       style={{
                         background: 'rgba(15,23,42,0.85)', backdropFilter: 'blur(8px)',
                         border: '1px solid rgba(255,255,255,0.15)', color: '#FFFFFF',
@@ -1184,7 +1159,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                       <TrendingUp style={{ width: '14px', height: '14px', color: '#0284C7' }} />
                       Market Economics & Pricing
                     </h4>
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider" style={{ background: 'rgba(2,132,199,0.1)', color: '#0369A1' }}>
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wider" style={{ background: 'rgba(2,132,199,0.1)', color: '#0369A1' }}>
                       Live Audit
                     </span>
                   </div>
@@ -1207,7 +1182,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                         {displayPrice}
                       </div>
                       {result.priceAnalysis && (
-                        <div className="text-[9px] font-bold mt-1 px-1.5 py-0.5 rounded-full truncate" style={{ background: 'rgba(52,216,138,0.15)', color: '#008746' }}>
+                        <div className="text-[9px] font-bold mt-1 px-1.5 py-0.5 rounded-md truncate" style={{ background: 'rgba(52,216,138,0.15)', color: '#008746' }}>
                           {result.priceAnalysis}
                         </div>
                       )}
@@ -1228,7 +1203,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                       <div className="text-xl font-black text-slate-900 tracking-tight">
                         {result.extractedRating ? `${result.extractedRating} / 5` : '4.3 / 5'}
                       </div>
-                      <div className="text-[9px] font-bold mt-1 px-1.5 py-0.5 rounded-full inline-block" style={{ background: 'rgba(251,191,36,0.18)', color: '#B45309' }}>
+                      <div className="text-[9px] font-bold mt-1 px-1.5 py-0.5 rounded-md inline-block" style={{ background: 'rgba(251,191,36,0.18)', color: '#B45309' }}>
                         Verified Score
                       </div>
                     </div>
@@ -1289,10 +1264,10 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                 <div>
                   <div className="report-section-header mb-2.5">
                     <h4 className="report-section-title">
-                      <Compass style={{ width: '14px', height: '14px', color: '#6366F1' }} />
+                      <Compass style={{ width: '14px', height: '14px', color: '#059669' }} />
                       Sentiment Coherence & NLP
                     </h4>
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider" style={{ background: 'rgba(99,102,241,0.1)', color: '#4F46E5' }}>
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wider" style={{ background: '#ECFDF5', color: '#065F46', border: '1px solid #A7F3D0' }}>
                       NLP Forensics
                     </span>
                   </div>
@@ -1304,24 +1279,24 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                   </div>
 
                   {/* Tri-color Segmented Bar */}
-                  <div className="h-2.5 rounded-full overflow-hidden flex gap-1 p-0.5 mb-2.5" style={{ background: 'rgba(0,0,0,0.04)' }}>
+                  <div className="h-2.5 rounded-md overflow-hidden flex gap-1 p-0.5 mb-2.5" style={{ background: 'rgba(0,0,0,0.04)' }}>
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: `${sentiment.positive}%` }}
                       transition={{ duration: 1, ease: 'easeOut' }}
-                      style={{ background: 'linear-gradient(90deg, #34D88A, #00C06B)', borderRadius: '100px', boxShadow: '0 0 8px rgba(52,216,138,0.4)' }}
+                      style={{ background: 'linear-gradient(90deg, #34D88A, #00C06B)', borderRadius: '4px', boxShadow: '0 0 8px rgba(52,216,138,0.4)' }}
                     />
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: `${sentiment.neutral}%` }}
                       transition={{ duration: 1, delay: 0.2, ease: 'easeOut' }}
-                      style={{ background: 'linear-gradient(90deg, #FBBF24, #F59E0B)', borderRadius: '100px' }}
+                      style={{ background: 'linear-gradient(90deg, #FBBF24, #F59E0B)', borderRadius: '4px' }}
                     />
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: `${sentiment.negative}%` }}
                       transition={{ duration: 1, delay: 0.4, ease: 'easeOut' }}
-                      style={{ background: 'linear-gradient(90deg, #FDA4AF, #FB7185)', borderRadius: '100px' }}
+                      style={{ background: 'linear-gradient(90deg, #FDA4AF, #FB7185)', borderRadius: '4px' }}
                     />
                   </div>
 
@@ -1342,12 +1317,12 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                   <div
                     className="p-3 rounded-xl text-left"
                     style={{
-                      background: 'rgba(99,102,241,0.04)',
-                      border: '1px solid rgba(99,102,241,0.12)',
+                      background: '#F8FAFC',
+                      border: '1px solid #E2E8F0',
                     }}
                   >
-                    <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider mb-1" style={{ color: '#4F46E5' }}>
-                      <Brain style={{ width: '12px', height: '12px' }} /> Linguistic Entropy Clearance
+                    <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider mb-1" style={{ color: '#0F172A' }}>
+                      <Brain style={{ width: '12px', height: '12px', color: '#059669' }} /> Linguistic Entropy Clearance
                     </div>
                     <p className="text-[11px] text-slate-600 m-0 leading-relaxed font-medium">
                       Natural language variation adheres to genuine customer distributions with low algorithmic bot manipulation.
@@ -1368,13 +1343,13 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
 
 
         {/* ═══════════════════════════════════════════════════════════════
-            PARTITION 4 (PRIORITY 04) — STRUCTURAL SPEC BENCHMARKS & DEEP FORENSIC INSIGHTS
+            PARTITION 4 (PRIORITY 04): STRUCTURAL SPEC BENCHMARKS & DEEP FORENSIC INSIGHTS
             ═══════════════════════════════════════════════════════════════ */}
         {(activeSegment === 'all' || activeSegment === 'specs') && (
           <div className="space-y-2">
             <div className="flex items-center gap-2 pl-1">
-              <span className="report-priority-eyebrow" style={{ background: 'rgba(99,102,241,0.06)', borderColor: 'rgba(99,102,241,0.2)', color: '#4338CA' }}>
-                <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
+              <span className="report-priority-eyebrow" style={{ background: 'rgba(30,41,59,0.06)', borderColor: 'rgba(30,41,59,0.2)', color: '#1E293B' }}>
+                <span className="w-1.5 h-1.5 rounded-full bg-slate-600" />
                 Priority 04 · Structural Spec Benchmarks & Deep Insights
               </span>
               <span className="text-[11px] font-bold text-slate-400">Multi-point Material Tolerances & Forensic Findings</span>
@@ -1392,7 +1367,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                         Visual Craftsmanship Spec Benchmarks
                       </h4>
                     </div>
-                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider" style={{ background: 'rgba(52,216,138,0.12)', color: '#047857', border: '1px solid rgba(52,216,138,0.25)' }}>
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider" style={{ background: 'rgba(52,216,138,0.12)', color: '#047857', border: '1px solid rgba(52,216,138,0.25)' }}>
                       <CheckCircle2 style={{ width: '12px', height: '12px', color: '#059669' }} />
                       Master Spec
                     </span>
@@ -1466,11 +1441,11 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                 </div>
 
                 {/* 3. Hidden Pattern */}
-                <div className="report-card-indigo p-4 rounded-xl flex flex-col justify-between text-left">
+                <div className="p-4 rounded-md border border-slate-200 bg-slate-50 flex flex-col justify-between text-left">
                   <div>
-                    <div className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-wider mb-2" style={{ color: '#312E81' }}>
-                      <span className="w-5 h-5 rounded-lg flex items-center justify-center" style={{ background: 'rgba(129,140,248,0.2)' }}>
-                        <Eye style={{ width: '11px', height: '11px', color: '#6366F1' }} />
+                    <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider mb-2 text-slate-800 font-mono">
+                      <span className="w-5 h-5 rounded flex items-center justify-center bg-slate-200 text-slate-700">
+                        <Eye style={{ width: '11px', height: '11px' }} />
                       </span>
                       Hidden Pattern
                     </div>
@@ -1480,14 +1455,14 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                   </div>
                 </div>
 
-                {/* 4. What Surprised Our AI */}
+                {/* 4. Notable Anomaly Detection */}
                 <div className="report-card-amber p-4 rounded-xl flex flex-col justify-between text-left">
                   <div>
                     <div className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-wider mb-2" style={{ color: '#78350F' }}>
                       <span className="w-5 h-5 rounded-lg flex items-center justify-center" style={{ background: 'rgba(251,191,36,0.2)' }}>
                         <Zap style={{ width: '11px', height: '11px', color: '#D97706' }} />
                       </span>
-                      What Surprised AI
+                      Notable Anomaly Detection
                     </div>
                     <p className="text-xs text-slate-700 font-medium leading-relaxed m-0 text-left line-clamp-3">
                       {displayCuriosity}
@@ -1503,7 +1478,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
 
 
         {/* ═══════════════════════════════════════════════════════════════
-            PARTITION 5 (PRIORITY 05) — LIVE CUSTOMER REVIEWS & FEEDBACK
+            PARTITION 5 (PRIORITY 05): LIVE CUSTOMER REVIEWS & FEEDBACK
             ═══════════════════════════════════════════════════════════════ */}
         {(activeSegment === 'all' || activeSegment === 'specs') && result.sampleReviews && result.sampleReviews.length > 0 && (
           <div className="space-y-2">
@@ -1521,7 +1496,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                   <MessageSquare style={{ width: '14px', height: '14px', color: '#0284C7' }} />
                   Live Customer Reviews & Authenticity Feedback
                 </h4>
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold" style={{ background: 'rgba(240,249,255,0.9)', color: '#0369A1', border: '1px solid rgba(56,189,248,0.3)' }}>
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-bold" style={{ background: 'rgba(240,249,255,0.9)', color: '#0369A1', border: '1px solid rgba(56,189,248,0.3)' }}>
                   {result.extractedReviewCount ? `${result.extractedReviewCount.toLocaleString()} Verified Ratings` : 'Organic Consumer Samples'}
                 </span>
               </div>

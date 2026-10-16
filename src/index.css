@@ -305,7 +305,8 @@ nav[class*="fixed"] {
   color: var(--report-fake-text);
 }
 
-/* Professional Verification Badges (Rectangular, 4px - 6px radius) */
+/* Professional Verification Badges (Rectangular, 6px radius) */
+.badge-authentic,
 .badge-authentic-pill {
   display: inline-flex;
   align-items: center;
@@ -322,6 +323,7 @@ nav[class*="fixed"] {
   font-family: var(--font-mono);
 }
 
+.badge-suspicious,
 .badge-suspicious-pill {
   display: inline-flex;
   align-items: center;
@@ -338,6 +340,7 @@ nav[class*="fixed"] {
   font-family: var(--font-mono);
 }
 
+.badge-counterfeit,
 .badge-counterfeit-pill {
   display: inline-flex;
   align-items: center;

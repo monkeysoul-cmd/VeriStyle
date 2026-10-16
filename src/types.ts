@@ -84,8 +84,8 @@ export interface ProductItem {
   price: string;
   originalPrice?: string;
   savings?: string;
-  trustScore: number;            // 0–100
-  rating: number;             // 0–5
+  trustScore: number;            // 0-100
+  rating: number;             // 0-5
   reviewCount: number;
   badge: ProductBadge;
   shortDescription: string;
@@ -99,9 +99,9 @@ export interface ProductItem {
   };
   reviewInsights: ProductReviewInsight[];
   sentimentBreakdown: {
-    positive: number;         // 0–100 %
-    neutral: number;          // 0–100 %
-    negative: number;         // 0–100 %
+    positive: number;         // 0-100 %
+    neutral: number;          // 0-100 %
+    negative: number;         // 0-100 %
     reviewsAnalyzed: number;
     storesChecked: number;
     accuracyRate: number;

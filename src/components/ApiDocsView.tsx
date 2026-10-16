@@ -6,10 +6,6 @@ import {
   Check, 
   Send, 
   FileCode, 
-  Cpu, 
-  Layers, 
-  CheckCircle2, 
-  Sparkles
 } from 'lucide-react';
 
 export const ApiDocsView: React.FC = () => {
@@ -17,15 +13,14 @@ export const ApiDocsView: React.FC = () => {
   const [testResponse, setTestResponse] = useState<string | null>(null);
   const [isTesting, setIsTesting] = useState<boolean>(false);
 
-  const pythonFastApiCode = `from fastapi import FastAPI, HTTPException, File, UploadFile, Form
+  const pythonFastApiCode = `from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import Optional, List
-import base64
 import uvicorn
 
 app = FastAPI(
-    title="VeriStyle AI Fashion Forensic API",
-    description="Multimodal Counterfeit Detection & Review NLP Forensics",
+    title="VeriStyle Fashion Authenticity API",
+    description="Multimodal Counterfeit Detection and Review NLP Forensics",
     version="2.6.0"
 )
 
@@ -62,7 +57,6 @@ async def verify_apparel(payload: AnalysisRequest):
     if not payload.image_url and not payload.review_text:
         raise HTTPException(status_code=400, detail="Provide image_url or review_text")
         
-    # Execute VeriLens AI 1.0 Image Scanning Pipeline
     return AnalysisResponse(
         trust_score=88,
         verdict="VERIFIED AUTHENTIC",
@@ -103,46 +97,48 @@ if __name__ == "__main__":
       });
       const data = await res.json();
       setTestResponse(JSON.stringify(data, null, 2));
-    } catch (err) {
-      setTestResponse(JSON.stringify({ error: "API connection error" }, null, 2));
+    } catch (err: any) {
+      setTestResponse(JSON.stringify({ error: 'Could not connect to API', message: err?.message }, null, 2));
     } finally {
       setIsTesting(false);
     }
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Title */}
-      <div className="border-b border-slate-800 pb-6 space-y-2">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-semibold border border-indigo-500/20">
-          <Code2 className="w-3.5 h-3.5" />
+      <div className="border-b border-slate-200 pb-6 space-y-2">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-slate-100 text-slate-700 text-xs font-mono font-medium border border-slate-200">
+          <Code2 className="w-3.5 h-3.5 text-slate-600" />
           PYTHON FASTAPI BACKEND SPECIFICATION
         </div>
-        <h1 className="text-3xl font-bold text-white tracking-tight">FastAPI Integration & API Docs</h1>
-        <p className="text-slate-400 text-sm">
-          Complete, production-ready Python FastAPI code (`main.py`) matching the exact frontend payload schema.
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight" style={{ fontFamily: 'var(--font-heading)' }}>
+          FastAPI Integration & API Documentation
+        </h1>
+        <p className="text-slate-600 text-xs sm:text-sm">
+          Production-grade Python FastAPI endpoint code matching the exact frontend payload schema.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Python main.py Code */}
         <div className="lg:col-span-7 space-y-4">
-          <div className="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-xl space-y-4">
+          <div className="p-5 rounded-md bg-slate-900 border border-slate-800 shadow-md space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <FileCode className="w-5 h-5 text-emerald-400" />
-                <span className="font-mono text-sm font-bold text-white">main.py (FastAPI Backend)</span>
+                <FileCode className="w-4 h-4 text-emerald-400" />
+                <span className="font-mono text-xs font-bold text-white">main.py (FastAPI Backend)</span>
               </div>
               <button
                 onClick={handleCopyCode}
-                className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold flex items-center gap-1.5 transition-colors border border-slate-700"
+                className="px-3 py-1.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-1.5 transition-colors border border-slate-700 cursor-pointer"
               >
                 {copiedCode ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                <span>{copiedCode ? 'Copied Code!' : 'Copy main.py'}</span>
+                <span>{copiedCode ? 'Copied' : 'Copy code'}</span>
               </button>
             </div>
 
-            <pre className="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-xs text-indigo-200 font-mono overflow-x-auto leading-relaxed max-h-[480px]">
+            <pre className="p-4 rounded-md bg-slate-950 border border-slate-800 text-xs text-slate-200 font-mono overflow-x-auto leading-relaxed max-h-[480px]">
               {pythonFastApiCode}
             </pre>
           </div>
@@ -150,34 +146,34 @@ if __name__ == "__main__":
 
         {/* Right Column: Live Sandbox Tester */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-xl space-y-4">
+          <div className="p-5 rounded-md bg-white border border-slate-200 shadow-2xs space-y-4">
             <div className="flex items-center justify-between">
-              <span className="font-bold text-white text-base flex items-center gap-2">
-                <Terminal className="w-4 h-4 text-indigo-400" />
-                Live API Response Tester
+              <span className="font-bold text-slate-900 text-sm flex items-center gap-2">
+                <Terminal className="w-4 h-4 text-slate-600" />
+                Live API Response Sandbox
               </span>
-              <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold">
                 POST /api/analyze-authenticity
               </span>
             </div>
 
-            <p className="text-xs text-slate-400">
-              Click below to send a sample payload from the frontend to the Express/FastAPI proxy backend and inspect raw JSON output.
+            <p className="text-xs text-slate-500 leading-relaxed">
+              Dispatch a sample test payload to the active inspection API and view real JSON response structures.
             </p>
 
             <button
               onClick={handleRunApiTest}
               disabled={isTesting}
-              className="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-lg shadow-indigo-600/20"
+              className="w-full py-2.5 rounded-md bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs flex items-center justify-center gap-2 transition-colors shadow-2xs cursor-pointer disabled:opacity-50"
             >
-              <Send className="w-4 h-4" />
-              <span>{isTesting ? 'Dispatching Request...' : 'Send Live API Test Payload'}</span>
+              <Send className="w-3.5 h-3.5" />
+              <span>{isTesting ? 'Sending Request...' : 'Send Live API Test Payload'}</span>
             </button>
 
             {testResponse && (
               <div className="space-y-2 pt-2">
-                <span className="text-[11px] font-mono text-slate-400 block">HTTP 200 Response Payload:</span>
-                <pre className="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-[11px] text-emerald-300 font-mono overflow-x-auto max-h-[300px]">
+                <span className="text-[11px] font-mono text-slate-500 block">HTTP 200 Response Payload:</span>
+                <pre className="p-4 rounded-md bg-slate-950 border border-slate-800 text-[11px] text-emerald-400 font-mono overflow-x-auto max-h-[300px]">
                   {testResponse}
                 </pre>
               </div>

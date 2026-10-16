@@ -121,11 +121,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
     setIsLoading(true);
     setAnalysisResult(null);
     const steps = [
-      'Initializing VeriLens AI 1.0...',
-      'Scanning Stitching & Material...',
+      'Initializing Inspection Engine...',
+      'Scanning Stitching & Material Structure...',
       'Analyzing Hardware Electroplating...',
       'Processing Review NLP Forensics...',
-      'Generating Trust Score & Heatmap...',
+      'Generating Trust Score & Hotspot Coordinates...',
     ];
     let stepIdx = 0;
     setScanStep(steps[0]);
@@ -158,7 +158,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
       arcGrad: ['#54FFB5', '#00F08B', '#028C46'],
       arcTrack: 'rgba(0, 240, 139, 0.12)',
       label: 'VERIFIED AUTHENTIC',
-      badgeClass: 'badge-authentic-pill',
+      badgeClass: 'badge-authentic',
       specTier: 'Grade A · Master Specification Conformance',
       specNote: 'Multi-vector vision & NLP analysis confirms 100% alignment with verified luxury brand master templates.'
     };
@@ -172,7 +172,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
       arcGrad: ['#FDE047', '#FFB800', '#D97706'],
       arcTrack: 'rgba(255, 184, 0, 0.14)',
       label: 'SUSPICIOUS / ELEVATED RISK',
-      badgeClass: 'badge-suspicious-pill',
+      badgeClass: 'badge-suspicious',
       specTier: 'Grade B · Moderate Variance Detected',
       specNote: 'Detected anomalies in stitch pitch, hardware finishing, or unnatural buyer review vocabulary entropy.'
     };
@@ -186,7 +186,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
       arcGrad: ['#FDA4AF', '#FF1E56', '#BE123C'],
       arcTrack: 'rgba(255, 30, 86, 0.14)',
       label: 'LIKELY COUNTERFEIT',
-      badgeClass: 'badge-counterfeit-pill',
+      badgeClass: 'badge-counterfeit',
       specTier: 'Grade F · Critical Forensic Spec Failure',
       specNote: 'Hardware engraving, micro-stitching pitch, and synthetic review signals strongly indicate unauthorized replica.'
     };
@@ -201,7 +201,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
           <div>
             <div className="section-badge mb-3">
               <Activity className="w-3.5 h-3.5" />
-              Forensic Inspection Lab · VeriLens 1.0
+              Forensic Inspection Lab · Verification Engine
             </div>
             <h1 className="text-3xl sm:text-4xl font-black tracking-tight" style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}>
               Multimodal Authenticity Studio
@@ -262,8 +262,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="text-xs font-bold flex items-center gap-1 px-2.5 py-1 rounded-full cursor-pointer transition-all"
-                  style={{ background: 'rgba(0,80,40,0.07)', border: '1px solid rgba(0,80,40,0.1)', color: 'var(--green-accent-from)' }}
+                  className="text-xs font-semibold flex items-center gap-1 px-2.5 py-1 rounded-md cursor-pointer transition-colors bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700"
                 >
                   <Camera className="w-3.5 h-3.5" /> Browse
                 </button>
@@ -340,7 +339,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
             <div className="p-6 rounded-2xl space-y-4" style={{ background: 'var(--bg-card)', border: '1px solid rgba(0,80,40,0.07)' }}>
               <div className="flex items-center justify-between">
                 <label className="text-[14px] font-bold flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
-                  <FileText className="w-4 h-4" style={{ color: '#6366F1' }} />
+                  <FileText className="w-4 h-4 text-slate-700" />
                   2. Paste Review Text
                 </label>
                 <button
@@ -364,8 +363,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
 
               <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider">
                 <span style={{ color: 'var(--text-dim)', fontFamily: 'var(--font-mono)' }}>{reviewText.length} chars</span>
-                <span className="flex items-center gap-1" style={{ color: '#6366F1' }}>
-                  <Sparkles className="w-3.5 h-3.5" /> NLP Ready
+                <span className="flex items-center gap-1 text-slate-600 font-mono text-[11px]">
+                  <Sparkles className="w-3.5 h-3.5 text-emerald-600" /> NLP Forensics Ready
                 </span>
               </div>
             </div>
@@ -408,20 +407,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                 className="p-12 rounded-2xl flex flex-col items-center justify-center text-center space-y-6 min-h-[500px] scanline-overlay relative overflow-hidden"
                 style={{ background: 'var(--bg-card)', border: '1px solid rgba(0,80,40,0.08)' }}
               >
-                <div className="absolute inset-0 hex-grid-bg opacity-50 pointer-events-none" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full blur-3xl pointer-events-none animate-breathe" style={{ background: 'rgba(0,160,70,0.04)' }} />
+                <div className="absolute inset-0 hex-grid-bg opacity-30 pointer-events-none" />
 
-                <div className="relative w-28 h-28">
-                  <div className="absolute inset-0 rounded-full border-2 border-t-[var(--green-accent-from)] animate-spin" style={{ borderColor: 'rgba(0,80,40,0.1)', borderTopColor: 'var(--green-accent-from)' }} />
-                  <div className="absolute inset-3 rounded-full border-2 border-b-[#6366F1] animate-spin" style={{ animationDuration: '1.5s', borderColor: 'rgba(129,140,248,0.1)', borderBottomColor: '#6366F1' }} />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center animate-glow-pulse"
-                      style={{ background: 'rgba(0,80,40,0.08)', border: '1px solid rgba(0,160,70,0.15)' }}
-                    >
-                      <Brain className="w-6 h-6" style={{ color: 'var(--green-accent-from)' }} />
-                    </div>
-                  </div>
+                <div className="relative w-16 h-16 flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-full border-2 border-slate-200 border-t-emerald-600 animate-spin" />
                 </div>
 
                 <div className="space-y-2 relative z-10">
@@ -429,14 +418,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                     {scanStep}
                   </h3>
                   <p className="text-sm max-w-sm font-mono" style={{ color: 'var(--text-muted)' }}>
-                    VeriLens AI 1.0 engine is cross-referencing stitching vectors and review text entropy against verified master databases.
+                    Forensic inspection engine is cross-referencing stitching metrics and review text entropy against verified master specifications.
                   </p>
                 </div>
               </div>
 
             ) : analysisResult ? (
               /* ═══════════════════════════════════════════════════════════
-                 ANALYSIS REPORT — Senior Designer Overhaul
+                 ANALYSIS REPORT: Executive Forensic Report
                  ═══════════════════════════════════════════════════════════ */
               <div className="space-y-6 animate-fade-in-up">
                 {(() => {
@@ -452,20 +441,17 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                         style={{
                           background: vc.bg,
                           border: `1.5px solid ${vc.border}`,
-                          boxShadow: `0 20px 50px -12px ${vc.glow}, 0 2px 10px rgba(15,23,42,0.04), inset 0 1px 0 rgba(255,255,255,1)`,
+                          boxShadow: `0 2px 10px rgba(15,23,42,0.04), inset 0 1px 0 rgba(255,255,255,1)`,
                         }}
                       >
-                        {/* Background diffuse ambient aura & micro-dot grid */}
-                        <div className="absolute -top-28 -right-28 w-96 h-96 rounded-full blur-3xl pointer-events-none opacity-40" style={{ background: vc.glow }} />
-                        <div className="absolute -bottom-20 -left-20 w-80 h-80 rounded-full blur-3xl pointer-events-none opacity-20" style={{ background: vc.accent }} />
-                        <div className="absolute inset-0 dot-grid-bg opacity-25 pointer-events-none" />
+                        <div className="absolute inset-0 dot-grid-bg opacity-15 pointer-events-none" />
 
                         <div className="relative z-10 flex flex-col xl:flex-row xl:items-center justify-between gap-8">
                           
-                          {/* Left: Product & Verdict Data + Holographic Digital Seal */}
+                          {/* Left: Product & Verdict Data + Digital Certificate Seal */}
                           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 max-w-2xl">
                             
-                            {/* Modern Object: Holographic Provenance Seal */}
+                            {/* Provenance Seal */}
                             <div className="shrink-0 hidden sm:flex flex-col items-center gap-2">
                               <div className="holographic-seal">
                                 <div className="holographic-seal-inner">
@@ -473,7 +459,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                                   <span className="text-[8px] font-black uppercase tracking-widest mt-0.5 text-slate-800 font-mono">
                                     {isAuth ? 'VERIFIED' : isSusp ? 'REVIEW' : 'FLAGGED'}
                                   </span>
-                                  <span className="text-[6.5px] font-mono font-bold text-slate-500">SEAL 1.0</span>
+                                  <span className="text-[6.5px] font-mono font-bold text-slate-500">AUTHENTICATED</span>
                                 </div>
                               </div>
                               <span className="text-[9px] font-mono font-bold tracking-wider text-slate-500 uppercase">
@@ -488,7 +474,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                                   <ShieldCheck className="w-3.5 h-3.5 shrink-0" />
                                   {vc.label}
                                 </span>
-                                <span className="text-[11px] font-black uppercase tracking-wider font-mono text-slate-600 bg-white/70 px-2.5 py-0.5 rounded-full border border-slate-200/80">
+                                <span className="text-[11px] font-black uppercase tracking-wider font-mono text-slate-600 bg-white/70 px-2 py-0.5 rounded border border-slate-200/80">
                                   {vc.specTier}
                                 </span>
                               </div>
@@ -500,11 +486,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                                 <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                                   <span className="text-sm font-extrabold text-slate-800">{analysisResult.brand}</span>
                                   <span className="text-slate-300">·</span>
-                                  <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-white/80 border border-slate-200 text-slate-700 shadow-2xs">
+                                  <span className="text-xs font-bold px-2 py-0.5 rounded bg-white/80 border border-slate-200 text-slate-700 shadow-2xs">
                                     {analysisResult.category}
                                   </span>
                                   <span className="text-slate-300">·</span>
-                                  <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-white/80 border border-slate-200 text-slate-600">
+                                  <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-white/80 border border-slate-200 text-slate-600">
                                     Multi-Signal Grounded
                                   </span>
                                 </div>
@@ -666,7 +652,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                             <span className="text-[11px] font-black uppercase tracking-wider text-slate-500">
                               {analysisResult.imageUrl ? 'Visual Craftsmanship Forensics' : 'NLP Linguistic Signals'}
                             </span>
-                            <span className="text-xs font-extrabold font-mono text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
+                            <span className="text-xs font-bold font-mono text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
                               5-Point Multi-Vector
                             </span>
                           </div>
@@ -691,15 +677,15 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                                 {
                                   label: 'Typography & Serial Kerning',
                                   value: analysisResult.detailedScores.typographyAccuracy,
-                                  color: '#6366F1',
-                                  gradient: 'linear-gradient(90deg, #818CF8, #6366F1)',
+                                  color: '#0284C7',
+                                  gradient: 'linear-gradient(90deg, #38BDF8, #0284C7)',
                                   tag: analysisResult.detailedScores.typographyAccuracy >= 80 ? 'Authentic Font' : 'Anomaly',
                                 },
                                 {
                                   label: 'Fabric & Grain Texture Match',
                                   value: analysisResult.detailedScores.fabricTextureMatch,
-                                  color: '#8B5CF6',
-                                  gradient: 'linear-gradient(90deg, #C084FC, #8B5CF6)',
+                                  color: '#0D9488',
+                                  gradient: 'linear-gradient(90deg, #2DD4BF, #0D9488)',
                                   tag: analysisResult.detailedScores.fabricTextureMatch >= 80 ? 'High Fidelity' : 'Discrepancy',
                                 },
                                 {
@@ -718,7 +704,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                                         className="text-[9px] font-black uppercase px-2 py-0.5 rounded-md"
                                         style={{
                                           background: `${metric.color}15`,
-                                          color: metric.color === '#00F08B' ? '#027A3D' : metric.color === '#00E5FF' ? '#0369A1' : metric.color,
+                                          color: metric.color === '#00F08B' ? '#027A3D' : metric.color === '#00E5FF' || metric.color === '#0284C7' ? '#0369A1' : metric.color === '#0D9488' ? '#0F766E' : metric.color,
                                           border: `1px solid ${metric.color}35`,
                                         }}
                                       >
@@ -745,7 +731,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                           ) : (
                             <div className="grid grid-cols-2 gap-4 pt-1">
                               {[
-                                { label: 'Linguistic Perplexity', value: analysisResult.detailedScores.reviewPerplexity, sub: 'Organic vocabulary entropy', color: '#6366F1', bg: 'rgba(99,102,241,0.06)', border: 'rgba(99,102,241,0.22)' },
+                                { label: 'Linguistic Perplexity', value: analysisResult.detailedScores.reviewPerplexity, sub: 'Organic vocabulary entropy', color: '#0F172A', bg: 'rgba(15,23,42,0.03)', border: 'rgba(15,23,42,0.1)' },
                                 { label: 'Sentiment Coherence', value: analysisResult.detailedScores.reviewSentimentAlignment, sub: 'Authentic consumer phrasing', color: '#00F08B', bg: 'rgba(0,240,139,0.06)', border: 'rgba(0,240,139,0.25)' },
                               ].map(({ label, value, sub, color, bg, border }) => (
                                 <div key={label} className="p-4 rounded-2xl space-y-1" style={{ background: bg, border: `1px solid ${border}` }}>
@@ -811,15 +797,13 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                             <div className="hud-bracket-br" />
 
                             {/* Animated Laser Sweep Beam */}
-                            <div className="hud-laser-sweep" />
-
                             {/* Telemetry HUD top overlay */}
-                            <div className="absolute top-3 left-4 right-4 flex items-center justify-between text-[10px] font-mono font-bold text-slate-400 pointer-events-none z-20">
-                              <span className="flex items-center gap-1.5 bg-white/80 px-2.5 py-1 rounded-full border border-slate-200/60 shadow-2xs">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                                4K MULTISPECTRAL SENSOR · λ: 532nm
+                            <div className="absolute top-3 left-4 right-4 flex items-center justify-between text-[10px] font-mono font-bold text-slate-500 pointer-events-none z-20">
+                              <span className="flex items-center gap-1.5 bg-white/90 px-2.5 py-1 rounded-md border border-slate-200/80 shadow-2xs">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                                OPTICAL RESOLUTION: 4096×4096 · CALIBRATED
                               </span>
-                              <span className="hidden sm:inline bg-white/80 px-2.5 py-1 rounded-full border border-slate-200/60 shadow-2xs">
+                              <span className="hidden sm:inline bg-white/90 px-2.5 py-1 rounded-md border border-slate-200/80 shadow-2xs">
                                 OPTICAL ZOOM: 1.0X · HUD ACTIVE
                               </span>
                             </div>
@@ -832,7 +816,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                               style={{ filter: 'brightness(0.98) contrast(1.05)' }}
                             />
                             {viewMode === 'heatmap' && (
-                              <div className="absolute inset-0 pointer-events-none rounded-b-none" style={{ background: 'radial-gradient(ellipse at center, rgba(0,240,139,0.12) 0%, rgba(99,102,241,0.08) 50%, rgba(255,184,0,0.06) 100%)', mixBlendMode: 'multiply' }} />
+                              <div className="absolute inset-0 pointer-events-none rounded-b-none" style={{ background: 'radial-gradient(ellipse at center, rgba(16,185,129,0.12) 0%, rgba(245,158,11,0.06) 50%, transparent 100%)', mixBlendMode: 'multiply' }} />
                             )}
                             {viewMode !== 'raw' && analysisResult.heatmapPoints.map(point => {
                               const isSelected = selectedHotspot?.id === point.id;
@@ -897,7 +881,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                                     >
                                       <span className="truncate">{point.label}</span>
                                       <span
-                                        className="text-[10px] font-black px-2.5 py-0.5 rounded-full ml-2 shrink-0 font-mono"
+                                        className="text-[10px] font-black px-2.5 py-0.5 rounded-md ml-2 shrink-0 font-mono"
                                         style={{ background: `${col}20`, color: isCritical ? '#9F1239' : '#02572B' }}
                                       >
                                         {point.confidence}%
@@ -959,8 +943,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                         >
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-6 sm:px-8 py-5 border-b border-slate-100">
                             <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 rounded-2xl flex items-center justify-center bg-indigo-50 border border-indigo-100">
-                                <FileText className="w-5 h-5 text-indigo-600" />
+                              <div className="w-10 h-10 rounded-md flex items-center justify-center bg-slate-100 border border-slate-200">
+                                <FileText className="w-5 h-5 text-slate-700" />
                               </div>
                               <div>
                                 <h3 className="text-base font-extrabold text-slate-900" style={{ fontFamily: 'var(--font-heading)' }}>
@@ -1022,7 +1006,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                               </div>
 
                               {analysisResult.reviewFlags && analysisResult.reviewFlags.length > 0 && (
-                                <div className="pt-3 space-y-2 border-t border-indigo-100">
+                                <div className="pt-3 space-y-2 border-t border-slate-200">
                                   <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Detected Linguistic Flags</span>
                                   {analysisResult.reviewFlags.map((flag, idx) => (
                                     <div
@@ -1048,7 +1032,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                                 <div className="pt-3 border-t border-emerald-100">
                                   <div className="flex items-center gap-2 text-xs font-bold p-3.5 rounded-xl bg-emerald-50/80 border border-emerald-200/80 text-emerald-800">
                                     <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
-                                    <span>Zero synthetic bots detected — authentic human phrasing verified across linguistic markers</span>
+                                    <span>Zero synthetic bots detected: authentic human phrasing verified across linguistic markers</span>
                                   </div>
                                 </div>
                               )}
@@ -1059,12 +1043,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                               <div className="rounded-2xl p-5 bg-slate-50 border border-slate-100 space-y-3">
                                 <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-slate-700">
                                   <Layers className="w-4 h-4 text-slate-400" />
-                                  AI Linguistic Findings
+                                  Forensic Linguistic Findings
                                 </div>
                                 <ul className="space-y-2.5">
                                   {analysisResult.xaiReasoning.map((reason, idx) => (
                                     <li key={idx} className="flex items-start gap-2.5 text-xs text-slate-600 leading-relaxed font-medium">
-                                      <span className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5 bg-white border border-slate-200 text-slate-700">
+                                      <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5 bg-white border border-slate-200 text-slate-700">
                                         {idx + 1}
                                       </span>
                                       <span>{reason}</span>
@@ -1122,7 +1106,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                               <ul className="space-y-2">
                                 {analysisResult.xaiReasoning.map((reason, idx) => (
                                   <li key={idx} className="flex items-start gap-2.5 text-xs text-slate-600 leading-relaxed font-medium">
-                                    <span className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5 bg-white border border-slate-200 text-slate-700">
+                                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5 bg-white border border-slate-200 text-slate-700">
                                       {idx + 1}
                                     </span>
                                     <span>{reason}</span>
@@ -1158,16 +1142,15 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                 className="p-12 rounded-2xl flex flex-col items-center justify-center text-center space-y-5 min-h-[460px] relative overflow-hidden"
                 style={{ background: 'var(--bg-card)', border: '1px solid rgba(0,80,40,0.06)' }}
               >
-                <div className="absolute inset-0 hex-grid-bg opacity-40 pointer-events-none" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full blur-3xl pointer-events-none animate-breathe" style={{ background: 'rgba(0,160,70,0.03)' }} />
+                <div className="absolute inset-0 hex-grid-bg opacity-30 pointer-events-none" />
                 <div
-                  className="relative w-20 h-20 rounded-2xl flex items-center justify-center animate-glow-pulse"
+                  className="relative w-20 h-20 rounded-2xl flex items-center justify-center"
                   style={{ background: 'rgba(0,80,40,0.07)', border: '1px solid rgba(0,160,70,0.15)' }}
                 >
                   <VeriLensIcon className="w-10 h-10" style={{ color: 'var(--green-accent-from)' }} />
                 </div>
                 <div className="space-y-2 max-w-sm relative z-10">
-                  <h3 className="text-xl font-extrabold" style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}>Ready for AI Verification</h3>
+                  <h3 className="text-xl font-extrabold" style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}>Ready for Authenticity Inspection</h3>
                   <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
                     Select a preset or upload your own fashion item to run real-time multimodal visual & NLP inspection.
                   </p>
@@ -1178,7 +1161,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                     { icon: Brain, label: 'NLP Forensics' },
                     { icon: Lock, label: 'Encrypted Hash' },
                   ].map(({ icon: Icon, label }) => (
-                    <div key={label} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold" style={{ background: 'rgba(0,160,70,0.05)', border: '1px solid rgba(0,80,40,0.08)', color: 'var(--text-muted)' }}>
+                    <div key={label} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold" style={{ background: 'rgba(0,160,70,0.05)', border: '1px solid rgba(0,80,40,0.08)', color: 'var(--text-muted)' }}>
                       <Icon className="w-3.5 h-3.5" style={{ color: 'var(--green-accent-from)' }} />
                       {label}
                     </div>
@@ -1230,7 +1213,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                     style={{
                       color: highlight
                         ? (score && score >= 80 ? 'var(--green-accent-from)' : '#F43F5E')
-                        : mono ? '#6366F1' : 'var(--text-primary)',
+                        : mono ? '#0F172A' : 'var(--text-primary)',
                       fontWeight: highlight || mono ? 800 : 600,
                     }}
                   >
