@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion } from 'motion/react';
 import {
   History,
   Search,
@@ -12,7 +11,6 @@ import {
   Hash,
   Package,
   XCircle,
-  DatabaseZap,
   ChevronDown,
 } from 'lucide-react';
 import { AnalysisResult } from '../types';
@@ -42,211 +40,141 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
 
   const getVerdictStyle = (score: number) => {
     if (score >= 80) return {
-      badge: {
-        background: 'linear-gradient(135deg, rgba(0,240,139,0.14) 0%, rgba(0,200,101,0.08) 100%)',
-        border: '1px solid rgba(0,240,139,0.4)',
-        color: '#027A3D',
-        boxShadow: '0 0 10px rgba(0,240,139,0.15)',
-      },
-      bar: '#00F08B',
-      barGlow: 'rgba(0,240,139,0.45)',
-      dot: '#00F08B',
-      cardBorder: 'rgba(15,23,42,0.08)',
-      cardBorderHover: 'rgba(0,240,139,0.45)',
+      badge: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+      bar: '#059669',
+      dot: '#059669',
       label: 'VERIFIED AUTHENTIC',
       icon: ShieldCheck,
     };
     if (score >= 50) return {
-      badge: {
-        background: 'linear-gradient(135deg, rgba(255,184,0,0.14) 0%, rgba(245,158,11,0.08) 100%)',
-        border: '1px solid rgba(255,184,0,0.4)',
-        color: '#92400E',
-        boxShadow: '0 0 10px rgba(255,184,0,0.15)',
-      },
-      bar: '#FFB800',
-      barGlow: 'rgba(255,184,0,0.45)',
-      dot: '#FFB800',
-      cardBorder: 'rgba(15,23,42,0.08)',
-      cardBorderHover: 'rgba(255,184,0,0.45)',
+      badge: 'bg-amber-50 text-amber-800 border-amber-200',
+      bar: '#D97706',
+      dot: '#D97706',
       label: 'SUSPICIOUS SPECIMEN',
       icon: AlertTriangle,
     };
     return {
-      badge: {
-        background: 'linear-gradient(135deg, rgba(255,30,86,0.14) 0%, rgba(244,63,94,0.08) 100%)',
-        border: '1px solid rgba(255,30,86,0.4)',
-        color: '#9F1239',
-        boxShadow: '0 0 10px rgba(255,30,86,0.15)',
-      },
-      bar: '#FF1E56',
-      barGlow: 'rgba(255,30,86,0.45)',
-      dot: '#FF1E56',
-      cardBorder: 'rgba(15,23,42,0.08)',
-      cardBorderHover: 'rgba(255,30,86,0.45)',
+      badge: 'bg-rose-50 text-rose-800 border-rose-200',
+      bar: '#DC2626',
+      dot: '#DC2626',
       label: 'COUNTERFEIT ALERT',
       icon: XCircle,
     };
   };
 
   return (
-    <div className="w-full min-h-screen pt-24 pb-20" style={{ background: 'var(--bg-base)' }}>
+    <div className="w-full min-h-screen pt-24 pb-20 bg-slate-50 text-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
 
         {/* Header */}
-        <motion.div
-          className="flex flex-col md:flex-row md:items-center justify-between gap-5 pb-8 border-b border-slate-200/80"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200">
           <div>
-            <div className="section-badge mb-4">
-              <History className="w-3.5 h-3.5" />
-              Cryptographic Records
+            <div className="section-badge mb-2">
+              Private Device Storage
             </div>
             <h1
-              className="text-3xl sm:text-4xl font-black tracking-tight"
-              style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}
+              className="text-3xl font-extrabold text-slate-950 tracking-tight"
+              style={{ fontFamily: 'var(--font-heading)' }}
             >
-              Verification{' '}
-              <span
-                className="italic"
-                style={{
-                  fontFamily: 'var(--font-serif)',
-                  background: 'linear-gradient(135deg, #00C865 0%, #05DF72 40%, #6366F1 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
-              >
-                Vault.
-              </span>
+              Inspection Vault & Provenance History
             </h1>
-            <p className="text-sm mt-2 text-slate-500">
-              Browse, filter, and inspect immutably recorded AI luxury authenticity audits.
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">
+              Cryptographically signed inspection logs saved locally in your browser. Zero cloud retention.
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
-            {history.length > 0 && (
-              <div
-                className="flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-500/10 border border-emerald-500/20 text-emerald-800"
-              >
-                <DatabaseZap className="w-3.5 h-3.5 text-emerald-600" />
-                {history.length} verified scan{history.length !== 1 ? 's' : ''}
-              </div>
-            )}
-            {onClearHistory && history.length > 0 && (
-              <motion.button
-                onClick={onClearHistory}
-                className="px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer bg-rose-50 border border-rose-200 text-rose-600 hover:bg-rose-100"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                <Trash2 className="w-3.5 h-3.5" />
-                Clear Vault
-              </motion.button>
-            )}
-          </div>
-        </motion.div>
+          {history.length > 0 && onClearHistory && (
+            <button
+              onClick={onClearHistory}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 transition-colors self-start md:self-auto cursor-pointer"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              Clear Vault History
+            </button>
+          )}
+        </div>
 
-        {/* Controls */}
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-12 gap-3"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
+        {/* Search & Filters */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
           {/* Search */}
           <div className="md:col-span-8 relative">
-            <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search by apparel name, brand, or cryptographic hash..."
-              className="w-full pl-11 pr-4 py-3 text-sm rounded-2xl bg-white border border-slate-200/80 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 shadow-xs text-slate-800 placeholder:text-slate-400 font-medium transition-all"
+              className="w-full pl-10 pr-4 py-2.5 text-xs rounded-md bg-white border border-slate-300 focus:border-slate-800 focus:outline-none text-slate-900 placeholder:text-slate-400 font-normal shadow-2xs"
             />
           </div>
 
-          {/* Filter */}
+          {/* Filter: No Emojis in Options */}
           <div className="md:col-span-4 relative">
-            <Filter className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400" />
+            <Filter className="w-3.5 h-3.5 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400" />
             <select
               value={filterVerdict}
               onChange={(e) => setFilterVerdict(e.target.value)}
-              className="w-full pl-11 pr-10 py-3 text-sm rounded-2xl cursor-pointer appearance-none bg-white border border-slate-200/80 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 shadow-xs text-slate-800 font-semibold transition-all"
+              className="w-full pl-9 pr-8 py-2.5 text-xs rounded-md cursor-pointer appearance-none bg-white border border-slate-300 focus:border-slate-800 focus:outline-none text-slate-800 font-semibold shadow-2xs"
             >
               <option value="ALL">All Verdicts</option>
-              <option value="AUTHENTIC">✓ Verified Authentic (≥80%)</option>
-              <option value="SUSPICIOUS">⚠ Suspicious (50-79%)</option>
-              <option value="COUNTERFEIT">✗ Likely Counterfeit (&lt;50%)</option>
+              <option value="AUTHENTIC">Verified Authentic (80% or higher)</option>
+              <option value="SUSPICIOUS">Suspicious (50-79%)</option>
+              <option value="COUNTERFEIT">Likely Counterfeit (Under 50%)</option>
             </select>
-            <ChevronDown className="w-4 h-4 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400" />
+            <ChevronDown className="w-3.5 h-3.5 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400" />
           </div>
-        </motion.div>
+        </div>
 
         {/* History Grid */}
         {filteredHistory.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredHistory.map((item, idx) => {
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {filteredHistory.map((item) => {
               const vs = getVerdictStyle(item.trustScore);
               const VerdictIcon = vs.icon;
 
               return (
-                <motion.div
+                <div
                   key={item.id}
                   onClick={() => onSelectResult(item)}
-                  className="group cursor-pointer p-6 rounded-3xl flex flex-col justify-between space-y-5 transition-all duration-300 bg-white border border-slate-200/80 hover:border-emerald-500/40 shadow-xs hover:shadow-xl"
-                  initial={{ opacity: 0, y: 20, scale: 0.97 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ duration: 0.5, delay: idx * 0.06, ease: [0.16, 1, 0.3, 1] }}
-                  whileHover={{ y: -5 }}
+                  className="group cursor-pointer p-5 rounded-md flex flex-col justify-between space-y-4 transition-colors bg-white border border-slate-200 hover:border-slate-400 shadow-2xs"
                 >
                   {/* Top: Hash + Verdict badge */}
                   <div className="flex items-center justify-between gap-2 flex-wrap">
-                    <div
-                      className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold bg-slate-100 border border-slate-200 text-slate-500"
-                    >
+                    <div className="flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-100 border border-slate-200 text-slate-600">
                       <Hash className="w-3 h-3 text-slate-400" />
-                      {(item.verificationHash || '0xverified').slice(0, 14)}…
+                      {(item.verificationHash || '0xverified').slice(0, 14)}
                     </div>
-                    <div
-                      className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider shadow-2xs"
-                      style={vs.badge}
-                    >
-                      <VerdictIcon className="w-3.5 h-3.5" />
+                    <div className={`flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider font-mono border ${vs.badge}`}>
+                      <VerdictIcon className="w-3 h-3" />
                       {vs.label}
                     </div>
                   </div>
 
                   {/* Product info */}
-                  <div className="flex items-center gap-4">
-                    <div
-                      className="w-16 h-16 rounded-2xl overflow-hidden shrink-0 flex items-center justify-center bg-slate-50 border border-slate-100 p-1.5"
-                    >
+                  <div className="flex items-center gap-3">
+                    <div className="w-14 h-14 rounded overflow-hidden shrink-0 flex items-center justify-center bg-slate-50 border border-slate-200 p-1">
                       {item.imageUrl ? (
                         <img
                           src={item.imageUrl}
                           alt={item.itemName}
                           referrerPolicy="no-referrer"
-                          className="max-h-full max-w-full object-contain rounded-xl group-hover:scale-105 transition-transform duration-500 mix-blend-multiply"
+                          className="max-h-full max-w-full object-contain mix-blend-multiply"
                         />
                       ) : (
-                        <Package className="w-7 h-7 text-slate-300" />
+                        <Package className="w-6 h-6 text-slate-300" />
                       )}
                     </div>
                     <div className="min-w-0 flex-1">
                       <h3
-                        className="font-bold text-sm truncate mb-0.5 text-slate-900 group-hover:text-emerald-700 transition-colors"
+                        className="font-bold text-xs truncate mb-0.5 text-slate-900 group-hover:text-emerald-700 transition-colors"
                         style={{ fontFamily: 'var(--font-heading)' }}
                       >
                         {item.itemName}
                       </h3>
-                      <p className="text-xs font-semibold truncate text-slate-500">
-                        {item.brand} · {item.category}
+                      <p className="text-[11px] font-medium truncate text-slate-500">
+                        {item.brand} | {item.category}
                       </p>
-                      <p className="flex items-center gap-1 text-[11px] mt-1.5 text-slate-400 font-medium">
+                      <p className="flex items-center gap-1 text-[10px] mt-1 text-slate-400 font-mono">
                         <Clock className="w-3 h-3" />
                         {item.timestamp}
                       </p>
@@ -254,59 +182,47 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
                   </div>
 
                   {/* Score bar */}
-                  <div className="space-y-2">
+                  <div className="space-y-1.5">
                     <div className="flex justify-between items-center text-xs">
-                      <span className="font-bold uppercase tracking-wider text-slate-400">Authenticity Trust Gauge</span>
-                      <span className="font-black font-mono text-base" style={{ color: vs.dot }}>
+                      <span className="font-semibold text-slate-600 font-mono text-[10px] uppercase">Authenticity Score</span>
+                      <span className="font-bold font-mono text-sm text-slate-900">
                         {item.trustScore}%
                       </span>
                     </div>
-                    <div className="metric-track">
+                    <div className="w-full h-1.5 bg-slate-100 rounded overflow-hidden">
                       <div
-                        className="metric-fill transition-all duration-700"
+                        className="h-full rounded"
                         style={{
                           width: `${item.trustScore}%`,
-                          background: `linear-gradient(90deg, ${vs.bar}88, ${vs.bar})`,
-                          boxShadow: `0 0 12px ${vs.barGlow}`,
+                          backgroundColor: vs.bar,
                         }}
                       />
                     </div>
                   </div>
 
                   {/* Footer CTA */}
-                  <div
-                    className="flex items-center justify-between text-xs font-bold pt-3 border-t border-slate-100 text-slate-500 group-hover:text-emerald-700 transition-colors"
-                  >
-                    <span>View Forensic Report</span>
-                    <ArrowRight
-                      className="w-4 h-4 transition-transform group-hover:translate-x-1"
-                    />
+                  <div className="flex items-center justify-between text-xs font-semibold pt-3 border-t border-slate-100 text-slate-600 group-hover:text-slate-950 transition-colors">
+                    <span>Inspect Full Report</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
                   </div>
-                </motion.div>
+                </div>
               );
             })}
           </div>
         ) : (
-          <motion.div
-            className="py-20 rounded-3xl text-center space-y-4 bg-white border border-slate-200/80 shadow-xs"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <div
-              className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-2 bg-slate-100 border border-slate-200"
-            >
-              <History className="w-7 h-7 text-slate-400" />
+          <div className="py-16 rounded-md text-center space-y-3 bg-white border border-slate-200">
+            <div className="w-12 h-12 rounded-md bg-slate-100 border border-slate-200 flex items-center justify-center mx-auto text-slate-400">
+              <History className="w-6 h-6" />
             </div>
-            <p className="text-lg font-bold text-slate-800" style={{ fontFamily: 'var(--font-heading)' }}>
-              {searchTerm || filterVerdict !== 'ALL' ? 'No scans match your filter' : 'Your vault is empty'}
+            <p className="text-sm font-bold text-slate-800" style={{ fontFamily: 'var(--font-heading)' }}>
+              {searchTerm || filterVerdict !== 'ALL' ? 'No records match your filter criteria' : 'Your inspection vault is empty'}
             </p>
-            <p className="text-sm max-w-sm mx-auto text-slate-500">
+            <p className="text-xs max-w-sm mx-auto text-slate-500">
               {searchTerm || filterVerdict !== 'ALL'
-                ? 'Try adjusting your search query or verdict filters to find records.'
-                : 'Run an AI authenticity inspection on the Inspector dashboard to log provenance records here.'}
+                ? 'Try adjusting your search query or verdict filters.'
+                : 'Run an authenticity inspection on the Inspector dashboard to log provenance records.'}
             </p>
-          </motion.div>
+          </div>
         )}
       </div>
     </div>

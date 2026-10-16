@@ -6,7 +6,6 @@ import {
   Share2,
   ExternalLink,
   CheckCircle2,
-  XCircle,
   Camera,
   Zap,
   Shield,
@@ -14,12 +13,9 @@ import {
   Weight,
   Tag,
   Battery,
-  Sparkles,
-  TrendingUp,
   AlertTriangle,
-  ChevronRight,
+  FileText,
 } from 'lucide-react';
-import { motion } from 'motion/react';
 import { ProductItem, InsightIconType } from '../types';
 
 interface ProductDetailViewProps {
@@ -27,7 +23,7 @@ interface ProductDetailViewProps {
   onBack: () => void;
 }
 
-const InsightIcon: React.FC<{ type: InsightIconType; className?: string }> = ({ type, className = 'w-5 h-5' }) => {
+const InsightIcon: React.FC<{ type: InsightIconType; className?: string }> = ({ type, className = 'w-4 h-4' }) => {
   const map: Record<InsightIconType, React.ReactNode> = {
     camera: <Camera className={className} />,
     star: <Star className={className} />,
@@ -44,8 +40,8 @@ const InsightIcon: React.FC<{ type: InsightIconType; className?: string }> = ({ 
 };
 
 const ScoreDonut: React.FC<{ score: number; label: string }> = ({ score, label }) => {
-  const radius = 56;
-  const stroke = 9;
+  const radius = 54;
+  const stroke = 8;
   const normalizedRadius = radius - stroke / 2;
   const circumference = 2 * Math.PI * normalizedRadius;
   const offset = circumference - (score / 100) * circumference;
@@ -59,354 +55,262 @@ const ScoreDonut: React.FC<{ score: number; label: string }> = ({ score, label }
         />
         <circle
           cx={radius} cy={radius} r={normalizedRadius}
-          stroke="url(#scoreGradDetailSenior)" strokeWidth={stroke} fill="none"
+          stroke="#059669" strokeWidth={stroke} fill="none"
           strokeLinecap="round"
           strokeDasharray={`${circumference} ${circumference}`}
           strokeDashoffset={offset}
-          style={{ transition: 'stroke-dashoffset 1.4s cubic-bezier(0.16, 1, 0.3, 1)' }}
+          style={{ transition: 'stroke-dashoffset 1s ease' }}
         />
-        <defs>
-          <linearGradient id="scoreGradDetailSenior" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#05DF72" />
-            <stop offset="100%" stopColor="#00C865" />
-          </linearGradient>
-        </defs>
       </svg>
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
-        <span className="text-3xl font-black font-mono text-slate-900 leading-none">{score}</span>
+        <span className="text-2xl font-black font-mono text-slate-900 leading-none">{score}</span>
       </div>
-      <span className="text-xs font-black text-emerald-600 tracking-wider uppercase mt-2">{label}</span>
+      <span className="text-xs font-bold text-emerald-800 tracking-wider uppercase mt-1 font-mono">{label}</span>
     </div>
   );
 };
 
-const ScoreBar: React.FC<{ label: string; value: number; colorGrad?: string; delay?: number }> = ({ label, value, colorGrad = 'from-emerald-500 to-emerald-400', delay = 0 }) => (
-  <div className="space-y-1.5">
-    <div className="flex justify-between items-center text-sm font-semibold">
+const ScoreBar: React.FC<{ label: string; value: number }> = ({ label, value }) => (
+  <div className="space-y-1">
+    <div className="flex justify-between items-center text-xs font-semibold">
       <span className="text-slate-700">{label}</span>
-      <span className="text-emerald-600 font-black font-mono">{value}%</span>
+      <span className="text-emerald-800 font-bold font-mono">{value}%</span>
     </div>
-    <div className="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden">
-      <motion.div
-        className={`h-full rounded-full bg-gradient-to-r ${colorGrad}`}
-        initial={{ width: 0 }}
-        animate={{ width: `${value}%` }}
-        transition={{ duration: 1, delay, ease: [0.16, 1, 0.3, 1] }}
+    <div className="h-2 w-full bg-slate-100 rounded overflow-hidden">
+      <div
+        className="h-full bg-emerald-600 rounded transition-all duration-500"
+        style={{ width: `${value}%` }}
       />
     </div>
   </div>
 );
 
-const SentimentBar: React.FC<{ label: string; value: number; colorGrad: string; delay?: number }> = ({ label, value, colorGrad, delay = 0 }) => (
-  <div className="space-y-1.5">
-    <div className="flex justify-between items-center text-sm font-semibold">
+const SentimentBar: React.FC<{ label: string; value: number; colorClass: string }> = ({ label, value, colorClass }) => (
+  <div className="space-y-1">
+    <div className="flex justify-between items-center text-xs font-semibold">
       <span className="text-slate-600">{label}</span>
-      <span className="font-black font-mono text-slate-900">{value}%</span>
+      <span className="font-bold font-mono text-slate-900">{value}%</span>
     </div>
-    <div className="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden">
-      <motion.div 
-        className={`h-full rounded-full bg-gradient-to-r ${colorGrad}`} 
-        initial={{ width: 0 }}
-        animate={{ width: `${value}%` }}
-        transition={{ duration: 1, delay, ease: [0.16, 1, 0.3, 1] }}
+    <div className="h-2 w-full bg-slate-100 rounded overflow-hidden">
+      <div 
+        className={`h-full rounded ${colorClass} transition-all duration-500`}
+        style={{ width: `${value}%` }}
       />
     </div>
   </div>
 );
 
 const badgeStyles: Record<string, string> = {
-  'Top Rated':    'bg-amber-500/10 text-amber-700 border-amber-500/25',
-  'Budget Pick':  'bg-sky-500/10 text-sky-700 border-sky-500/25',
-  'Trending':     'bg-indigo-500/10 text-indigo-700 border-indigo-500/25',
-  'Premium Pick': 'bg-emerald-500/10 text-emerald-700 border-emerald-500/25',
-  'Best Value':   'bg-violet-500/10 text-violet-700 border-violet-500/25',
+  'Top Rated':    'bg-amber-50 text-amber-800 border-amber-200',
+  'Budget Pick':  'bg-slate-100 text-slate-700 border-slate-200',
+  'Trending':     'bg-emerald-50 text-emerald-800 border-emerald-200',
+  'Premium Pick': 'bg-slate-900 text-white border-slate-900',
+  'Best Value':   'bg-blue-50 text-blue-800 border-blue-200',
 };
 
 export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, onBack }) => {
   const [saved, setSaved] = useState(false);
 
   const scoreLabel =
-    product.trustScore >= 90 ? 'Highly Recommended' :
-    product.trustScore >= 75 ? 'Recommended' :
-    product.trustScore >= 60 ? 'Proceed with Caution' : 'High Risk';
+    product.trustScore >= 90 ? 'Verified Authentic' :
+    product.trustScore >= 75 ? 'Authentic Standard' :
+    product.trustScore >= 60 ? 'Inspection Caution' : 'High Replica Risk';
 
   const positiveInsights = product.reviewInsights.filter(i => i.sentiment === 'positive');
   const negativeInsights = product.reviewInsights.filter(i => i.sentiment === 'negative');
 
   return (
-    <motion.div 
-      className="w-full bg-[var(--page-light)] min-h-screen pt-24 pb-20"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.4 }}
-    >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+    <div className="w-full bg-slate-50 min-h-screen pt-24 pb-20 text-slate-900">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
 
         {/* Back Button */}
-        <motion.button
+        <button
           onClick={onBack}
-          className="flex items-center gap-2 text-gray-500 hover:text-[var(--text-primary)] transition-colors text-sm font-bold group cursor-pointer"
-          whileHover={{ x: -3 }}
+          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-white border border-slate-200 text-slate-700 hover:text-slate-950 hover:border-slate-300 text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
         >
-          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-          Back to Products
-        </motion.button>
+          <ArrowLeft className="w-4 h-4" />
+          Back to Benchmark Catalog
+        </button>
 
-        {/* ── Hero Block ─────────────────────────────────────────── */}
-        <div className="rounded-3xl bg-white border border-[var(--border-card)] shadow-md overflow-hidden">
+        {/* Hero Specimen Container */}
+        <div className="rounded-md bg-white border border-slate-200 shadow-2xs overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
 
-            {/* Image */}
-            <div className="relative h-80 md:h-auto min-h-[400px] overflow-hidden bg-gray-50/50 p-8 flex items-center justify-center">
+            {/* Specimen Photography */}
+            <div className="relative h-80 md:h-auto min-h-[380px] overflow-hidden bg-slate-50/70 p-8 flex items-center justify-center border-b md:border-b-0 md:border-r border-slate-200">
               <img
                 src={product.imageUrl}
                 alt={product.name}
                 referrerPolicy="no-referrer"
-                className="max-w-full max-h-full object-contain mix-blend-multiply drop-shadow-xl transition-transform duration-500 hover:scale-105"
+                className="max-w-full max-h-full object-contain mix-blend-multiply"
               />
-              <span className={`absolute top-6 left-6 px-3 py-1 rounded-full text-xs font-bold border ${badgeStyles[product.badge] || 'bg-gray-100 text-gray-600 border-gray-200'}`}>
+              <span className={`absolute top-4 left-4 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider font-mono border shadow-2xs ${badgeStyles[product.badge] || 'bg-slate-100 text-slate-700 border-slate-200'}`}>
                 {product.badge}
               </span>
             </div>
 
-            {/* Info */}
-            <div className="p-8 sm:p-10 flex flex-col justify-between gap-6 border-l border-gray-100">
-              <div className="space-y-5">
-                {/* Trust Score Badge */}
-                <div className="inline-flex items-center gap-4 px-5 py-3 rounded-2xl bg-[var(--green-primary)]/5 border border-[var(--green-primary)]/20">
-                  <div className="text-center">
-                    <p className="text-[10px] text-[var(--green-primary)] uppercase tracking-widest font-bold mb-1">Trust Score</p>
-                    <p className="text-3xl font-extrabold text-[var(--green-primary)] leading-none">{product.trustScore}</p>
+            {/* Specimen Telemetry & Details */}
+            <div className="p-6 sm:p-8 flex flex-col justify-between gap-6">
+              <div className="space-y-4">
+                
+                {/* Trust Score Header Capsule */}
+                <div className="inline-flex items-center gap-4 px-4 py-2.5 rounded-md bg-slate-50 border border-slate-200">
+                  <div className="text-left">
+                    <p className="text-[10px] text-slate-500 uppercase tracking-wider font-mono font-bold">Authenticity Score</p>
+                    <p className="text-2xl font-extrabold text-emerald-800 font-mono leading-none">{product.trustScore}%</p>
                   </div>
-                  <div className="w-px h-12 bg-gray-200" />
+                  <div className="w-px h-8 bg-slate-200" />
                   <div>
-                    <p className="text-sm font-bold text-[var(--text-primary)] flex items-center gap-1.5">
-                      <Sparkles className="w-4 h-4 text-[var(--green-primary)]" /> {scoreLabel}
+                    <p className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> {scoreLabel}
                     </p>
-                    <p className="text-xs text-gray-500 mt-1 font-medium">Verified by 95k+ data points</p>
+                    <p className="text-[11px] text-slate-500 font-medium">Evaluated against verified brand standards</p>
                   </div>
                 </div>
 
-                {/* Brand + Name */}
+                {/* Brand + Title */}
                 <div>
-                  <span className="text-xs font-bold text-[var(--green-primary)] uppercase tracking-widest">{product.brand}</span>
-                  <h1 className="text-3xl font-extrabold text-[var(--text-primary)] mt-1.5 leading-tight" style={{ fontFamily: 'var(--font-heading)' }}>{product.name}</h1>
+                  <p className="text-xs font-bold font-mono uppercase tracking-wider text-emerald-800">{product.brand}</p>
+                  <h1 className="text-xl sm:text-2xl font-bold text-slate-950 mt-1 leading-snug" style={{ fontFamily: 'var(--font-heading)' }}>
+                    {product.name}
+                  </h1>
                 </div>
 
-                {/* Rating */}
-                <div className="flex items-center gap-2.5">
+                <p className="text-xs leading-relaxed text-slate-600">
+                  {product.shortDescription}
+                </p>
+
+                {/* Consumer Rating */}
+                <div className="flex items-center gap-2">
                   <div className="flex items-center gap-0.5">
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
-                        className={`w-4.5 h-4.5 ${i < Math.floor(product.rating) ? 'text-amber-400 fill-amber-400' : 'text-gray-200 fill-gray-200'}`}
+                        className={`w-3.5 h-3.5 ${i < Math.floor(product.rating) ? 'text-amber-500 fill-amber-500' : 'text-slate-200 fill-slate-200'}`}
                       />
                     ))}
                   </div>
-                  <span className="text-amber-500 font-bold text-[15px]">{product.rating}</span>
-                  <span className="text-gray-500 text-sm font-medium">({product.reviewCount.toLocaleString()} reviews)</span>
+                  <span className="text-amber-800 font-bold font-mono text-xs">{product.rating}</span>
+                  <span className="text-slate-400 text-xs font-medium">({product.reviewCount.toLocaleString()} indexed reviews)</span>
                 </div>
 
                 {/* Price */}
                 <div className="flex items-baseline gap-3 flex-wrap">
-                  <span className="text-4xl font-extrabold text-[var(--text-primary)]">{product.price}</span>
+                  <span className="text-2xl font-extrabold text-slate-950 font-mono">{product.price}</span>
                   {product.originalPrice && (
-                    <span className="text-gray-400 line-through text-lg font-bold">{product.originalPrice}</span>
+                    <span className="text-slate-400 line-through text-sm font-mono font-medium">{product.originalPrice}</span>
                   )}
                   {product.savings && (
-                    <span className="px-2 py-1 rounded bg-[var(--green-primary)]/10 text-[var(--green-primary)] text-xs font-bold">
+                    <span className="px-1.5 py-0.5 rounded bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] font-mono font-bold">
                       {product.savings}
                     </span>
                   )}
                 </div>
               </div>
 
-              {/* CTAs */}
-              <div className="flex items-center gap-3 flex-wrap mt-4 pt-6 border-t border-gray-100">
-                <button className="flex items-center gap-2 px-6 py-3.5 rounded-full bg-[var(--text-primary)] hover:bg-gray-800 text-white font-bold text-sm shadow-md transition-all active:scale-95 cursor-pointer">
-                  <ExternalLink className="w-4 h-4" />
-                  Buy Product
+              {/* Action Buttons: Crisp Rectangular (No Pills) */}
+              <div className="flex items-center gap-2.5 flex-wrap pt-4 border-t border-slate-100">
+                <button className="flex items-center gap-1.5 px-4 py-2 rounded-md bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs tracking-wide transition-colors cursor-pointer shadow-2xs">
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  View Original Listing
                 </button>
-                <button className="flex items-center gap-2 px-5 py-3.5 rounded-full bg-white hover:bg-gray-50 text-gray-700 font-bold text-sm border border-gray-200 shadow-sm transition-all cursor-pointer">
-                  <Share2 className="w-4 h-4" /> Share
+                <button className="flex items-center gap-1.5 px-3.5 py-2 rounded-md bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs border border-slate-200 transition-colors cursor-pointer">
+                  <Share2 className="w-3.5 h-3.5" /> Share Report
                 </button>
                 <button
                   onClick={() => setSaved(!saved)}
-                  className={`flex items-center gap-2 px-5 py-3.5 rounded-full font-bold text-sm border transition-all shadow-sm cursor-pointer ${saved ? 'bg-red-50 text-red-500 border-red-200' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'}`}
+                  className={`flex items-center gap-1.5 px-3.5 py-2 rounded-md font-semibold text-xs border transition-colors cursor-pointer ${saved ? 'bg-rose-50 text-rose-700 border-rose-200' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}`}
                 >
-                  <Heart className={`w-4 h-4 ${saved ? 'fill-red-500' : ''}`} />
-                  {saved ? 'Saved' : 'Save'}
+                  <Heart className={`w-3.5 h-3.5 ${saved ? 'fill-rose-700' : ''}`} />
+                  {saved ? 'Saved in Vault' : 'Save'}
                 </button>
               </div>
             </div>
+
           </div>
         </div>
 
-        {/* ── Score Breakdown ────────────────────────────────────── */}
-        <section className="rounded-3xl bg-white border border-[var(--border-card)] shadow-sm p-8 sm:p-10">
-          <div className="text-center space-y-2 mb-10">
-            <h2 className="text-3xl font-extrabold text-[var(--text-primary)]" style={{ fontFamily: 'var(--font-heading)' }}>
-              Score <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--green-primary)] to-[var(--green-accent-from)] italic" style={{ fontFamily: 'var(--font-serif)' }}>Breakdown.</span>
+        {/* Score Breakdown Section */}
+        <section className="rounded-md bg-white border border-slate-200 shadow-2xs p-6 sm:p-8 space-y-6">
+          <div className="space-y-1">
+            <h2 className="text-lg font-bold text-slate-900 tracking-tight" style={{ fontFamily: 'var(--font-heading)' }}>
+              Inspection Score Breakdown
             </h2>
-            <p className="text-[var(--text-muted)] text-sm">AI analyzes key factors to reveal the product's true performance score.</p>
+            <p className="text-slate-500 text-xs">Multi-vector analysis comparing physical craftsmanship and buyer consensus.</p>
           </div>
 
-          <div className="flex flex-col md:flex-row items-center gap-12 md:gap-20 max-w-4xl mx-auto">
-            {/* Donut */}
-            <div className="relative flex-shrink-0">
+          <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 max-w-4xl">
+            <div className="flex-shrink-0">
               <ScoreDonut score={product.trustScore} label={scoreLabel} />
             </div>
 
-            {/* Dimension Bars */}
-            <div className="flex-1 w-full space-y-6">
-              <ScoreBar label="Build Quality & Craftsmanship" value={product.scoreDimensions.buildQuality} colorGrad="from-emerald-500 to-emerald-400" delay={0.1} />
-              <ScoreBar label="Hardware & Material Performance" value={product.scoreDimensions.performance} colorGrad="from-indigo-500 to-indigo-400" delay={0.2} />
-              <ScoreBar label="Value for Money" value={product.scoreDimensions.valueForMoney} colorGrad="from-sky-500 to-sky-400" delay={0.3} />
-              <ScoreBar label="Buyer Consensus & Satisfaction" value={product.scoreDimensions.userSatisfaction} colorGrad="from-violet-500 to-violet-400" delay={0.4} />
+            <div className="flex-1 w-full space-y-3">
+              <ScoreBar label="Stitching Pitch Uniformity" value={product.features.buildQuality} />
+              <ScoreBar label="Typography & Logo Debossing" value={product.features.performance} />
+              <ScoreBar label="Hardware Finish & Electroplating" value={product.features.batteryLife} />
+              <ScoreBar label="Serial Matrix Validation" value={product.features.design} />
+              <ScoreBar label="Review Text Authenticity" value={product.features.valueForMoney} />
             </div>
           </div>
         </section>
 
-        {/* ── Detailed Review Insights (Pros / Cons) ────────────── */}
-        <section className="space-y-8">
-          <div className="text-center space-y-2">
-            <h2 className="text-3xl font-extrabold text-[var(--text-primary)]" style={{ fontFamily: 'var(--font-heading)' }}>
-              Review <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--green-primary)] to-[var(--green-accent-from)] italic" style={{ fontFamily: 'var(--font-serif)' }}>Insights.</span>
-            </h2>
-            <p className="text-[var(--text-muted)] text-sm">Deep dive into user sentiment and common feedback patterns.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Positives */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 text-[var(--green-primary)] font-bold text-lg mb-2">
-                <CheckCircle2 className="w-6 h-6" />
-                What Buyers Love
-              </div>
-              {positiveInsights.map((insight, i) => (
-                <div key={i} className="p-5 rounded-2xl bg-white border border-[var(--border-card)] shadow-sm hover:shadow-md hover:border-[var(--green-primary)]/30 transition-all group">
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-[var(--green-primary)]/10 border border-[var(--green-primary)]/20 flex items-center justify-center text-[var(--green-primary)] flex-shrink-0 group-hover:scale-110 transition-transform">
-                      <InsightIcon type={insight.iconType} className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h4 className="text-[15px] font-bold text-[var(--text-primary)]">{insight.title}</h4>
-                      <p className="text-[13px] text-gray-500 mt-1.5 leading-relaxed font-medium">{insight.description}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Negatives */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 text-red-500 font-bold text-lg mb-2">
-                <XCircle className="w-6 h-6" />
-                What Could Be Better
-              </div>
-              {negativeInsights.map((insight, i) => (
-                <div key={i} className="p-5 rounded-2xl bg-white border border-[var(--border-card)] shadow-sm hover:shadow-md hover:border-red-200 transition-all group">
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-red-500 flex-shrink-0 group-hover:scale-110 transition-transform">
-                      <InsightIcon type={insight.iconType} className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h4 className="text-[15px] font-bold text-[var(--text-primary)]">{insight.title}</h4>
-                      <p className="text-[13px] text-gray-500 mt-1.5 leading-relaxed font-medium">{insight.description}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── AI Verdict Banner ─────────────────────────────────── */}
-        <section className="relative overflow-hidden rounded-3xl p-8 sm:p-10 bg-[var(--text-primary)] border border-gray-800 shadow-xl">
-          <div className="absolute inset-0 bg-gradient-to-br from-[var(--green-primary)]/15 to-transparent pointer-events-none" />
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 relative z-10">
-            <div className="w-16 h-16 rounded-2xl bg-[var(--green-primary)]/20 border border-[var(--green-primary)]/30 flex items-center justify-center text-[var(--green-primary)] flex-shrink-0">
-              <Sparkles className="w-8 h-8" />
-            </div>
-            <div>
-              <h3 className="text-xl font-bold text-white mb-2" style={{ fontFamily: 'var(--font-heading)' }}>The AI Verdict</h3>
-              <p className="text-gray-300 leading-relaxed text-sm sm:text-base font-medium">{product.aiVerdict}</p>
-            </div>
-          </div>
-        </section>
-
-        {/* ── Sentiment + Hidden Patterns ───────────────────────── */}
+        {/* Sentiment Analysis & NLP Verification */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-          {/* Sentiment Breakdown */}
-          <div className="rounded-3xl bg-white border border-[var(--border-card)] shadow-sm p-6 sm:p-8 space-y-6">
-            <h3 className="text-xl font-extrabold text-[var(--text-primary)]" style={{ fontFamily: 'var(--font-heading)' }}>Sentiment Breakdown</h3>
-
-            <div className="space-y-5">
-              <SentimentBar label="Positive Feedback" value={product.sentimentBreakdown.positive} colorGrad="from-emerald-500 to-emerald-400" delay={0.1} />
-              <SentimentBar label="Neutral Feedback" value={product.sentimentBreakdown.neutral} colorGrad="from-slate-400 to-slate-300" delay={0.2} />
-              <SentimentBar label="Negative Feedback" value={product.sentimentBreakdown.negative} colorGrad="from-rose-500 to-rose-400" delay={0.3} />
+          
+          {/* Sentiment Distribution */}
+          <div className="rounded-md bg-white border border-slate-200 p-6 space-y-5 shadow-2xs">
+            <div className="space-y-1">
+              <h3 className="text-base font-bold text-slate-900 tracking-tight" style={{ fontFamily: 'var(--font-heading)' }}>
+                Review Sentiment Analysis
+              </h3>
+              <p className="text-xs text-slate-500">Natural language classification of buyer consensus across indexed reviews.</p>
             </div>
 
-            <p className="text-[11px] text-gray-500 leading-relaxed p-3 rounded-xl bg-gray-50 border border-gray-100 font-medium">
-              Sentiment is generated from buyer-review snippets VeriLens AI 1.0 analyzed. Review total includes available counts from verified resale platforms.
-            </p>
-
-            <div className="grid grid-cols-2 gap-3 pt-2">
-              <div className="text-center">
-                <p className="text-2xl font-black text-[var(--text-primary)]">{product.sentimentBreakdown.reviewsAnalyzed.toLocaleString()}</p>
-                <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wide mt-1">Reviews Analyzed</p>
-              </div>
-              <div className="text-center">
-                <p className="text-2xl font-black text-[var(--text-primary)]">{product.sentimentBreakdown.storesChecked}</p>
-                <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wide mt-1">Platforms Checked</p>
-              </div>
+            <div className="space-y-3">
+              <SentimentBar label="Positive Sentiment" value={product.sentimentBreakdown.positive} colorClass="bg-emerald-600" />
+              <SentimentBar label="Neutral Assessment" value={product.sentimentBreakdown.neutral} colorClass="bg-slate-400" />
+              <SentimentBar label="Negative / Counterfeit Flags" value={product.sentimentBreakdown.negative} colorClass="bg-rose-600" />
             </div>
 
-            <div className="pt-4 border-t border-gray-100">
-              <h4 className="text-sm font-bold text-[var(--text-primary)] mb-1.5">Most Discussed Feature</h4>
-              <p className="text-sm text-[var(--green-primary)] font-bold">{product.mostDiscussedFeature}</p>
+            <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+              <span className="font-semibold text-slate-700">Most Discussed Attribute:</span>
+              <span className="font-bold text-emerald-800 font-mono">{product.mostDiscussedFeature}</span>
             </div>
           </div>
 
-          {/* Hidden Patterns + Curiosity */}
-          <div className="space-y-6 flex flex-col">
-            {/* Hidden Pattern */}
-            <div className="rounded-3xl bg-[#F4F1FB] border border-[#E3D9F6] p-6 sm:p-8 space-y-4 flex-1">
-              <div className="flex items-center justify-between">
-                <span className="px-3 py-1 rounded-full bg-purple-100 text-purple-700 text-[11px] font-bold uppercase tracking-wider">
-                  Premium AI Insight
-                </span>
-                <Sparkles className="w-5 h-5 text-purple-500" />
-              </div>
-              <h3 className="text-lg font-bold text-purple-900" style={{ fontFamily: 'var(--font-heading)' }}>Hidden Buyer Patterns Discovered</h3>
-              <p className="text-purple-800/80 text-sm leading-relaxed italic font-medium">"{product.hiddenPattern}"</p>
-              <div className="flex items-center gap-3 pt-4 mt-auto border-t border-purple-200/50">
-                <div className="w-8 h-8 rounded-lg bg-purple-200 text-purple-700 flex items-center justify-center">
-                  <Zap className="w-4 h-4" />
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-purple-900">AI Intelligence Engine</p>
-                  <p className="text-[10px] text-purple-700 uppercase tracking-wide font-semibold mt-0.5">Pattern Recognition Active</p>
-                </div>
-              </div>
+          {/* Forensic Diagnostic Notes */}
+          <div className="rounded-md bg-white border border-slate-200 p-6 space-y-4 shadow-2xs">
+            <div className="space-y-1">
+              <h3 className="text-base font-bold text-slate-900 tracking-tight" style={{ fontFamily: 'var(--font-heading)' }}>
+                Forensic Pattern Analysis
+              </h3>
+              <p className="text-xs text-slate-500">Documented anomalies and manufacturing cues identified in this listing.</p>
             </div>
 
-            {/* Curiosity Trigger */}
-            <div className="rounded-3xl bg-[#FEF6E1] border border-[#FDE6A4] p-6 sm:p-8 space-y-3">
-              <span className="px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-[11px] font-bold uppercase tracking-wider inline-block mb-1">
-                Curiosity Trigger
-              </span>
-              <h4 className="text-lg font-bold text-amber-900 flex items-center gap-2" style={{ fontFamily: 'var(--font-heading)' }}>
-                <AlertTriangle className="w-5 h-5 text-amber-500" />
-                What surprised our AI?
-              </h4>
-              <p className="text-amber-800/80 text-sm leading-relaxed font-medium">{product.curiosityTrigger}</p>
+            <div className="p-3.5 rounded bg-slate-50 border border-slate-200 text-xs space-y-1.5">
+              <div className="font-bold text-slate-900 flex items-center gap-1.5">
+                <FileText className="w-3.5 h-3.5 text-slate-600" />
+                Physical Craftsmanship Pattern
+              </div>
+              <p className="text-slate-600 leading-relaxed italic">
+                "{product.hiddenPattern}"
+              </p>
+            </div>
+
+            <div className="p-3.5 rounded bg-amber-50/70 border border-amber-200 text-xs space-y-1.5">
+              <div className="font-bold text-amber-950 flex items-center gap-1.5">
+                <AlertTriangle className="w-3.5 h-3.5 text-amber-700" />
+                Counterfeit Risk Vector
+              </div>
+              <p className="text-amber-900 leading-relaxed">
+                {product.curiosityTrigger}
+              </p>
             </div>
           </div>
+
         </section>
 
       </div>
-    </motion.div>
+    </div>
   );
 };

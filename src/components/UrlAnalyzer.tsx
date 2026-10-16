@@ -245,17 +245,15 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
             autoComplete="off"
             spellCheck="false"
           />
-          <motion.button
+          <button
             onClick={handleAnalyze}
             disabled={!url.trim()}
-            className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold active:scale-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shrink-0 whitespace-nowrap btn-neon"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.96 }}
+            className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-md text-xs sm:text-sm font-bold transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shrink-0 whitespace-nowrap bg-slate-900 hover:bg-slate-800 text-white shadow-2xs"
           >
-            <Sparkles className="w-4 h-4 shrink-0" />
-            <span className="hidden sm:inline">Analyse with AI</span>
-            <span className="sm:hidden">Analyse</span>
-          </motion.button>
+            <Search className="w-4 h-4 shrink-0" />
+            <span className="hidden sm:inline">Inspect Listing</span>
+            <span className="sm:hidden">Inspect</span>
+          </button>
         </div>
 
         {status === 'error' && errorMsg && (
