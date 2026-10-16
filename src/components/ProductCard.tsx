@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Star, Heart, Sparkles, ArrowRight, ShieldCheck } from 'lucide-react';
-import { motion } from 'motion/react';
+import { Star, Heart, ArrowRight, ShieldCheck } from 'lucide-react';
 import { ProductItem } from '../types';
 
 interface ProductCardProps {
@@ -9,11 +8,11 @@ interface ProductCardProps {
 }
 
 const badgeStyles: Record<string, string> = {
-  'Top Rated':    'bg-amber-500/10 text-amber-700 border-amber-500/25',
-  'Budget Pick':  'bg-sky-500/10 text-sky-700 border-sky-500/25',
-  'Trending':     'bg-indigo-500/10 text-indigo-700 border-indigo-500/25',
-  'Premium Pick': 'bg-emerald-500/10 text-emerald-700 border-emerald-500/25',
-  'Best Value':   'bg-violet-500/10 text-violet-700 border-violet-500/25',
+  'Top Rated':    'bg-amber-50 text-amber-800 border-amber-200',
+  'Budget Pick':  'bg-slate-100 text-slate-700 border-slate-200',
+  'Trending':     'bg-emerald-50 text-emerald-800 border-emerald-200',
+  'Premium Pick': 'bg-slate-900 text-white border-slate-900',
+  'Best Value':   'bg-blue-50 text-blue-800 border-blue-200',
 };
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, onView }) => {
@@ -22,77 +21,72 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onView }) => 
   const getScoreBadge = (score: number) => {
     if (score >= 90) {
       return {
-        bg: 'bg-emerald-50 text-emerald-900 border-emerald-300 shadow-[0_0_10px_rgba(0,240,139,0.25)]',
-        dot: 'bg-[#00F08B] shadow-[0_0_6px_#00F08B]',
-        label: 'SPEC A',
+        bg: 'bg-emerald-50 text-emerald-900 border-emerald-200',
+        dot: 'bg-emerald-600',
+        label: 'VERIFIED GRADE A',
       };
     }
     if (score >= 75) {
       return {
-        bg: 'bg-indigo-50 text-indigo-900 border-indigo-300 shadow-[0_0_10px_rgba(99,102,241,0.2)]',
-        dot: 'bg-[#6366F1] shadow-[0_0_6px_#6366F1]',
-        label: 'SPEC B',
+        bg: 'bg-slate-100 text-slate-800 border-slate-300',
+        dot: 'bg-slate-600',
+        label: 'VERIFIED GRADE B',
       };
     }
     return {
-      bg: 'bg-amber-50 text-amber-900 border-amber-300 shadow-[0_0_10px_rgba(255,184,0,0.25)]',
-      dot: 'bg-[#FFB800] shadow-[0_0_6px_#FFB800]',
-      label: 'RISK',
+      bg: 'bg-amber-50 text-amber-900 border-amber-200',
+      dot: 'bg-amber-600',
+      label: 'COUNTERFEIT RISK',
     };
   };
 
   const scoreBadge = getScoreBadge(product.trustScore);
 
   return (
-    <motion.div 
-      className="group rounded-3xl bg-white border border-slate-200/80 hover:border-emerald-500/40 transition-all duration-300 overflow-hidden shadow-xs hover:shadow-xl flex flex-col"
-      whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
-    >
-      {/* Image Container with Titanium Surface */}
-      <div className="relative h-56 overflow-hidden bg-slate-50/80 border-b border-slate-100 p-6 flex items-center justify-center">
+    <div className="group rounded-md bg-white border border-slate-200 hover:border-slate-400 transition-all duration-200 overflow-hidden shadow-2xs flex flex-col">
+      {/* Image Container with Clean Surface */}
+      <div className="relative h-52 overflow-hidden bg-slate-50 border-b border-slate-100 p-5 flex items-center justify-center">
         <img
           src={product.imageUrl}
           alt={product.name}
           referrerPolicy="no-referrer"
-          className="w-full h-full object-contain group-hover:scale-108 group-hover:brightness-105 transition-all duration-500 mix-blend-multiply"
+          className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-103 mix-blend-multiply"
         />
         
-        {/* Badge top-left */}
-        <span className={`absolute top-3 left-3 px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-wider border shadow-xs ${badgeStyles[product.badge] || 'bg-slate-100 text-slate-700 border-slate-200'}`}>
+        {/* Badge top-left (Clean rectangular badge, no pill) */}
+        <span className={`absolute top-3 left-3 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border shadow-2xs font-mono ${badgeStyles[product.badge] || 'bg-slate-100 text-slate-700 border-slate-200'}`}>
           {product.badge}
         </span>
 
-        {/* High-Precision Trust Score top-right */}
-        <div className="absolute top-3 right-12">
-          <span className={`px-2.5 py-1 rounded-full text-[11px] font-black font-mono border shadow-xs flex items-center gap-1.5 ${scoreBadge.bg}`}>
+        {/* Trust Score top-right */}
+        <div className="absolute top-3 right-11">
+          <span className={`px-2 py-0.5 rounded text-[11px] font-bold font-mono border shadow-2xs flex items-center gap-1.5 ${scoreBadge.bg}`}>
             <span className={`w-1.5 h-1.5 rounded-full ${scoreBadge.dot}`} />
             {product.trustScore}%
           </span>
         </div>
 
         {/* Save button */}
-        <motion.button
+        <button
           onClick={(e) => { e.stopPropagation(); setSaved(!saved); }}
-          className={`absolute top-3 right-3 w-7 h-7 rounded-full flex items-center justify-center border transition-all shadow-xs cursor-pointer ${
-            saved ? 'bg-rose-50 border-rose-200 text-rose-500' : 'bg-white/90 border-slate-200 text-slate-400 hover:text-slate-600'
+          className={`absolute top-3 right-3 w-7 h-7 rounded flex items-center justify-center border transition-colors shadow-2xs cursor-pointer ${
+            saved ? 'bg-rose-50 border-rose-200 text-rose-600' : 'bg-white border-slate-200 text-slate-400 hover:text-slate-700'
           }`}
-          whileTap={{ scale: 0.75 }}
-          animate={saved ? { scale: [1, 1.25, 1] } : {}}
-          transition={{ duration: 0.3 }}
+          aria-label="Save to Vault"
         >
-          <Heart className={`w-3.5 h-3.5 ${saved ? 'fill-rose-500' : ''}`} />
-        </motion.button>
+          <Heart className={`w-3.5 h-3.5 ${saved ? 'fill-rose-600' : ''}`} />
+        </button>
       </div>
 
       {/* Content */}
-      <div className="p-5 flex flex-col gap-3 flex-1 bg-white">
+      <div className="p-4 flex flex-col gap-2.5 flex-1 bg-white">
         {/* Brand + Name */}
         <div>
           <div className="flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-            <p className="text-[11px] text-[#00A854] font-black uppercase tracking-widest">{product.brand}</p>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
+            <p className="text-[10px] text-emerald-800 font-mono font-bold uppercase tracking-wider">{product.brand}</p>
           </div>
-          <h3 className="text-[15px] font-bold text-slate-900 mt-1 line-clamp-2 leading-snug" style={{ fontFamily: 'var(--font-heading)' }}>
+          <h3 className="text-sm font-bold text-slate-900 mt-1 line-clamp-2 leading-snug" style={{ fontFamily: 'var(--font-heading)' }}>
             {product.name}
           </h3>
         </div>
@@ -101,30 +95,30 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onView }) => 
         <div className="flex items-center gap-1.5">
           <div className="flex items-center gap-0.5">
             {[...Array(5)].map((_, i) => (
-              <Star key={i} className={`w-3.5 h-3.5 ${i < Math.floor(product.rating) ? 'text-amber-400 fill-amber-400' : 'text-slate-200 fill-slate-200'}`} />
+              <Star key={i} className={`w-3 h-3 ${i < Math.floor(product.rating) ? 'text-amber-500 fill-amber-500' : 'text-slate-200 fill-slate-200'}`} />
             ))}
           </div>
-          <span className="text-xs text-amber-600 font-black">{product.rating}</span>
+          <span className="text-xs text-amber-800 font-bold font-mono">{product.rating}</span>
           <span className="text-xs text-slate-400">({product.reviewCount.toLocaleString()})</span>
         </div>
 
         {/* Price */}
         <div className="flex items-baseline gap-2 flex-wrap">
-          <span className="text-lg font-black text-slate-900 font-mono">{product.price}</span>
+          <span className="text-base font-bold text-slate-900 font-mono">{product.price}</span>
           {product.originalPrice && (
             <span className="text-xs text-slate-400 line-through font-mono">{product.originalPrice}</span>
           )}
           {product.savings && (
-            <span className="text-[10px] text-emerald-700 font-bold bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded font-mono">
+            <span className="text-[10px] text-emerald-800 font-semibold bg-emerald-50 border border-emerald-200 px-1 py-0.2 rounded font-mono">
               {product.savings}
             </span>
           )}
         </div>
 
         {/* Tags */}
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap gap-1">
           {product.tags.slice(0, 3).map(tag => (
-            <span key={tag} className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-semibold">
+            <span key={tag} className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 text-[10px] font-medium font-mono">
               {tag}
             </span>
           ))}
@@ -132,18 +126,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onView }) => 
 
         {/* CTA */}
         {onView && (
-          <div className="mt-auto pt-4 border-t border-slate-100">
+          <div className="mt-auto pt-3 border-t border-slate-100">
             <button
               onClick={onView}
-              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 text-slate-800 hover:text-emerald-700 text-xs font-bold border border-slate-200 hover:border-emerald-300 transition-all group/btn cursor-pointer"
+              className="w-full flex items-center justify-center gap-1.5 py-2 rounded bg-slate-50 hover:bg-slate-100 text-slate-800 text-xs font-semibold border border-slate-200 hover:border-slate-300 transition-colors cursor-pointer"
             >
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-              View Authenticity Report
-              <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
+              <span>Inspection Report</span>
+              <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
             </button>
           </div>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 };

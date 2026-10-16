@@ -295,7 +295,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                       <button
                         type="button"
                         onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
-                        className="px-4 py-2 rounded-full text-xs font-bold flex items-center gap-2 btn-neon"
+                        className="px-3.5 py-1.5 rounded-md text-xs font-semibold flex items-center gap-2 bg-slate-900 text-white hover:bg-slate-800 transition-colors cursor-pointer"
                       >
                         <RefreshCw className="w-3.5 h-3.5" /> Replace Image
                       </button>
@@ -972,53 +972,50 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                               </div>
                             </div>
                             <span
-                              className="self-start sm:self-auto text-xs font-black px-3.5 py-1.5 rounded-full"
+                              className="self-start sm:self-auto text-xs font-bold px-2.5 py-1 rounded font-mono"
                               style={
                                 analysisResult.fakeReviewProbability > 50
-                                  ? { background: 'rgba(255,30,86,0.12)', border: '1px solid rgba(255,30,86,0.4)', color: '#9F1239' }
-                                  : { background: 'rgba(0,240,139,0.14)', border: '1px solid rgba(0,240,139,0.4)', color: '#02572B' }
+                                  ? { background: 'rgba(220,38,38,0.1)', border: '1px solid rgba(220,38,38,0.3)', color: '#991B1B' }
+                                  : { background: 'rgba(5,150,105,0.1)', border: '1px solid rgba(5,150,105,0.3)', color: '#065F46' }
                               }
                             >
-                              {analysisResult.fakeReviewProbability > 50 ? '⚠ High Synthetic Risk' : '✓ Verified Organic Phrasing'}
+                              {analysisResult.fakeReviewProbability > 50 ? 'High Synthetic Risk' : 'Verified Organic Phrasing'}
                             </span>
                           </div>
 
                           <div className="p-6 sm:p-8 space-y-6">
                             {/* Review Quote Card */}
-                            <div className="relative rounded-2xl p-6 bg-slate-50/80 border border-slate-100">
-                              <div className="text-[10px] font-black uppercase tracking-wider text-indigo-600 mb-2">Analyzed Review Corpus</div>
+                            <div className="relative rounded-lg p-5 bg-slate-50 border border-slate-200">
+                              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-mono mb-2">Analyzed Review Corpus</div>
                               <p className="text-sm italic text-slate-700 leading-relaxed pl-1 pr-4">
                                 "{analysisResult.reviewText}"
                               </p>
                             </div>
 
                             {/* Synthetic Bot Probability Bar */}
-                            <div className="p-6 rounded-2xl bg-indigo-50/40 border border-indigo-100/80 space-y-4">
+                            <div className="p-5 rounded-lg bg-slate-50 border border-slate-200 space-y-4">
                               <div className="flex items-center justify-between">
                                 <div>
-                                  <span className="text-sm font-extrabold text-slate-900">Bot / Machine Generation Likelihood</span>
+                                  <span className="text-sm font-bold text-slate-900">Machine Generation Likelihood</span>
                                   <p className="text-xs text-slate-500 mt-0.5">Calculated through vocabulary entropy and promotional phrase repetition</p>
                                 </div>
-                                <span className="text-3xl font-black font-mono" style={{ color: analysisResult.fakeReviewProbability > 50 ? '#FF1E56' : '#6366F1' }}>
+                                <span className="text-2xl font-bold font-mono" style={{ color: analysisResult.fakeReviewProbability > 50 ? '#DC2626' : '#059669' }}>
                                   {analysisResult.fakeReviewProbability}%
                                 </span>
                               </div>
 
-                              <div className="relative w-full h-3 rounded-full overflow-hidden bg-slate-200">
+                              <div className="relative w-full h-2.5 rounded overflow-hidden bg-slate-200">
                                 <div
-                                  className="absolute top-0 left-0 h-full rounded-full transition-all duration-1000 ease-out"
+                                  className="absolute top-0 left-0 h-full rounded transition-all duration-700 ease-out"
                                   style={{
                                     width: `${analysisResult.fakeReviewProbability}%`,
-                                    background: analysisResult.fakeReviewProbability > 50
-                                      ? 'linear-gradient(90deg, #FFB800, #FF1E56)'
-                                      : 'linear-gradient(90deg, #00F08B, #6366F1)',
-                                    boxShadow: `0 0 14px ${analysisResult.fakeReviewProbability > 50 ? 'rgba(255,30,86,0.6)' : 'rgba(0,240,139,0.5)'}`,
+                                    background: analysisResult.fakeReviewProbability > 50 ? '#DC2626' : '#059669',
                                   }}
                                 />
                                 <div className="absolute top-0 left-1/2 w-0.5 h-full bg-slate-400" />
                               </div>
 
-                              <div className="flex justify-between text-[10px] font-black font-mono text-slate-400">
+                              <div className="flex justify-between text-[10px] font-bold font-mono text-slate-500">
                                 <span>Organic Consumer (0%)</span>
                                 <span>50% Risk Threshold</span>
                                 <span>Automated Bot (100%)</span>

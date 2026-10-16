@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Header } from './components/Header';
+import { Header, NavTab } from './components/Header';
 import { Footer } from './components/Footer';
 import { LandingPage } from './components/LandingPage';
 import { Dashboard } from './components/Dashboard';
 import { HistoryView } from './components/HistoryView';
 import { ExploreView } from './components/ExploreView';
+import { PrivacyPolicyView } from './components/PrivacyPolicyView';
+import { TermsView } from './components/TermsView';
+import { CustomDomainModal } from './components/CustomDomainModal';
 import { AnalysisResult, SamplePreset } from './types';
-import { INITIAL_HISTORY, SAMPLE_PRESETS } from './data/presets';
+import { INITIAL_HISTORY } from './data/presets';
 
 export default function App() {
-  const [currentTab, setCurrentTab] = useState<'landing' | 'dashboard' | 'history' | 'products'>('landing');
+  const [currentTab, setCurrentTab] = useState<NavTab>('landing');
   const [selectedPreset, setSelectedPreset] = useState<SamplePreset | null>(null);
   const [selectedResult, setSelectedResult] = useState<AnalysisResult | null>(null);
   const [history, setHistory] = useState<AnalysisResult[]>([]);
+  const [isDomainModalOpen, setIsDomainModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     fetch('/api/history')
@@ -30,7 +34,11 @@ export default function App() {
       });
   }, []);
 
-  // Trigger analysis call to backend /api/analyze-authenticity
+  // Scroll to top on tab change
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [currentTab]);
+
   const handleRunAnalysis = async (data: {
     imageUrl: string;
     reviewText: string;
@@ -90,7 +98,7 @@ export default function App() {
             height: 18,
             label: 'Stitching Pitch & Material Texture',
             category: 'stitching',
-            anomalyType: score > 50 ? 'Uniform Thread Gauge' : 'Irregular Stitch Interval',
+            anomalyType: score > 50 ? 'Uniform Thread Gauge' : 'Irregular Seam Interval',
             confidence: 94,
             severity: score > 50 ? 'low' : 'critical',
             description: score > 50 ? 'Thread gauge conforms to luxury master template.' : 'Stitch tension varies significantly across seam line.'
@@ -108,8 +116,8 @@ export default function App() {
         fakeReviewProbability: hasReview ? (score > 50 ? 8 : 82) : 0,
         xaiReasoning: [
           hasImage
-            ? 'Visual inspection processed texture and edge gradients on uploaded image.'
-            : 'Natural language processing analyzed review text entropy and sentiment coherence.'
+            ? 'Visual inspection evaluated texture and edge gradients on uploaded image.'
+            : 'Natural language processing evaluated review text entropy and sentiment coherence.'
         ],
         recommendations: [
           'Store digital verification record for resale provenance.'
@@ -152,6 +160,7 @@ export default function App() {
           currentTab={currentTab}
           setCurrentTab={setCurrentTab}
           onQuickStart={() => handleStartAnalysisWithPreset()}
+          onOpenDomainModal={() => setIsDomainModalOpen(true)}
         />
 
         <main id="main-content">
@@ -183,10 +192,31 @@ export default function App() {
           {currentTab === 'products' && (
             <ExploreView />
           )}
+
+          {currentTab === 'privacy' && (
+            <PrivacyPolicyView
+              onBack={() => setCurrentTab('landing')}
+            />
+          )}
+
+          {currentTab === 'terms' && (
+            <TermsView
+              onBack={() => setCurrentTab('landing')}
+            />
+          )}
         </main>
       </div>
 
-      <Footer />
+      <Footer
+        onNavigateTab={(tab) => setCurrentTab(tab)}
+        onOpenDomainModal={() => setIsDomainModalOpen(true)}
+      />
+
+      {/* Custom Domain Production Setup Modal */}
+      <CustomDomainModal
+        isOpen={isDomainModalOpen}
+        onClose={() => setIsDomainModalOpen(false)}
+      />
     </div>
   );
 }

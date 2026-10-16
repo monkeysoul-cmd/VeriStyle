@@ -1,25 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ArrowRight, Zap } from 'lucide-react';
+import { Menu, X, ArrowRight, ShieldCheck, Globe } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { VeriLensIcon } from './VeriLensIcon';
 
+export type NavTab = 'landing' | 'dashboard' | 'history' | 'products' | 'privacy' | 'terms';
+
 interface HeaderProps {
-  currentTab: 'landing' | 'dashboard' | 'history' | 'products';
-  setCurrentTab: (tab: 'landing' | 'dashboard' | 'history' | 'products') => void;
+  currentTab: NavTab;
+  setCurrentTab: (tab: NavTab) => void;
   onQuickStart: () => void;
+  onOpenDomainModal?: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQuickStart }) => {
+export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQuickStart, onOpenDomainModal }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 24);
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleNav = (tab: 'landing' | 'dashboard' | 'history' | 'products') => {
+  const handleNav = (tab: NavTab) => {
     setCurrentTab(tab);
     setIsMenuOpen(false);
   };
@@ -28,132 +31,95 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
     { id: 'landing', label: 'Overview' },
     { id: 'dashboard', label: 'Inspector' },
     { id: 'history', label: 'Vault' },
-    { id: 'products', label: 'Explore' },
+    { id: 'products', label: 'Catalog' },
   ] as const;
 
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-[9999] transition-all duration-500 ${scrolled ? 'py-2' : 'py-3'}`}
-        style={{ position: 'fixed' }}
+        className={`fixed top-0 left-0 right-0 z-[9999] transition-all duration-300 ${scrolled ? 'py-2 bg-white/95 border-b border-slate-200/90 shadow-xs backdrop-blur-md' : 'py-3.5 bg-white/80 border-b border-slate-100 backdrop-blur-sm'}`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            className="flex items-center justify-between px-4 sm:px-5 py-2.5 rounded-2xl transition-all duration-500"
-            style={{
-              background: scrolled
-                ? 'rgba(255, 255, 255, 0.88)'
-                : 'rgba(255, 255, 255, 0.65)',
-              boxShadow: scrolled
-                ? '0 2px 32px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.5)'
-                : '0 1px 12px rgba(0,0,0,0.03), 0 0 0 1px rgba(0,0,0,0.03), inset 0 1px 0 rgba(255,255,255,0.4)',
-              backdropFilter: 'blur(40px) saturate(160%)',
-              border: '1px solid rgba(0, 0, 0, 0.04)',
-            }}
-            initial={{ y: -24, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          >
-            {/* Logo */}
+          <div className="flex items-center justify-between">
+            
+            {/* Brand Logo */}
             <button
               onClick={() => handleNav('landing')}
-              className="inline-flex items-center gap-2.5 group shrink-0 cursor-pointer"
+              className="inline-flex items-center gap-3 group shrink-0 cursor-pointer text-left"
             >
-              <motion.div
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0 relative overflow-hidden"
-                style={{
-                  background: 'linear-gradient(135deg, #00F08B 0%, #00C865 50%, #00E5FF 100%)',
-                  boxShadow: '0 4px 20px rgba(0, 240, 139, 0.4), inset 0 1px 0 rgba(255,255,255,0.6)',
-                }}
-                whileHover={{ rotate: 6, scale: 1.08 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent pointer-events-none" />
-                <VeriLensIcon className="w-4 h-4 sm:w-5 sm:h-5 text-slate-950 relative z-10" />
-              </motion.div>
-              <div className="flex flex-col leading-none text-left">
+              <div className="w-8 h-8 rounded-md bg-slate-900 flex items-center justify-center shrink-0 text-white shadow-xs">
+                <VeriLensIcon className="w-4 h-4 text-emerald-400" />
+              </div>
+              <div className="flex flex-col leading-none">
                 <span
-                  className="text-lg sm:text-xl font-black tracking-tight"
-                  style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}
+                  className="text-base sm:text-lg font-black tracking-tight text-slate-900"
+                  style={{ fontFamily: 'var(--font-heading)' }}
                 >
                   VeriStyle
                 </span>
-                <span className="text-[9px] font-black uppercase tracking-[0.2em] mt-0.5" style={{ color: 'var(--green-cyber)' }}>
-                  AI Forensic Lab
+                <span className="text-[9px] font-bold uppercase tracking-widest text-slate-500 mt-0.5 font-mono">
+                  Authenticity Verification
                 </span>
               </div>
             </button>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-1 p-1 rounded-xl" style={{ background: 'rgba(15,23,42,0.03)', border: '1px solid rgba(15,23,42,0.06)' }}>
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => handleNav(item.id)}
-                  className="relative px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer"
-                  style={{ color: currentTab === item.id ? '#0A0F1D' : 'var(--text-muted)' }}
-                >
-                  {currentTab === item.id && (
-                    <motion.div
-                      layoutId="active-tab-bg"
-                      className="absolute inset-0 rounded-lg"
-                      style={{ background: '#FFFFFF', boxShadow: '0 2px 10px rgba(0,240,139,0.15), 0 0 0 1px rgba(0,240,139,0.2)' }}
-                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                    />
-                  )}
-                  <span className="relative z-10 flex items-center gap-1.5">
+            {/* Desktop Navigation Links */}
+            <div className="hidden md:flex items-center gap-1 p-1 rounded-md bg-slate-100/90 border border-slate-200/80">
+              {navItems.map((item) => {
+                const isActive = currentTab === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => handleNav(item.id)}
+                    className={`px-3.5 py-1.5 rounded-sm text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+                      isActive
+                        ? 'bg-white text-slate-950 shadow-xs border border-slate-200/80'
+                        : 'text-slate-600 hover:text-slate-950 hover:bg-slate-200/50'
+                    }`}
+                  >
                     {item.label}
-                    {currentTab === item.id && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#00F08B] shadow-[0_0_8px_rgba(0,240,139,0.9)]" />
-                    )}
-                  </span>
-                </button>
-              ))}
+                  </button>
+                );
+              })}
             </div>
 
             {/* Right Actions */}
             <div className="flex items-center gap-2.5">
-              {/* Status badge — forensic telemetry capsule */}
-              <div
-                className="hidden lg:flex items-center gap-2 px-3.5 py-1.5 rounded-full"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(0,240,139,0.08) 0%, rgba(0,229,255,0.05) 100%)',
-                  border: '1px solid rgba(0,240,139,0.3)',
-                  boxShadow: '0 2px 10px rgba(0,240,139,0.1)',
-                }}
-              >
-                <span className="relative flex w-2 h-2">
-                  <span className="absolute inset-0 rounded-full animate-ping opacity-75" style={{ background: '#00F08B' }} />
-                  <span className="relative rounded-full w-2 h-2" style={{ background: '#00F08B', boxShadow: '0 0 8px #00F08B' }} />
-                </span>
-                <span className="text-[10px] font-black uppercase tracking-wider font-mono text-emerald-800">
-                  VeriLens AI 1.0 • Online
-                </span>
-              </div>
+              
+              {/* Custom Domain Connected Indicator */}
+              {onOpenDomainModal && (
+                <button
+                  onClick={onOpenDomainModal}
+                  className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-mono font-medium transition-colors cursor-pointer"
+                  title="Configure Custom Domain"
+                >
+                  <Globe className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>veristyle.io</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 ml-0.5" />
+                </button>
+              )}
 
-              <motion.button
+              {/* Start Inspection Action */}
+              <button
                 onClick={() => { onQuickStart(); handleNav('dashboard'); }}
-                className="hidden md:flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wide cursor-pointer btn-neon"
-                whileHover={{ scale: 1.03, y: -1 }}
-                whileTap={{ scale: 0.96 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-bold tracking-wide cursor-pointer btn-neon"
               >
-                <Zap className="w-4 h-4" />
-                Start Scan
+                <span>Inspect Item</span>
                 <ArrowRight className="w-3.5 h-3.5" />
-              </motion.button>
+              </button>
 
-              {/* Mobile Menu Toggle */}
-              <motion.button
+              {/* Mobile Menu Button */}
+              <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="md:hidden p-2 rounded-xl transition-colors cursor-pointer"
-                style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', color: 'var(--text-primary)' }}
-                whileTap={{ scale: 0.9 }}
+                className="md:hidden p-2 rounded-md border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer"
+                aria-label="Toggle Navigation Menu"
               >
                 {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-              </motion.button>
+              </button>
+
             </div>
-          </motion.div>
+
+          </div>
         </div>
       </nav>
 
@@ -162,60 +128,53 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
         {isMenuOpen && (
           <>
             <motion.div
-              className="fixed inset-x-4 top-[76px] z-40 md:hidden"
-              initial={{ opacity: 0, y: -12, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -8, scale: 0.97 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 28 }}
+              className="fixed inset-x-4 top-[64px] z-50 md:hidden"
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.18, ease: 'easeOut' }}
             >
-              <div
-                className="rounded-2xl p-3 flex flex-col gap-1"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.94)',
-                  border: '1px solid rgba(0,0,0,0.06)',
-                  backdropFilter: 'blur(40px) saturate(160%)',
-                  boxShadow: '0 16px 48px rgba(0,0,0,0.10), 0 0 0 1px rgba(0,0,0,0.03), inset 0 1px 0 rgba(255,255,255,0.5)',
-                }}
-              >
-                {navItems.map((item, i) => (
-                  <motion.button
+              <div className="rounded-lg p-3 bg-white border border-slate-200 shadow-xl flex flex-col gap-1 text-slate-800">
+                {navItems.map((item) => (
+                  <button
                     key={item.id}
                     onClick={() => handleNav(item.id)}
-                    className="flex items-center px-4 py-3 rounded-xl text-base font-semibold transition-all text-left cursor-pointer"
-                    style={{
-                      color: currentTab === item.id ? 'var(--green-primary)' : 'var(--text-secondary)',
-                      background: currentTab === item.id ? 'rgba(52,216,138,0.06)' : 'transparent',
-                      border: currentTab === item.id ? '1px solid rgba(52,216,138,0.1)' : '1px solid transparent',
-                    }}
-                    initial={{ opacity: 0, x: -16 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.06, type: 'spring', stiffness: 400, damping: 25 }}
+                    className={`flex items-center px-3.5 py-2.5 rounded-md text-sm font-semibold transition-colors text-left cursor-pointer ${
+                      currentTab === item.id ? 'bg-slate-100 text-slate-900' : 'text-slate-600 hover:bg-slate-50'
+                    }`}
                   >
                     {item.label}
-                  </motion.button>
+                  </button>
                 ))}
-                <div className="premium-divider mx-2 my-1" />
-                <motion.button
+
+                <div className="h-px bg-slate-100 my-1.5" />
+
+                {onOpenDomainModal && (
+                  <button
+                    onClick={() => { onOpenDomainModal(); setIsMenuOpen(false); }}
+                    className="flex items-center justify-between px-3.5 py-2.5 rounded-md text-xs font-mono text-slate-700 bg-slate-50 border border-slate-200 cursor-pointer"
+                  >
+                    <span className="flex items-center gap-2">
+                      <Globe className="w-4 h-4 text-emerald-600" />
+                      Domain: veristyle.io
+                    </span>
+                    <span className="text-[10px] text-emerald-700 font-bold bg-emerald-100 px-1.5 py-0.5 rounded">Active</span>
+                  </button>
+                )}
+
+                <button
                   onClick={() => { onQuickStart(); handleNav('dashboard'); }}
-                  className="flex justify-center items-center gap-2 px-4 py-3.5 rounded-xl text-base font-bold active:scale-95 transition-all cursor-pointer btn-neon"
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.22, type: 'spring', stiffness: 400, damping: 25 }}
+                  className="flex justify-center items-center gap-2 px-4 py-2.5 rounded-md text-sm font-bold tracking-wide cursor-pointer btn-neon mt-1"
                 >
-                  <Zap className="w-5 h-5" />
-                  Start Verification
-                  <ArrowRight className="w-5 h-5" />
-                </motion.button>
+                  Start Inspection
+                  <ArrowRight className="w-4 h-4" />
+                </button>
               </div>
             </motion.div>
 
-            {/* Overlay */}
-            <motion.div
-              className="fixed inset-0 z-30 md:hidden"
-              style={{ background: 'rgba(0,0,0,0.12)', backdropFilter: 'blur(4px)' }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+            {/* Mobile Overlay */}
+            <div
+              className="fixed inset-0 z-40 bg-slate-950/20 md:hidden"
               onClick={() => setIsMenuOpen(false)}
             />
           </>

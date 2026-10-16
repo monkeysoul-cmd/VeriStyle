@@ -3,14 +3,12 @@ import {
   Search,
   SlidersHorizontal,
   Star,
-  Sparkles,
   TrendingUp,
   Shield,
   Zap,
   Award,
   ChevronDown,
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
 import { ProductItem, ProductCategory } from '../types';
 import { PRODUCTS } from '../data/products';
 import { ProductDetailView } from './ProductDetailView';
@@ -74,91 +72,62 @@ export const ExploreView: React.FC = () => {
   }
 
   return (
-    <div className="w-full min-h-screen pt-24 pb-20" style={{ background: 'var(--bg-base)' }}>
+    <div className="w-full min-h-screen pt-24 pb-20 bg-slate-50 text-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
 
         {/* Header */}
-        <motion.div
-          className="text-center space-y-4 pb-4"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
+        <div className="text-center space-y-3 pb-2 max-w-3xl mx-auto">
           <div className="section-badge mx-auto">
-            <Sparkles className="w-3.5 h-3.5" />
-            Smart Product Discovery
+            Benchmark Reference Catalog
           </div>
           <h1
-            className="text-4xl sm:text-5xl font-black tracking-tight"
-            style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}
+            className="text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight"
+            style={{ fontFamily: 'var(--font-heading)' }}
           >
-            Explore{' '}
-            <span
-              className="italic"
-              style={{
-                fontFamily: 'var(--font-serif)',
-                background: 'linear-gradient(135deg, #00C865 0%, #05DF72 40%, #6366F1 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              All Products.
-            </span>
+            Verified Product Benchmarks
           </h1>
-          <p className="max-w-xl mx-auto text-sm sm:text-base" style={{ color: 'var(--text-muted)' }}>
-            Smart fashion discovery with real-time authenticity insights and craftsmanship metrics.
+          <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+            Reference catalog of authenticated luxury models, sneakers, and timepieces with documented craftsmanship metrics and serial syntax.
           </p>
-        </motion.div>
+        </div>
 
         {/* Search */}
-        <motion.div
-          className="flex gap-3 max-w-2xl mx-auto"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
+        <div className="flex gap-2 max-w-2xl mx-auto">
           <div className="relative flex-1">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input
               type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
-              placeholder="Search brands, categories, or products..."
-              className="w-full pl-12 pr-4 py-3.5 rounded-2xl text-sm bg-white border border-slate-200/80 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 shadow-xs text-slate-800 placeholder:text-slate-400 font-medium transition-all"
+              placeholder="Search brands, models, or categories..."
+              className="w-full pl-10 pr-4 py-2.5 rounded-md text-sm bg-white border border-slate-300 focus:border-slate-800 focus:outline-none focus:ring-1 focus:ring-slate-800 text-slate-900 placeholder:text-slate-400 shadow-2xs font-normal"
             />
           </div>
           <button
-            className="flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl font-bold text-sm transition-all active:scale-95 shrink-0 cursor-pointer btn-neon"
+            className="flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-md font-semibold text-xs tracking-wide bg-slate-900 hover:bg-slate-800 text-white transition-colors cursor-pointer shrink-0 shadow-2xs"
           >
-            <Sparkles className="w-4 h-4" />
-            <span className="hidden sm:inline">Search</span>
+            Search
           </button>
-        </motion.div>
+        </div>
 
         {/* Filters Row */}
-        <motion.div
-          className="flex flex-col sm:flex-row items-center gap-4 p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <div className="flex items-center gap-2 text-sm font-bold w-full sm:w-auto text-slate-600">
-            <SlidersHorizontal className="w-4 h-4 text-emerald-500" />
+        <div className="flex flex-col sm:flex-row items-center gap-3 p-3 rounded-md bg-white border border-slate-200 shadow-2xs">
+          <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700 w-full sm:w-auto font-mono uppercase tracking-wider">
+            <SlidersHorizontal className="w-3.5 h-3.5 text-slate-500" />
             Filters:
           </div>
 
-          <div className="flex items-center gap-3 w-full sm:w-auto overflow-x-auto pb-2 sm:pb-0 hide-scrollbar">
+          <div className="flex items-center gap-3 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0 hide-scrollbar">
             {/* Category Filter */}
             <div className="relative shrink-0">
               <select
                 value={selectedCategory}
                 onChange={e => setSelectedCategory(e.target.value as ProductCategory | 'All')}
-                className="appearance-none pl-4 pr-10 py-2.5 rounded-xl text-sm font-semibold cursor-pointer bg-slate-50 border border-slate-200/80 text-slate-700 hover:border-emerald-500/40 focus:outline-none focus:border-emerald-500 transition-all"
+                className="appearance-none pl-3 pr-8 py-1.5 rounded-md text-xs font-semibold cursor-pointer bg-slate-50 border border-slate-200 text-slate-700 hover:border-slate-400 focus:outline-none focus:border-slate-800 transition-colors"
               >
                 {categories.map(c => <option key={c} value={c}>{c === 'All' ? 'All Categories' : c}</option>)}
               </select>
-              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none text-slate-400" />
+              <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 pointer-events-none text-slate-400" />
             </div>
 
             {/* Sort */}
@@ -166,20 +135,20 @@ export const ExploreView: React.FC = () => {
               <select
                 value={sortBy}
                 onChange={e => setSortBy(e.target.value as SortOption)}
-                className="appearance-none pl-4 pr-10 py-2.5 rounded-xl text-sm font-semibold cursor-pointer bg-slate-50 border border-slate-200/80 text-slate-700 hover:border-emerald-500/40 focus:outline-none focus:border-emerald-500 transition-all"
+                className="appearance-none pl-3 pr-8 py-1.5 rounded-md text-xs font-semibold cursor-pointer bg-slate-50 border border-slate-200 text-slate-700 hover:border-slate-400 focus:outline-none focus:border-slate-800 transition-colors"
               >
-                <option value="trust-score">Sort by: Trust Score</option>
-                <option value="rating">Sort by: Rating</option>
-                <option value="reviews">Sort by: Most Reviewed</option>
-                <option value="price-low">Sort by: Price: Low to High</option>
-                <option value="price-high">Sort by: Price: High to Low</option>
+                <option value="trust-score">Sort: Trust Score</option>
+                <option value="rating">Sort: Consumer Rating</option>
+                <option value="reviews">Sort: Review Volume</option>
+                <option value="price-low">Sort: Price Low to High</option>
+                <option value="price-high">Sort: Price High to Low</option>
               </select>
-              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none text-slate-400" />
+              <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 pointer-events-none text-slate-400" />
             </div>
           </div>
-        </motion.div>
+        </div>
 
-        {/* Quick Tag Filters */}
+        {/* Quick Tag Filters: Rectangular Buttons (No Pills) */}
         <div className="flex flex-wrap items-center justify-center gap-2">
           {([
             { label: 'Best Value', icon: <Award className="w-3.5 h-3.5" /> },
@@ -187,96 +156,70 @@ export const ExploreView: React.FC = () => {
             { label: 'Trending', icon: <TrendingUp className="w-3.5 h-3.5" /> },
             { label: 'High Trust Score', icon: <Shield className="w-3.5 h-3.5" /> },
             { label: 'Best Performance', icon: <Zap className="w-3.5 h-3.5" /> },
-          ] as const).map(({ label, icon }) => (
-            <motion.button
-              key={label}
-              onClick={() => setActiveTag(activeTag === label ? null : label)}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-full text-[13px] font-bold border transition-all cursor-pointer"
-              style={
-                activeTag === label
-                  ? {
-                      background: 'linear-gradient(135deg, #00F08B 0%, #00C865 100%)',
-                      color: '#0A0F1D',
-                      border: 'none',
-                      boxShadow: '0 4px 18px rgba(0,240,139,0.35)',
-                    }
-                  : {
-                      background: 'rgba(255,255,255,0.92)',
-                      border: '1px solid rgba(15,23,42,0.08)',
-                      color: 'var(--text-secondary)',
-                      boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
-                    }
-              }
-              whileHover={{ scale: 1.04, y: -1 }}
-              whileTap={{ scale: 0.97 }}
-            >
-              {icon} {label}
-            </motion.button>
-          ))}
+          ] as const).map(({ label, icon }) => {
+            const isActive = activeTag === label;
+            return (
+              <button
+                key={label}
+                onClick={() => setActiveTag(activeTag === label ? null : label)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold border transition-colors cursor-pointer ${
+                  isActive
+                    ? 'bg-slate-900 border-slate-900 text-white shadow-2xs'
+                    : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300'
+                }`}
+              >
+                {icon}
+                <span>{label}</span>
+              </button>
+            );
+          })}
         </div>
 
         {/* Results count */}
-        <div className="flex items-center gap-2 text-xs font-bold" style={{ color: 'var(--text-dim)' }}>
-          <span style={{ color: 'var(--green-accent-from)' }}>{filtered.length}</span>
-          {' '}product{filtered.length !== 1 ? 's' : ''} found
+        <div className="flex items-center gap-2 text-xs font-medium text-slate-500 font-mono">
+          <span className="font-bold text-slate-800">{filtered.length}</span>
+          <span>benchmark item{filtered.length !== 1 ? 's' : ''} indexed</span>
           {(search || selectedCategory !== 'All' || activeTag) && (
             <button
               onClick={() => { setSearch(''); setSelectedCategory('All'); setActiveTag(null); }}
-              className="ml-2 px-2.5 py-0.5 rounded-full text-[11px] cursor-pointer transition-all"
-              style={{ background: 'rgba(251,113,133,0.1)', border: '1px solid rgba(244,63,94,0.15)', color: '#F43F5E' }}
+              className="ml-2 px-2 py-0.5 rounded-md text-xs font-sans text-rose-700 bg-rose-50 border border-rose-200 hover:bg-rose-100 transition-colors cursor-pointer"
             >
-              Clear filters
+              Reset filters
             </button>
           )}
         </div>
 
         {/* Product Grid */}
-        <AnimatePresence mode="wait">
-          {filtered.length > 0 ? (
-            <motion.div
-              key="grid"
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.4 }}
+        {filtered.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            {filtered.map(product => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                onView={() => setSelectedProduct(product)}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16 space-y-4 rounded-lg bg-white border border-slate-200">
+            <div className="w-12 h-12 rounded-md bg-slate-100 border border-slate-200 flex items-center justify-center mx-auto mb-2 text-slate-500">
+              <Search className="w-6 h-6" />
+            </div>
+            <p className="text-base font-bold text-slate-900" style={{ fontFamily: 'var(--font-heading)' }}>
+              No reference products found
+            </p>
+            <p className="text-xs text-slate-500 max-w-sm mx-auto">
+              Try adjusting your search terms or filter selections.
+            </p>
+            <button
+              onClick={() => { setSearch(''); setSelectedCategory('All'); setActiveTag(null); }}
+              className="mt-3 px-4 py-2 rounded-md text-xs font-semibold bg-slate-900 text-white hover:bg-slate-800 transition-colors cursor-pointer"
             >
-              {filtered.map(product => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  onView={() => setSelectedProduct(product)}
-                />
-              ))}
-            </motion.div>
-          ) : (
-            <motion.div
-              key="empty"
-              className="text-center py-20 space-y-4 rounded-2xl"
-              style={{ background: 'var(--bg-surface-1)', border: '1px solid rgba(0,80,40,0.06)' }}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              <div
-                className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-2"
-                style={{ background: 'rgba(0,80,40,0.06)', border: '1px solid rgba(0,80,40,0.08)' }}
-              >
-                <Search className="w-7 h-7" style={{ color: 'var(--text-muted)' }} />
-              </div>
-              <p className="text-lg font-bold" style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}>No products found</p>
-              <p className="text-sm max-w-sm mx-auto" style={{ color: 'var(--text-muted)' }}>
-                Try adjusting your filters or search query to find what you're looking for.
-              </p>
-              <button
-                onClick={() => { setSearch(''); setSelectedCategory('All'); setActiveTag(null); }}
-                className="mt-4 px-6 py-2.5 rounded-full text-sm font-bold cursor-pointer btn-ghost"
-              >
-                Clear all filters
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              Reset all filters
+            </button>
+          </div>
+        )}
+
       </div>
     </div>
   );
