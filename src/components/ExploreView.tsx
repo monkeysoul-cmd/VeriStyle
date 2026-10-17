@@ -72,7 +72,7 @@ export const ExploreView: React.FC = () => {
   }
 
   return (
-    <div className="w-full min-h-screen pt-24 pb-20 bg-slate-50 text-slate-900">
+    <div className="w-full min-h-screen pt-24 pb-20 bg-slate-50 text-slate-900 aurora-mesh">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
 
         {/* Header */}
@@ -81,10 +81,13 @@ export const ExploreView: React.FC = () => {
             Benchmark Reference Catalog
           </div>
           <h1
-            className="text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight"
+            className="text-3xl sm:text-4xl font-extrabold tracking-tight"
             style={{ fontFamily: 'var(--font-heading)' }}
           >
-            Verified Product Benchmarks
+            <span className="text-slate-950">Verified Product </span>
+            <span className="bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 bg-clip-text text-transparent">
+              Benchmarks
+            </span>
           </h1>
           <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
             Reference catalog of authenticated luxury models, sneakers, and timepieces with documented craftsmanship metrics and serial syntax.
@@ -94,26 +97,26 @@ export const ExploreView: React.FC = () => {
         {/* Search */}
         <div className="flex gap-2 max-w-2xl mx-auto">
           <div className="relative flex-1">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-600" />
             <input
               type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search brands, models, or categories..."
-              className="w-full pl-10 pr-4 py-2.5 rounded-md text-sm bg-white border border-slate-300 focus:border-slate-800 focus:outline-none focus:ring-1 focus:ring-slate-800 text-slate-900 placeholder:text-slate-400 shadow-2xs font-normal"
+              className="w-full pl-10 pr-4 py-2.5 rounded-lg text-sm bg-white border border-slate-300 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400/20 text-slate-900 placeholder:text-slate-400 shadow-2xs font-normal"
             />
           </div>
           <button
-            className="flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-md font-semibold text-xs tracking-wide bg-slate-900 hover:bg-slate-800 text-white transition-colors cursor-pointer shrink-0 shadow-2xs"
+            className="flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-lg font-bold text-xs tracking-wide bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white transition-all cursor-pointer shrink-0 shadow-sm shadow-emerald-600/20"
           >
             Search
           </button>
         </div>
 
         {/* Filters Row */}
-        <div className="flex flex-col sm:flex-row items-center gap-3 p-3 rounded-md bg-white border border-slate-200 shadow-2xs">
+        <div className="flex flex-col sm:flex-row items-center gap-3 p-3 rounded-xl bg-white/90 border border-slate-200/90 shadow-2xs">
           <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700 w-full sm:w-auto font-mono uppercase tracking-wider">
-            <SlidersHorizontal className="w-3.5 h-3.5 text-slate-500" />
+            <SlidersHorizontal className="w-3.5 h-3.5 text-indigo-600" />
             Filters:
           </div>
 
@@ -123,7 +126,7 @@ export const ExploreView: React.FC = () => {
               <select
                 value={selectedCategory}
                 onChange={e => setSelectedCategory(e.target.value as ProductCategory | 'All')}
-                className="appearance-none pl-3 pr-8 py-1.5 rounded-md text-xs font-semibold cursor-pointer bg-slate-50 border border-slate-200 text-slate-700 hover:border-slate-400 focus:outline-none focus:border-slate-800 transition-colors"
+                className="appearance-none pl-3 pr-8 py-1.5 rounded-md text-xs font-semibold cursor-pointer bg-slate-50 border border-slate-200 text-slate-700 hover:border-indigo-400 focus:outline-none focus:border-indigo-600 transition-colors"
               >
                 {categories.map(c => <option key={c} value={c}>{c === 'All' ? 'All Categories' : c}</option>)}
               </select>
@@ -135,7 +138,7 @@ export const ExploreView: React.FC = () => {
               <select
                 value={sortBy}
                 onChange={e => setSortBy(e.target.value as SortOption)}
-                className="appearance-none pl-3 pr-8 py-1.5 rounded-md text-xs font-semibold cursor-pointer bg-slate-50 border border-slate-200 text-slate-700 hover:border-slate-400 focus:outline-none focus:border-slate-800 transition-colors"
+                className="appearance-none pl-3 pr-8 py-1.5 rounded-md text-xs font-semibold cursor-pointer bg-slate-50 border border-slate-200 text-slate-700 hover:border-indigo-400 focus:outline-none focus:border-indigo-600 transition-colors"
               >
                 <option value="trust-score">Sort: Trust Score</option>
                 <option value="rating">Sort: Consumer Rating</option>
@@ -148,24 +151,24 @@ export const ExploreView: React.FC = () => {
           </div>
         </div>
 
-        {/* Quick Tag Filters: Rectangular Buttons (No Pills) */}
+        {/* Quick Tag Filters: Colorful Gradient Active States */}
         <div className="flex flex-wrap items-center justify-center gap-2">
           {([
-            { label: 'Best Value', icon: <Award className="w-3.5 h-3.5" /> },
-            { label: 'High Rated', icon: <Star className="w-3.5 h-3.5" /> },
-            { label: 'Trending', icon: <TrendingUp className="w-3.5 h-3.5" /> },
-            { label: 'High Trust Score', icon: <Shield className="w-3.5 h-3.5" /> },
-            { label: 'Best Performance', icon: <Zap className="w-3.5 h-3.5" /> },
-          ] as const).map(({ label, icon }) => {
+            { label: 'Best Value', icon: <Award className="w-3.5 h-3.5" />, activeBg: 'bg-gradient-to-r from-teal-500 to-emerald-600 text-white border-teal-500' },
+            { label: 'High Rated', icon: <Star className="w-3.5 h-3.5" />, activeBg: 'bg-gradient-to-r from-amber-500 to-amber-600 text-white border-amber-500' },
+            { label: 'Trending', icon: <TrendingUp className="w-3.5 h-3.5" />, activeBg: 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white border-emerald-500' },
+            { label: 'High Trust Score', icon: <Shield className="w-3.5 h-3.5" />, activeBg: 'bg-gradient-to-r from-indigo-600 to-blue-600 text-white border-indigo-600' },
+            { label: 'Best Performance', icon: <Zap className="w-3.5 h-3.5" />, activeBg: 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white border-purple-600' },
+          ] as const).map(({ label, icon, activeBg }) => {
             const isActive = activeTag === label;
             return (
               <button
                 key={label}
                 onClick={() => setActiveTag(activeTag === label ? null : label)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold border transition-colors cursor-pointer ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all cursor-pointer shadow-2xs ${
                   isActive
-                    ? 'bg-slate-900 border-slate-900 text-white shadow-2xs'
-                    : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300'
+                    ? `${activeBg} shadow-sm font-bold`
+                    : 'bg-white border-slate-200 text-slate-700 hover:border-indigo-300 hover:bg-indigo-50/40 hover:text-indigo-950'
                 }`}
               >
                 {icon}

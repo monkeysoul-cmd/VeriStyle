@@ -221,15 +221,15 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
     return (
       <div className="w-full max-w-[850px] mx-auto">
         <div
-          className="flex items-center gap-2 rounded-2xl p-2 relative z-50 transition-all duration-300 group focus-within:ring-4 focus-within:ring-[rgba(52,216,138,0.18)] focus-within:border-[rgba(52,216,138,0.45)]"
+          className="flex items-center gap-2 rounded-2xl p-2 relative z-50 transition-all duration-300 group focus-within:ring-4 focus-within:ring-emerald-400/25 focus-within:border-emerald-500"
           style={{
-            background: 'rgba(255, 255, 255, 0.96)',
-            border: '1px solid rgba(0, 0, 0, 0.08)',
-            boxShadow: '0 12px 36px -8px rgba(0, 20, 10, 0.07), 0 1px 3px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.9)',
+            background: 'rgba(255, 255, 255, 0.98)',
+            border: '1px solid rgba(99, 102, 241, 0.22)',
+            boxShadow: '0 12px 36px -8px rgba(16, 185, 129, 0.16), 0 2px 8px rgba(99, 102, 241, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9)',
             backdropFilter: 'blur(24px) saturate(180%)',
           }}
         >
-          <div className="pl-3 sm:pl-4 flex-shrink-0 text-slate-400 group-hover:text-[var(--green-primary)] transition-colors">
+          <div className="pl-3 sm:pl-4 flex-shrink-0 text-emerald-600 transition-colors">
             <Search className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600" />
           </div>
           <input
@@ -238,9 +238,9 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleAnalyze()}
-            className="flex-1 bg-transparent py-2.5 sm:py-3 px-2 sm:px-3 text-sm sm:text-base min-w-0 focus:outline-none font-sans text-slate-800 placeholder:text-slate-400 font-medium"
+            className="flex-1 bg-transparent py-2.5 sm:py-3 px-2 sm:px-3 text-sm sm:text-base min-w-0 focus:outline-none font-sans text-slate-900 placeholder:text-slate-400 font-medium"
             style={{
-              caretColor: 'var(--green-primary)',
+              caretColor: '#059669',
             }}
             autoComplete="off"
             spellCheck="false"
@@ -248,7 +248,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
           <button
             onClick={handleAnalyze}
             disabled={!url.trim()}
-            className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-md text-xs sm:text-sm font-bold transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shrink-0 whitespace-nowrap bg-slate-900 hover:bg-slate-800 text-white shadow-2xs"
+            className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-md text-xs sm:text-sm font-bold transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shrink-0 whitespace-nowrap bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 hover:from-emerald-500 hover:to-indigo-500 text-white shadow-md shadow-emerald-600/30 active:scale-98"
           >
             <Search className="w-4 h-4 shrink-0" />
             <span className="hidden sm:inline">Inspect Listing</span>

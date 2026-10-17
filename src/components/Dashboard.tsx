@@ -193,37 +193,44 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
   };
 
   return (
-    <div className="w-full min-h-screen pt-24 pb-20" style={{ background: 'var(--bg-base)' }}>
+    <div className="w-full min-h-screen pt-24 pb-20 aurora-mesh" style={{ background: 'var(--bg-base)' }}>
       <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-14 space-y-8">
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 pb-6 border-b border-slate-200/80">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 pb-6 border-b border-indigo-100/80">
           <div>
             <div className="section-badge mb-3">
-              <Activity className="w-3.5 h-3.5" />
+              <Activity className="w-3.5 h-3.5 text-indigo-600" />
               Forensic Inspection Lab · Verification Engine
             </div>
-            <h1 className="text-3xl sm:text-4xl font-black tracking-tight" style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}>
-              Multimodal Authenticity Studio
+            <h1 className="text-3xl sm:text-4xl font-black tracking-tight" style={{ fontFamily: 'var(--font-heading)' }}>
+              <span className="text-slate-950">Multimodal Authenticity </span>
+              <span className="bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 bg-clip-text text-transparent">
+                Studio
+              </span>
             </h1>
-            <p className="text-sm sm:text-base mt-2 max-w-xl font-medium" style={{ color: 'var(--text-muted)' }}>
+            <p className="text-sm sm:text-base mt-2 max-w-xl font-medium text-slate-600">
               Cross-examine high-resolution apparel imagery and customer reviews against official master templates with AI optics.
             </p>
           </div>
 
           {/* Modern Object: Tactile Specimen Capsule Dock */}
-          <div className="specimen-dock max-w-full">
-            <span className="text-[10px] uppercase tracking-widest font-black shrink-0 px-2 text-slate-400">Specimens:</span>
+          <div className="specimen-dock max-w-full p-1.5 rounded-xl bg-white/90 border border-slate-200/80 shadow-2xs">
+            <span className="text-[10px] uppercase tracking-widest font-black shrink-0 px-2 text-indigo-900 font-mono">Specimens:</span>
             {SAMPLE_PRESETS.map(preset => {
               const isSelected = itemName === preset.title;
               const isAuth = preset.expectedVerdict === 'VERIFIED AUTHENTIC';
               const isCounterfeit = preset.expectedVerdict === 'LIKELY COUNTERFEIT';
-              const dotColor = isAuth ? '#00F08B' : isCounterfeit ? '#FF1E56' : '#FFB800';
+              const dotColor = isAuth ? '#059669' : isCounterfeit ? '#DC2626' : '#D97706';
               return (
                 <button
                   key={preset.id}
                   onClick={() => handleSelectPreset(preset)}
-                  className={`specimen-capsule ${isSelected ? 'active' : ''}`}
+                  className={`specimen-capsule px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
+                    isSelected
+                      ? 'bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-300 text-emerald-950 font-bold shadow-xs'
+                      : 'bg-slate-50/80 border border-slate-200/70 text-slate-700 hover:bg-slate-100 hover:text-slate-900'
+                  }`}
                 >
                   <span className="relative flex w-2 h-2">
                     {isSelected && (
@@ -232,7 +239,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                     <span className="relative rounded-full w-2 h-2" style={{ background: dotColor }} />
                   </span>
                   <span>{preset.title.split(' ')[0]}</span>
-                  <span className={`text-[10px] opacity-80 font-mono font-bold ${isSelected ? 'text-emerald-950' : 'text-slate-400'}`}>
+                  <span className={`text-[10px] opacity-80 font-mono font-bold ${isSelected ? 'text-emerald-800' : 'text-slate-500'}`}>
                     {preset.brand}
                   </span>
                 </button>
@@ -374,16 +381,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
               id="analyze-authenticity-btn"
               onClick={handleAnalyze}
               disabled={isLoading || (!imageUrl && !reviewText)}
-              className={`w-full py-4 rounded-2xl font-bold text-[15px] transition-all flex items-center justify-center gap-2.5 ${
+              className={`w-full py-4 rounded-xl font-bold text-[15px] transition-all flex items-center justify-center gap-2.5 ${
                 isLoading || (!imageUrl && !reviewText)
-                  ? 'cursor-not-allowed'
-                  : 'cursor-pointer btn-neon'
+                  ? 'cursor-not-allowed opacity-50 bg-slate-100 text-slate-400 border border-slate-200'
+                  : 'cursor-pointer bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 hover:from-emerald-500 hover:to-indigo-500 text-white shadow-lg shadow-emerald-600/30 active:scale-98 border border-emerald-500'
               }`}
-              style={
-                isLoading || (!imageUrl && !reviewText)
-                  ? { background: 'rgba(0,60,30,0.03)', border: '1px solid rgba(0,60,30,0.05)', color: 'var(--text-dim)' }
-                  : {}
-              }
             >
               {isLoading ? (
                 <>

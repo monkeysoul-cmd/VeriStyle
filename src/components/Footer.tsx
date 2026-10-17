@@ -10,7 +10,9 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onNavigateTab, onOpenDomainModal }) => {
   return (
-    <footer className="relative bg-slate-950 text-slate-400 border-t border-slate-800">
+    <footer className="relative bg-slate-950 text-slate-400 border-t border-indigo-950 overflow-hidden">
+      {/* Top radiant border accent */}
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-emerald-500/40 to-indigo-500/40" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         
         {/* Main Grid */}
@@ -19,7 +21,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateTab, onOpenDomainModal
           {/* Brand Col */}
           <div className="lg:col-span-2 space-y-4">
             <div className="inline-flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-md bg-emerald-600 flex items-center justify-center shrink-0 text-slate-950 shadow-xs">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 via-teal-600 to-indigo-600 flex items-center justify-center shrink-0 text-white shadow-md shadow-emerald-500/25">
                 <VeriLensIcon className="w-4 h-4 text-white" />
               </div>
               <div className="flex flex-col leading-none">
@@ -40,11 +42,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateTab, onOpenDomainModal
             <div className="pt-1 flex flex-wrap items-center gap-2">
               <button
                 onClick={onOpenDomainModal}
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-slate-900 border border-slate-700/80 hover:border-slate-600 text-xs font-mono text-slate-300 transition-colors cursor-pointer"
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-slate-900 border border-emerald-900/60 hover:border-emerald-700 text-xs font-mono text-slate-300 transition-colors cursor-pointer"
               >
                 <Globe className="w-3.5 h-3.5 text-emerald-400" />
                 <span>veristyle.io</span>
-                <span className="text-[10px] text-emerald-400 font-sans font-bold bg-emerald-950 border border-emerald-800 px-1.5 py-0.2 rounded">SSL Active</span>
+                <span className="text-[10px] text-emerald-300 font-sans font-bold bg-emerald-950/80 border border-emerald-700/80 px-1.5 py-0.2 rounded">SSL Active</span>
               </button>
 
               <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-slate-900 border border-slate-800 text-[11px] font-mono text-slate-400">

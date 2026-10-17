@@ -74,11 +74,11 @@ const ScoreBar: React.FC<{ label: string; value: number }> = ({ label, value }) 
   <div className="space-y-1">
     <div className="flex justify-between items-center text-xs font-semibold">
       <span className="text-slate-700">{label}</span>
-      <span className="text-emerald-800 font-bold font-mono">{value}%</span>
+      <span className="text-emerald-700 font-bold font-mono">{value}%</span>
     </div>
-    <div className="h-2 w-full bg-slate-100 rounded overflow-hidden">
+    <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
       <div
-        className="h-full bg-emerald-600 rounded transition-all duration-500"
+        className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full transition-all duration-500"
         style={{ width: `${value}%` }}
       />
     </div>
@@ -91,9 +91,9 @@ const SentimentBar: React.FC<{ label: string; value: number; colorClass: string 
       <span className="text-slate-600">{label}</span>
       <span className="font-bold font-mono text-slate-900">{value}%</span>
     </div>
-    <div className="h-2 w-full bg-slate-100 rounded overflow-hidden">
+    <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
       <div 
-        className={`h-full rounded ${colorClass} transition-all duration-500`}
+        className={`h-full rounded-full ${colorClass} transition-all duration-500`}
         style={{ width: `${value}%` }}
       />
     </div>
@@ -101,11 +101,11 @@ const SentimentBar: React.FC<{ label: string; value: number; colorClass: string 
 );
 
 const badgeStyles: Record<string, string> = {
-  'Top Rated':    'bg-amber-50 text-amber-800 border-amber-200',
-  'Budget Pick':  'bg-slate-100 text-slate-700 border-slate-200',
-  'Trending':     'bg-emerald-50 text-emerald-800 border-emerald-200',
-  'Premium Pick': 'bg-slate-900 text-white border-slate-900',
-  'Best Value':   'bg-blue-50 text-blue-800 border-blue-200',
+  'Top Rated':    'bg-gradient-to-r from-amber-500 to-amber-600 text-white border-amber-500 shadow-xs',
+  'Budget Pick':  'bg-gradient-to-r from-sky-500 to-blue-600 text-white border-sky-500 shadow-xs',
+  'Trending':     'bg-gradient-to-r from-emerald-500 to-teal-600 text-white border-emerald-500 shadow-xs',
+  'Premium Pick': 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white border-indigo-600 shadow-xs',
+  'Best Value':   'bg-gradient-to-r from-teal-500 to-emerald-600 text-white border-teal-500 shadow-xs',
 };
 
 export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, onBack }) => {
@@ -120,24 +120,24 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
   const negativeInsights = product.reviewInsights.filter(i => i.sentiment === 'negative');
 
   return (
-    <div className="w-full bg-slate-50 min-h-screen pt-24 pb-20 text-slate-900">
+    <div className="w-full bg-slate-50 min-h-screen pt-24 pb-20 text-slate-900 aurora-mesh">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
 
         {/* Back Button */}
         <button
           onClick={onBack}
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-white border border-slate-200 text-slate-700 hover:text-slate-950 hover:border-slate-300 text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:text-indigo-950 hover:border-indigo-300 hover:bg-indigo-50/40 text-xs font-semibold shadow-2xs transition-all cursor-pointer"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="w-4 h-4 text-emerald-600" />
           Back to Benchmark Catalog
         </button>
 
         {/* Hero Specimen Container */}
-        <div className="rounded-md bg-white border border-slate-200 shadow-2xs overflow-hidden">
+        <div className="rounded-xl bg-white border border-slate-200/90 shadow-sm overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
 
             {/* Specimen Photography */}
-            <div className="relative h-80 md:h-auto min-h-[380px] overflow-hidden bg-slate-50/70 p-8 flex items-center justify-center border-b md:border-b-0 md:border-r border-slate-200">
+            <div className="relative h-80 md:h-auto min-h-[380px] overflow-hidden bg-gradient-to-br from-slate-50 via-indigo-50/20 to-emerald-50/20 p-8 flex items-center justify-center border-b md:border-b-0 md:border-r border-slate-200">
               <img
                 src={product.imageUrl}
                 alt={product.name}
