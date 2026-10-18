@@ -457,7 +457,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
     return (
       <motion.div
         className="w-full text-left mx-auto space-y-5"
-        style={{ maxWidth: '1200px' }}
+        style={{ maxWidth: '1380px', width: '100%' }}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}

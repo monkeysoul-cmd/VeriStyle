@@ -59,7 +59,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
         <div className="absolute top-1/4 -left-20 w-80 h-80 bg-indigo-300/20 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute top-1/3 -right-20 w-80 h-80 bg-emerald-300/20 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 text-center flex flex-col items-center">
+        <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
 
           {/* Telemetry Status Capsule */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full mb-6 bg-emerald-500/10 border border-emerald-500/30 text-emerald-800 text-xs font-mono font-medium shadow-xs">
@@ -89,7 +89,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
           </p>
 
           {/* URL Analyzer Cockpit */}
-          <div className="w-full max-w-5xl mx-auto mb-6 text-left">
+          <div className="w-full max-w-[1380px] mx-auto mb-6 text-left">
             <UrlAnalyzer standalone={false} initialUrl={sampleUrl} onAnalyzeComplete={onSaveToVault} />
           </div>
 
