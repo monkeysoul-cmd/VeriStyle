@@ -549,3 +549,210 @@ nav[class*="fixed"] {
   border-radius: 0.75rem;
 }
 
+/* ── Forensic Lab HUD & Holographic Authentication Accents ──────── */
+.holographic-seal {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  padding: 3px;
+  background: conic-gradient(
+    from 180deg at 50% 50%,
+    #10b981 0deg,
+    #06b6d4 72deg,
+    #6366f1 144deg,
+    #ec4899 216deg,
+    #f59e0b 288deg,
+    #10b981 360deg
+  );
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.35);
+  animation: seal-rotate 14s linear infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.holographic-seal-inner {
+  width: 100%;
+  height: 100%;
+  background: #FFFFFF;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+@keyframes seal-rotate {
+  from { filter: hue-rotate(0deg); }
+  to { filter: hue-rotate(360deg); }
+}
+
+.biometric-tick-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(16, 185, 129, 0.45);
+  animation: rotate-slow 24s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotate-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.hud-bracket-tl,
+.hud-bracket-tr,
+.hud-bracket-bl,
+.hud-bracket-br {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: #059669;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.hud-bracket-tl {
+  top: 14px;
+  left: 14px;
+  border-top: 2.5px solid #059669;
+  border-left: 2.5px solid #059669;
+}
+
+.hud-bracket-tr {
+  top: 14px;
+  right: 14px;
+  border-top: 2.5px solid #059669;
+  border-right: 2.5px solid #059669;
+}
+
+.hud-bracket-bl {
+  bottom: 14px;
+  left: 14px;
+  border-bottom: 2.5px solid #059669;
+  border-left: 2.5px solid #059669;
+}
+
+.hud-bracket-br {
+  bottom: 14px;
+  right: 14px;
+  border-bottom: 2.5px solid #059669;
+  border-right: 2.5px solid #059669;
+}
+
+.scanline-overlay {
+  position: relative;
+}
+
+.scanline-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 50%,
+    rgba(16, 185, 129, 0.04) 51%,
+    transparent 52%
+  );
+  background-size: 100% 8px;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.scanline-overlay:hover::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #10b981, #06b6d4, transparent);
+  box-shadow: 0 0 14px #10b981;
+  animation: laser-sweep 2.4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 10;
+}
+
+@keyframes laser-sweep {
+  0% { top: 0%; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.dot-grid-bg {
+  background-image: radial-gradient(rgba(15, 23, 42, 0.12) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.hex-grid-bg {
+  background-image: radial-gradient(rgba(16, 185, 129, 0.12) 1.5px, transparent 1.5px);
+  background-size: 20px 20px;
+}
+
+.animate-draw-arc {
+  animation: draw-arc 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes draw-arc {
+  from { stroke-dashoffset: 251; }
+}
+
+.animate-fill-bar {
+  animation: fill-bar 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fill-bar {
+  from { width: 0%; }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.25);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 28px rgba(16, 185, 129, 0.55);
+    transform: scale(1.03);
+  }
+}
+
+/* Floating micro-animation */
+.animate-float-slow {
+  animation: float-slow 4s ease-in-out infinite;
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* Print Styles for Forensic Certificate */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .fixed.inset-0.z-50,
+  .fixed.inset-0.z-50 * {
+    visibility: visible;
+  }
+  .fixed.inset-0.z-50 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+    background: white !important;
+    padding: 0 !important;
+  }
+  .fixed.inset-0.z-50 button {
+    display: none !important;
+  }
+}
+
+

@@ -105,13 +105,14 @@ if __name__ == "__main__":
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      {/* Title */}
-      <div className="border-b border-slate-200 pb-6 space-y-2">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-slate-100 text-slate-700 text-xs font-mono font-medium border border-slate-200">
-          <Code2 className="w-3.5 h-3.5 text-slate-600" />
-          PYTHON FASTAPI BACKEND SPECIFICATION
-        </div>
+    <div className="w-full min-h-screen pt-24 pb-20 bg-slate-50 text-slate-900 aurora-mesh">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        {/* Title */}
+        <div className="border-b border-indigo-100/80 pb-6 space-y-2">
+          <div className="section-badge mb-2">
+            <Code2 className="w-3.5 h-3.5 text-indigo-600" />
+            PYTHON FASTAPI BACKEND SPECIFICATION
+          </div>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight" style={{ fontFamily: 'var(--font-heading)' }}>
           FastAPI Integration & API Documentation
         </h1>
@@ -182,5 +183,6 @@ if __name__ == "__main__":
         </div>
       </div>
     </div>
+  </div>
   );
 };

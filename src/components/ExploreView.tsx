@@ -13,6 +13,7 @@ import { ProductItem, ProductCategory } from '../types';
 import { PRODUCTS } from '../data/products';
 import { ProductDetailView } from './ProductDetailView';
 import { ProductCard } from './ProductCard';
+import { motion, AnimatePresence } from 'motion/react';
 
 type SortOption = 'trust-score' | 'price-low' | 'price-high' | 'rating' | 'reviews';
 type FilterTag = 'Best Value' | 'High Rated' | 'Trending' | 'High Trust Score' | 'Best Performance' | null;
@@ -162,8 +163,10 @@ export const ExploreView: React.FC = () => {
           ] as const).map(({ label, icon, activeBg }) => {
             const isActive = activeTag === label;
             return (
-              <button
+              <motion.button
                 key={label}
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => setActiveTag(activeTag === label ? null : label)}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all cursor-pointer shadow-2xs ${
                   isActive
@@ -173,7 +176,7 @@ export const ExploreView: React.FC = () => {
               >
                 {icon}
                 <span>{label}</span>
-              </button>
+              </motion.button>
             );
           })}
         </div>
@@ -192,17 +195,30 @@ export const ExploreView: React.FC = () => {
           )}
         </div>
 
-        {/* Product Grid */}
+        {/* Product Grid with AnimatePresence */}
         {filtered.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {filtered.map(product => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onView={() => setSelectedProduct(product)}
-              />
-            ))}
-          </div>
+          <motion.div
+            layout
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
+          >
+            <AnimatePresence>
+              {filtered.map(product => (
+                <motion.div
+                  key={product.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.25 }}
+                >
+                  <ProductCard
+                    product={product}
+                    onView={() => setSelectedProduct(product)}
+                  />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
         ) : (
           <div className="text-center py-16 space-y-4 rounded-lg bg-white border border-slate-200">
             <div className="w-12 h-12 rounded-md bg-slate-100 border border-slate-200 flex items-center justify-center mx-auto mb-2 text-slate-500">

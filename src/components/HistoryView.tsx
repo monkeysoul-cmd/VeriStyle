@@ -14,6 +14,7 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import { AnalysisResult } from '../types';
+import { motion, AnimatePresence } from 'motion/react';
 
 interface HistoryViewProps {
   history: AnalysisResult[];
@@ -137,10 +138,12 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
               const borderAccent = item.trustScore >= 80 ? 'border-l-emerald-500' : item.trustScore >= 50 ? 'border-l-amber-500' : 'border-l-rose-500';
 
               return (
-                <div
+                <motion.div
                   key={item.id}
+                  whileHover={{ y: -4 }}
+                  transition={{ type: "spring", stiffness: 350, damping: 25 }}
                   onClick={() => onSelectResult(item)}
-                  className={`group cursor-pointer p-5 rounded-xl flex flex-col justify-between space-y-4 transition-all duration-300 bg-white border border-slate-200/90 hover:border-indigo-300 hover:shadow-lg hover:shadow-indigo-500/8 shadow-2xs border-l-4 ${borderAccent}`}
+                  className={`group cursor-pointer p-5 rounded-xl flex flex-col justify-between space-y-4 transition-all duration-300 bg-white border border-slate-200/90 hover:border-indigo-300 hover:shadow-xl hover:shadow-indigo-500/10 shadow-2xs border-l-4 ${borderAccent}`}
                 >
                   {/* Top: Hash + Verdict badge */}
                   <div className="flex items-center justify-between gap-2 flex-wrap">
@@ -209,7 +212,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
                     <span>Inspect Full Report</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </div>

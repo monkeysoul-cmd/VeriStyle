@@ -106,12 +106,11 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
   const [failedThumbnails, setFailedThumbnails] = useState<Record<number, boolean>>({});
 
   useEffect(() => {
-    if (initialUrl) {
-      setUrl(initialUrl);
-      if (status === 'error') {
-        setStatus('input');
-        setErrorMsg('');
-      }
+    if (initialUrl && initialUrl.trim()) {
+      setUrl(initialUrl.trim());
+      setStatus('input');
+      setErrorMsg('');
+      setResult(null);
     }
   }, [initialUrl]);
 

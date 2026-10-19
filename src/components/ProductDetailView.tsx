@@ -245,20 +245,68 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
             </div>
 
             <div className="flex-1 w-full space-y-3">
-              <ScoreBar label="Stitching Pitch Uniformity" value={product.features.buildQuality} />
-              <ScoreBar label="Typography & Logo Debossing" value={product.features.performance} />
-              <ScoreBar label="Hardware Finish & Electroplating" value={product.features.batteryLife} />
-              <ScoreBar label="Serial Matrix Validation" value={product.features.design} />
-              <ScoreBar label="Review Text Authenticity" value={product.features.valueForMoney} />
+              <ScoreBar label="Stitching Pitch Uniformity" value={product.scoreDimensions?.buildQuality ?? 95} />
+              <ScoreBar label="Typography & Logo Debossing" value={product.scoreDimensions?.performance ?? 93} />
+              <ScoreBar label="Material & Hardware Fidelity" value={product.scoreDimensions?.userSatisfaction ?? 94} />
+              <ScoreBar label="Serial Matrix Validation" value={product.trustScore ?? 90} />
+              <ScoreBar label="Review Text Authenticity" value={product.scoreDimensions?.valueForMoney ?? 88} />
             </div>
           </div>
         </section>
+
+        {/* Craftsmanship & Review Insights Section */}
+        {product.reviewInsights && product.reviewInsights.length > 0 && (
+          <section className="rounded-xl bg-white border border-slate-200/90 p-6 sm:p-8 space-y-5 shadow-2xs">
+            <div className="space-y-1">
+              <div className="section-badge mb-2">
+                Documented Laboratory Forensics
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 tracking-tight" style={{ fontFamily: 'var(--font-heading)' }}>
+                Physical Craftsmanship & Authenticity Insights
+              </h3>
+              <p className="text-xs text-slate-500">
+                Detailed micro-observations documented during physical verification and customer consensus analysis.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+              {product.reviewInsights.map((insight, idx) => {
+                const isPos = insight.sentiment === 'positive';
+                return (
+                  <div
+                    key={idx}
+                    className={`p-4 rounded-xl border transition-all ${
+                      isPos
+                        ? 'bg-emerald-50/40 border-emerald-200/70 hover:border-emerald-300'
+                        : 'bg-amber-50/40 border-amber-200/70 hover:border-amber-300'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <div className={`p-1.5 rounded-lg ${isPos ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
+                        <InsightIcon type={insight.iconType} className="w-3.5 h-3.5" />
+                      </div>
+                      <h4 className="text-xs font-bold text-slate-900">{insight.title}</h4>
+                      <span className={`ml-auto text-[10px] font-mono font-bold px-2 py-0.5 rounded uppercase ${
+                        isPos ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                      }`}>
+                        {isPos ? 'Verified Positive' : 'Attention Point'}
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-600 leading-relaxed pl-7">
+                      {insight.description}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
         {/* Sentiment Analysis & NLP Verification */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
           
           {/* Sentiment Distribution */}
-          <div className="rounded-md bg-white border border-slate-200 p-6 space-y-5 shadow-2xs">
+          <div className="rounded-xl bg-white border border-slate-200/90 p-6 space-y-5 shadow-2xs">
             <div className="space-y-1">
               <h3 className="text-base font-bold text-slate-900 tracking-tight" style={{ fontFamily: 'var(--font-heading)' }}>
                 Review Sentiment Analysis
@@ -279,7 +327,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
           </div>
 
           {/* Forensic Diagnostic Notes */}
-          <div className="rounded-md bg-white border border-slate-200 p-6 space-y-4 shadow-2xs">
+          <div className="rounded-xl bg-white border border-slate-200/90 p-6 space-y-4 shadow-2xs">
             <div className="space-y-1">
               <h3 className="text-base font-bold text-slate-900 tracking-tight" style={{ fontFamily: 'var(--font-heading)' }}>
                 Forensic Pattern Analysis
@@ -287,7 +335,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
               <p className="text-xs text-slate-500">Documented anomalies and manufacturing cues identified in this listing.</p>
             </div>
 
-            <div className="p-3.5 rounded bg-slate-50 border border-slate-200 text-xs space-y-1.5">
+            <div className="p-3.5 rounded-lg bg-slate-50 border border-slate-200 text-xs space-y-1.5">
               <div className="font-bold text-slate-900 flex items-center gap-1.5">
                 <FileText className="w-3.5 h-3.5 text-slate-600" />
                 Physical Craftsmanship Pattern
@@ -297,7 +345,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
               </p>
             </div>
 
-            <div className="p-3.5 rounded bg-amber-50/70 border border-amber-200 text-xs space-y-1.5">
+            <div className="p-3.5 rounded-lg bg-amber-50/70 border border-amber-200 text-xs space-y-1.5">
               <div className="font-bold text-amber-950 flex items-center gap-1.5">
                 <AlertTriangle className="w-3.5 h-3.5 text-amber-700" />
                 Counterfeit Risk Vector
@@ -314,3 +362,4 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
     </div>
   );
 };
+

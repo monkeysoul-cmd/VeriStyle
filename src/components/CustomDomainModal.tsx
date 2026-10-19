@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Globe, CheckCircle2, ShieldCheck, X, Copy, Check, RefreshCw, AlertCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 
 interface CustomDomainModalProps {
   isOpen: boolean;
@@ -11,6 +12,16 @@ export const CustomDomainModal: React.FC<CustomDomainModalProps> = ({ isOpen, on
   const [isVerifying, setIsVerifying] = useState(false);
   const [verified, setVerified] = useState(true);
   const [copiedRecord, setCopiedRecord] = useState<string | null>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -29,8 +40,18 @@ export const CustomDomainModal: React.FC<CustomDomainModalProps> = ({ isOpen, on
   };
 
   return (
-    <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm">
-      <div className="w-full max-w-xl bg-white rounded-lg border border-slate-200 shadow-2xl overflow-hidden text-slate-900">
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm"
+    >
+      <motion.div
+        onClick={(e) => e.stopPropagation()}
+        initial={{ opacity: 0, scale: 0.95, y: 10 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 10 }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
+        className="w-full max-w-xl bg-white rounded-xl border border-slate-200 shadow-2xl overflow-hidden text-slate-900"
+      >
         
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-slate-200 bg-slate-50/70">
@@ -193,7 +214,7 @@ export const CustomDomainModal: React.FC<CustomDomainModalProps> = ({ isOpen, on
           </button>
         </div>
 
-      </div>
+      </motion.div>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Star, Heart, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Star, Heart, ArrowRight, ShieldCheck, Package } from 'lucide-react';
+import { motion } from 'motion/react';
 import { ProductItem } from '../types';
 
 interface ProductCardProps {
@@ -17,6 +18,7 @@ const badgeStyles: Record<string, string> = {
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, onView }) => {
   const [saved, setSaved] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const getScoreBadge = (score: number) => {
     if (score >= 90) {
@@ -43,15 +45,27 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onView }) => 
   const scoreBadge = getScoreBadge(product.trustScore);
 
   return (
-    <div className="group rounded-xl bg-white border border-slate-200/90 hover:border-indigo-300 hover:shadow-lg hover:shadow-indigo-500/10 transition-all duration-300 overflow-hidden flex flex-col">
+    <motion.div
+      whileHover={{ y: -4 }}
+      transition={{ type: "spring", stiffness: 350, damping: 25 }}
+      className="group rounded-xl bg-white border border-slate-200/90 hover:border-indigo-300 hover:shadow-xl hover:shadow-indigo-500/10 transition-all duration-300 overflow-hidden flex flex-col"
+    >
       {/* Image Container with Clean Surface */}
       <div className="relative h-52 overflow-hidden bg-gradient-to-b from-slate-50 to-indigo-50/20 border-b border-slate-100 p-5 flex items-center justify-center">
-        <img
-          src={product.imageUrl}
-          alt={product.name}
-          referrerPolicy="no-referrer"
-          className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105 mix-blend-multiply"
-        />
+        {!imageError ? (
+          <img
+            src={product.imageUrl}
+            alt={product.name}
+            onError={() => setImageError(true)}
+            referrerPolicy="no-referrer"
+            className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-108 mix-blend-multiply"
+          />
+        ) : (
+          <div className="flex flex-col items-center justify-center text-slate-400 gap-2">
+            <Package className="w-10 h-10 text-slate-300" />
+            <span className="text-[11px] font-mono font-medium text-slate-400">{product.brand} Specimen</span>
+          </div>
+        )}
         
         {/* Badge top-left */}
         <span className={`absolute top-3 left-3 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border shadow-2xs font-mono ${badgeStyles[product.badge] || 'bg-slate-100 text-slate-700 border-slate-200'}`}>
@@ -67,7 +81,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onView }) => 
         </div>
 
         {/* Save button */}
-        <button
+        <motion.button
+          whileTap={{ scale: 0.8 }}
           onClick={(e) => { e.stopPropagation(); setSaved(!saved); }}
           className={`absolute top-3 right-3 w-7 h-7 rounded-md flex items-center justify-center border transition-colors shadow-2xs cursor-pointer ${
             saved ? 'bg-rose-50 border-rose-200 text-rose-600' : 'bg-white/90 border-slate-200 text-slate-400 hover:text-rose-600'
@@ -75,7 +90,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onView }) => 
           aria-label="Save to Vault"
         >
           <Heart className={`w-3.5 h-3.5 ${saved ? 'fill-rose-600' : ''}`} />
-        </button>
+        </motion.button>
       </div>
 
       {/* Content */}
@@ -138,6 +153,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onView }) => 
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };

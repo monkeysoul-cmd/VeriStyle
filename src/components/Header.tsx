@@ -3,7 +3,7 @@ import { Menu, X, ArrowRight, ShieldCheck, Globe } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { VeriLensIcon } from './VeriLensIcon';
 
-export type NavTab = 'landing' | 'dashboard' | 'history' | 'products' | 'privacy' | 'terms';
+export type NavTab = 'landing' | 'dashboard' | 'history' | 'products' | 'privacy' | 'terms' | 'api-docs';
 
 interface HeaderProps {
   currentTab: NavTab;
@@ -32,6 +32,7 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
     { id: 'dashboard', label: 'Inspector' },
     { id: 'history', label: 'Vault' },
     { id: 'products', label: 'Catalog' },
+    { id: 'api-docs', label: 'API Specs' },
   ] as const;
 
   return (
@@ -47,9 +48,13 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
               onClick={() => handleNav('landing')}
               className="inline-flex items-center gap-3 group shrink-0 cursor-pointer text-left"
             >
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 via-teal-600 to-indigo-600 flex items-center justify-center shrink-0 text-white shadow-md shadow-emerald-500/25 group-hover:scale-105 group-hover:shadow-emerald-500/40 transition-all">
+              <motion.div
+                whileHover={{ rotate: 15, scale: 1.08 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 via-teal-600 to-indigo-600 flex items-center justify-center shrink-0 text-white shadow-md shadow-emerald-500/25 group-hover:shadow-emerald-500/40 transition-all"
+              >
                 <VeriLensIcon className="w-4 h-4 text-white" />
-              </div>
+              </motion.div>
               <div className="flex flex-col leading-none">
                 <span
                   className="text-base sm:text-lg font-black tracking-tight text-slate-950 group-hover:text-emerald-700 transition-colors"
@@ -63,7 +68,7 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
               </div>
             </button>
 
-            {/* Desktop Navigation Links */}
+            {/* Desktop Navigation Links with Fluid Sliding Pill Indicator */}
             <div className="hidden md:flex items-center gap-1 p-1 rounded-lg bg-slate-100/90 border border-slate-200/80">
               {navItems.map((item) => {
                 const isActive = currentTab === item.id;
@@ -71,13 +76,20 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
                   <button
                     key={item.id}
                     onClick={() => handleNav(item.id)}
-                    className={`px-3.5 py-1.5 rounded-md text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+                    className={`relative px-3.5 py-1.5 rounded-md text-xs font-semibold tracking-wide transition-colors cursor-pointer ${
                       isActive
-                        ? 'bg-white text-emerald-800 shadow-xs border border-emerald-200/80 font-bold'
-                        : 'text-slate-600 hover:text-slate-950 hover:bg-white/60'
+                        ? 'text-emerald-950 font-bold'
+                        : 'text-slate-600 hover:text-slate-950'
                     }`}
                   >
-                    {item.label}
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeTabPill"
+                        className="absolute inset-0 bg-white rounded-md shadow-xs border border-emerald-200/80 -z-0"
+                        transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                      />
+                    )}
+                    <span className="relative z-10">{item.label}</span>
                   </button>
                 );
               })}
@@ -88,7 +100,9 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
               
               {/* Custom Domain Connected Indicator */}
               {onOpenDomainModal && (
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={onOpenDomainModal}
                   className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-emerald-50/80 hover:bg-emerald-100/80 border border-emerald-200/80 text-emerald-800 text-xs font-mono font-medium transition-colors cursor-pointer shadow-2xs"
                   title="Configure Custom Domain"
@@ -99,17 +113,19 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                   </span>
-                </button>
+                </motion.button>
               )}
 
               {/* Start Inspection Action */}
-              <button
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 onClick={() => { onQuickStart(); handleNav('dashboard'); }}
                 className="hidden md:inline-flex items-center gap-1.5 px-4 py-1.5 rounded-md text-xs font-bold tracking-wide cursor-pointer btn-neon"
               >
                 <span>Inspect Item</span>
                 <ArrowRight className="w-3.5 h-3.5" />
-              </button>
+              </motion.button>
 
               {/* Mobile Menu Button */}
               <button

@@ -7,6 +7,7 @@ import { HistoryView } from './components/HistoryView';
 import { ExploreView } from './components/ExploreView';
 import { PrivacyPolicyView } from './components/PrivacyPolicyView';
 import { TermsView } from './components/TermsView';
+import { ApiDocsView } from './components/ApiDocsView';
 import { CustomDomainModal } from './components/CustomDomainModal';
 import { AnalysisResult, SamplePreset } from './types';
 import { INITIAL_HISTORY } from './data/presets';
@@ -203,6 +204,10 @@ export default function App() {
             <TermsView
               onBack={() => setCurrentTab('landing')}
             />
+          )}
+
+          {currentTab === 'api-docs' && (
+            <ApiDocsView />
           )}
         </main>
       </div>

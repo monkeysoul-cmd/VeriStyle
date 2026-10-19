@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { UrlAnalyzer } from './UrlAnalyzer';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   Search, Shield, CheckCircle2, ChevronDown, HelpCircle,
   FileText, ScanLine, ArrowRight, Eye, Lock, Globe, Server, Check
@@ -101,13 +102,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
               { label: 'flipkart.com/gucci-bag', url: 'https://www.flipkart.com/gucci-leather-handbag-dionysus/p/itm2894721' },
               { label: 'myntra.com/yeezy', url: 'https://www.myntra.com/casual-shoes/adidas/yeezy-boost-350-v2-sneakers/19482910/buy' }
             ].map((item) => (
-              <button
+              <motion.button
                 key={item.label}
+                whileHover={{ scale: 1.05, y: -1 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => setSampleUrl(item.url)}
                 className="px-3 py-1 rounded-md text-xs font-mono font-medium transition-all bg-white/90 border border-indigo-100 hover:border-indigo-400 hover:bg-indigo-50/70 text-indigo-900 hover:text-indigo-950 shadow-2xs hover:shadow-xs cursor-pointer"
               >
                 {item.label}
-              </button>
+              </motion.button>
             ))}
           </div>
 
@@ -360,11 +363,21 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
                   </span>
                   <ChevronDown className={`w-4 h-4 shrink-0 transition-transform duration-200 ${openFaq === i ? 'rotate-180 text-indigo-600' : 'text-slate-500'}`} />
                 </button>
-                {openFaq === i && (
-                  <div className="px-5 pb-5 pt-1 text-xs sm:text-sm leading-relaxed text-slate-600 border-t border-indigo-100 bg-white">
-                    {faq.a}
-                  </div>
-                )}
+                <AnimatePresence>
+                  {openFaq === i && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.22, ease: 'easeOut' }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-5 pb-5 pt-1 text-xs sm:text-sm leading-relaxed text-slate-600 border-t border-indigo-100 bg-white">
+                        {faq.a}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             ))}
           </div>
