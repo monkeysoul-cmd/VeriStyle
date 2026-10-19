@@ -209,7 +209,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
 
   return (
     <div className="w-full min-h-screen pt-24 pb-20 aurora-mesh" style={{ background: 'var(--bg-base)' }}>
-      <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-14 space-y-8">
+      <div className="w-full max-w-[1640px] 2xl:max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
 
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 pb-6 border-b border-indigo-100/80">
@@ -264,7 +264,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
         </div>
 
         {/* URL Analyzer */}
-        <div className="w-full max-w-[1400px] mx-auto text-left">
+        <div className="w-full max-w-[1640px] 2xl:max-w-[1720px] mx-auto text-left">
           <UrlAnalyzer standalone={false} onAnalyzeComplete={onSaveToVault} />
         </div>
 
