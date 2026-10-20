@@ -54,16 +54,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
   return (
     <div className="w-full flex flex-col min-h-screen" style={{ background: 'var(--bg-base)', color: 'var(--text-primary)' }}>
 
-      {/* 1. HERO SECTION: Premium Dark Aurora */}
+      {/* 1. HERO SECTION: Luxury Light Editorial Aurora */}
       <section className="relative w-full flex flex-col items-center justify-center px-4 pt-28 sm:pt-36 pb-20 overflow-hidden">
         
-        {/* Rich ambient glows */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(212, 168, 83, 0.06) 0%, transparent 70%)' }} />
-        <div className="absolute top-1/4 -left-40 w-[600px] h-[600px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(129, 140, 248, 0.04) 0%, transparent 60%)' }} />
-        <div className="absolute top-1/3 -right-40 w-[600px] h-[600px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(16, 185, 129, 0.04) 0%, transparent 60%)' }} />
+        {/* Soft, radiant light ambient glows */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(184, 134, 11, 0.08) 0%, transparent 65%)' }} />
+        <div className="absolute top-1/4 -left-40 w-[600px] h-[600px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(79, 70, 229, 0.05) 0%, transparent 60%)' }} />
+        <div className="absolute top-1/3 -right-40 w-[600px] h-[600px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(5, 150, 105, 0.05) 0%, transparent 60%)' }} />
         
         {/* Subtle grid overlay */}
-        <div className="absolute inset-0 dot-grid-bg opacity-30 pointer-events-none" />
+        <div className="absolute inset-0 dot-grid-bg opacity-40 pointer-events-none" />
 
         <div className="relative z-10 w-full max-w-[1680px] 2xl:max-w-[1780px] mx-auto text-center flex flex-col items-center">
 
@@ -71,23 +71,23 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full mb-7"
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full mb-7"
             style={{
-              background: 'rgba(212, 168, 83, 0.06)',
-              border: '1px solid rgba(212, 168, 83, 0.18)',
-              boxShadow: '0 0 24px rgba(212, 168, 83, 0.06)',
+              background: '#FFFFFF',
+              border: '1px solid rgba(184, 134, 11, 0.25)',
+              boxShadow: '0 4px 16px -4px rgba(184, 134, 11, 0.15)',
             }}
           >
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: '#D4A853' }}></span>
-              <span className="relative inline-flex rounded-full h-2 w-2" style={{ background: '#D4A853' }}></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-amber-500"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-600"></span>
             </span>
-            <span className="text-xs font-mono font-medium" style={{ color: '#D4A853' }}>
-              Inspection Engine Active: <strong className="font-extrabold">veristyle.io</strong>
+            <span className="text-xs font-mono font-medium text-slate-800">
+              Inspection Engine Active: <strong className="font-extrabold text-amber-800">veristyle.io</strong>
             </span>
-            <span style={{ color: 'rgba(212, 168, 83, 0.3)' }}>|</span>
-            <span className="text-xs font-semibold" style={{ color: '#34D88A' }}>Multi-Vector AI</span>
+            <span className="text-slate-300">|</span>
+            <span className="text-xs font-bold text-emerald-700">Multi-Vector AI Forensic Lab</span>
           </motion.div>
 
           {/* Premium Headline */}
@@ -95,8 +95,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight max-w-5xl leading-[1.08] mb-6"
-            style={{ fontFamily: 'var(--font-heading)', color: '#F0EDE6' }}
+            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight max-w-5xl leading-[1.08] mb-6 text-slate-900"
+            style={{ fontFamily: 'var(--font-heading)' }}
           >
             Automated Authenticity & Counterfeit Inspection for{' '}
             <span className="gold-shimmer-text">
@@ -109,8 +109,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.35 }}
-            className="text-sm sm:text-base md:text-lg max-w-2xl mb-10 leading-relaxed font-normal"
-            style={{ color: '#6B7394' }}
+            className="text-sm sm:text-base md:text-lg max-w-2xl mb-10 leading-relaxed font-normal text-slate-600"
           >
             Analyze e-commerce product listings and high-resolution imagery in real time. Inspect stitch tension, hardware debossing, serial matrices, and review text anomalies across Amazon, Flipkart, Myntra, and luxury resellers.
           </motion.p>
@@ -119,15 +118,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
+            transition={{ duration: 0.6, delay: 0.45 }}
             className="w-full max-w-[1640px] 2xl:max-w-[1720px] mx-auto mb-6 text-left"
           >
             <UrlAnalyzer standalone={false} initialUrl={sampleUrl} onAnalyzeComplete={onSaveToVault} />
           </motion.div>
 
           {/* Reference Test Benchmarks */}
-          <div className="flex flex-wrap items-center justify-center gap-2 text-xs mt-3" style={{ color: 'var(--text-dim)' }}>
-            <span className="font-semibold font-mono" style={{ color: '#D4A853' }}>Reference URL Tests:</span>
+          <div className="flex flex-wrap items-center justify-center gap-2 text-xs mt-3 text-slate-500">
+            <span className="font-bold font-mono text-amber-800">Reference URL Tests:</span>
             {[
               { label: 'amazon.in/nike-jordan', url: 'https://www.amazon.in/Nike-Air-Jordan-Retro-Sneakers/dp/B0CKW79YQ4' },
               { label: 'flipkart.com/gucci-bag', url: 'https://www.flipkart.com/gucci-leather-handbag-dionysus/p/itm2894721' },
@@ -135,15 +134,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
             ].map((item) => (
               <motion.button
                 key={item.label}
-                whileHover={{ scale: 1.05, y: -1 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.04, y: -1 }}
+                whileTap={{ scale: 0.96 }}
                 onClick={() => setSampleUrl(item.url)}
-                className="px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  color: '#B8C0D0',
-                }}
+                className="px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer bg-white border border-slate-200 text-slate-700 hover:text-slate-900 hover:border-amber-400 shadow-xs"
               >
                 {item.label}
               </motion.button>
@@ -151,28 +145,28 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
           </div>
 
           {/* Concrete Technical Standards */}
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs font-medium" style={{ color: '#6B7394' }}>
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs font-medium text-slate-600">
             <span className="flex items-center gap-2">
-              <span className="w-5 h-5 rounded-md flex items-center justify-center" style={{ background: 'rgba(16, 185, 129, 0.10)', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
-                <Check className="w-3 h-3" style={{ color: '#10B981' }} />
+              <span className="w-5 h-5 rounded-md flex items-center justify-center bg-emerald-50 border border-emerald-200">
+                <Check className="w-3 h-3 text-emerald-600" />
               </span>
               Optical Seam & Hardware Edge Detection
             </span>
             <span className="flex items-center gap-2">
-              <span className="w-5 h-5 rounded-md flex items-center justify-center" style={{ background: 'rgba(129, 140, 248, 0.10)', border: '1px solid rgba(129, 140, 248, 0.2)' }}>
-                <Check className="w-3 h-3" style={{ color: '#818CF8' }} />
+              <span className="w-5 h-5 rounded-md flex items-center justify-center bg-indigo-50 border border-indigo-200">
+                <Check className="w-3 h-3 text-indigo-600" />
               </span>
               NLP Buyer Review Perplexity Scoring
             </span>
             <span className="flex items-center gap-2">
-              <span className="w-5 h-5 rounded-md flex items-center justify-center" style={{ background: 'rgba(212, 168, 83, 0.10)', border: '1px solid rgba(212, 168, 83, 0.2)' }}>
-                <Check className="w-3 h-3" style={{ color: '#D4A853' }} />
+              <span className="w-5 h-5 rounded-md flex items-center justify-center bg-amber-50 border border-amber-200">
+                <Check className="w-3 h-3 text-amber-700" />
               </span>
               Serial Checksum & Factory Matrix Matching
             </span>
             <span className="flex items-center gap-2">
-              <span className="w-5 h-5 rounded-md flex items-center justify-center" style={{ background: 'rgba(244, 63, 94, 0.10)', border: '1px solid rgba(244, 63, 94, 0.2)' }}>
-                <Lock className="w-3 h-3" style={{ color: '#FB7185' }} />
+              <span className="w-5 h-5 rounded-md flex items-center justify-center bg-rose-50 border border-rose-200">
+                <Lock className="w-3 h-3 text-rose-600" />
               </span>
               Zero Data Retention Architecture
             </span>
@@ -181,31 +175,21 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
         </div>
       </section>
 
-      {/* 2. SUPPORTED PLATFORMS: Premium Dark Ticker */}
+      {/* 2. SUPPORTED PLATFORMS: Luxury Light Ticker */}
       <section
-        className="w-full py-6 overflow-hidden"
-        style={{
-          background: 'linear-gradient(180deg, rgba(12, 12, 22, 0.5) 0%, rgba(8, 8, 15, 0.8) 100%)',
-          borderTop: '1px solid rgba(255, 255, 255, 0.04)',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.04)',
-        }}
+        className="w-full py-6 overflow-hidden bg-white border-y border-slate-200/80 shadow-xs"
       >
         <div className="max-w-7xl mx-auto px-4 mb-3 flex items-center justify-center gap-2">
-          <span className="text-xs font-bold uppercase tracking-wider font-mono" style={{ color: '#6B7394' }}>
+          <span className="text-xs font-bold uppercase tracking-wider font-mono text-slate-500">
             Supported E-Commerce Platforms & Connectors
           </span>
-          <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: '#D4A853' }} />
+          <span className="w-2 h-2 rounded-full animate-pulse bg-amber-500" />
         </div>
         <div className="animate-marquee flex items-center gap-8 w-max opacity-90">
           {[...stores, ...stores].map((store, i) => (
             <div
               key={`${store.name}-${i}`}
-              className="flex items-center gap-2.5 px-4 py-2 rounded-lg text-xs font-semibold shrink-0 transition-all"
-              style={{
-                background: 'rgba(255, 255, 255, 0.03)',
-                border: '1px solid rgba(255, 255, 255, 0.06)',
-                color: '#B8C0D0',
-              }}
+              className="flex items-center gap-2.5 px-4 py-2 rounded-lg text-xs font-semibold shrink-0 transition-all bg-slate-50 border border-slate-200 text-slate-700 hover:text-slate-900 hover:border-slate-300"
             >
               <img
                 src={`https://icon.horse/icon/${store.domain}`}
@@ -220,14 +204,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
 
       {/* 3. FOUR-PHASE INSPECTION METHODOLOGY */}
       <section
-        className="w-full py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
-        style={{
-          background: 'linear-gradient(180deg, var(--bg-base) 0%, #0C0C16 100%)',
-        }}
+        className="w-full py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-slate-50/60"
       >
-        {/* Subtle ambient glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(212, 168, 83, 0.03) 0%, transparent 70%)' }} />
-
         <div className="relative z-10 max-w-6xl mx-auto space-y-14">
           
           <div className="text-center max-w-3xl mx-auto space-y-4">
@@ -235,10 +213,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
               <Layers className="w-3 h-3" />
               System Pipeline
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight" style={{ fontFamily: 'var(--font-heading)', color: '#F0EDE6' }}>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900" style={{ fontFamily: 'var(--font-heading)' }}>
               Four-Phase Inspection Methodology
             </h2>
-            <p className="text-sm sm:text-base leading-relaxed" style={{ color: '#6B7394' }}>
+            <p className="text-sm sm:text-base leading-relaxed text-slate-600">
               Cross-referencing physical craftsmanship forensics with linguistic buyer consensus in real time.
             </p>
           </div>
@@ -250,9 +228,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
                 title: 'Listing Ingestion',
                 desc: 'The user submits an e-commerce URL or uploads high-resolution photography of the item.',
                 icon: Search,
-                accentColor: '#818CF8',
-                accentBg: 'rgba(129, 140, 248, 0.08)',
-                accentBorder: 'rgba(129, 140, 248, 0.15)',
+                accentColor: '#4F46E5',
+                accentBg: '#EEF2FF',
+                accentBorder: '#C7D2FE',
                 glowClass: 'card-glow-indigo',
               },
               {
@@ -260,9 +238,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
                 title: 'Specimen Extraction',
                 desc: 'Our scraper extracts product images, seller credentials, pricing tiers, and buyer review text.',
                 icon: ScanLine,
-                accentColor: '#38BDF8',
-                accentBg: 'rgba(56, 189, 248, 0.08)',
-                accentBorder: 'rgba(56, 189, 248, 0.15)',
+                accentColor: '#0284C7',
+                accentBg: '#F0F9FF',
+                accentBorder: '#BAE6FD',
                 glowClass: 'card-glow-sky',
               },
               {
@@ -270,9 +248,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
                 title: 'Multi-Vector Analysis',
                 desc: 'Computer vision evaluates stitch pitch and debossing; NLP evaluates review entropy and bot patterns.',
                 icon: FileText,
-                accentColor: '#A855F7',
-                accentBg: 'rgba(168, 85, 247, 0.08)',
-                accentBorder: 'rgba(168, 85, 247, 0.15)',
+                accentColor: '#7C3AED',
+                accentBg: '#F5F3FF',
+                accentBorder: '#DDD6FE',
                 glowClass: 'card-glow-purple',
               },
               {
@@ -280,9 +258,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
                 title: 'Report Generation',
                 desc: 'A structured forensic report is rendered with anomaly points and saved to your local vault.',
                 icon: CheckCircle2,
-                accentColor: '#D4A853',
-                accentBg: 'rgba(212, 168, 83, 0.08)',
-                accentBorder: 'rgba(212, 168, 83, 0.15)',
+                accentColor: '#B8860B',
+                accentBg: '#FEF9C3',
+                accentBorder: '#FDE047',
                 glowClass: 'card-glow-gold',
               },
             ].map((item) => (
@@ -290,12 +268,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
                 key={item.step}
                 whileHover={{ y: -4, scale: 1.01 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                className={`p-6 rounded-xl flex flex-col justify-between transition-all duration-300 ${item.glowClass}`}
-                style={{
-                  background: `linear-gradient(180deg, ${item.accentBg} 0%, rgba(14, 14, 26, 0.6) 100%)`,
-                  border: `1px solid ${item.accentBorder}`,
-                  boxShadow: `0 4px 24px -8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.03)`,
-                }}
+                className={`p-6 rounded-2xl flex flex-col justify-between transition-all duration-300 bg-white border border-slate-200/90 shadow-sm ${item.glowClass}`}
               >
                 <div>
                   <div className="flex items-center justify-between mb-5">
@@ -310,20 +283,19 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
                       PHASE {item.step}
                     </span>
                     <div
-                      className="w-9 h-9 rounded-lg flex items-center justify-center"
+                      className="w-9 h-9 rounded-xl flex items-center justify-center"
                       style={{
-                        background: `linear-gradient(135deg, ${item.accentColor}30, ${item.accentColor}10)`,
+                        background: item.accentBg,
                         border: `1px solid ${item.accentBorder}`,
-                        boxShadow: `0 0 12px ${item.accentColor}15`,
                       }}
                     >
                       <item.icon className="w-4 h-4" style={{ color: item.accentColor }} />
                     </div>
                   </div>
-                  <h3 className="text-base font-bold mb-2" style={{ fontFamily: 'var(--font-heading)', color: '#F0EDE6' }}>
+                  <h3 className="text-base font-bold mb-2 text-slate-900" style={{ fontFamily: 'var(--font-heading)' }}>
                     {item.title}
                   </h3>
-                  <p className="text-xs leading-relaxed" style={{ color: '#6B7394' }}>
+                  <p className="text-xs leading-relaxed text-slate-600">
                     {item.desc}
                   </p>
                 </div>
@@ -336,11 +308,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
 
       {/* 4. TECHNICAL ARCHITECTURE & INSPECTION VECTORS */}
       <section
-        className="w-full py-24 px-4 sm:px-6 lg:px-8 relative"
-        style={{
-          background: 'linear-gradient(180deg, #0C0C16 0%, var(--bg-base) 100%)',
-          borderTop: '1px solid rgba(255, 255, 255, 0.04)',
-        }}
+        className="w-full py-24 px-4 sm:px-6 lg:px-8 relative bg-white border-t border-slate-200/80"
       >
         <div className="max-w-6xl mx-auto space-y-14">
           
@@ -349,10 +317,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
               <Fingerprint className="w-3 h-3" />
               Engineering Architecture
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight" style={{ fontFamily: 'var(--font-heading)', color: '#F0EDE6' }}>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900" style={{ fontFamily: 'var(--font-heading)' }}>
               Dual-Engine Forensic Verification
             </h2>
-            <p className="text-sm sm:text-base leading-relaxed" style={{ color: '#6B7394' }}>
+            <p className="text-sm sm:text-base leading-relaxed text-slate-600">
               Combining visual micro-inspection of hardware and seams with natural language review entropy analysis.
             </p>
           </div>
@@ -362,41 +330,34 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
             {/* Vector 1: NLP */}
             <motion.div
               whileHover={{ y: -3 }}
-              className="p-8 rounded-xl transition-all flex flex-col justify-between"
+              className="p-8 rounded-2xl transition-all flex flex-col justify-between bg-white border border-indigo-100 shadow-sm"
               style={{
-                background: 'linear-gradient(145deg, rgba(129, 140, 248, 0.06) 0%, rgba(14, 14, 26, 0.5) 100%)',
-                border: '1px solid rgba(129, 140, 248, 0.15)',
-                boxShadow: '0 8px 32px -8px rgba(0, 0, 0, 0.3)',
+                boxShadow: '0 8px 30px -4px rgba(79, 70, 229, 0.06)',
               }}
             >
               <div>
                 <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center mb-5"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(129, 140, 248, 0.15), rgba(99, 102, 241, 0.08))',
-                    border: '1px solid rgba(129, 140, 248, 0.25)',
-                    boxShadow: '0 0 16px rgba(129, 140, 248, 0.10)',
-                  }}
+                  className="w-11 h-11 rounded-xl flex items-center justify-center mb-5 bg-indigo-50 border border-indigo-200"
                 >
-                  <FileText className="w-5 h-5" style={{ color: '#A5B4FC' }} />
+                  <FileText className="w-5 h-5 text-indigo-600" />
                 </div>
-                <div className="mono-label mb-2" style={{ color: '#818CF8' }}>Natural Language Processing</div>
-                <h3 className="text-xl font-bold mb-3" style={{ fontFamily: 'var(--font-heading)', color: '#F0EDE6' }}>
+                <div className="mono-label mb-2 text-indigo-600">Natural Language Processing</div>
+                <h3 className="text-xl font-bold mb-3 text-slate-900" style={{ fontFamily: 'var(--font-heading)' }}>
                   Synthetic Review & Seller Anomaly Screening
                 </h3>
-                <p className="text-xs sm:text-sm leading-relaxed mb-6" style={{ color: '#6B7394' }}>
+                <p className="text-xs sm:text-sm leading-relaxed mb-6 text-slate-600">
                   Online counterfeit listings often rely on coordinated review manipulation to mask low-grade merchandise. Our NLP module analyzes lexical dispersion, syntax perplexity, and rating-sentiment coherence to detect manufactured reviews.
                 </p>
                 
-                <div className="space-y-2.5 text-xs font-medium" style={{ color: '#B8C0D0' }}>
+                <div className="space-y-2.5 text-xs font-medium text-slate-700">
                   {[
                     { title: 'Perplexity Entropy:', desc: 'Measures vocabulary variation against human baseline standards.' },
                     { title: 'Template Repetition:', desc: 'Detects identical copy-paste strings across disparate seller accounts.' },
                     { title: 'Sentiment Discordance:', desc: 'Flags 5-star ratings coupled with contradictory complaint text.' },
                   ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-2.5 p-3 rounded-lg" style={{ background: 'rgba(129, 140, 248, 0.05)', border: '1px solid rgba(129, 140, 248, 0.10)' }}>
-                      <CheckCircle2 className="w-4 h-4 shrink-0" style={{ color: '#818CF8' }} />
-                      <span><strong style={{ color: '#A5B4FC' }}>{item.title}</strong> {item.desc}</span>
+                    <div key={i} className="flex items-center gap-2.5 p-3 rounded-lg bg-indigo-50/50 border border-indigo-100">
+                      <CheckCircle2 className="w-4 h-4 shrink-0 text-indigo-600" />
+                      <span><strong className="text-indigo-900">{item.title}</strong> {item.desc}</span>
                     </div>
                   ))}
                 </div>
@@ -406,41 +367,34 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
             {/* Vector 2: Computer Vision */}
             <motion.div
               whileHover={{ y: -3 }}
-              className="p-8 rounded-xl transition-all flex flex-col justify-between"
+              className="p-8 rounded-2xl transition-all flex flex-col justify-between bg-white border border-emerald-100 shadow-sm"
               style={{
-                background: 'linear-gradient(145deg, rgba(16, 185, 129, 0.06) 0%, rgba(14, 14, 26, 0.5) 100%)',
-                border: '1px solid rgba(16, 185, 129, 0.15)',
-                boxShadow: '0 8px 32px -8px rgba(0, 0, 0, 0.3)',
+                boxShadow: '0 8px 30px -4px rgba(5, 150, 105, 0.06)',
               }}
             >
               <div>
                 <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center mb-5"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.08))',
-                    border: '1px solid rgba(16, 185, 129, 0.25)',
-                    boxShadow: '0 0 16px rgba(16, 185, 129, 0.10)',
-                  }}
+                  className="w-11 h-11 rounded-xl flex items-center justify-center mb-5 bg-emerald-50 border border-emerald-200"
                 >
-                  <ScanLine className="w-5 h-5" style={{ color: '#34D88A' }} />
+                  <ScanLine className="w-5 h-5 text-emerald-600" />
                 </div>
-                <div className="mono-label mb-2" style={{ color: '#10B981' }}>Computer Vision Engine</div>
-                <h3 className="text-xl font-bold mb-3" style={{ fontFamily: 'var(--font-heading)', color: '#F0EDE6' }}>
+                <div className="mono-label mb-2 text-emerald-600">Computer Vision Engine</div>
+                <h3 className="text-xl font-bold mb-3 text-slate-900" style={{ fontFamily: 'var(--font-heading)' }}>
                   Sub-Pixel Seam Pitch & Hardware Forensics
                 </h3>
-                <p className="text-xs sm:text-sm leading-relaxed mb-6" style={{ color: '#6B7394' }}>
+                <p className="text-xs sm:text-sm leading-relaxed mb-6 text-slate-600">
                   Authentic luxury manufacture adheres to rigorous tolerances in stitch pitch, hardware debossing, and textile grain. High-resolution specimen imagery is inspected across critical craftsmanship markers.
                 </p>
                 
-                <div className="space-y-2.5 text-xs font-medium" style={{ color: '#B8C0D0' }}>
+                <div className="space-y-2.5 text-xs font-medium text-slate-700">
                   {[
                     { title: 'Thread Gauge & Pitch:', desc: 'Evaluates stitches per inch against master factory benchmarks.' },
                     { title: 'Engraving & Deboss Depth:', desc: 'Inspects font serifs, stroke width, and stamp sharpness.' },
                     { title: 'Serial Syntax Validation:', desc: 'Cross-checks date code formats against brand production eras.' },
                   ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-2.5 p-3 rounded-lg" style={{ background: 'rgba(16, 185, 129, 0.05)', border: '1px solid rgba(16, 185, 129, 0.10)' }}>
-                      <CheckCircle2 className="w-4 h-4 shrink-0" style={{ color: '#10B981' }} />
-                      <span><strong style={{ color: '#34D88A' }}>{item.title}</strong> {item.desc}</span>
+                    <div key={i} className="flex items-center gap-2.5 p-3 rounded-lg bg-emerald-50/50 border border-emerald-100">
+                      <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
+                      <span><strong className="text-emerald-900">{item.title}</strong> {item.desc}</span>
                     </div>
                   ))}
                 </div>
@@ -454,11 +408,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
 
       {/* 5. FREQUENTLY ASKED QUESTIONS */}
       <section
-        className="w-full py-24 px-4 sm:px-6 lg:px-8"
-        style={{
-          background: 'var(--bg-base)',
-          borderTop: '1px solid rgba(255, 255, 255, 0.04)',
-        }}
+        className="w-full py-24 px-4 sm:px-6 lg:px-8 bg-slate-50/60 border-t border-slate-200/80"
       >
         <div className="max-w-3xl mx-auto space-y-12">
           
@@ -467,10 +417,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
               <HelpCircle className="w-3 h-3" />
               Documentation
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight" style={{ fontFamily: 'var(--font-heading)', color: '#F0EDE6' }}>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900" style={{ fontFamily: 'var(--font-heading)' }}>
               Frequently Asked Questions
             </h2>
-            <p className="text-sm" style={{ color: '#6B7394' }}>
+            <p className="text-sm text-slate-600">
               Technical details regarding authenticity scoring, privacy, and verification scope.
             </p>
           </div>
@@ -479,33 +429,26 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
             {faqs.map((faq, i) => (
               <div
                 key={i}
-                className="rounded-xl overflow-hidden transition-all duration-300"
+                className="rounded-xl overflow-hidden transition-all duration-300 bg-white border border-slate-200 shadow-xs"
                 style={{
-                  border: openFaq === i
-                    ? '1px solid rgba(212, 168, 83, 0.20)'
-                    : '1px solid rgba(255, 255, 255, 0.06)',
-                  background: openFaq === i
-                    ? 'rgba(212, 168, 83, 0.04)'
-                    : 'rgba(255, 255, 255, 0.02)',
+                  borderColor: openFaq === i ? 'rgba(184, 134, 11, 0.4)' : undefined,
                 }}
               >
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full px-5 py-4 text-left flex justify-between items-center transition-colors cursor-pointer"
-                  style={{ background: 'transparent' }}
+                  className="w-full px-5 py-4 text-left flex justify-between items-center transition-colors cursor-pointer bg-white"
                 >
                   <span
                     className="font-bold text-sm pr-4 transition-colors"
                     style={{
                       fontFamily: 'var(--font-heading)',
-                      color: openFaq === i ? '#D4A853' : '#F0EDE6',
+                      color: openFaq === i ? '#92640A' : '#0F172A',
                     }}
                   >
                     {faq.q}
                   </span>
                   <ChevronDown
-                    className={`w-4 h-4 shrink-0 transition-transform duration-200 ${openFaq === i ? 'rotate-180' : ''}`}
-                    style={{ color: openFaq === i ? '#D4A853' : '#6B7394' }}
+                    className={`w-4 h-4 shrink-0 transition-transform duration-200 ${openFaq === i ? 'rotate-180 text-amber-700' : 'text-slate-400'}`}
                   />
                 </button>
                 <AnimatePresence>
@@ -518,11 +461,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
                       className="overflow-hidden"
                     >
                       <div
-                        className="px-5 pb-5 pt-1 text-xs sm:text-sm leading-relaxed"
-                        style={{
-                          color: '#6B7394',
-                          borderTop: '1px solid rgba(212, 168, 83, 0.10)',
-                        }}
+                        className="px-5 pb-5 pt-1 text-xs sm:text-sm leading-relaxed text-slate-600 border-t border-amber-100"
                       >
                         {faq.a}
                       </div>
@@ -536,48 +475,42 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
         </div>
       </section>
 
-      {/* 6. CALL TO ACTION SECTION: Premium Gold Dark */}
-      <section className="relative w-full py-20 px-4 text-center overflow-hidden" style={{ borderTop: '1px solid rgba(212, 168, 83, 0.08)' }}>
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, #0C0C16 0%, #0A0A14 40%, #08080F 100%)' }} />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(212, 168, 83, 0.06) 0%, transparent 70%)' }} />
+      {/* 6. CALL TO ACTION SECTION: Luxury Light Gold */}
+      <section className="relative w-full py-20 px-4 text-center overflow-hidden bg-white border-t border-slate-200">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(184, 134, 11, 0.08) 0%, transparent 65%)' }} />
 
         <div className="relative z-10 max-w-2xl mx-auto space-y-7">
           <div
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-mono"
-            style={{
-              background: 'rgba(212, 168, 83, 0.06)',
-              border: '1px solid rgba(212, 168, 83, 0.18)',
-              color: '#D4A853',
-            }}
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-mono bg-amber-50 border border-amber-200 text-amber-800"
           >
-            <Crown className="w-3.5 h-3.5" style={{ color: '#D4A853' }} />
+            <Crown className="w-3.5 h-3.5 text-amber-600" />
             Zero Data Stored: Ephemeral Processing
           </div>
           
           <h2
-            className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight"
-            style={{ fontFamily: 'var(--font-heading)', color: '#F0EDE6' }}
+            className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900"
+            style={{ fontFamily: 'var(--font-heading)' }}
           >
             Start Verifying Marketplace Listings
           </h2>
           
-          <p className="text-sm sm:text-base max-w-xl mx-auto leading-relaxed" style={{ color: '#6B7394' }}>
+          <p className="text-sm sm:text-base max-w-xl mx-auto leading-relaxed text-slate-600">
             Paste any supported product link into the analyzer bar or upload inspection photography to generate an immediate multi-signal report.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
             <button
               onClick={onStartAnalysis}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-bold tracking-wide btn-neon cursor-pointer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold tracking-wide btn-neon cursor-pointer shadow-sm"
             >
               <span>Open Inspector Studio</span>
               <ArrowRight className="w-4 h-4" />
             </button>
             <button
               onClick={onViewProducts}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-bold tracking-wide btn-gradient-indigo cursor-pointer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold tracking-wide btn-ghost cursor-pointer"
             >
-              <Eye className="w-4 h-4" />
+              <Eye className="w-4 h-4 text-slate-500" />
               <span>Browse Benchmark Catalog</span>
             </button>
           </div>
