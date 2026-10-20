@@ -38,7 +38,23 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-[9999] transition-all duration-300 ${scrolled ? 'py-2 bg-white/95 border-b border-indigo-100/80 shadow-xs backdrop-blur-md' : 'py-3.5 bg-white/85 border-b border-slate-100 backdrop-blur-md'}`}
+        className={`fixed top-0 left-0 right-0 z-[9999] transition-all duration-500 ${
+          scrolled
+            ? 'py-2 border-b shadow-lg'
+            : 'py-3.5 border-b'
+        }`}
+        style={{
+          background: scrolled
+            ? 'rgba(8, 8, 15, 0.92)'
+            : 'rgba(8, 8, 15, 0.75)',
+          borderColor: scrolled
+            ? 'rgba(212, 168, 83, 0.12)'
+            : 'rgba(255, 255, 255, 0.04)',
+          backdropFilter: 'blur(24px) saturate(180%)',
+          boxShadow: scrolled
+            ? '0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(212, 168, 83, 0.06)'
+            : 'none',
+        }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
@@ -51,41 +67,59 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
               <motion.div
                 whileHover={{ rotate: 15, scale: 1.08 }}
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 via-teal-600 to-indigo-600 flex items-center justify-center shrink-0 text-white shadow-md shadow-emerald-500/25 group-hover:shadow-emerald-500/40 transition-all"
+                className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-white transition-all"
+                style={{
+                  background: 'linear-gradient(135deg, #D4A853 0%, #C9973C 50%, #B8892F 100%)',
+                  boxShadow: '0 4px 16px rgba(212, 168, 83, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+                }}
               >
                 <VeriLensIcon className="w-4 h-4 text-white" />
               </motion.div>
               <div className="flex flex-col leading-none">
                 <span
-                  className="text-base sm:text-lg font-black tracking-tight text-slate-950 group-hover:text-emerald-700 transition-colors"
+                  className="text-base sm:text-lg font-black tracking-tight text-white group-hover:text-amber-300 transition-colors"
                   style={{ fontFamily: 'var(--font-heading)' }}
                 >
                   VeriStyle
                 </span>
-                <span className="text-[9px] font-bold uppercase tracking-widest text-emerald-600 mt-0.5 font-mono">
+                <span className="text-[9px] font-bold uppercase tracking-[0.18em] mt-0.5 font-mono" style={{ color: '#D4A853' }}>
                   Authenticity Verification
                 </span>
               </div>
             </button>
 
-            {/* Desktop Navigation Links with Fluid Sliding Pill Indicator */}
-            <div className="hidden md:flex items-center gap-1 p-1 rounded-lg bg-slate-100/90 border border-slate-200/80">
+            {/* Desktop Navigation Links */}
+            <div
+              className="hidden md:flex items-center gap-1 p-1 rounded-xl"
+              style={{
+                background: 'rgba(255, 255, 255, 0.03)',
+                border: '1px solid rgba(255, 255, 255, 0.06)',
+              }}
+            >
               {navItems.map((item) => {
                 const isActive = currentTab === item.id;
                 return (
                   <button
                     key={item.id}
                     onClick={() => handleNav(item.id)}
-                    className={`relative px-3.5 py-1.5 rounded-md text-xs font-semibold tracking-wide transition-colors cursor-pointer ${
+                    className={`relative px-3.5 py-1.5 rounded-lg text-xs font-semibold tracking-wide transition-colors cursor-pointer ${
                       isActive
-                        ? 'text-emerald-950 font-bold'
-                        : 'text-slate-600 hover:text-slate-950'
+                        ? 'font-bold'
+                        : 'hover:text-white'
                     }`}
+                    style={{
+                      color: isActive ? '#D4A853' : 'rgba(184, 192, 208, 0.7)',
+                    }}
                   >
                     {isActive && (
                       <motion.div
                         layoutId="activeTabPill"
-                        className="absolute inset-0 bg-white rounded-md shadow-xs border border-emerald-200/80 -z-0"
+                        className="absolute inset-0 rounded-lg -z-0"
+                        style={{
+                          background: 'rgba(212, 168, 83, 0.10)',
+                          border: '1px solid rgba(212, 168, 83, 0.25)',
+                          boxShadow: '0 0 12px rgba(212, 168, 83, 0.08)',
+                        }}
                         transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                       />
                     )}
@@ -104,10 +138,15 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={onOpenDomainModal}
-                  className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-emerald-50/80 hover:bg-emerald-100/80 border border-emerald-200/80 text-emerald-800 text-xs font-mono font-medium transition-colors cursor-pointer shadow-2xs"
+                  className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-mono font-medium transition-colors cursor-pointer"
+                  style={{
+                    background: 'rgba(16, 185, 129, 0.06)',
+                    border: '1px solid rgba(16, 185, 129, 0.20)',
+                    color: '#34D88A',
+                  }}
                   title="Configure Custom Domain"
                 >
-                  <Globe className="w-3.5 h-3.5 text-emerald-600" />
+                  <Globe className="w-3.5 h-3.5" style={{ color: '#10B981' }} />
                   <span>veristyle.io</span>
                   <span className="relative flex h-2 w-2 ml-0.5">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -121,7 +160,7 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
                 onClick={() => { onQuickStart(); handleNav('dashboard'); }}
-                className="hidden md:inline-flex items-center gap-1.5 px-4 py-1.5 rounded-md text-xs font-bold tracking-wide cursor-pointer btn-neon"
+                className="hidden md:inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-bold tracking-wide cursor-pointer btn-neon"
               >
                 <span>Inspect Item</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -130,7 +169,12 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="md:hidden p-2 rounded-md border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer"
+                className="md:hidden p-2 rounded-lg transition-colors cursor-pointer"
+                style={{
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  color: '#B8C0D0',
+                  background: 'rgba(255, 255, 255, 0.03)',
+                }}
                 aria-label="Toggle Navigation Menu"
               >
                 {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -153,37 +197,65 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.18, ease: 'easeOut' }}
             >
-              <div className="rounded-lg p-3 bg-white border border-slate-200 shadow-xl flex flex-col gap-1 text-slate-800">
+              <div
+                className="rounded-xl p-3 flex flex-col gap-1"
+                style={{
+                  background: 'rgba(12, 12, 22, 0.95)',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  boxShadow: '0 24px 48px rgba(0, 0, 0, 0.6)',
+                  backdropFilter: 'blur(24px)',
+                }}
+              >
                 {navItems.map((item) => (
                   <button
                     key={item.id}
                     onClick={() => handleNav(item.id)}
-                    className={`flex items-center px-3.5 py-2.5 rounded-md text-sm font-semibold transition-colors text-left cursor-pointer ${
-                      currentTab === item.id ? 'bg-slate-100 text-slate-900' : 'text-slate-600 hover:bg-slate-50'
+                    className={`flex items-center px-3.5 py-2.5 rounded-lg text-sm font-semibold transition-colors text-left cursor-pointer ${
+                      currentTab === item.id
+                        ? 'text-amber-300'
+                        : 'hover:text-white'
                     }`}
+                    style={{
+                      background: currentTab === item.id ? 'rgba(212, 168, 83, 0.08)' : 'transparent',
+                      color: currentTab === item.id ? '#D4A853' : '#B8C0D0',
+                    }}
                   >
                     {item.label}
                   </button>
                 ))}
 
-                <div className="h-px bg-slate-100 my-1.5" />
+                <div style={{ height: '1px', background: 'rgba(255, 255, 255, 0.06)', margin: '6px 0' }} />
 
                 {onOpenDomainModal && (
                   <button
                     onClick={() => { onOpenDomainModal(); setIsMenuOpen(false); }}
-                    className="flex items-center justify-between px-3.5 py-2.5 rounded-md text-xs font-mono text-slate-700 bg-slate-50 border border-slate-200 cursor-pointer"
+                    className="flex items-center justify-between px-3.5 py-2.5 rounded-lg text-xs font-mono cursor-pointer"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.03)',
+                      border: '1px solid rgba(255, 255, 255, 0.06)',
+                      color: '#B8C0D0',
+                    }}
                   >
                     <span className="flex items-center gap-2">
-                      <Globe className="w-4 h-4 text-emerald-600" />
+                      <Globe className="w-4 h-4" style={{ color: '#10B981' }} />
                       Domain: veristyle.io
                     </span>
-                    <span className="text-[10px] text-emerald-700 font-bold bg-emerald-100 px-1.5 py-0.5 rounded">Active</span>
+                    <span
+                      className="text-[10px] font-bold px-1.5 py-0.5 rounded"
+                      style={{
+                        background: 'rgba(16, 185, 129, 0.15)',
+                        color: '#34D88A',
+                        border: '1px solid rgba(16, 185, 129, 0.25)',
+                      }}
+                    >
+                      Active
+                    </span>
                   </button>
                 )}
 
                 <button
                   onClick={() => { onQuickStart(); handleNav('dashboard'); }}
-                  className="flex justify-center items-center gap-2 px-4 py-2.5 rounded-md text-sm font-bold tracking-wide cursor-pointer btn-neon mt-1"
+                  className="flex justify-center items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-bold tracking-wide cursor-pointer btn-neon mt-1"
                 >
                   Start Inspection
                   <ArrowRight className="w-4 h-4" />
@@ -193,7 +265,8 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
 
             {/* Mobile Overlay */}
             <div
-              className="fixed inset-0 z-40 bg-slate-950/20 md:hidden"
+              className="fixed inset-0 z-40 md:hidden"
+              style={{ background: 'rgba(0, 0, 0, 0.6)', backdropFilter: 'blur(4px)' }}
               onClick={() => setIsMenuOpen(false)}
             />
           </>
