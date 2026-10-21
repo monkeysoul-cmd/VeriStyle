@@ -65,7 +65,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
         {/* Subtle grid overlay */}
         <div className="absolute inset-0 dot-grid-bg opacity-40 pointer-events-none" />
 
-        <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 text-center flex flex-col items-center">
+        <div className="relative z-10 w-full max-w-[1720px] 2xl:max-w-[1820px] mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
 
           {/* Telemetry Status Capsule */}
           <motion.div
@@ -119,7 +119,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.45 }}
-            className="w-full max-w-6xl mx-auto mb-6 text-left"
+            className="w-full max-w-[1720px] 2xl:max-w-[1820px] mx-auto mb-6 text-left"
           >
             <UrlAnalyzer standalone={false} initialUrl={sampleUrl} onAnalyzeComplete={onSaveToVault} />
           </motion.div>
