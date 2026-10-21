@@ -55,7 +55,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
     <div className="w-full flex flex-col min-h-screen" style={{ background: 'var(--bg-base)', color: 'var(--text-primary)' }}>
 
       {/* 1. HERO SECTION: Luxury Light Editorial Aurora */}
-      <section className="relative w-full flex flex-col items-center justify-center px-4 pt-28 sm:pt-36 pb-20 overflow-hidden">
+      <section className="relative w-full flex flex-col items-center justify-center pt-28 sm:pt-36 pb-20 overflow-hidden">
         
         {/* Soft, radiant light ambient glows */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(184, 134, 11, 0.08) 0%, transparent 65%)' }} />
@@ -65,7 +65,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
         {/* Subtle grid overlay */}
         <div className="absolute inset-0 dot-grid-bg opacity-40 pointer-events-none" />
 
-        <div className="relative z-10 w-full max-w-[1720px] 2xl:max-w-[1820px] mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
+        <div className="relative z-10 w-full max-w-[1640px] 2xl:max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
 
           {/* Telemetry Status Capsule */}
           <motion.div
@@ -119,7 +119,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.45 }}
-            className="w-full max-w-[1720px] 2xl:max-w-[1820px] mx-auto mb-6 text-left"
+            className="w-full mx-auto mb-6 text-left"
           >
             <UrlAnalyzer standalone={false} initialUrl={sampleUrl} onAnalyzeComplete={onSaveToVault} />
           </motion.div>
