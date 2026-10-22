@@ -35,164 +35,158 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
 
   return (
     <>
-      <nav
-        className={`fixed top-0 left-0 right-0 z-[9999] transition-all duration-300 ${
-          scrolled
-            ? 'py-2.5 border-b shadow-sm'
-            : 'py-3.5 border-b'
-        }`}
-        style={{
-          background: scrolled
-            ? 'rgba(255, 255, 255, 0.94)'
-            : 'rgba(255, 255, 255, 0.85)',
-          borderColor: scrolled
-            ? 'rgba(15, 23, 42, 0.08)'
-            : 'rgba(15, 23, 42, 0.05)',
-          backdropFilter: 'blur(20px) saturate(180%)',
-          boxShadow: scrolled
-            ? '0 4px 20px -4px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.03)'
-            : 'none',
-        }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            
-            {/* Brand Logo */}
-            <button
-              onClick={() => handleNav('landing')}
-              className="inline-flex items-center gap-3 group shrink-0 cursor-pointer text-left"
-            >
-              <motion.div
-                whileHover={{ rotate: 12, scale: 1.06 }}
-                transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-white transition-all shadow-sm"
-                style={{
-                  background: 'linear-gradient(135deg, #D4AF37 0%, #C59B27 50%, #B8860B 100%)',
-                  boxShadow: '0 4px 14px rgba(184, 134, 11, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.25)',
-                }}
-              >
-                <VeriLensIcon className="w-4 h-4 text-white" />
-              </motion.div>
-              <div className="flex flex-col leading-none">
-                <span
-                  className="text-base sm:text-lg font-black tracking-tight text-slate-900 group-hover:text-amber-700 transition-colors"
-                  style={{ fontFamily: 'var(--font-heading)' }}
-                >
-                  VeriStyle
-                </span>
-                <span className="text-[9px] font-bold uppercase tracking-[0.18em] mt-0.5 font-mono" style={{ color: '#B8860B' }}>
-                  Authenticity Verification
-                </span>
-              </div>
-            </button>
-
-            {/* Desktop Navigation Links */}
-            <div
-              className="hidden md:flex items-center gap-1 p-1 rounded-xl"
+      <header className="fixed top-2.5 sm:top-3.5 inset-x-0 z-[9999] flex justify-center px-3 sm:px-6 pointer-events-none">
+        <nav
+          className={`w-full max-w-5xl rounded-full transition-all duration-300 pointer-events-auto px-3.5 sm:px-5 py-2 sm:py-2.5 flex items-center justify-between border ${
+            scrolled ? 'shadow-md' : 'shadow-xs'
+          }`}
+          style={{
+            background: scrolled
+              ? 'rgba(255, 255, 255, 0.94)'
+              : 'rgba(255, 255, 255, 0.88)',
+            borderColor: scrolled
+              ? 'rgba(15, 23, 42, 0.12)'
+              : 'rgba(15, 23, 42, 0.08)',
+            backdropFilter: 'blur(20px) saturate(180%)',
+            boxShadow: scrolled
+              ? '0 12px 32px -8px rgba(15, 23, 42, 0.12), 0 2px 6px rgba(15, 23, 42, 0.04)'
+              : '0 6px 20px -6px rgba(15, 23, 42, 0.07), 0 1px 3px rgba(15, 23, 42, 0.03)',
+          }}
+        >
+          {/* Brand Logo */}
+          <button
+            onClick={() => handleNav('landing')}
+            className="inline-flex items-center gap-2.5 sm:gap-3 group shrink-0 cursor-pointer text-left pl-1"
+          >
+            <motion.div
+              whileHover={{ rotate: 12, scale: 1.06 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-white transition-all shadow-sm"
               style={{
-                background: 'rgba(15, 23, 42, 0.04)',
-                border: '1px solid rgba(15, 23, 42, 0.06)',
+                background: 'linear-gradient(135deg, #D4AF37 0%, #C59B27 50%, #B8860B 100%)',
+                boxShadow: '0 4px 14px rgba(184, 134, 11, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.25)',
               }}
             >
-              {navItems.map((item) => {
-                const isActive = currentTab === item.id;
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => handleNav(item.id)}
-                    className={`relative px-3.5 py-1.5 rounded-lg text-xs font-semibold tracking-wide transition-colors cursor-pointer ${
-                      isActive
-                        ? 'font-bold text-slate-900'
-                        : 'text-slate-600 hover:text-slate-900'
-                    }`}
-                  >
-                    {isActive && (
-                      <motion.div
-                        layoutId="activeTabPill"
-                        className="absolute inset-0 rounded-lg -z-0"
-                        style={{
-                          background: '#FFFFFF',
-                          border: '1px solid rgba(15, 23, 42, 0.08)',
-                          boxShadow: '0 2px 8px -2px rgba(15, 23, 42, 0.10)',
-                        }}
-                        transition={{ type: 'spring', stiffness: 500, damping: 35 }}
-                      />
-                    )}
-                    <span className="relative z-10">{item.label}</span>
-                  </button>
-                );
-              })}
+              <VeriLensIcon className="w-4 h-4 text-white" />
+            </motion.div>
+            <div className="flex flex-col leading-none">
+              <span
+                className="text-base sm:text-lg font-black tracking-tight text-slate-900 group-hover:text-amber-700 transition-colors"
+                style={{ fontFamily: 'var(--font-heading)' }}
+              >
+                VeriStyle
+              </span>
+              <span className="text-[9px] font-bold uppercase tracking-[0.18em] mt-0.5 font-mono" style={{ color: '#B8860B' }}>
+                Authenticity Verification
+              </span>
             </div>
+          </button>
 
-            {/* Right Actions */}
-            <div className="flex items-center gap-2.5">
-              
-              {/* Custom Domain Connected Indicator */}
-              {onOpenDomainModal && (
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={onOpenDomainModal}
-                  className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-mono font-medium transition-colors cursor-pointer"
-                  style={{
-                    background: 'rgba(5, 150, 105, 0.06)',
-                    border: '1px solid rgba(5, 150, 105, 0.22)',
-                    color: '#047857',
-                  }}
-                  title="Configure Custom Domain"
+          {/* Desktop Navigation Links */}
+          <div
+            className="hidden md:flex items-center gap-1 p-1 rounded-full"
+            style={{
+              background: 'rgba(15, 23, 42, 0.04)',
+              border: '1px solid rgba(15, 23, 42, 0.06)',
+            }}
+          >
+            {navItems.map((item) => {
+              const isActive = currentTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleNav(item.id)}
+                  className={`relative px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-colors cursor-pointer ${
+                    isActive
+                      ? 'font-bold text-slate-900'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
                 >
-                  <Globe className="w-3.5 h-3.5" style={{ color: '#059669' }} />
-                  <span className="font-semibold">veristyle.io</span>
-                  <span className="relative flex h-2 w-2 ml-0.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                  </span>
-                </motion.button>
-              )}
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeTabPill"
+                      className="absolute inset-0 rounded-full -z-0"
+                      style={{
+                        background: '#FFFFFF',
+                        border: '1px solid rgba(15, 23, 42, 0.08)',
+                        boxShadow: '0 2px 8px -2px rgba(15, 23, 42, 0.10)',
+                      }}
+                      transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                    />
+                  )}
+                  <span className="relative z-10">{item.label}</span>
+                </button>
+              );
+            })}
+          </div>
 
-              {/* Start Inspection Action */}
+          {/* Right Actions */}
+          <div className="flex items-center gap-2 sm:gap-2.5 pr-1">
+            
+            {/* Custom Domain Connected Indicator */}
+            {onOpenDomainModal && (
               <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => { onQuickStart(); handleNav('dashboard'); }}
-                className="hidden md:inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-bold tracking-wide cursor-pointer btn-neon"
-              >
-                <span>Inspect Item</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </motion.button>
-
-              {/* Mobile Menu Button */}
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="md:hidden p-2 rounded-lg transition-colors cursor-pointer text-slate-700 hover:text-slate-900"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={onOpenDomainModal}
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-medium transition-colors cursor-pointer"
                 style={{
-                  border: '1px solid rgba(15, 23, 42, 0.1)',
-                  background: 'rgba(15, 23, 42, 0.03)',
+                  background: 'rgba(5, 150, 105, 0.06)',
+                  border: '1px solid rgba(5, 150, 105, 0.22)',
+                  color: '#047857',
                 }}
-                aria-label="Toggle Navigation Menu"
+                title="Configure Custom Domain"
               >
-                {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-              </button>
+                <Globe className="w-3.5 h-3.5" style={{ color: '#059669' }} />
+                <span className="font-semibold">veristyle.io</span>
+                <span className="relative flex h-2 w-2 ml-0.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+              </motion.button>
+            )}
 
-            </div>
+            {/* Start Inspection Action */}
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => { onQuickStart(); handleNav('dashboard'); }}
+              className="hidden md:inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold tracking-wide cursor-pointer btn-neon shadow-xs"
+            >
+              <span>Inspect Item</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </motion.button>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="md:hidden p-2 rounded-full transition-colors cursor-pointer text-slate-700 hover:text-slate-900"
+              style={{
+                border: '1px solid rgba(15, 23, 42, 0.1)',
+                background: 'rgba(15, 23, 42, 0.03)',
+              }}
+              aria-label="Toggle Navigation Menu"
+            >
+              {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
 
           </div>
-        </div>
-      </nav>
+        </nav>
+      </header>
 
       {/* Mobile Menu Dropdown */}
       <AnimatePresence>
         {isMenuOpen && (
           <>
             <motion.div
-              className="fixed inset-x-4 top-[64px] z-50 md:hidden"
+              className="fixed inset-x-4 top-[68px] z-50 md:hidden max-w-md mx-auto"
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.18, ease: 'easeOut' }}
             >
               <div
-                className="rounded-xl p-3 flex flex-col gap-1"
+                className="rounded-2xl p-3 flex flex-col gap-1"
                 style={{
                   background: 'rgba(255, 255, 255, 0.98)',
                   border: '1px solid rgba(15, 23, 42, 0.08)',
