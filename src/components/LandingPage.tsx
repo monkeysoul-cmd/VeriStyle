@@ -54,7 +54,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
     <div className="w-full flex flex-col min-h-screen" style={{ background: 'var(--bg-base)', color: 'var(--text-primary)' }}>
 
       {/* 1. HERO SECTION: Luxury Light Editorial Aurora */}
-      <section className="relative w-full flex flex-col items-center justify-center pt-28 sm:pt-36 pb-20 overflow-hidden">
+      <section className="relative w-full flex flex-col items-center justify-center pt-24 sm:pt-28 pb-12 overflow-hidden">
         
         {/* Soft, radiant light ambient glows */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(184, 134, 11, 0.08) 0%, transparent 65%)' }} />
@@ -71,46 +71,46 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full mb-7"
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-4"
             style={{
               background: '#FFFFFF',
               border: '1px solid rgba(184, 134, 11, 0.25)',
-              boxShadow: '0 4px 16px -4px rgba(184, 134, 11, 0.15)',
+              boxShadow: '0 2px 10px -2px rgba(184, 134, 11, 0.12)',
             }}
           >
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-amber-500"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-600"></span>
             </span>
-            <span className="text-xs font-mono font-medium text-slate-800">
-              Inspection Engine Active: <strong className="font-extrabold text-amber-800">veristyle.io</strong>
+            <span className="text-[11px] font-mono font-medium text-slate-800">
+              Inspection Engine: <strong className="font-extrabold text-amber-800">veristyle.io</strong>
             </span>
             <span className="text-slate-300">|</span>
-            <span className="text-xs font-bold text-emerald-700">Multi-Vector AI Forensic Lab</span>
+            <span className="text-[11px] font-bold text-emerald-700">Multi-Vector AI Forensic Lab</span>
           </motion.div>
 
-          {/* Premium Headline */}
+          {/* Crisp Headline */}
           <motion.h1
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight max-w-5xl leading-[1.08] mb-6 text-slate-900"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-bold tracking-tight max-w-3xl leading-[1.2] mb-3 text-slate-900"
             style={{ fontFamily: 'var(--font-heading)' }}
           >
-            Automated Authenticity & Counterfeit Inspection for{' '}
+            Authenticity & Counterfeit Inspection for{' '}
             <span className="gold-shimmer-text">
               Luxury Fashion
             </span>
           </motion.h1>
 
-          {/* Factual Sub-headline */}
+          {/* Crisp Sub-headline */}
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.35 }}
-            className="text-sm sm:text-base md:text-lg max-w-2xl mb-10 leading-relaxed font-normal text-slate-600"
+            className="text-xs sm:text-sm md:text-[15px] max-w-xl mb-6 leading-relaxed font-normal text-slate-600"
           >
-            Analyze e-commerce product listings and high-resolution imagery in real time. Inspect stitch tension, hardware debossing, serial matrices, and review text anomalies across Amazon, Flipkart, Myntra, and luxury resellers.
+            Verify marketplace listings and product imagery in real time. Inspect stitch tension, hardware engraving, serial syntax, and review sentiment instantly.
           </motion.p>
 
           {/* URL Analyzer Cockpit */}
