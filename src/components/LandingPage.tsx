@@ -94,7 +94,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-bold tracking-tight max-w-3xl leading-[1.2] mb-3 text-slate-900"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-bold tracking-tight max-w-3xl leading-[1.2] mb-6 text-slate-900"
             style={{ fontFamily: 'var(--font-heading)' }}
           >
             Authenticity & Counterfeit Inspection for{' '}
@@ -102,16 +102,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
               Luxury Fashion
             </span>
           </motion.h1>
-
-          {/* Crisp Sub-headline */}
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.35 }}
-            className="text-xs sm:text-sm md:text-[15px] max-w-xl mb-6 leading-relaxed font-normal text-slate-600"
-          >
-            Verify marketplace listings and product imagery in real time. Inspect stitch tension, hardware engraving, serial syntax, and review sentiment instantly.
-          </motion.p>
 
           {/* URL Analyzer Cockpit */}
           <motion.div
