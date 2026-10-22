@@ -3,17 +3,16 @@ import { UrlAnalyzer } from './UrlAnalyzer';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Search, Shield, CheckCircle2, ChevronDown, HelpCircle,
-  FileText, ScanLine, ArrowRight, Eye, Lock, Globe, Server, Check,
+  FileText, ScanLine, ArrowRight, Lock, Globe, Server, Check,
   Sparkles, Diamond, Crown, Fingerprint, Layers
 } from 'lucide-react';
 
 interface LandingPageProps {
   onStartAnalysis?: () => void;
-  onViewProducts?: () => void;
   onSaveToVault?: (result: any) => void;
 }
 
-export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onViewProducts, onSaveToVault }) => {
+export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSaveToVault }) => {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [sampleUrl, setSampleUrl] = useState<string>('');
 
@@ -505,13 +504,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onVie
             >
               <span>Open Inspector Studio</span>
               <ArrowRight className="w-4 h-4" />
-            </button>
-            <button
-              onClick={onViewProducts}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold tracking-wide btn-ghost cursor-pointer"
-            >
-              <Eye className="w-4 h-4 text-slate-500" />
-              <span>Browse Benchmark Catalog</span>
             </button>
           </div>
         </div>

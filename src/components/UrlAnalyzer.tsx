@@ -110,7 +110,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
   const loadingSteps = [
     'Connecting to e-commerce platform & decrypting listing...',
     'Extracting live pricing, verified seller tags & high-res image...',
-    'Performing computer vision inspection on catalog imagery...',
+    'Performing computer vision inspection on listing imagery...',
     'Evaluating NLP review entropy & sentiment alignment...',
     'Synthesizing multimodal forensic authenticity report...',
   ];
@@ -996,7 +996,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                         <span className="text-xs font-bold text-slate-800">{displayBrand}</span>
                         <span className="text-[11px] truncate max-w-[190px] text-slate-500">{displayTitle}</span>
                         <div className="mt-1.5 inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200">
-                          <Sparkles className="w-2.5 h-2.5 text-emerald-600" /> Catalog Verified
+                          <Sparkles className="w-2.5 h-2.5 text-emerald-600" /> Listing Verified
                         </div>
                       </div>
                     )}

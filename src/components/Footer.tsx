@@ -138,15 +138,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateTab, onOpenDomainModal
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigateTab && onNavigateTab('api-docs')}
-                  className="text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1 cursor-pointer"
-                >
-                  Developer API Specs
-                  <ArrowUpRight className="w-3 h-3 opacity-60" />
-                </button>
-              </li>
-              <li>
                 <span className="text-slate-400 text-[11px] cursor-default">
                   Zero Data Retention Certified
                 </span>

@@ -3,7 +3,7 @@ import { Menu, X, ArrowRight, ShieldCheck, Globe } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { VeriLensIcon } from './VeriLensIcon';
 
-export type NavTab = 'landing' | 'dashboard' | 'history' | 'products' | 'privacy' | 'terms' | 'api-docs';
+export type NavTab = 'landing' | 'dashboard' | 'history' | 'privacy' | 'terms';
 
 interface HeaderProps {
   currentTab: NavTab;
@@ -31,8 +31,6 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
     { id: 'landing', label: 'Overview' },
     { id: 'dashboard', label: 'Inspector' },
     { id: 'history', label: 'Vault' },
-    { id: 'products', label: 'Catalog' },
-    { id: 'api-docs', label: 'API Specs' },
   ] as const;
 
   return (

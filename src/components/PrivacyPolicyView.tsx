@@ -74,7 +74,7 @@ export const PrivacyPolicyView: React.FC<PrivacyPolicyViewProps> = ({ onBack }) 
           <section className="space-y-3">
             <h2 className="text-lg font-bold text-slate-900 tracking-tight">1. Scope and Architecture</h2>
             <p>
-              VeriStyle Technologies Inc. ("VeriStyle", "we", "us", or "our") operates the veristyle.io web application, providing automated multi-signal authenticity inspection for consumer goods and fashion items. This Privacy Policy outlines our data handling protocols when you utilize our URL analyzer, forensic image inspection tools, and reference catalog.
+              VeriStyle Technologies Inc. ("VeriStyle", "we", "us", or "our") operates the veristyle.io web application, providing automated multi-signal authenticity inspection for consumer goods and fashion items. This Privacy Policy outlines our data handling protocols when you utilize our URL analyzer and forensic image inspection tools.
             </p>
             <p>
               We operate an ephemeral computational architecture. When you submit a product URL or upload a photograph for authenticity verification, our systems analyze the digital specimen in memory to detect manufacturing and textile markers. Neither the raw image pixels nor the parsed customer reviews are cataloged or sold.
