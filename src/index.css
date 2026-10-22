@@ -812,6 +812,19 @@ nav[class*="fixed"] {
   animation: gold-shimmer 4s linear infinite;
 }
 
+/* Hero illuminated luxury gold highlight */
+.hero-gold-glow {
+  background: linear-gradient(135deg, #78350F 0%, #B45309 16%, #D97706 32%, #F59E0B 48%, #FEF08A 56%, #F59E0B 68%, #B45309 84%, #78350F 100%);
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gold-shimmer 4s ease-in-out infinite;
+  filter: drop-shadow(0 2px 22px rgba(245, 158, 11, 0.45)) drop-shadow(0 1px 2px rgba(180, 83, 9, 0.3));
+  letter-spacing: -0.02em;
+}
+
+
 /* Print Styles for Forensic Certificate */
 @media print {
   body * {

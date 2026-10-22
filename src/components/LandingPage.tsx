@@ -89,16 +89,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
             <span className="text-[11px] font-bold text-emerald-700">Multi-Vector AI Forensic Lab</span>
           </motion.div>
 
-          {/* Crisp Headline */}
+          {/* Enriched Editorial Headline */}
           <motion.h1
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-bold tracking-tight max-w-3xl leading-[1.2] mb-6 text-slate-900"
+            className="text-3xl sm:text-5xl md:text-6xl lg:text-[62px] font-extrabold tracking-tight max-w-4xl leading-[1.14] mb-8 text-slate-900 text-balance"
             style={{ fontFamily: 'var(--font-heading)' }}
           >
             Authenticity & Counterfeit Inspection for{' '}
-            <span className="gold-shimmer-text">
+            <span className="hero-gold-glow font-black inline-block">
               Luxury Fashion
             </span>
           </motion.h1>
