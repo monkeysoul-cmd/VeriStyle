@@ -1,5 +1,6 @@
 import React from 'react';
 import { VeriLensIcon } from './VeriLensIcon';
+import { PlatformLogo } from './PlatformLogo';
 import { ShieldCheck, Lock, Globe, ArrowUpRight, Cpu, Crown, Diamond } from 'lucide-react';
 import { NavTab } from './Header';
 
@@ -94,10 +95,17 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateTab, onOpenDomainModal
               Platforms
             </h4>
             <ul className="space-y-2.5 text-xs">
-              {['Amazon Marketplace', 'Flipkart Assured', 'Myntra Luxe', 'AJIO Luxury', 'Nykaa Fashion'].map(item => (
-                <li key={item}>
+              {[
+                { name: 'Amazon Marketplace', platform: 'amazon' },
+                { name: 'Flipkart Assured', platform: 'flipkart' },
+                { name: 'Myntra Luxe', platform: 'myntra' },
+                { name: 'AJIO Luxury', platform: 'ajio' },
+                { name: 'Nykaa Fashion', platform: 'nykaa' },
+              ].map(item => (
+                <li key={item.name} className="flex items-center gap-2">
+                  <PlatformLogo platform={item.platform} size={15} />
                   <span className="text-slate-600 hover:text-slate-900 transition-colors cursor-default">
-                    {item}
+                    {item.name}
                   </span>
                 </li>
               ))}

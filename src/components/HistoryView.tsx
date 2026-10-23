@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { AnalysisResult } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
+import { PlatformLogo, PlatformBadge } from './PlatformLogo';
 
 interface HistoryViewProps {
   history: AnalysisResult[];
@@ -145,11 +146,16 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
                   onClick={() => onSelectResult(item)}
                   className={`group cursor-pointer p-5 rounded-xl flex flex-col justify-between space-y-4 transition-all duration-300 bg-white border border-slate-200/90 hover:border-indigo-300 hover:shadow-xl hover:shadow-indigo-500/10 shadow-2xs border-l-4 ${borderAccent}`}
                 >
-                  {/* Top: Hash + Verdict badge */}
+                  {/* Top: Hash + Platform + Verdict badge */}
                   <div className="flex items-center justify-between gap-2 flex-wrap">
-                    <div className="flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-indigo-50/80 border border-indigo-100 text-indigo-900">
-                      <Hash className="w-3 h-3 text-indigo-500" />
-                      {(item.verificationHash || '0xverified').slice(0, 14)}
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <div className="flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-indigo-50/80 border border-indigo-100 text-indigo-900">
+                        <Hash className="w-3 h-3 text-indigo-500" />
+                        {(item.verificationHash || '0xverified').slice(0, 14)}
+                      </div>
+                      {(item.platform || item.productUrl) && (
+                        <PlatformBadge platform={item.platform || item.productUrl!} size="sm" />
+                      )}
                     </div>
                     <div className={`flex items-center gap-1 px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider font-mono border ${vs.badge}`}>
                       <VerdictIcon className="w-3 h-3" />

@@ -17,6 +17,7 @@ import {
   FileText,
 } from 'lucide-react';
 import { ProductItem, InsightIconType } from '../types';
+import { PlatformLogo } from './PlatformLogo';
 
 interface ProductDetailViewProps {
   product: ProductItem;
@@ -224,6 +225,25 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
                   <Heart className={`w-3.5 h-3.5 ${saved ? 'fill-rose-700' : ''}`} />
                   {saved ? 'Saved in Vault' : 'Save'}
                 </button>
+              </div>
+
+              {/* Indexed Marketplaces Telemetry */}
+              <div className="pt-2 flex items-center gap-2 flex-wrap text-[11px] text-slate-500 font-medium">
+                <span className="font-mono text-[10px] font-bold text-slate-400 uppercase tracking-wider">Cross-Referenced:</span>
+                {[
+                  { name: 'Amazon', key: 'amazon' },
+                  { name: 'Flipkart', key: 'flipkart' },
+                  { name: 'Myntra', key: 'myntra' },
+                  { name: 'Tata CLiQ', key: 'tatacliq' },
+                ].map(p => (
+                  <span
+                    key={p.key}
+                    className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-slate-50 border border-slate-200 text-slate-700 shadow-2xs font-semibold"
+                  >
+                    <PlatformLogo platform={p.key} size={13} />
+                    <span>{p.name}</span>
+                  </span>
+                ))}
               </div>
             </div>
 

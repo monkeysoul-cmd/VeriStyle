@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { UrlAnalysisResult } from '../types';
+import { PlatformLogo, getPlatformMeta } from './PlatformLogo';
 
 interface UrlAnalyzerProps {
   onAnalyzeComplete?: (result: UrlAnalysisResult) => void;
@@ -239,6 +240,29 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
           </button>
         </div>
 
+        {/* Supported Platform Badges */}
+        <div className="mt-2.5 flex items-center justify-center flex-wrap gap-2 text-[11px] text-slate-500 font-medium">
+          <span className="font-mono text-[10px] font-bold text-slate-400 uppercase tracking-wider">Automated Connectors:</span>
+          {[
+            { key: 'amazon', name: 'Amazon' },
+            { key: 'flipkart', name: 'Flipkart' },
+            { key: 'myntra', name: 'Myntra' },
+            { key: 'ajio', name: 'AJIO' },
+            { key: 'nykaa', name: 'Nykaa' },
+            { key: 'croma', name: 'Croma' },
+            { key: 'meesho', name: 'Meesho' },
+            { key: 'tatacliq', name: 'Tata CLiQ' },
+          ].map(p => (
+            <span
+              key={p.key}
+              className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-white border border-slate-200/90 text-slate-700 shadow-2xs text-[11px] font-semibold"
+            >
+              <PlatformLogo platform={p.key} size={14} />
+              <span>{p.name}</span>
+            </span>
+          ))}
+        </div>
+
         {status === 'error' && errorMsg && (
           <motion.div
             className="mt-3 p-4 rounded-xl flex items-center gap-3 text-sm bg-rose-50 border border-rose-200 text-rose-800"
@@ -414,18 +438,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
       { label: 'Serial & Code Validation', value: Number(result.detailedScores?.serialCodeValidation) || (displayScore > 50 ? 84 : 26) },
     ];
 
-    const platformRaw = (result.platform || 'Marketplace').toLowerCase();
-    const platformLabel = result.platform
-      ? result.platform.charAt(0).toUpperCase() + result.platform.slice(1)
-      : 'Marketplace';
-
-    const platformStyle = platformRaw.includes('amazon')
-      ? { bg: '#FFF7ED', border: '#FDBA74', text: '#C2410C' }
-      : platformRaw.includes('flipkart')
-      ? { bg: '#EFF6FF', border: '#BFDBFE', text: '#1D4ED8' }
-      : platformRaw.includes('myntra')
-      ? { bg: '#FFF1F2', border: '#FECDD3', text: '#BE123C' }
-      : { bg: '#ECFDF5', border: '#A7F3D0', text: '#047857' };
+    const platformMeta = getPlatformMeta(result.platform);
 
     // SVG arc geometry: r=58, circumference ≈ 364.42
     const arcRadius = 58;
@@ -454,13 +467,14 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                   padding: '4px 12px', borderRadius: '100px',
                   fontSize: '0.6875rem', fontWeight: 900, textTransform: 'uppercase',
                   letterSpacing: '0.08em',
-                  background: platformStyle.bg, border: `1px solid ${platformStyle.border}`,
-                  color: platformStyle.text,
-                  display: 'inline-flex', alignItems: 'center', gap: '6px',
+                  background: platformMeta.theme.bg, border: `1px solid ${platformMeta.theme.border}`,
+                  color: platformMeta.theme.text,
+                  display: 'inline-flex', alignItems: 'center', gap: '7px',
+                  boxShadow: '0 1px 3px -1px rgba(0, 0, 0, 0.05)',
                 }}
               >
-                <ShoppingBag style={{ width: '13px', height: '13px' }} />
-                {platformLabel} Verified Listing
+                <PlatformLogo platform={result.platform || 'marketplace'} size={15} />
+                {platformMeta.name} Verified Listing
               </span>
               <span
                 style={{
@@ -488,14 +502,15 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                   rel="noopener noreferrer"
                   className="hover:bg-slate-100"
                   style={{
-                    display: 'inline-flex', alignItems: 'center', gap: '5px',
+                    display: 'inline-flex', alignItems: 'center', gap: '6px',
                     padding: '5px 12px', borderRadius: '8px',
                     fontSize: '0.725rem', fontWeight: 700, textDecoration: 'none',
                     background: '#F8FAFC', border: '1px solid #E2E8F0',
                     color: '#334155', cursor: 'pointer', transition: 'all 0.2s',
                   }}
                 >
-                  View on {platformLabel} <ExternalLink style={{ width: '11px', height: '11px' }} />
+                  <PlatformLogo platform={result.platform || 'marketplace'} size={14} />
+                  View on {platformMeta.name} <ExternalLink style={{ width: '11px', height: '11px' }} />
                 </a>
               )}
               <button
@@ -1138,11 +1153,12 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                 <div
                   className="p-2.5 rounded-lg flex items-center justify-between bg-slate-50 border border-slate-200"
                 >
-                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+                    <PlatformLogo platform={result.platform || 'marketplace'} size={14} />
                     Merchant
                   </span>
                   <span className="text-xs font-bold text-slate-800 truncate max-w-[170px]">
-                    {result.sellerName || 'Direct Marketplace Authorized'}
+                    {result.sellerName || `${platformMeta.name} Authorized`}
                   </span>
                 </div>
               </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Shield, Lock, EyeOff, Server, FileText, CheckCircle, ArrowLeft } from 'lucide-react';
+import { PlatformLogo } from './PlatformLogo';
 
 interface PrivacyPolicyViewProps {
   onBack: () => void;
@@ -104,6 +105,24 @@ export const PrivacyPolicyView: React.FC<PrivacyPolicyViewProps> = ({ onBack }) 
             <p>
               Our automated URL extraction service queries public e-commerce endpoints to retrieve listing titles, pricing data, and buyer review excerpts. We do not access, harvest, or request private account credentials, shopping cart details, or authenticated buyer profiles.
             </p>
+            <div className="pt-2 flex items-center gap-2 flex-wrap">
+              {[
+                { name: 'Amazon', key: 'amazon' },
+                { name: 'Flipkart', key: 'flipkart' },
+                { name: 'Myntra', key: 'myntra' },
+                { name: 'AJIO', key: 'ajio' },
+                { name: 'Nykaa', key: 'nykaa' },
+                { name: 'Tata CLiQ', key: 'tatacliq' },
+              ].map(p => (
+                <span
+                  key={p.key}
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-slate-200 text-slate-700 shadow-2xs text-xs font-semibold"
+                >
+                  <PlatformLogo platform={p.key} size={15} />
+                  <span>{p.name}</span>
+                </span>
+              ))}
+            </div>
           </section>
 
           <section className="space-y-3">

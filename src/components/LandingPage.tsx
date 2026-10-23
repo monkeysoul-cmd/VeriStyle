@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { UrlAnalyzer } from './UrlAnalyzer';
+import { PlatformLogo } from './PlatformLogo';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Search, Shield, CheckCircle2, ChevronDown, HelpCircle,
@@ -117,18 +118,19 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
           <div className="flex flex-wrap items-center justify-center gap-2 text-xs mt-3 text-slate-500">
             <span className="font-bold font-mono text-amber-800">Reference URL Tests:</span>
             {[
-              { label: 'amazon.in/nike-jordan', url: 'https://www.amazon.in/Nike-Air-Jordan-Retro-Sneakers/dp/B0CKW79YQ4' },
-              { label: 'flipkart.com/gucci-bag', url: 'https://www.flipkart.com/gucci-leather-handbag-dionysus/p/itm2894721' },
-              { label: 'myntra.com/yeezy', url: 'https://www.myntra.com/casual-shoes/adidas/yeezy-boost-350-v2-sneakers/19482910/buy' }
+              { label: 'amazon.in/nike-jordan', platform: 'amazon', url: 'https://www.amazon.in/Nike-Air-Jordan-Retro-Sneakers/dp/B0CKW79YQ4' },
+              { label: 'flipkart.com/gucci-bag', platform: 'flipkart', url: 'https://www.flipkart.com/gucci-leather-handbag-dionysus/p/itm2894721' },
+              { label: 'myntra.com/yeezy', platform: 'myntra', url: 'https://www.myntra.com/casual-shoes/adidas/yeezy-boost-350-v2-sneakers/19482910/buy' }
             ].map((item) => (
               <motion.button
                 key={item.label}
                 whileHover={{ scale: 1.04, y: -1 }}
                 whileTap={{ scale: 0.96 }}
                 onClick={() => setSampleUrl(item.url)}
-                className="px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer bg-white border border-slate-200 text-slate-700 hover:text-slate-900 hover:border-amber-400 shadow-xs"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer bg-white border border-slate-200 text-slate-700 hover:text-slate-900 hover:border-amber-400 shadow-xs"
               >
-                {item.label}
+                <PlatformLogo platform={item.platform} size={15} />
+                <span>{item.label}</span>
               </motion.button>
             ))}
           </div>
@@ -178,13 +180,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
           {[...stores, ...stores].map((store, i) => (
             <div
               key={`${store.name}-${i}`}
-              className="flex items-center gap-2.5 px-4 py-2 rounded-lg text-xs font-semibold shrink-0 transition-all bg-slate-50 border border-slate-200 text-slate-700 hover:text-slate-900 hover:border-slate-300"
+              className="flex items-center gap-2.5 px-4 py-2 rounded-lg text-xs font-semibold shrink-0 transition-all bg-white border border-slate-200/90 text-slate-800 hover:text-slate-950 hover:border-amber-400 hover:shadow-xs shadow-2xs"
             >
-              <img
-                src={`https://icon.horse/icon/${store.domain}`}
-                alt={store.name}
-                className="w-4 h-4 rounded-sm object-contain"
-              />
+              <PlatformLogo platform={store.name} size={18} />
               <span>{store.name}</span>
             </div>
           ))}

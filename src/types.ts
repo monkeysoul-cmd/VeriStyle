@@ -49,6 +49,8 @@ export interface AnalysisResult {
   estimatedRetailValue: string;
   resaleMarketVerdict: string;
   analysisMode?: 'review_only' | 'image_only' | 'combined';
+  platform?: string;
+  productUrl?: string;
 }
 
 export interface SamplePreset {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { FileText, AlertTriangle, Scale, ShieldAlert, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { PlatformLogo } from './PlatformLogo';
 
 interface TermsViewProps {
   onBack: () => void;
@@ -94,6 +95,26 @@ export const TermsView: React.FC<TermsViewProps> = ({ onBack }) => {
             <p>
               All trademarks, service marks, trade names, product names, and brand logos appearing on the service are the property of their respective owners. Mention of any third-party brands (including but not limited to Nike, Jordan, Gucci, Louis Vuitton, Chanel, Supreme, Audemars Piguet, Rolex, Amazon, Flipkart, Myntra, AJIO, and Nykaa) is solely for nominative, descriptive, and referential purposes in counterfeit detection.
             </p>
+            <div className="pt-2 pb-1 flex items-center gap-2 flex-wrap">
+              {[
+                { name: 'Amazon', key: 'amazon' },
+                { name: 'Flipkart', key: 'flipkart' },
+                { name: 'Myntra', key: 'myntra' },
+                { name: 'AJIO', key: 'ajio' },
+                { name: 'Nykaa', key: 'nykaa' },
+                { name: 'Croma', key: 'croma' },
+                { name: 'Meesho', key: 'meesho' },
+                { name: 'Tata CLiQ', key: 'tatacliq' },
+              ].map(p => (
+                <span
+                  key={p.key}
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-slate-200 text-slate-700 shadow-2xs text-xs font-semibold"
+                >
+                  <PlatformLogo platform={p.key} size={15} />
+                  <span>{p.name}</span>
+                </span>
+              ))}
+            </div>
             <p>
               The VeriStyle software, algorithms, interface layouts, vector schematics, and documentation are proprietary assets of VeriStyle Technologies Inc. and are protected under international copyright and intellectual property treaties.
             </p>
