@@ -94,7 +94,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-3xl sm:text-5xl md:text-6xl lg:text-[62px] font-extrabold tracking-tight max-w-4xl leading-[1.14] mb-12 sm:mb-14 md:mb-16 text-slate-900 text-balance"
+            className="text-3xl sm:text-5xl md:text-6xl lg:text-[62px] font-extrabold tracking-tight max-w-4xl leading-[1.14] mb-16 sm:mb-20 md:mb-24 lg:mb-28 text-slate-900 text-balance"
             style={{ fontFamily: 'var(--font-heading)' }}
           >
             Authenticity & Counterfeit Inspection for{' '}
