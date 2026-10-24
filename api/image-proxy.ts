@@ -1,3 +1,80 @@
+import http from "http";
+import https from "https";
+
+function fetchNative(targetUrl: string, headers: Record<string, string>, redirectCount = 0): Promise<{ statusCode: number; contentType: string; buffer: Buffer }> {
+  return new Promise((resolve, reject) => {
+    if (redirectCount > 4) {
+      return reject(new Error("Too many redirects"));
+    }
+
+    let urlToFetch = targetUrl;
+    // Replace m.media-amazon.com with images-na.ssl-images-amazon.com (prevents ECONNRESET)
+    if (urlToFetch.includes("m.media-amazon.com")) {
+      urlToFetch = urlToFetch.replace("m.media-amazon.com", "images-na.ssl-images-amazon.com");
+    }
+
+    let parsed: URL;
+    try {
+      parsed = new URL(urlToFetch);
+    } catch (err: any) {
+      return reject(new Error("Invalid URL: " + err.message));
+    }
+
+    const client = parsed.protocol === "http:" ? http : https;
+    const req = client.get(
+      {
+        hostname: parsed.hostname,
+        port: parsed.port || (parsed.protocol === "http:" ? 80 : 443),
+        path: parsed.pathname + parsed.search,
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+          "Accept": "image/avif,image/webp,image/apng,image/*,*/*;q=0.8",
+          "Accept-Language": "en-US,en;q=0.9",
+          ...headers,
+        },
+        timeout: 8000,
+      },
+      (res) => {
+        // Follow redirects
+        if (res.statusCode && res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+          let redirectLoc = res.headers.location;
+          if (!redirectLoc.startsWith("http")) {
+            redirectLoc = `${parsed.protocol}//${parsed.hostname}${redirectLoc}`;
+          }
+          return resolve(fetchNative(redirectLoc, headers, redirectCount + 1));
+        }
+
+        const chunks: Buffer[] = [];
+        res.on("data", (chunk: Buffer) => chunks.push(chunk));
+        res.on("end", () => {
+          const buffer = Buffer.concat(chunks);
+          const contentType = (res.headers["content-type"] as string) || "image/jpeg";
+          resolve({
+            statusCode: res.statusCode || 200,
+            contentType,
+            buffer,
+          });
+        });
+      }
+    );
+
+    req.on("error", (err) => {
+      // If images-na failed or ECONNRESET on Amazon, try images-eu as secondary
+      if (urlToFetch.includes("images-na.ssl-images-amazon.com") && redirectCount === 0) {
+        const mirror = urlToFetch.replace("images-na.ssl-images-amazon.com", "images-eu.ssl-images-amazon.com");
+        return resolve(fetchNative(mirror, headers, redirectCount + 1));
+      }
+      reject(err);
+    });
+
+    req.on("timeout", () => {
+      req.destroy();
+      reject(new Error("Image fetch timed out"));
+    });
+  });
+}
+
 export default async function handler(req: any, res: any) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
@@ -24,71 +101,37 @@ export default async function handler(req: any, res: any) {
   // Upgrade to HTTPS
   imageUrl = imageUrl.replace(/^http:\/\//i, "https://");
 
-  // Prevent ECONNRESET on m.media-amazon.com by using images-eu.ssl-images-amazon.com mirror
-  if (imageUrl.includes("m.media-amazon.com")) {
-    imageUrl = imageUrl.replace("m.media-amazon.com", "images-eu.ssl-images-amazon.com");
-  }
-
-  // Determine the best Referer header based on the image CDN
+  // Determine optimal referer
   let referer = "https://www.google.com/";
   if (imageUrl.includes("flixcart.com") || imageUrl.includes("flipkart.com")) {
     referer = "https://www.flipkart.com/";
-  } else if (imageUrl.includes("amazon.") || imageUrl.includes("media-amazon.com") || imageUrl.includes("ssl-images-amazon.com")) {
-    referer = "https://www.amazon.in/";
   } else if (imageUrl.includes("myntra") || imageUrl.includes("myntassets")) {
     referer = "https://www.myntra.com/";
   }
 
   try {
-    let response: Response;
-    try {
-      response = await fetch(imageUrl, {
-        headers: {
-          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-          "Accept": "image/avif,image/webp,image/apng,image/*,*/*;q=0.8",
-          "Accept-Language": "en-US,en;q=0.9",
-          "Referer": referer,
-        },
-        signal: AbortSignal.timeout(8000),
-        redirect: "follow",
+    const { statusCode, contentType, buffer } = await fetchNative(imageUrl, {
+      Referer: referer,
+    });
+
+    if (statusCode >= 400 || buffer.length === 0) {
+      return res.status(statusCode >= 400 ? statusCode : 404).json({
+        error: `Upstream image server returned HTTP ${statusCode}`,
       });
-    } catch (fetchErr: any) {
-      if (imageUrl.includes("media-amazon.com") && !imageUrl.includes("images-eu.ssl-images-amazon.com")) {
-        const mirrorUrl = imageUrl.replace("media-amazon.com", "images-eu.ssl-images-amazon.com");
-        response = await fetch(mirrorUrl, {
-          headers: {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-            "Accept": "image/*,*/*;q=0.8",
-            "Referer": referer,
-          },
-          signal: AbortSignal.timeout(6000),
-          redirect: "follow",
-        });
-      } else {
-        throw fetchErr;
-      }
     }
 
-    if (!response.ok) {
-      return res.status(response.status).json({ error: "Failed to fetch upstream image" });
-    }
-
-    const contentType = response.headers.get("content-type") || "image/jpeg";
-    res.setHeader("Content-Type", contentType);
-    res.setHeader("Cache-Control", "public, max-age=86400, stale-while-revalidate=604800");
-    res.setHeader("X-Content-Type-Options", "nosniff");
-
-    const arrayBuffer = await response.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-
-    // Verify it's actually image data (not an error page HTML)
+    // Verify it's actually an image (not HTML error payload)
     if (buffer.length < 1000 && buffer.toString("utf-8", 0, 50).includes("<html")) {
       return res.status(404).json({ error: "Upstream returned HTML instead of image" });
     }
 
+    res.setHeader("Content-Type", contentType);
+    res.setHeader("Cache-Control", "public, max-age=86400, stale-while-revalidate=604800");
+    res.setHeader("X-Content-Type-Options", "nosniff");
+
     return res.status(200).send(buffer);
   } catch (err: any) {
-    console.error("[ImageProxy] Error:", err.message);
-    return res.status(500).json({ error: "Internal error fetching image", message: err.message });
+    console.warn("[ImageProxy] Warning:", err.message);
+    return res.status(502).json({ error: "Failed to fetch upstream image", message: err.message });
   }
 }

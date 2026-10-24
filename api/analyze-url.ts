@@ -482,13 +482,12 @@ export async function directScrapeProduct(cleanUrl: string): Promise<DirectScrap
     }
   } catch (_) {}
 
-  // 4. Amazon ASIN Guaranteed CDN High-Res Image Mirrors
-  if (platform === "amazon" && asin) {
-    const cdnPrimary = `https://images-eu.ssl-images-amazon.com/images/P/${asin}.01._SCLZZZZZZZ_SX900_.jpg`;
-    const cdnSecondary = `https://images-eu.ssl-images-amazon.com/images/P/${asin}.01.LZZZZZZZ.jpg`;
-    if (!data.images.includes(cdnPrimary)) data.images.push(cdnPrimary);
-    if (!data.images.includes(cdnSecondary)) data.images.push(cdnSecondary);
-  }
+  // 4. Normalize any Amazon images
+  data.images = data.images.map((img) =>
+    img.includes("m.media-amazon.com")
+      ? img.replace("m.media-amazon.com", "images-na.ssl-images-amazon.com")
+      : img
+  );
 
   // 5. Fill title fallback from slug if still empty
   if (!data.title && slugTitle) {
@@ -559,6 +558,131 @@ async function scrapeViaMicrolink(cleanUrl: string): Promise<{ title: string; pr
 }
 
 /**
+ * Live E-Commerce Product Image Extraction Engine
+ * Queries authentic high-resolution listing images from authoritative retail CDNs
+ * (media-amazon, flixcart, myntassets, ajio, nykaa, tatacliq, croma, meesho)
+ */
+export async function searchLiveProductImages(
+  productTitle: string,
+  platform: string,
+  asinOrPid?: string
+): Promise<string[]> {
+  const queries: string[] = [];
+  const cleanTitle = (productTitle || "").trim();
+
+  if (cleanTitle.length >= 3) {
+    queries.push(`${cleanTitle} ${platform} product image`);
+    queries.push(`${cleanTitle} official listing photo`);
+  }
+  if (asinOrPid && platform === "amazon") {
+    queries.push(`${asinOrPid} amazon product`);
+  } else if (asinOrPid && platform === "flipkart") {
+    queries.push(`${asinOrPid} flipkart`);
+  }
+
+  const results: string[] = [];
+  const seen = new Set<string>();
+
+  for (const q of queries) {
+    try {
+      const bUrl = `https://www.bing.com/images/search?q=${encodeURIComponent(q)}&form=HDRSC2&first=1`;
+      const res = await fetch(bUrl, {
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+          "Accept": "text/html,application/xhtml+xml",
+          "Accept-Language": "en-US,en;q=0.9",
+        },
+        signal: AbortSignal.timeout(4500),
+      });
+
+      if (res.ok) {
+        const html = await res.text();
+        const regex = /murl&quot;:&quot;(https:\/\/[^&"]+\.(?:jpg|jpeg|png|webp))/gi;
+        let match;
+        while ((match = regex.exec(html)) !== null) {
+          let imgUrl = match[1];
+          if (!isValidProductImage(imgUrl)) continue;
+
+          // Normalize Amazon domain to images-na.ssl-images-amazon.com for 100% reliable SSL delivery
+          if (imgUrl.includes("m.media-amazon.com")) {
+            imgUrl = imgUrl.replace("m.media-amazon.com", "images-na.ssl-images-amazon.com");
+          }
+          imgUrl = upgradeImageUrl(imgUrl);
+
+          if (!seen.has(imgUrl)) {
+            seen.add(imgUrl);
+            results.push(imgUrl);
+          }
+        }
+      }
+      if (results.length >= 8) break;
+    } catch (_) {}
+  }
+
+  return results;
+}
+
+/**
+ * Live Grounded Product Metadata Resolver via Gemini Google Search
+ */
+export async function resolveProductWithGrounding(
+  cleanUrl: string,
+  platform: string,
+  asin?: string,
+  slugTitle?: string
+): Promise<{ title: string; brand: string; price: string; rating: number; reviewCount: number; description: string }> {
+  const ai = getAiClient();
+  if (!ai) return { title: "", brand: "", price: "", rating: 0, reviewCount: 0, description: "" };
+
+  try {
+    const prompt = `Search Google for this exact product listing and extract product details:
+URL: ${cleanUrl}
+Platform: ${platform}
+${asin ? `ASIN: ${asin}` : ""}
+${slugTitle ? `URL Slug Title: ${slugTitle}` : ""}
+
+Return ONLY a concise JSON block matching:
+{
+  "title": "Exact Full Product Name",
+  "brand": "Brand Name",
+  "price": "Current Selling Price (e.g. ₹1,499)",
+  "rating": 4.2,
+  "reviewCount": 1500,
+  "description": "Short 1-2 sentence product overview"
+}`;
+
+    const resp = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: prompt,
+      config: {
+        tools: [{ googleSearch: {} }],
+      },
+    });
+
+    const text = resp.text || "";
+    const cleaned = cleanJsonResponse(text);
+    if (cleaned.startsWith("{")) {
+      const parsed = JSON.parse(cleaned);
+      return {
+        title: parsed.title && !isBotOrErrorContent(parsed.title) ? String(parsed.title).trim() : "",
+        brand: parsed.brand ? String(parsed.brand).trim() : "",
+        price: parsed.price ? normalizePrice(parsed.price) : "",
+        rating: typeof parsed.rating === "number" ? parsed.rating : parseFloat(parsed.rating) || 0,
+        reviewCount:
+          typeof parsed.reviewCount === "number"
+            ? parsed.reviewCount
+            : parseInt(String(parsed.reviewCount).replace(/[^\d]/g, ""), 10) || 0,
+        description: parsed.description && !isBotOrErrorContent(parsed.description) ? String(parsed.description).trim() : "",
+      };
+    }
+  } catch (err: any) {
+    console.warn("[Grounding] Notice:", err.message?.substring(0, 80));
+  }
+  return { title: "", brand: "", price: "", rating: 0, reviewCount: 0, description: "" };
+}
+
+/**
  * Universal Forensic Authenticity Engine — High-Precision Multi-Source Forensic Execution
  */
 export async function runUniversalGeminiForensics(rawUrl: string): Promise<any> {
@@ -571,27 +695,37 @@ export async function runUniversalGeminiForensics(rawUrl: string): Promise<any> 
   // 1. Run direct scraper with high priority
   const directData = await directScrapeProduct(cleanUrl);
 
-  // 2. Parallel secondary lookups if details are missing
+  // 2. Parallel secondary lookups & Google Search Grounding if details are missing
   let ddgTitle = "";
   let ddgSnippet = "";
   if (!directData.title || directData.title.length < 5 || !directData.price) {
-    const searchQuery = asin ? `site:amazon.in ${asin}` : `${slugTitle} ${platform}`;
-    const [ddgResult, microResult] = await Promise.all([
-      scrapeViaDdg(searchQuery).catch(() => ({ title: "", snippet: "" })),
-      scrapeViaMicrolink(cleanUrl).catch(() => ({ title: "", price: "", imageUrl: "", description: "" })),
-    ]);
+    const grounded = await resolveProductWithGrounding(cleanUrl, platform, asin, slugTitle);
+    if (grounded.title && !directData.title) directData.title = grounded.title;
+    if (grounded.brand && !directData.brand) directData.brand = grounded.brand;
+    if (grounded.price && !directData.price) directData.price = grounded.price;
+    if (grounded.rating && !directData.rating) directData.rating = grounded.rating;
+    if (grounded.reviewCount && !directData.reviewCount) directData.reviewCount = grounded.reviewCount;
+    if (grounded.description && !directData.description) directData.description = grounded.description;
 
-    ddgTitle = ddgResult.title;
-    ddgSnippet = ddgResult.snippet;
+    if (!directData.title || !directData.price) {
+      const searchQuery = asin ? `site:amazon.in ${asin}` : `${slugTitle} ${platform}`;
+      const [ddgResult, microResult] = await Promise.all([
+        scrapeViaDdg(searchQuery).catch(() => ({ title: "", snippet: "" })),
+        scrapeViaMicrolink(cleanUrl).catch(() => ({ title: "", price: "", imageUrl: "", description: "" })),
+      ]);
 
-    if (!directData.title && ddgTitle) directData.title = ddgTitle;
-    if (!directData.title && microResult.title) directData.title = microResult.title;
-    if (!directData.price && microResult.price) directData.price = microResult.price;
-    if (microResult.imageUrl && !directData.images.includes(microResult.imageUrl)) {
-      directData.images.push(microResult.imageUrl);
-    }
-    if (!directData.description && (ddgSnippet || microResult.description)) {
-      directData.description = ddgSnippet || microResult.description;
+      ddgTitle = ddgResult.title;
+      ddgSnippet = ddgResult.snippet;
+
+      if (!directData.title && ddgTitle) directData.title = ddgTitle;
+      if (!directData.title && microResult.title) directData.title = microResult.title;
+      if (!directData.price && microResult.price) directData.price = microResult.price;
+      if (microResult.imageUrl && !directData.images.includes(microResult.imageUrl)) {
+        directData.images.push(microResult.imageUrl);
+      }
+      if (!directData.description && (ddgSnippet || microResult.description)) {
+        directData.description = ddgSnippet || microResult.description;
+      }
     }
   }
 
@@ -600,15 +734,26 @@ export async function runUniversalGeminiForensics(rawUrl: string): Promise<any> 
   let finalBrand = directData.brand || brandHint || (slugTitle ? slugTitle.split(" ")[0] : "Verified Brand");
   if (finalBrand.length < 2) finalBrand = "Verified Brand";
 
-  // 4. Resolve high-resolution images
-  // Guaranteed authentic live product image from store CDN
+  // 4. Resolve high-resolution authentic product listing images
   let resolvedImages = directData.images.filter((img) => isValidProductImage(img));
-  if (resolvedImages.length === 0 && platform === "amazon" && asin) {
-    resolvedImages = [
-      `https://images-eu.ssl-images-amazon.com/images/P/${asin}.01._SCLZZZZZZZ_SX900_.jpg`,
-      `https://images-eu.ssl-images-amazon.com/images/P/${asin}.01.LZZZZZZZ.jpg`
-    ];
+
+  // If direct scrape did not capture product photos (typical on Vercel datacenter IPs),
+  // invoke the high-precision live e-commerce image extraction engine
+  if (resolvedImages.length < 3) {
+    const liveImages = await searchLiveProductImages(finalTitle, platform, asin || slugTitle);
+    for (const img of liveImages) {
+      if (!resolvedImages.includes(img)) {
+        resolvedImages.push(img);
+      }
+    }
   }
+
+  // Normalize all Amazon CDNs to images-na.ssl-images-amazon.com to prevent ECONNRESET
+  resolvedImages = resolvedImages.map((img) =>
+    img.includes("m.media-amazon.com")
+      ? img.replace("m.media-amazon.com", "images-na.ssl-images-amazon.com")
+      : img
+  );
 
   const primaryImage = resolvedImages[0] || "";
 
@@ -688,9 +833,6 @@ Return ONLY valid JSON matching this schema:
   let parsed: any = null;
   const candidateModels = [
     "gemini-2.5-flash",
-    "gemini-3.5-flash",
-    "gemini-3.5-flash-lite",
-    "gemini-3.1-flash-lite",
     "gemini-3.6-flash"
   ];
 

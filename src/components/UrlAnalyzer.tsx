@@ -5,7 +5,7 @@ import {
   BadgeCheck, Flame, BarChart3, Lightbulb, ShoppingBag,
   Building2, Store, ThumbsUp, ThumbsDown, Eye, Compass, Zap,
   Activity, Hash, ArrowRight, ScanLine, Brain, ChevronRight,
-  Copy, Check, MessageSquare, Quote
+  Copy, Check, MessageSquare, Quote, Maximize2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { UrlAnalysisResult } from '../types';
@@ -98,6 +98,8 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
   const [imageFailed, setImageFailed] = useState(false);
   const [copiedHash, setCopiedHash] = useState(false);
   const [failedThumbnails, setFailedThumbnails] = useState<Record<number, boolean>>({});
+  const [proxiedThumbnails, setProxiedThumbnails] = useState<Record<number, boolean>>({});
+  const [expandedImage, setExpandedImage] = useState<string | null>(null);
 
   useEffect(() => {
     if (initialUrl && initialUrl.trim()) {
@@ -166,7 +168,6 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
   };
 
   const handleImageError = () => {
-    setFailedThumbnails(prev => ({ ...prev, [activeImgIdx]: true }));
     if (!proxyAttempted && imageSrc && imageSrc.startsWith('http') && !imageSrc.includes('/api/image-proxy')) {
       setProxyAttempted(true);
       setImageSrc(`/api/image-proxy?url=${encodeURIComponent(imageSrc)}`);
@@ -198,6 +199,8 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
     setProxyAttempted(false);
     setImageFailed(false);
     setFailedThumbnails({});
+    setProxiedThumbnails({});
+    setExpandedImage(null);
   };
 
   const handleCopyHash = (hash?: string) => {
@@ -600,20 +603,42 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                         </span>
                       </div>
 
-                      {/* Product Title */}
-                      <h2
-                        className="text-left text-slate-900"
-                        style={{
-                          fontFamily: 'var(--font-heading)',
-                          fontSize: '1.625rem',
-                          fontWeight: 800,
-                          lineHeight: 1.25,
-                          margin: 0,
-                          letterSpacing: '-0.02em',
-                        }}
-                      >
-                        {displayTitle}
-                      </h2>
+                      {/* Product Title & Specimen Quick Preview */}
+                      <div className="flex items-start gap-4">
+                        {!imageFailed && imageSrc && (
+                          <div
+                            onClick={() => setExpandedImage(imageSrc)}
+                            className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden shrink-0 cursor-pointer bg-slate-50 border border-slate-200/90 shadow-sm hover:border-emerald-400 transition-all group/thumb"
+                            title="Click to view specimen photo in HD"
+                          >
+                            <img
+                              src={imageSrc}
+                              alt={displayTitle}
+                              referrerPolicy="no-referrer"
+                              onError={handleImageError}
+                              className="w-full h-full object-contain p-1 group-hover/thumb:scale-105 transition-transform"
+                            />
+                            <div className="absolute inset-0 bg-black/0 group-hover/thumb:bg-black/10 transition-colors flex items-center justify-center">
+                              <Maximize2 className="w-3.5 h-3.5 text-slate-800 opacity-0 group-hover/thumb:opacity-100 transition-opacity bg-white/90 p-0.5 rounded shadow" />
+                            </div>
+                          </div>
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <h2
+                            className="text-left text-slate-900"
+                            style={{
+                              fontFamily: 'var(--font-heading)',
+                              fontSize: '1.5rem',
+                              fontWeight: 800,
+                              lineHeight: 1.25,
+                              margin: 0,
+                              letterSpacing: '-0.02em',
+                            }}
+                          >
+                            {displayTitle}
+                          </h2>
+                        </div>
+                      </div>
 
                       {/* Metadata Row */}
                       <div className="flex items-center gap-2.5 flex-wrap text-left pt-0.5 text-xs text-slate-600">
@@ -991,16 +1016,27 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
 
                   {/* Showroom preview with refined fallback */}
                   <div
-                    className="relative w-full h-[180px] rounded-xl flex items-center justify-center overflow-hidden group mb-2.5 bg-slate-50 border border-slate-200"
+                    className="relative w-full h-[220px] rounded-xl flex items-center justify-center overflow-hidden group mb-2.5 bg-slate-50 border border-slate-200"
                   >
                     {!imageFailed && imageSrc ? (
-                      <img
-                        src={imageSrc}
-                        alt={displayTitle}
-                        referrerPolicy="no-referrer"
-                        onError={handleImageError}
-                        className="max-h-full max-w-full object-contain p-2.5 transition-transform duration-500 group-hover:scale-105"
-                      />
+                      <>
+                        <img
+                          src={imageSrc}
+                          alt={displayTitle}
+                          referrerPolicy="no-referrer"
+                          onError={handleImageError}
+                          onClick={() => setExpandedImage(imageSrc)}
+                          className="max-h-full max-w-full object-contain p-2.5 transition-transform duration-500 group-hover:scale-105 cursor-zoom-in"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setExpandedImage(imageSrc)}
+                          className="absolute bottom-2 right-2 p-1.5 rounded-lg bg-slate-900/80 hover:bg-slate-900 text-white shadow-sm transition-all cursor-pointer"
+                          title="Expand image in HD"
+                        >
+                          <Maximize2 className="w-3.5 h-3.5" />
+                        </button>
+                      </>
                     ) : (
                       <div className="flex flex-col items-center justify-center text-center p-3 h-full text-slate-400">
                         <div
@@ -1019,16 +1055,19 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                       className="absolute top-2 right-2 px-2 py-0.5 rounded-md text-[9px] font-extrabold uppercase tracking-wider flex items-center gap-1 bg-slate-900/80 backdrop-blur-sm text-white border border-white/20"
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                      Live Scrape
+                      Live Specimen
                     </div>
                   </div>
 
                   {/* Thumbnails */}
-                  {!imageFailed && (result.productImages || []).length > 1 && (
+                  {(result.productImages || []).length > 1 && (
                     <div className="flex items-center gap-1.5 overflow-x-auto pb-1 mb-1 no-scrollbar">
-                      {(result.productImages || []).slice(0, 8).map((imgUrl, originalIdx) => {
+                      {(result.productImages || []).slice(0, 10).map((imgUrl, originalIdx) => {
                         if (failedThumbnails[originalIdx]) return null;
                         const isSelected = activeImgIdx === originalIdx;
+                        const thumbSrc = proxiedThumbnails[originalIdx]
+                          ? `/api/image-proxy?url=${encodeURIComponent(imgUrl)}`
+                          : imgUrl;
                         return (
                           <button
                             key={originalIdx} type="button"
@@ -1041,11 +1080,15 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                             }}
                           >
                             <img
-                              src={imgUrl}
+                              src={thumbSrc}
                               alt=""
                               referrerPolicy="no-referrer"
                               onError={() => {
-                                setFailedThumbnails(prev => ({ ...prev, [originalIdx]: true }));
+                                if (!proxiedThumbnails[originalIdx] && !imgUrl.includes('/api/image-proxy')) {
+                                  setProxiedThumbnails(prev => ({ ...prev, [originalIdx]: true }));
+                                } else {
+                                  setFailedThumbnails(prev => ({ ...prev, [originalIdx]: true }));
+                                }
                               }}
                               className="w-full h-full object-contain p-1"
                             />
@@ -1417,6 +1460,58 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
           </div>
         )}
 
+        {/* Fullscreen HD Specimen Lightbox Modal */}
+        <AnimatePresence>
+          {expandedImage && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setExpandedImage(null)}
+              className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 sm:p-6"
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                onClick={(e) => e.stopPropagation()}
+                className="relative max-w-4xl max-h-[88vh] bg-white rounded-2xl overflow-hidden shadow-2xl p-4 flex flex-col items-center"
+              >
+                <div className="w-full flex items-center justify-between pb-3 border-b border-slate-100">
+                  <div className="flex items-center gap-2">
+                    <PlatformLogo platform={result.platform || 'marketplace'} size={18} />
+                    <span className="text-xs font-bold text-slate-800">{displayBrand} · High-Resolution Listing Specimen</span>
+                  </div>
+                  <button
+                    onClick={() => setExpandedImage(null)}
+                    className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-all cursor-pointer"
+                  >
+                    <XCircle className="w-5 h-5 text-slate-500 hover:text-slate-800" />
+                  </button>
+                </div>
+                <div className="w-full max-h-[70vh] flex items-center justify-center p-4 overflow-hidden">
+                  <img
+                    src={expandedImage}
+                    alt={displayTitle}
+                    referrerPolicy="no-referrer"
+                    className="max-w-full max-h-[65vh] object-contain rounded-lg"
+                  />
+                </div>
+                <div className="w-full pt-2.5 flex items-center justify-between text-xs text-slate-500 border-t border-slate-100">
+                  <span className="truncate max-w-md font-medium text-slate-700">{displayTitle}</span>
+                  <a
+                    href={expandedImage}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 font-bold text-emerald-700 hover:underline cursor-pointer"
+                  >
+                    Open Full Image <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
     );
   }
