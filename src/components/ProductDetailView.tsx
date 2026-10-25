@@ -234,6 +234,10 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
                   { name: 'Amazon', key: 'amazon' },
                   { name: 'Flipkart', key: 'flipkart' },
                   { name: 'Myntra', key: 'myntra' },
+                  { name: 'AJIO', key: 'ajio' },
+                  { name: 'Nykaa', key: 'nykaa' },
+                  { name: 'Croma', key: 'croma' },
+                  { name: 'Meesho', key: 'meesho' },
                   { name: 'Tata CLiQ', key: 'tatacliq' },
                 ].map(p => (
                   <span

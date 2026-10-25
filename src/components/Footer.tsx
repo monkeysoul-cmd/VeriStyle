@@ -101,6 +101,9 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateTab, onOpenDomainModal
                 { name: 'Myntra Luxe', platform: 'myntra' },
                 { name: 'AJIO Luxury', platform: 'ajio' },
                 { name: 'Nykaa Fashion', platform: 'nykaa' },
+                { name: 'Croma Electronics', platform: 'croma' },
+                { name: 'Meesho Commerce', platform: 'meesho' },
+                { name: 'Tata CLiQ Luxury', platform: 'tatacliq' },
               ].map(item => (
                 <li key={item.name} className="flex items-center gap-2">
                   <PlatformLogo platform={item.platform} size={15} />

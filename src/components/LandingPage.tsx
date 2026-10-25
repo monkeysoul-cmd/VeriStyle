@@ -120,7 +120,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
             {[
               { label: 'amazon.in/nike-jordan', platform: 'amazon', url: 'https://www.amazon.in/Nike-Air-Jordan-Retro-Sneakers/dp/B0CKW79YQ4' },
               { label: 'flipkart.com/gucci-bag', platform: 'flipkart', url: 'https://www.flipkart.com/gucci-leather-handbag-dionysus/p/itm2894721' },
-              { label: 'myntra.com/yeezy', platform: 'myntra', url: 'https://www.myntra.com/casual-shoes/adidas/yeezy-boost-350-v2-sneakers/19482910/buy' }
+              { label: 'myntra.com/yeezy', platform: 'myntra', url: 'https://www.myntra.com/casual-shoes/adidas/yeezy-boost-350-v2-sneakers/19482910/buy' },
+              { label: 'ajio.com/armani-watch', platform: 'ajio', url: 'https://www.ajio.com/emporio-armani-analog-watch/p/460789234' },
+              { label: 'nykaa.com/dior-perfume', platform: 'nykaa', url: 'https://www.nykaa.com/dior-sauvage-eau-de-parfum/p/354789' }
             ].map((item) => (
               <motion.button
                 key={item.label}
