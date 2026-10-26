@@ -171,6 +171,14 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
                           src={item.imageUrl}
                           alt={item.itemName}
                           referrerPolicy="no-referrer"
+                          onError={(e) => {
+                            const target = e.currentTarget;
+                            if (!target.src.includes('/api/image-proxy') && target.src.startsWith('http')) {
+                              target.src = `/api/image-proxy?url=${encodeURIComponent(item.imageUrl)}`;
+                            } else {
+                              target.style.display = 'none';
+                            }
+                          }}
                           className="max-h-full max-w-full object-contain mix-blend-multiply"
                         />
                       ) : (

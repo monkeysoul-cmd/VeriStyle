@@ -26,7 +26,7 @@ export function getAiClient(): GoogleGenAI | null {
 }
 
 export function cleanJsonResponse(raw: string): string {
-  let cleaned = raw.trim();
+  let cleaned = (raw || "").trim();
   if (cleaned.startsWith("```json")) {
     cleaned = cleaned.replace(/^```json\s*/, "").replace(/\s*```$/, "");
   } else if (cleaned.startsWith("```")) {
@@ -36,3 +36,25 @@ export function cleanJsonResponse(raw: string): string {
   if (jsonMatch) cleaned = jsonMatch[0];
   return cleaned.trim();
 }
+
+export function safeParseJson<T = any>(raw: string): T | null {
+  if (!raw) return null;
+  const cleaned = cleanJsonResponse(raw);
+  try {
+    return JSON.parse(cleaned) as T;
+  } catch (_) {
+    try {
+      // Escape raw control characters inside JSON strings if present
+      const sanitized = cleaned.replace(/[\u0000-\u001F\u007F-\u009F]/g, (c) => {
+        if (c === "\n") return "\\n";
+        if (c === "\r") return "\\r";
+        if (c === "\t") return "\\t";
+        return "";
+      });
+      return JSON.parse(sanitized) as T;
+    } catch (_) {
+      return null;
+    }
+  }
+}
+

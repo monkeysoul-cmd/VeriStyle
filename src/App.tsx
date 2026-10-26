@@ -3,12 +3,15 @@ import { Header, NavTab } from './components/Header';
 import { Footer } from './components/Footer';
 import { LandingPage } from './components/LandingPage';
 import { Dashboard } from './components/Dashboard';
+import { ExploreView } from './components/ExploreView';
 import { HistoryView } from './components/HistoryView';
 import { PrivacyPolicyView } from './components/PrivacyPolicyView';
 import { TermsView } from './components/TermsView';
 import { CustomDomainModal } from './components/CustomDomainModal';
 import { AnalysisResult, SamplePreset } from './types';
 import { INITIAL_HISTORY } from './data/presets';
+
+const VAULT_STORAGE_KEY = 'veristyle_vault_history';
 
 export default function App() {
   const [currentTab, setCurrentTab] = useState<NavTab>('landing');
@@ -18,17 +21,36 @@ export default function App() {
   const [isDomainModalOpen, setIsDomainModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
+    // 1. Check local device storage first (strict zero-retention privacy standard)
+    try {
+      const stored = localStorage.getItem(VAULT_STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setHistory(parsed);
+          return;
+        }
+      }
+    } catch (_) {}
+
+    // 2. Fallback to API history or initial presets
     fetch('/api/history')
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
           setHistory(data);
+          try {
+            localStorage.setItem(VAULT_STORAGE_KEY, JSON.stringify(data));
+          } catch (_) {}
         } else {
           setHistory(INITIAL_HISTORY);
+          try {
+            localStorage.setItem(VAULT_STORAGE_KEY, JSON.stringify(INITIAL_HISTORY));
+          } catch (_) {}
         }
       })
       .catch(err => {
-        console.error("Failed to fetch history:", err);
+        console.warn("Failed to fetch server history, utilizing offline presets:", err);
         setHistory(INITIAL_HISTORY);
       });
   }, []);
@@ -132,8 +154,19 @@ export default function App() {
   const handleSaveToVault = (result: AnalysisResult) => {
     setHistory(prev => {
       if (prev.some(item => item.id === result.id)) return prev;
-      return [result, ...prev];
+      const updated = [result, ...prev];
+      try {
+        localStorage.setItem(VAULT_STORAGE_KEY, JSON.stringify(updated));
+      } catch (_) {}
+      return updated;
     });
+  };
+
+  const handleClearHistory = () => {
+    setHistory([]);
+    try {
+      localStorage.removeItem(VAULT_STORAGE_KEY);
+    } catch (_) {}
   };
 
   const handleStartAnalysisWithPreset = (preset?: SamplePreset) => {
@@ -170,6 +203,24 @@ export default function App() {
             />
           )}
 
+          {currentTab === 'explore' && (
+            <ExploreView
+              onInspectProduct={(item) =>
+                handleStartAnalysisWithPreset({
+                  id: item.id,
+                  title: item.name,
+                  brand: item.brand,
+                  category: item.category,
+                  imageUrl: item.imageUrl,
+                  defaultReview: item.shortDescription || item.aiVerdict,
+                  expectedVerdict: item.trustScore >= 80 ? 'VERIFIED AUTHENTIC' : 'LIKELY COUNTERFEIT',
+                  description: item.shortDescription,
+                })
+              }
+              onSaveToVault={handleSaveToVault}
+            />
+          )}
+
           {currentTab === 'dashboard' && (
             <Dashboard
               onRunAnalysis={handleRunAnalysis}
@@ -183,7 +234,7 @@ export default function App() {
             <HistoryView
               history={history}
               onSelectResult={handleSelectFromHistory}
-              onClearHistory={() => setHistory([])}
+              onClearHistory={handleClearHistory}
             />
           )}
 

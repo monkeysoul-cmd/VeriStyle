@@ -19,6 +19,8 @@ const badgeStyles: Record<string, string> = {
 export const ProductCard: React.FC<ProductCardProps> = ({ product, onView }) => {
   const [saved, setSaved] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [imgSrc, setImgSrc] = useState(product.imageUrl);
+  const [proxyTried, setProxyTried] = useState(false);
 
   const getScoreBadge = (score: number) => {
     if (score >= 90) {
@@ -54,9 +56,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onView }) => 
       <div className="relative h-52 overflow-hidden bg-gradient-to-b from-slate-50 to-indigo-50/20 border-b border-slate-100 p-5 flex items-center justify-center">
         {!imageError ? (
           <img
-            src={product.imageUrl}
+            src={imgSrc}
             alt={product.name}
-            onError={() => setImageError(true)}
+            onError={() => {
+              if (!proxyTried && imgSrc.startsWith('http') && !imgSrc.includes('/api/image-proxy')) {
+                setProxyTried(true);
+                setImgSrc(`/api/image-proxy?url=${encodeURIComponent(imgSrc)}`);
+              } else {
+                setImageError(true);
+              }
+            }}
             referrerPolicy="no-referrer"
             className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-108 mix-blend-multiply"
           />

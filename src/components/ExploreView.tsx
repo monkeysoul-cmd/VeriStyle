@@ -26,7 +26,12 @@ const tagFilterMap: Record<Exclude<FilterTag, null>, string> = {
   'Best Performance':  'Best Performance',
 };
 
-export const ExploreView: React.FC = () => {
+interface ExploreViewProps {
+  onInspectProduct?: (product: ProductItem) => void;
+  onSaveToVault?: (result: any) => void;
+}
+
+export const ExploreView: React.FC<ExploreViewProps> = ({ onInspectProduct, onSaveToVault }) => {
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory | 'All'>('All');
   const [sortBy, setSortBy] = useState<SortOption>('trust-score');
@@ -68,6 +73,8 @@ export const ExploreView: React.FC = () => {
       <ProductDetailView
         product={selectedProduct}
         onBack={() => setSelectedProduct(null)}
+        onInspectProduct={onInspectProduct}
+        onSaveToVault={onSaveToVault}
       />
     );
   }

@@ -93,11 +93,17 @@ export async function handleHealth(req: any, res: any) {
 
 export async function handleAnalyzeAuthenticity(req: any, res: any) {
   try {
-    const result = await runMultimodalAuthenticityForensics(req.body);
+    let body = req.body;
+    if (typeof body === "string") {
+      try {
+        body = JSON.parse(body);
+      } catch (_) {}
+    }
+    const result = await runMultimodalAuthenticityForensics(body);
 
-    if (mongoose.connection.readyState === 1) {
-      const savedResult = new AnalysisModel(result);
-      savedResult.save().catch((e: any) => console.warn("Failed to save to DB:", e.message));
+    if (mongoose.connection.readyState === 1 && result?.id) {
+      (AnalysisModel as any).findOneAndUpdate({ id: result.id }, result, { upsert: true, new: true })
+        .catch((e: any) => console.warn("Failed to save to DB:", e.message));
     }
 
     return res.json(result);
@@ -110,7 +116,13 @@ export async function handleAnalyzeAuthenticity(req: any, res: any) {
 // Multi-Platform Scraper and Forensic Analyzer (Unified with Vercel API Engine)
 export async function handleAnalyzeUrl(req: any, res: any) {
   try {
-    let { url } = req.body;
+    let body = req.body;
+    if (typeof body === "string") {
+      try {
+        body = JSON.parse(body);
+      } catch (_) {}
+    }
+    const url = body?.url;
     if (!url) {
       return res.status(400).json({ error: 'Product URL is required.' });
     }

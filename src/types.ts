@@ -114,7 +114,7 @@ export interface ProductItem {
   mostDiscussedFeature: string;
 }
 
-export type SupportedPlatform = 'amazon' | 'flipkart' | 'myntra' | 'unknown';
+export type SupportedPlatform = 'amazon' | 'flipkart' | 'myntra' | 'ajio' | 'nykaa' | 'croma' | 'meesho' | 'tatacliq' | 'generic' | 'retailer' | 'unknown';
 
 export interface UrlAnalysisResult extends AnalysisResult {
   productUrl: string;

@@ -32,6 +32,8 @@ export function cleanJsonResponse(raw: string): string {
   return cleaned.trim();
 }
 
+import { safeParseJson } from "./_analyzer";
+
 /**
  * Check if text contains bot-block phrases, 404, or generic marketplace placeholders
  */
@@ -64,7 +66,12 @@ export function sanitizeProductUrl(rawUrl: string): string {
   let u = (rawUrl || "").trim();
   if (u.includes("veristyle.ai/")) {
     u = u.split("veristyle.ai/")[1].trim();
+  } else if (u.includes("veristyle.io/")) {
+    u = u.split("veristyle.io/")[1].trim();
+  } else if (u.includes("localhost:3000/")) {
+    u = u.split("localhost:3000/")[1].trim();
   }
+
   if (!u.startsWith("http://") && !u.startsWith("https://")) {
     u = "https://" + u;
   }
@@ -80,7 +87,7 @@ export function sanitizeProductUrl(rawUrl: string): string {
       }
       const pid = urlObj.searchParams.get("pid");
       return `https://www.flipkart.com${cleanPath}${pid ? "?pid=" + pid : ""}`;
-    } else if (host.includes("amazon.")) {
+    } else if (host.includes("amazon.") || host.includes("amzn.")) {
       const asinMatch = u.match(/\/(?:dp|gp\/product|product-reviews)\/([A-Z0-9]{10})/i);
       if (asinMatch) {
         return `https://${urlObj.hostname}/dp/${asinMatch[1].toUpperCase()}`;
@@ -88,6 +95,12 @@ export function sanitizeProductUrl(rawUrl: string): string {
       return `https://${urlObj.hostname}${urlObj.pathname}`;
     } else if (host.includes("myntra.com")) {
       return `https://www.myntra.com${urlObj.pathname}`;
+    } else if (host.includes("ajio.com")) {
+      return `https://www.ajio.com${urlObj.pathname}`;
+    } else if (host.includes("tatacliq.com")) {
+      return `https://www.tatacliq.com${urlObj.pathname}`;
+    } else if (host.includes("croma.com")) {
+      return `https://www.croma.com${urlObj.pathname}`;
     }
   } catch (_) {}
 
@@ -98,14 +111,16 @@ export function sanitizeProductUrl(rawUrl: string): string {
  * Extract platform, ASIN, and readable product title/brand from URL
  */
 export function extractMetadataFromUrl(url: string) {
-  let platform: "amazon" | "flipkart" | "myntra" | "ajio" | "meesho" | "nykaa" | "retailer" = "retailer";
+  let platform: "amazon" | "flipkart" | "myntra" | "ajio" | "meesho" | "nykaa" | "tatacliq" | "croma" | "retailer" = "retailer";
   const lowerUrl = url.toLowerCase();
-  if (lowerUrl.includes("amazon.")) platform = "amazon";
-  else if (lowerUrl.includes("flipkart.com")) platform = "flipkart";
+  if (lowerUrl.includes("amazon.") || lowerUrl.includes("amzn.") || lowerUrl.includes("amzn.in") || lowerUrl.includes("amzn.to")) platform = "amazon";
+  else if (lowerUrl.includes("flipkart.com") || lowerUrl.includes("dl.flipkart")) platform = "flipkart";
   else if (lowerUrl.includes("myntra.com")) platform = "myntra";
   else if (lowerUrl.includes("ajio.com")) platform = "ajio";
   else if (lowerUrl.includes("meesho.com")) platform = "meesho";
-  else if (lowerUrl.includes("nykaa.com")) platform = "nykaa";
+  else if (lowerUrl.includes("nykaa.com") || lowerUrl.includes("nykaaman.com")) platform = "nykaa";
+  else if (lowerUrl.includes("tatacliq.com") || lowerUrl.includes("tataneu.com")) platform = "tatacliq";
+  else if (lowerUrl.includes("croma.com")) platform = "croma";
 
   let slugTitle = "";
   let asin = "";
@@ -652,29 +667,35 @@ Return ONLY a concise JSON block matching:
   "description": "Short 1-2 sentence product overview"
 }`;
 
-    const resp = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: prompt,
-      config: {
-        tools: [{ googleSearch: {} }],
-      },
-    });
+    const groundingModels = ["gemini-2.5-flash", "gemini-3.5-flash", "gemini-3.6-flash"];
+    for (const gm of groundingModels) {
+      try {
+        const resp = await ai.models.generateContent({
+          model: gm,
+          contents: prompt,
+          config: {
+            tools: [{ googleSearch: {} }],
+          },
+        });
 
-    const text = resp.text || "";
-    const cleaned = cleanJsonResponse(text);
-    if (cleaned.startsWith("{")) {
-      const parsed = JSON.parse(cleaned);
-      return {
-        title: parsed.title && !isBotOrErrorContent(parsed.title) ? String(parsed.title).trim() : "",
-        brand: parsed.brand ? String(parsed.brand).trim() : "",
-        price: parsed.price ? normalizePrice(parsed.price) : "",
-        rating: typeof parsed.rating === "number" ? parsed.rating : parseFloat(parsed.rating) || 0,
-        reviewCount:
-          typeof parsed.reviewCount === "number"
-            ? parsed.reviewCount
-            : parseInt(String(parsed.reviewCount).replace(/[^\d]/g, ""), 10) || 0,
-        description: parsed.description && !isBotOrErrorContent(parsed.description) ? String(parsed.description).trim() : "",
-      };
+        const text = resp.text || "";
+        const parsed = safeParseJson(text);
+        if (parsed && typeof parsed === "object") {
+          return {
+            title: parsed.title && !isBotOrErrorContent(parsed.title) ? String(parsed.title).trim() : "",
+            brand: parsed.brand ? String(parsed.brand).trim() : "",
+            price: parsed.price ? normalizePrice(parsed.price) : "",
+            rating: typeof parsed.rating === "number" ? parsed.rating : parseFloat(parsed.rating) || 0,
+            reviewCount:
+              typeof parsed.reviewCount === "number"
+                ? parsed.reviewCount
+                : parseInt(String(parsed.reviewCount).replace(/[^\d]/g, ""), 10) || 0,
+            description: parsed.description && !isBotOrErrorContent(parsed.description) ? String(parsed.description).trim() : "",
+          };
+        }
+      } catch (err: any) {
+        console.warn(`[Grounding ${gm}] Notice:`, err.message?.substring(0, 80));
+      }
     }
   } catch (err: any) {
     console.warn("[Grounding] Notice:", err.message?.substring(0, 80));
@@ -833,6 +854,8 @@ Return ONLY valid JSON matching this schema:
   let parsed: any = null;
   const candidateModels = [
     "gemini-2.5-flash",
+    "gemini-3.5-flash",
+    "gemini-3.5-flash-lite",
     "gemini-3.6-flash"
   ];
 
@@ -848,7 +871,7 @@ Return ONLY valid JSON matching this schema:
       });
       const rawText = response.text || "";
       if (rawText.length > 50) {
-        parsed = JSON.parse(cleanJsonResponse(rawText));
+        parsed = safeParseJson(rawText);
         if (parsed && typeof parsed.trustScore === "number") break;
       }
     } catch (aiErr: any) {

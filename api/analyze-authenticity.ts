@@ -1,4 +1,4 @@
-import { getAiClient, cleanJsonResponse } from "./_analyzer";
+import { getAiClient, cleanJsonResponse, safeParseJson } from "./_analyzer";
 import mongoose from "mongoose";
 
 export interface AuthenticityAnalysisInput {
@@ -222,7 +222,7 @@ Respond STRICTLY in valid JSON matching this schema:
         } else if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
           try {
             const fetchUrl = imageUrl.includes("m.media-amazon.com")
-              ? imageUrl.replace("m.media-amazon.com", "images-eu.ssl-images-amazon.com")
+              ? imageUrl.replace("m.media-amazon.com", "images-na.ssl-images-amazon.com")
               : imageUrl;
             const imgRes = await fetch(fetchUrl, {
               headers: { "User-Agent": "Mozilla/5.0" },
@@ -245,12 +245,11 @@ Respond STRICTLY in valid JSON matching this schema:
         }
       }
 
-      // 3. Fallback candidate models
+      // 3. Robust candidate models
       const candidateModels = [
         "gemini-2.5-flash",
         "gemini-3.5-flash",
         "gemini-3.5-flash-lite",
-        "gemini-3.1-flash-lite",
         "gemini-3.6-flash",
       ];
 
@@ -258,7 +257,7 @@ Respond STRICTLY in valid JSON matching this schema:
         try {
           const geminiRes = await ai.models.generateContent({
             model: m,
-            contents: { parts },
+            contents: [{ role: "user", parts }],
             config: {
               temperature: 0.15,
               responseMimeType: "application/json",
@@ -266,7 +265,7 @@ Respond STRICTLY in valid JSON matching this schema:
           });
 
           if (geminiRes.text && geminiRes.text.length > 30) {
-            parsed = JSON.parse(cleanJsonResponse(geminiRes.text));
+            parsed = safeParseJson(geminiRes.text);
             if (parsed && typeof parsed.trustScore === "number") break;
           }
         } catch (modelErr: any) {

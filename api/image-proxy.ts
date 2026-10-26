@@ -85,6 +85,14 @@ export default async function handler(req: any, res: any) {
   }
 
   let rawUrl = req.query?.url || req.params?.url;
+  // If the query was split due to unencoded & in the target image URL, reconstruct it from req.url
+  if (req.url && req.url.includes("?url=")) {
+    const fullQueryUrl = req.url.substring(req.url.indexOf("?url=") + 5);
+    if (fullQueryUrl && fullQueryUrl.startsWith("http")) {
+      rawUrl = fullQueryUrl;
+    }
+  }
+
   if (!rawUrl || typeof rawUrl !== "string") {
     return res.status(400).json({ error: "Valid image URL is required" });
   }
@@ -107,6 +115,18 @@ export default async function handler(req: any, res: any) {
     referer = "https://www.flipkart.com/";
   } else if (imageUrl.includes("myntra") || imageUrl.includes("myntassets")) {
     referer = "https://www.myntra.com/";
+  } else if (imageUrl.includes("amazon.") || imageUrl.includes("ssl-images-amazon.com")) {
+    referer = "https://www.amazon.in/";
+  } else if (imageUrl.includes("ajio")) {
+    referer = "https://www.ajio.com/";
+  } else if (imageUrl.includes("nykaa")) {
+    referer = "https://www.nykaa.com/";
+  } else if (imageUrl.includes("tatacliq")) {
+    referer = "https://www.tatacliq.com/";
+  } else if (imageUrl.includes("croma")) {
+    referer = "https://www.croma.com/";
+  } else if (imageUrl.includes("meesho")) {
+    referer = "https://www.meesho.com/";
   }
 
   try {

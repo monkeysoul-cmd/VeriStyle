@@ -9,19 +9,23 @@ import {
   Camera,
   Zap,
   Shield,
+  ShieldCheck,
   DollarSign,
   Weight,
   Tag,
   Battery,
   AlertTriangle,
   FileText,
+  Check,
 } from 'lucide-react';
-import { ProductItem, InsightIconType } from '../types';
+import { ProductItem, InsightIconType, AnalysisResult } from '../types';
 import { PlatformLogo } from './PlatformLogo';
 
 interface ProductDetailViewProps {
   product: ProductItem;
   onBack: () => void;
+  onInspectProduct?: (product: ProductItem) => void;
+  onSaveToVault?: (result: AnalysisResult) => void;
 }
 
 const InsightIcon: React.FC<{ type: InsightIconType; className?: string }> = ({ type, className = 'w-4 h-4' }) => {
@@ -109,8 +113,11 @@ const badgeStyles: Record<string, string> = {
   'Best Value':   'bg-gradient-to-r from-teal-500 to-emerald-600 text-white border-teal-500 shadow-xs',
 };
 
-export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, onBack }) => {
+export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, onBack, onInspectProduct, onSaveToVault }) => {
   const [saved, setSaved] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [imgSrc, setImgSrc] = useState(product.imageUrl);
+  const [proxyTried, setProxyTried] = useState(false);
 
   const scoreLabel =
     product.trustScore >= 90 ? 'Verified Authentic' :
@@ -140,9 +147,15 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
             {/* Specimen Photography */}
             <div className="relative h-80 md:h-auto min-h-[380px] overflow-hidden bg-gradient-to-br from-slate-50 via-indigo-50/20 to-emerald-50/20 p-8 flex items-center justify-center border-b md:border-b-0 md:border-r border-slate-200">
               <img
-                src={product.imageUrl}
+                src={imgSrc}
                 alt={product.name}
                 referrerPolicy="no-referrer"
+                onError={() => {
+                  if (!proxyTried && imgSrc.startsWith('http') && !imgSrc.includes('/api/image-proxy')) {
+                    setProxyTried(true);
+                    setImgSrc(`/api/image-proxy?url=${encodeURIComponent(imgSrc)}`);
+                  }
+                }}
                 className="max-w-full max-h-full object-contain mix-blend-multiply"
               />
               <span className={`absolute top-4 left-4 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider font-mono border shadow-2xs ${badgeStyles[product.badge] || 'bg-slate-100 text-slate-700 border-slate-200'}`}>
@@ -211,15 +224,64 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ product, o
 
               {/* Action Buttons: Crisp Rectangular (No Pills) */}
               <div className="flex items-center gap-2.5 flex-wrap pt-4 border-t border-slate-100">
-                <button className="flex items-center gap-1.5 px-4 py-2 rounded-md bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs tracking-wide transition-colors cursor-pointer shadow-2xs">
-                  <ExternalLink className="w-3.5 h-3.5" />
-                  View Original Listing
-                </button>
-                <button className="flex items-center gap-1.5 px-3.5 py-2 rounded-md bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs border border-slate-200 transition-colors cursor-pointer">
-                  <Share2 className="w-3.5 h-3.5" /> Share Report
+                {onInspectProduct && (
+                  <button
+                    onClick={() => onInspectProduct(product)}
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-md bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs tracking-wide transition-colors cursor-pointer shadow-2xs"
+                  >
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    Inspect Specimen
+                  </button>
+                )}
+                <button
+                  onClick={() => {
+                    try {
+                      navigator.clipboard.writeText(window.location.href);
+                      setCopied(true);
+                      setTimeout(() => setCopied(false), 2000);
+                    } catch (_) {}
+                  }}
+                  className="flex items-center gap-1.5 px-3.5 py-2 rounded-md bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs border border-slate-200 transition-colors cursor-pointer"
+                >
+                  {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Share2 className="w-3.5 h-3.5 text-slate-500" />}
+                  {copied ? 'Link Copied!' : 'Share Report'}
                 </button>
                 <button
-                  onClick={() => setSaved(!saved)}
+                  onClick={() => {
+                    const nextState = !saved;
+                    setSaved(nextState);
+                    if (nextState && onSaveToVault) {
+                      onSaveToVault({
+                        id: `benchmark-${product.id}`,
+                        timestamp: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                        itemName: product.name,
+                        brand: product.brand,
+                        category: product.category,
+                        imageUrl: product.imageUrl,
+                        reviewText: product.aiVerdict || product.shortDescription,
+                        trustScore: product.trustScore,
+                        verdict: product.trustScore >= 80 ? 'VERIFIED AUTHENTIC' : 'SUSPICIOUS REVIEW / RISK',
+                        aiConfidence: 96,
+                        detailedScores: {
+                          stitchingQuality: product.scoreDimensions.buildQuality || 90,
+                          typographyAccuracy: 92,
+                          fabricTextureMatch: product.scoreDimensions.valueForMoney || 88,
+                          hardwareAuthenticity: 94,
+                          serialCodeValidation: 91,
+                          reviewPerplexity: 88,
+                          reviewSentimentAlignment: product.scoreDimensions.userSatisfaction || 92,
+                        },
+                        heatmapPoints: [],
+                        reviewFlags: [],
+                        fakeReviewProbability: product.trustScore >= 80 ? 6 : 40,
+                        xaiReasoning: [product.aiVerdict || `Verified benchmark specimen conforming to master ${product.brand} specifications.`],
+                        recommendations: ['Inspect packaging invoice and micro-branding hallmarks upon delivery.'],
+                        verificationHash: `0x${product.id.replace(/[^a-f0-9]/gi, '').padEnd(8, '0').slice(0, 8)}9f1b`,
+                        estimatedRetailValue: product.price,
+                        resaleMarketVerdict: product.trustScore >= 80 ? 'Verified Resale Grade A' : 'Caution Required',
+                      });
+                    }
+                  }}
                   className={`flex items-center gap-1.5 px-3.5 py-2 rounded-md font-semibold text-xs border transition-colors cursor-pointer ${saved ? 'bg-rose-50 text-rose-700 border-rose-200' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}`}
                 >
                   <Heart className={`w-3.5 h-3.5 ${saved ? 'fill-rose-700' : ''}`} />
