@@ -67,56 +67,58 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
 
         <div className="relative z-10 w-full max-w-[1640px] 2xl:max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
 
-          {/* Telemetry Status Capsule */}
+          {/* Minimal Telemetry Capsule */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-4"
-            style={{
-              background: '#FFFFFF',
-              border: '1px solid rgba(184, 134, 11, 0.25)',
-              boxShadow: '0 2px 10px -2px rgba(184, 134, 11, 0.12)',
-            }}
+            className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full mb-4 bg-white border border-slate-200/90 shadow-2xs"
           >
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-amber-500"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-600"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-emerald-500"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-600"></span>
             </span>
-            <span className="text-[11px] font-mono font-medium text-slate-800">
-              Inspection Engine: <strong className="font-extrabold text-amber-800">veristyle.io</strong>
+            <span className="text-[11px] font-bold tracking-wider text-slate-800 uppercase font-mono">
+              AI Luxury Verification
             </span>
-            <span className="text-slate-300">|</span>
-            <span className="text-[11px] font-bold text-emerald-700">Multi-Vector AI Forensic Lab</span>
           </motion.div>
 
-          {/* Enriched Editorial Headline */}
+          {/* Catchy, Minimal Editorial Headline */}
           <motion.h1
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-3xl sm:text-5xl md:text-6xl lg:text-[62px] font-extrabold tracking-tight max-w-4xl leading-[1.14] mb-16 sm:mb-20 md:mb-24 lg:mb-28 text-slate-900 text-balance"
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="text-4xl sm:text-6xl md:text-7xl lg:text-[76px] font-extrabold tracking-tight max-w-4xl leading-[1.08] mb-3 text-slate-900 text-balance"
             style={{ fontFamily: 'var(--font-heading)' }}
           >
-            Authenticity & Counterfeit Inspection for{' '}
+            Know it’s real.{' '}
             <span className="hero-gold-glow font-black inline-block">
-              Luxury Fashion
+              Instantly.
             </span>
           </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.25 }}
+            className="text-base sm:text-lg text-slate-600 max-w-lg mx-auto mb-7 font-medium leading-relaxed"
+          >
+            Paste any product link to inspect counterfeits, hallmarks, and fake reviews in seconds.
+          </motion.p>
 
           {/* URL Analyzer Cockpit */}
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.45 }}
-            className="w-full mx-auto mb-6 text-left"
+            transition={{ duration: 0.6, delay: 0.35 }}
+            className="w-full mx-auto mb-5 text-left"
           >
             <UrlAnalyzer standalone={false} initialUrl={sampleUrl} onAnalyzeComplete={onSaveToVault} />
           </motion.div>
 
           {/* Reference Test Benchmarks */}
-          <div className="flex flex-wrap items-center justify-center gap-2 text-xs mt-3 text-slate-500">
-            <span className="font-bold font-mono text-amber-800">Reference URL Tests:</span>
+          <div className="flex flex-wrap items-center justify-center gap-2 text-xs mt-2 text-slate-500">
+            <span className="font-bold font-mono text-amber-800">Quick Test URLs:</span>
             {[
               { label: 'amazon.in/nike-jordan', platform: 'amazon', url: 'https://www.amazon.in/Nike-Air-Jordan-Retro-Sneakers/dp/B0CKW79YQ4' },
               { label: 'flipkart.com/gucci-bag', platform: 'flipkart', url: 'https://www.flipkart.com/gucci-leather-handbag-dionysus/p/itm2894721' },
@@ -137,31 +139,31 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
             ))}
           </div>
 
-          {/* Concrete Technical Standards */}
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs font-medium text-slate-600">
-            <span className="flex items-center gap-2">
-              <span className="w-5 h-5 rounded-md flex items-center justify-center bg-emerald-50 border border-emerald-200">
-                <Check className="w-3 h-3 text-emerald-600" />
+          {/* Technical Standards Micro-Badges */}
+          <div className="mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-medium text-slate-600">
+            <span className="flex items-center gap-1.5">
+              <span className="w-4 h-4 rounded-full flex items-center justify-center bg-emerald-100 text-emerald-700">
+                <Check className="w-2.5 h-2.5" />
               </span>
-              Optical Seam & Hardware Edge Detection
+              Optical Edge Forensics
             </span>
-            <span className="flex items-center gap-2">
-              <span className="w-5 h-5 rounded-md flex items-center justify-center bg-indigo-50 border border-indigo-200">
-                <Check className="w-3 h-3 text-indigo-600" />
+            <span className="flex items-center gap-1.5">
+              <span className="w-4 h-4 rounded-full flex items-center justify-center bg-indigo-100 text-indigo-700">
+                <Check className="w-2.5 h-2.5" />
               </span>
-              NLP Buyer Review Perplexity Scoring
+              NLP Review Entropy
             </span>
-            <span className="flex items-center gap-2">
-              <span className="w-5 h-5 rounded-md flex items-center justify-center bg-amber-50 border border-amber-200">
-                <Check className="w-3 h-3 text-amber-700" />
+            <span className="flex items-center gap-1.5">
+              <span className="w-4 h-4 rounded-full flex items-center justify-center bg-amber-100 text-amber-700">
+                <Check className="w-2.5 h-2.5" />
               </span>
-              Serial Checksum & Factory Matrix Matching
+              Serial & Hallmark Check
             </span>
-            <span className="flex items-center gap-2">
-              <span className="w-5 h-5 rounded-md flex items-center justify-center bg-rose-50 border border-rose-200">
-                <Lock className="w-3 h-3 text-rose-600" />
+            <span className="flex items-center gap-1.5">
+              <span className="w-4 h-4 rounded-full flex items-center justify-center bg-slate-100 text-slate-700">
+                <Lock className="w-2.5 h-2.5" />
               </span>
-              Zero Data Retention Architecture
+              Zero Data Retention
             </span>
           </div>
 
