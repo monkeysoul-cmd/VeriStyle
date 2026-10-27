@@ -64,20 +64,20 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
               className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-white transition-all shadow-sm"
               style={{
-                background: 'linear-gradient(135deg, #D4AF37 0%, #C59B27 50%, #B8860B 100%)',
-                boxShadow: '0 4px 14px rgba(184, 134, 11, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.25)',
+                background: 'linear-gradient(135deg, #059669 0%, #0D9488 50%, #4F46E5 100%)',
+                boxShadow: '0 4px 14px rgba(5, 150, 105, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.25)',
               }}
             >
               <VeriLensIcon className="w-4 h-4 text-white" />
             </motion.div>
             <div className="flex flex-col leading-none">
               <span
-                className="text-base sm:text-lg font-black tracking-tight text-slate-900 group-hover:text-amber-700 transition-colors"
+                className="text-base sm:text-lg font-black tracking-tight text-slate-900 group-hover:text-emerald-700 transition-colors"
                 style={{ fontFamily: 'var(--font-heading)' }}
               >
                 VeriStyle
               </span>
-              <span className="text-[9px] font-bold uppercase tracking-[0.18em] mt-0.5 font-mono" style={{ color: '#B8860B' }}>
+              <span className="text-[9px] font-bold uppercase tracking-[0.18em] mt-0.5 font-mono" style={{ color: '#059669' }}>
                 Authenticity Verification
               </span>
             </div>
@@ -201,11 +201,11 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
                     onClick={() => handleNav(item.id)}
                     className={`flex items-center px-3.5 py-2.5 rounded-lg text-sm font-semibold transition-colors text-left cursor-pointer ${
                       currentTab === item.id
-                        ? 'text-amber-800 font-bold'
+                        ? 'text-emerald-800 font-bold'
                         : 'text-slate-600 hover:text-slate-900'
                     }`}
                     style={{
-                      background: currentTab === item.id ? 'rgba(184, 134, 11, 0.08)' : 'transparent',
+                      background: currentTab === item.id ? 'rgba(5, 150, 105, 0.08)' : 'transparent',
                     }}
                   >
                     {item.label}
