@@ -52,15 +52,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
   ];
 
   return (
-    <div className="w-full flex flex-col min-h-screen" style={{ background: 'var(--bg-base)', color: 'var(--text-primary)' }}>
+    <div className="w-full flex flex-col min-h-screen aurora-mesh" style={{ background: 'var(--bg-base)', color: 'var(--text-primary)' }}>
 
-      {/* 1. HERO SECTION: Luxury Light Editorial Aurora */}
+      {/* 1. HERO SECTION: Luxury Editorial Aurora */}
       <section className="relative w-full flex flex-col items-center justify-center pt-24 sm:pt-28 pb-12 overflow-hidden">
         
         {/* Soft, radiant light ambient glows */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(184, 134, 11, 0.08) 0%, transparent 65%)' }} />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(5, 150, 105, 0.08) 0%, transparent 65%)' }} />
         <div className="absolute top-1/4 -left-40 w-[600px] h-[600px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(79, 70, 229, 0.05) 0%, transparent 60%)' }} />
-        <div className="absolute top-1/3 -right-40 w-[600px] h-[600px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(5, 150, 105, 0.05) 0%, transparent 60%)' }} />
+        <div className="absolute top-1/3 -right-40 w-[600px] h-[600px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(13, 148, 136, 0.06) 0%, transparent 60%)' }} />
         
         {/* Subtle grid overlay */}
         <div className="absolute inset-0 dot-grid-bg opacity-40 pointer-events-none" />
@@ -72,13 +72,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full mb-4 bg-white border border-slate-200/90 shadow-2xs"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full mb-4 bg-emerald-50/80 border border-emerald-200/80 shadow-2xs"
           >
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-emerald-500"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-600"></span>
             </span>
-            <span className="text-[11px] font-bold tracking-wider text-slate-800 uppercase font-mono">
+            <span className="text-[11px] font-bold tracking-wider text-emerald-900 uppercase font-mono">
               AI Luxury Verification
             </span>
           </motion.div>
@@ -92,7 +92,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
             style={{ fontFamily: 'var(--font-heading)' }}
           >
             Know it’s real.{' '}
-            <span className="hero-gold-glow font-black inline-block">
+            <span className="bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 bg-clip-text text-transparent font-black inline-block">
               Instantly.
             </span>
           </motion.h1>
@@ -118,7 +118,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
 
           {/* Reference Test Benchmarks */}
           <div className="flex flex-wrap items-center justify-center gap-2 text-xs mt-2 text-slate-500">
-            <span className="font-bold font-mono text-amber-800">Quick Test URLs:</span>
+            <span className="font-bold font-mono text-emerald-800">Quick Test URLs:</span>
             {[
               { label: 'amazon.in/nike-jordan', platform: 'amazon', url: 'https://www.amazon.in/Nike-Air-Jordan-Retro-Sneakers/dp/B0CKW79YQ4' },
               { label: 'flipkart.com/gucci-bag', platform: 'flipkart', url: 'https://www.flipkart.com/gucci-leather-handbag-dionysus/p/itm2894721' },
@@ -131,7 +131,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
                 whileHover={{ scale: 1.04, y: -1 }}
                 whileTap={{ scale: 0.96 }}
                 onClick={() => setSampleUrl(item.url)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer bg-white border border-slate-200 text-slate-700 hover:text-slate-900 hover:border-amber-400 shadow-xs"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer bg-white border border-slate-200 text-slate-700 hover:text-emerald-900 hover:border-emerald-300 shadow-xs"
               >
                 <PlatformLogo platform={item.platform} size={15} />
                 <span>{item.label}</span>
@@ -154,7 +154,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
               NLP Review Entropy
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="w-4 h-4 rounded-full flex items-center justify-center bg-amber-100 text-amber-700">
+              <span className="w-4 h-4 rounded-full flex items-center justify-center bg-teal-100 text-teal-700">
                 <Check className="w-2.5 h-2.5" />
               </span>
               Serial & Hallmark Check
@@ -170,7 +170,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
         </div>
       </section>
 
-      {/* 2. SUPPORTED PLATFORMS: Luxury Light Ticker */}
+      {/* 2. SUPPORTED PLATFORMS: Universal Connector Ticker */}
       <section
         className="w-full py-6 overflow-hidden bg-white border-y border-slate-200/80 shadow-xs"
       >
@@ -178,13 +178,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
           <span className="text-xs font-bold uppercase tracking-wider font-mono text-slate-500">
             Supported E-Commerce Platforms & Connectors
           </span>
-          <span className="w-2 h-2 rounded-full animate-pulse bg-amber-500" />
+          <span className="w-2 h-2 rounded-full animate-pulse bg-emerald-500" />
         </div>
         <div className="animate-marquee flex items-center gap-8 w-max opacity-90">
           {[...stores, ...stores].map((store, i) => (
             <div
               key={`${store.name}-${i}`}
-              className="flex items-center gap-2.5 px-4 py-2 rounded-lg text-xs font-semibold shrink-0 transition-all bg-white border border-slate-200/90 text-slate-800 hover:text-slate-950 hover:border-amber-400 hover:shadow-xs shadow-2xs"
+              className="flex items-center gap-2.5 px-4 py-2 rounded-lg text-xs font-semibold shrink-0 transition-all bg-white border border-slate-200/90 text-slate-800 hover:text-slate-950 hover:border-emerald-300 hover:shadow-xs shadow-2xs"
             >
               <PlatformLogo platform={store.name} size={18} />
               <span>{store.name}</span>
@@ -249,10 +249,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
                 title: 'Report Generation',
                 desc: 'A structured forensic report is rendered with anomaly points and saved to your local vault.',
                 icon: CheckCircle2,
-                accentColor: '#B8860B',
-                accentBg: '#FEF9C3',
-                accentBorder: '#FDE047',
-                glowClass: 'card-glow-gold',
+                accentColor: '#059669',
+                accentBg: '#ECFDF5',
+                accentBorder: '#A7F3D0',
+                glowClass: 'card-glow-emerald',
               },
             ].map((item) => (
               <motion.div
@@ -422,7 +422,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
                 key={i}
                 className="rounded-xl overflow-hidden transition-all duration-300 bg-white border border-slate-200 shadow-xs"
                 style={{
-                  borderColor: openFaq === i ? 'rgba(184, 134, 11, 0.4)' : undefined,
+                  borderColor: openFaq === i ? 'rgba(5, 150, 105, 0.4)' : undefined,
                 }}
               >
                 <button
@@ -433,13 +433,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
                     className="font-bold text-sm pr-4 transition-colors"
                     style={{
                       fontFamily: 'var(--font-heading)',
-                      color: openFaq === i ? '#92640A' : '#0F172A',
+                      color: openFaq === i ? '#047857' : '#0F172A',
                     }}
                   >
                     {faq.q}
                   </span>
                   <ChevronDown
-                    className={`w-4 h-4 shrink-0 transition-transform duration-200 ${openFaq === i ? 'rotate-180 text-amber-700' : 'text-slate-400'}`}
+                    className={`w-4 h-4 shrink-0 transition-transform duration-200 ${openFaq === i ? 'rotate-180 text-emerald-600' : 'text-slate-400'}`}
                   />
                 </button>
                 <AnimatePresence>
@@ -452,7 +452,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
                       className="overflow-hidden"
                     >
                       <div
-                        className="px-5 pb-5 pt-1 text-xs sm:text-sm leading-relaxed text-slate-600 border-t border-amber-100"
+                        className="px-5 pb-5 pt-1 text-xs sm:text-sm leading-relaxed text-slate-600 border-t border-emerald-100"
                       >
                         {faq.a}
                       </div>
@@ -466,15 +466,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
         </div>
       </section>
 
-      {/* 6. CALL TO ACTION SECTION: Luxury Light Gold */}
+      {/* 6. CALL TO ACTION SECTION: Universal Verified Palette */}
       <section className="relative w-full py-20 px-4 text-center overflow-hidden bg-white border-t border-slate-200">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(184, 134, 11, 0.08) 0%, transparent 65%)' }} />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(5, 150, 105, 0.08) 0%, transparent 65%)' }} />
 
         <div className="relative z-10 max-w-2xl mx-auto space-y-7">
           <div
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-mono bg-amber-50 border border-amber-200 text-amber-800"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-mono bg-emerald-50 border border-emerald-200 text-emerald-800"
           >
-            <Crown className="w-3.5 h-3.5 text-amber-600" />
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
             Zero Data Stored: Ephemeral Processing
           </div>
           
@@ -482,7 +482,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
             className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900"
             style={{ fontFamily: 'var(--font-heading)' }}
           >
-            Start Verifying Marketplace Listings
+            Start Verifying{' '}
+            <span className="bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 bg-clip-text text-transparent">
+              Marketplace Listings
+            </span>
           </h2>
           
           <p className="text-sm sm:text-base max-w-xl mx-auto leading-relaxed text-slate-600">
@@ -492,7 +495,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
             <button
               onClick={onStartAnalysis}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold tracking-wide btn-neon cursor-pointer shadow-sm"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold tracking-wide cursor-pointer bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 hover:from-emerald-500 hover:to-indigo-500 text-white shadow-md shadow-emerald-600/25 transition-all active:scale-98"
             >
               <span>Open Inspector Studio</span>
               <ArrowRight className="w-4 h-4" />

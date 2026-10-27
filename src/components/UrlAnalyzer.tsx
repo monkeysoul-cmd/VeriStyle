@@ -217,10 +217,10 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
     return (
       <div className="w-full max-w-[850px] mx-auto">
         <div
-          className="flex items-center gap-2 rounded-2xl p-2 relative z-50 transition-all duration-300 group bg-white border border-slate-300/80 shadow-md hover:border-amber-400 focus-within:border-amber-500 focus-within:ring-3 focus-within:ring-amber-100"
+          className="flex items-center gap-2 rounded-2xl p-2 relative z-50 transition-all duration-300 group bg-white border border-slate-300/80 shadow-md hover:border-emerald-400 focus-within:border-emerald-500 focus-within:ring-3 focus-within:ring-emerald-100"
         >
           <div className="pl-3 sm:pl-4 flex-shrink-0 transition-colors">
-            <Search className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" />
+            <Search className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600" />
           </div>
           <input
             type="url"
@@ -300,7 +300,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
           {/* Center spinner */}
           <div className="relative w-12 h-12 mx-auto mb-5 flex items-center justify-center">
             <div
-              className="w-10 h-10 rounded-full border-2 animate-spin border-slate-200 border-t-amber-600"
+              className="w-10 h-10 rounded-full border-2 animate-spin border-slate-200 border-t-emerald-600"
             />
           </div>
 
@@ -318,12 +318,12 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                 className="flex items-center gap-3 p-3 rounded-xl transition-all duration-300"
                 style={{
                   background: idx === loadingStep
-                    ? '#FFFBEB'
+                    ? '#ECFDF5'
                     : idx < loadingStep
                     ? '#F0FDF4'
                     : 'transparent',
                   border: idx === loadingStep
-                    ? '1px solid #FDE68A'
+                    ? '1px solid #A7F3D0'
                     : idx < loadingStep
                     ? '1px solid #BBF7D0'
                     : '1px solid transparent',
@@ -335,12 +335,12 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                 {idx < loadingStep ? (
                   <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
                 ) : idx === loadingStep ? (
-                  <Loader2 className="w-4 h-4 animate-spin shrink-0 text-amber-600" />
+                  <Loader2 className="w-4 h-4 animate-spin shrink-0 text-emerald-600" />
                 ) : (
                   <div className="w-4 h-4 rounded-full border shrink-0 border-slate-300" />
                 )}
                 <span className="text-xs font-mono font-medium" style={{
-                  color: idx === loadingStep ? '#92400E' : idx < loadingStep ? '#065F46' : '#94A3B8'
+                  color: idx === loadingStep ? '#065F46' : idx < loadingStep ? '#065F46' : '#94A3B8'
                 }}>{step}</span>
               </motion.div>
             ))}
