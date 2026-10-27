@@ -3,7 +3,7 @@ import { UrlAnalyzer } from './UrlAnalyzer';
 import { PlatformLogo } from './PlatformLogo';
 import { motion, AnimatePresence } from 'motion/react';
 import {
-  Search, Shield, CheckCircle2, ChevronDown, HelpCircle,
+  Search, Shield, ShieldCheck, CheckCircle2, ChevronDown, HelpCircle,
   FileText, ScanLine, ArrowRight, Lock, Globe, Server, Check,
   Sparkles, Diamond, Crown, Fingerprint, Layers
 } from 'lucide-react';
