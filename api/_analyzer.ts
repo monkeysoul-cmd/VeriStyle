@@ -58,3 +58,7 @@ export function safeParseJson<T = any>(raw: string): T | null {
   }
 }
 
+export default async function handler(req: any, res: any) {
+  return res.status(200).json({ status: "analyzer_module_ready" });
+}
+
