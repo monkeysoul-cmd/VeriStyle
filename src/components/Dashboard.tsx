@@ -164,13 +164,13 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
 
   const getVerdictColors = (score: number) => {
     if (score >= 80) return {
-      bg: 'linear-gradient(135deg, rgba(238,253,245,0.98) 0%, rgba(215,252,232,0.85) 45%, rgba(240,253,248,0.96) 100%)',
-      border: 'rgba(0, 240, 139, 0.45)',
-      accent: '#00F08B',
-      darkAccent: '#02572B',
-      glow: 'rgba(0, 240, 139, 0.35)',
-      arc: '#00F08B',
-      arcGrad: ['#54FFB5', '#00F08B', '#028C46'],
+      bg: 'linear-gradient(135deg, rgba(254,252,243,0.98) 0%, rgba(253,245,220,0.85) 45%, rgba(255,251,235,0.96) 100%)',
+      border: 'rgba(184, 134, 11, 0.45)',
+      accent: '#B8860B',
+      darkAccent: '#78350F',
+      glow: 'rgba(184, 134, 11, 0.35)',
+      arc: '#B8860B',
+      arcGrad: ['#FDE68A', '#D4AF37', '#B8860B'],
       arcTrack: 'rgba(0, 240, 139, 0.12)',
       label: 'VERIFIED AUTHENTIC',
       badgeClass: 'badge-authentic',
@@ -220,7 +220,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
             </div>
             <h1 className="text-3xl sm:text-4xl font-black tracking-tight" style={{ fontFamily: 'var(--font-heading)' }}>
               <span className="text-slate-950">Multimodal Authenticity </span>
-              <span className="bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 bg-clip-text text-transparent">
+              <span className="hero-gold-glow font-black inline-block">
                 Studio
               </span>
             </h1>
@@ -236,14 +236,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
               const isSelected = itemName === preset.title;
               const isAuth = preset.expectedVerdict === 'VERIFIED AUTHENTIC';
               const isCounterfeit = preset.expectedVerdict === 'LIKELY COUNTERFEIT';
-              const dotColor = isAuth ? '#059669' : isCounterfeit ? '#DC2626' : '#D97706';
+              const dotColor = isAuth ? '#B8860B' : isCounterfeit ? '#DC2626' : '#D97706';
               return (
                 <button
                   key={preset.id}
                   onClick={() => handleSelectPreset(preset)}
                   className={`specimen-capsule px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
                     isSelected
-                      ? 'bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-300 text-emerald-950 font-bold shadow-xs'
+                      ? 'bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-300 text-amber-950 font-bold shadow-xs'
                       : 'bg-slate-50/80 border border-slate-200/70 text-slate-700 hover:bg-slate-100 hover:text-slate-900'
                   }`}
                 >
@@ -254,7 +254,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                     <span className="relative rounded-full w-2 h-2" style={{ background: dotColor }} />
                   </span>
                   <span>{preset.title.split(' ')[0]}</span>
-                  <span className={`text-[10px] opacity-80 font-mono font-bold ${isSelected ? 'text-emerald-800' : 'text-slate-500'}`}>
+                  <span className={`text-[10px] opacity-80 font-mono font-bold ${isSelected ? 'text-amber-800' : 'text-slate-500'}`}>
                     {preset.brand}
                   </span>
                 </button>
@@ -278,7 +278,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
             <div className="p-6 rounded-2xl space-y-4" style={{ background: 'var(--bg-card)', border: '1px solid rgba(0,80,40,0.07)' }}>
               <div className="flex items-center justify-between">
                 <label className="text-[14px] font-bold flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
-                  <ImageIcon className="w-4 h-4" style={{ color: 'var(--green-accent-from)' }} />
+                  <ImageIcon className="w-4 h-4 text-amber-600" />
                   1. Upload Product Image
                 </label>
                 <button
@@ -328,7 +328,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                       className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto group-hover:scale-110 transition-transform"
                       style={{ background: 'rgba(0,80,40,0.07)', border: '1px solid rgba(0,80,40,0.1)' }}
                     >
-                      <Upload className="w-6 h-6" style={{ color: 'var(--green-accent-from)' }} />
+                      <Upload className="w-6 h-6 text-amber-600" />
                     </div>
                     <div>
                       <p className="text-[14px] font-bold" style={{ color: 'var(--text-primary)' }}>Drag & drop product image</p>
@@ -386,7 +386,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
               <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider">
                 <span style={{ color: 'var(--text-dim)', fontFamily: 'var(--font-mono)' }}>{reviewText.length} chars</span>
                 <span className="flex items-center gap-1 text-slate-600 font-mono text-[11px]">
-                  <Sparkles className="w-3.5 h-3.5 text-emerald-600" /> NLP Forensics Ready
+                  <Sparkles className="w-3.5 h-3.5 text-amber-600" /> NLP Forensics Ready
                 </span>
               </div>
             </div>
@@ -399,7 +399,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
               className={`w-full py-4 rounded-xl font-bold text-[15px] transition-all flex items-center justify-center gap-2.5 ${
                 isLoading || (!imageUrl && !reviewText)
                   ? 'cursor-not-allowed opacity-50 bg-slate-100 text-slate-400 border border-slate-200'
-                  : 'cursor-pointer bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 hover:from-emerald-500 hover:to-indigo-500 text-white shadow-lg shadow-emerald-600/30 active:scale-98 border border-emerald-500'
+                  : 'cursor-pointer bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-500 hover:from-amber-700 hover:to-amber-500 text-white shadow-lg shadow-amber-600/30 active:scale-98 border border-amber-500'
               }`}
             >
               {isLoading ? (
@@ -427,7 +427,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                 <div className="absolute inset-0 hex-grid-bg opacity-30 pointer-events-none" />
 
                 <div className="relative w-16 h-16 flex items-center justify-center">
-                  <div className="w-12 h-12 rounded-full border-2 border-slate-200 border-t-emerald-600 animate-spin" />
+                  <div className="w-12 h-12 rounded-full border-2 border-slate-200 border-t-amber-600 animate-spin" />
                 </div>
 
                 <div className="space-y-2 relative z-10">
@@ -569,11 +569,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                                 <button
                                   onClick={() => handleCopyHash(analysisResult.verificationHash)}
                                   title="Click to copy cryptographic SHA-256 hash"
-                                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-mono font-bold bg-white/90 border border-slate-300/80 hover:border-emerald-500 text-slate-800 transition-all cursor-pointer shadow-xs group"
+                                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-mono font-bold bg-white/90 border border-slate-300/80 hover:border-amber-500 text-slate-800 transition-all cursor-pointer shadow-xs group"
                                 >
-                                  <Hash className="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-600 transition-colors" />
+                                  <Hash className="w-3.5 h-3.5 text-slate-400 group-hover:text-amber-600 transition-colors" />
                                   <span>{analysisResult.verificationHash}</span>
-                                  {copiedHash ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-slate-400" />}
+                                  {copiedHash ? <Check className="w-3.5 h-3.5 text-amber-600" /> : <Copy className="w-3.5 h-3.5 text-slate-400" />}
                                 </button>
                                 <span className="text-[11px] font-bold text-slate-500 font-mono">
                                   {analysisResult.timestamp}
@@ -635,18 +635,18 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                             <div className="flex flex-col gap-2.5 shrink-0">
                               <button
                                 onClick={() => setShowCertificateModal(true)}
-                                className="px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer bg-white hover:bg-slate-50 border border-slate-200 text-slate-900 shadow-xs hover:shadow hover:border-emerald-500"
+                                className="px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer bg-white hover:bg-slate-50 border border-slate-200 text-slate-900 shadow-xs hover:shadow hover:border-amber-500"
                               >
-                                <QrCode className="w-4 h-4 text-emerald-600" />
+                                <QrCode className="w-4 h-4 text-amber-600" />
                                 Certificate
                               </button>
                               <button
                                 onClick={handleShareReport}
                                 className={`px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer border shadow-xs hover:shadow ${
-                                  copiedShare ? 'bg-emerald-50 border-emerald-300 text-emerald-800' : 'bg-white hover:bg-slate-50 border-slate-200 text-slate-900'
+                                  copiedShare ? 'bg-amber-50 border-amber-300 text-amber-900' : 'bg-white hover:bg-slate-50 border-slate-200 text-slate-900'
                                 }`}
                               >
-                                {copiedShare ? <Check className="w-4 h-4 text-emerald-600" /> : <Share2 className="w-4 h-4 text-slate-500" />}
+                                {copiedShare ? <Check className="w-4 h-4 text-amber-600" /> : <Share2 className="w-4 h-4 text-slate-500" />}
                                 {copiedShare ? 'Link Copied!' : 'Share Report'}
                               </button>
                             </div>
@@ -667,12 +667,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                         >
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
-                              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                              <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
                               <span className="text-[11px] font-black uppercase tracking-wider text-slate-500">
                                 AI System Confidence
                               </span>
                             </div>
-                            <span className="font-black font-mono text-2xl" style={{ color: '#00F08B' }}>
+                            <span className="font-black font-mono text-2xl" style={{ color: '#B8860B' }}>
                               {analysisResult.aiConfidence}%
                             </span>
                           </div>
@@ -682,8 +682,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                               className="metric-fill animate-fill-bar"
                               style={{
                                 width: `${analysisResult.aiConfidence}%`,
-                                background: 'linear-gradient(90deg, #00F08B, #00E5FF)',
-                                boxShadow: '0 0 14px rgba(0,240,139,0.5)',
+                                background: 'linear-gradient(90deg, #D4AF37, #B8860B)',
+                                boxShadow: '0 0 14px rgba(184,134,11,0.4)',
                               }}
                             />
                           </div>
@@ -697,9 +697,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                                 <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Resale Grade</span>
                                 <span className="text-xs font-black text-slate-900">{analysisResult.resaleMarketVerdict || 'Verified Resale Grade'}</span>
                               </div>
-                              <div className="p-3 rounded-2xl bg-emerald-50/50 border border-emerald-100/80">
-                                <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 block">Est. Market Value</span>
-                                <span className="text-xs font-black font-mono text-emerald-700">{analysisResult.estimatedRetailValue || '$1,200 USD'}</span>
+                              <div className="p-3 rounded-2xl bg-amber-50/50 border border-amber-200/80">
+                                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-900 block">Est. Market Value</span>
+                                <span className="text-xs font-black font-mono text-amber-700">{analysisResult.estimatedRetailValue || '$1,200 USD'}</span>
                               </div>
                             </div>
                           </div>
@@ -718,7 +718,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                             <span className="text-[11px] font-black uppercase tracking-wider text-slate-500">
                               {analysisResult.imageUrl ? 'Visual Craftsmanship Forensics' : 'NLP Linguistic Signals'}
                             </span>
-                            <span className="text-xs font-bold font-mono text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                            <span className="text-xs font-bold font-mono text-amber-900 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
                               5-Point Multi-Vector
                             </span>
                           </div>
@@ -729,8 +729,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                                 {
                                   label: 'Stitching Pitch & Tension',
                                   value: safeScores.stitchingQuality ?? 88,
-                                  color: '#00F08B',
-                                  gradient: 'linear-gradient(90deg, #54FFB5, #00F08B)',
+                                  color: '#B8860B',
+                                  gradient: 'linear-gradient(90deg, #FDE68A, #D4AF37)',
                                   tag: (safeScores.stitchingQuality ?? 88) >= 80 ? 'Master Spec' : 'Variance',
                                 },
                                 {
@@ -770,14 +770,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                                         className="text-[9px] font-black uppercase px-2 py-0.5 rounded-md"
                                         style={{
                                           background: `${metric.color}15`,
-                                          color: metric.color === '#00F08B' ? '#027A3D' : metric.color === '#00E5FF' || metric.color === '#0284C7' ? '#0369A1' : metric.color === '#0D9488' ? '#0F766E' : metric.color,
+                                          color: metric.color === '#B8860B' ? '#92400E' : metric.color === '#00E5FF' || metric.color === '#0284C7' ? '#0369A1' : metric.color === '#0D9488' ? '#0F766E' : metric.color,
                                           border: `1px solid ${metric.color}35`,
                                         }}
                                       >
                                         {metric.tag}
                                       </span>
                                     </div>
-                                    <span className="font-black font-mono" style={{ color: metric.color === '#00F08B' ? '#027A3D' : metric.color }}>
+                                    <span className="font-black font-mono" style={{ color: metric.color === '#B8860B' ? '#92400E' : metric.color }}>
                                       {metric.value}%
                                     </span>
                                   </div>
@@ -798,11 +798,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                             <div className="grid grid-cols-2 gap-4 pt-1">
                               {[
                                 { label: 'Linguistic Perplexity', value: safeScores.reviewPerplexity ?? 86, sub: 'Organic vocabulary entropy', color: '#0F172A', bg: 'rgba(15,23,42,0.03)', border: 'rgba(15,23,42,0.1)' },
-                                { label: 'Sentiment Coherence', value: safeScores.reviewSentimentAlignment ?? 90, sub: 'Authentic consumer phrasing', color: '#00F08B', bg: 'rgba(0,240,139,0.06)', border: 'rgba(0,240,139,0.25)' },
+                                { label: 'Sentiment Coherence', value: safeScores.reviewSentimentAlignment ?? 90, sub: 'Authentic consumer phrasing', color: '#B8860B', bg: 'rgba(184,134,11,0.06)', border: 'rgba(184,134,11,0.25)' },
                               ].map(({ label, value, sub, color, bg, border }) => (
                                 <div key={label} className="p-4 rounded-2xl space-y-1" style={{ background: bg, border: `1px solid ${border}` }}>
-                                  <span className="text-[10px] font-black uppercase tracking-wider block" style={{ color: color === '#00F08B' ? '#027A3D' : color }}>{label}</span>
-                                  <span className="text-3xl font-black font-mono" style={{ color: color === '#00F08B' ? '#027A3D' : color }}>{value}%</span>
+                                  <span className="text-[10px] font-black uppercase tracking-wider block" style={{ color: color === '#B8860B' ? '#92400E' : color }}>{label}</span>
+                                  <span className="text-3xl font-black font-mono" style={{ color: color === '#B8860B' ? '#92400E' : color }}>{value}%</span>
                                   <span className="text-xs font-semibold text-slate-600 block">{sub}</span>
                                 </div>
                               ))}
@@ -823,8 +823,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                         >
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-6 sm:px-8 py-5 border-b border-slate-100">
                             <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 rounded-2xl flex items-center justify-center bg-emerald-50 border border-emerald-100">
-                                <Eye className="w-5 h-5 text-emerald-600" />
+                              <div className="w-10 h-10 rounded-2xl flex items-center justify-center bg-amber-50 border border-amber-200">
+                                <Eye className="w-5 h-5 text-amber-600" />
                               </div>
                               <div>
                                 <h3 className="text-base font-extrabold text-slate-900" style={{ fontFamily: 'var(--font-heading)' }}>
