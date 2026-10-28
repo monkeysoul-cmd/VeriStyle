@@ -39,8 +39,8 @@ export const PrivacyPolicyView: React.FC<PrivacyPolicyViewProps> = ({ onBack }) 
         {/* Core Principles Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="p-5 rounded-lg bg-white border border-slate-200 shadow-xs">
-            <div className="w-8 h-8 rounded-md bg-emerald-50 border border-emerald-200 flex items-center justify-center mb-3">
-              <EyeOff className="w-4 h-4 text-emerald-700" />
+            <div className="w-8 h-8 rounded-md bg-amber-50 border border-amber-200 flex items-center justify-center mb-3">
+              <EyeOff className="w-4 h-4 text-amber-700" />
             </div>
             <h2 className="text-sm font-bold text-slate-900 mb-1">Zero Data Retention</h2>
             <p className="text-xs leading-relaxed text-slate-600">
@@ -86,15 +86,15 @@ export const PrivacyPolicyView: React.FC<PrivacyPolicyViewProps> = ({ onBack }) 
             <h2 className="text-lg font-bold text-slate-900 tracking-tight">2. Information We Process</h2>
             <div className="space-y-2">
               <div className="flex items-start gap-2.5">
-                <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                <CheckCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                 <span><strong>URL Parameters:</strong> When you provide a third-party marketplace link (e.g., Amazon, Flipkart, Myntra), we request publicly accessible HTML, images, and reviews to extract product attributes.</span>
               </div>
               <div className="flex items-start gap-2.5">
-                <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                <CheckCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                 <span><strong>Visual Inspection Data:</strong> High-resolution photos submitted for hardware, debossing, or seam pitch verification are converted into numerical matrix arrays for analysis and discarded immediately.</span>
               </div>
               <div className="flex items-start gap-2.5">
-                <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                <CheckCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                 <span><strong>Technical Telemetry:</strong> Standard server access logs (IP address, browser user-agent, timestamp) are retained for 72 hours solely for rate-limiting and DDoS mitigation before automatic deletion.</span>
               </div>
             </div>

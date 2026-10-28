@@ -127,14 +127,14 @@ if __name__ == "__main__":
           <div className="p-5 rounded-md bg-slate-900 border border-slate-800 shadow-md space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <FileCode className="w-4 h-4 text-emerald-400" />
+                <FileCode className="w-4 h-4 text-amber-400" />
                 <span className="font-mono text-xs font-bold text-white">main.py (FastAPI Backend)</span>
               </div>
               <button
                 onClick={handleCopyCode}
                 className="px-3 py-1.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-1.5 transition-colors border border-slate-700 cursor-pointer"
               >
-                {copiedCode ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                {copiedCode ? <Check className="w-3.5 h-3.5 text-amber-400" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copiedCode ? 'Copied' : 'Copy code'}</span>
               </button>
             </div>
@@ -153,7 +153,7 @@ if __name__ == "__main__":
                 <Terminal className="w-4 h-4 text-slate-600" />
                 Live API Response Sandbox
               </span>
-              <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold">
+              <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-amber-50 text-amber-900 border border-amber-200 font-bold">
                 POST /api/analyze-authenticity
               </span>
             </div>
@@ -174,7 +174,7 @@ if __name__ == "__main__":
             {testResponse && (
               <div className="space-y-2 pt-2">
                 <span className="text-[11px] font-mono text-slate-500 block">HTTP 200 Response Payload:</span>
-                <pre className="p-4 rounded-md bg-slate-950 border border-slate-800 text-[11px] text-emerald-400 font-mono overflow-x-auto max-h-[300px]">
+                <pre className="p-4 rounded-md bg-slate-950 border border-slate-800 text-[11px] text-amber-400 font-mono overflow-x-auto max-h-[300px]">
                   {testResponse}
                 </pre>
               </div>
