@@ -75,8 +75,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
             className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full mb-4 bg-white border border-slate-200/90 shadow-2xs"
           >
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-emerald-500"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-600"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-amber-400"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
             </span>
             <span className="text-[11px] font-bold tracking-wider text-slate-800 uppercase font-mono">
               AI Luxury Verification
@@ -142,7 +142,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
           {/* Technical Standards Micro-Badges */}
           <div className="mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-medium text-slate-600">
             <span className="flex items-center gap-1.5">
-              <span className="w-4 h-4 rounded-full flex items-center justify-center bg-emerald-100 text-emerald-700">
+              <span className="w-4 h-4 rounded-full flex items-center justify-center bg-amber-100 text-amber-800">
                 <Check className="w-2.5 h-2.5" />
               </span>
               Optical Edge Forensics
@@ -358,18 +358,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
             {/* Vector 2: Computer Vision */}
             <motion.div
               whileHover={{ y: -3 }}
-              className="p-8 rounded-2xl transition-all flex flex-col justify-between bg-white border border-emerald-100 shadow-sm"
+              className="p-8 rounded-2xl transition-all flex flex-col justify-between bg-white border border-amber-200/80 shadow-sm"
               style={{
-                boxShadow: '0 8px 30px -4px rgba(5, 150, 105, 0.06)',
+                boxShadow: '0 8px 30px -4px rgba(184, 134, 11, 0.08)',
               }}
             >
               <div>
                 <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center mb-5 bg-emerald-50 border border-emerald-200"
+                  className="w-11 h-11 rounded-xl flex items-center justify-center mb-5 bg-amber-50 border border-amber-200"
                 >
-                  <ScanLine className="w-5 h-5 text-emerald-600" />
+                  <ScanLine className="w-5 h-5 text-amber-600" />
                 </div>
-                <div className="mono-label mb-2 text-emerald-600">Computer Vision Engine</div>
+                <div className="mono-label mb-2 text-amber-600">Computer Vision Engine</div>
                 <h3 className="text-xl font-bold mb-3 text-slate-900" style={{ fontFamily: 'var(--font-heading)' }}>
                   Sub-Pixel Seam Pitch & Hardware Forensics
                 </h3>
@@ -383,9 +383,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
                     { title: 'Engraving & Deboss Depth:', desc: 'Inspects font serifs, stroke width, and stamp sharpness.' },
                     { title: 'Serial Syntax Validation:', desc: 'Cross-checks date code formats against brand production eras.' },
                   ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-2.5 p-3 rounded-lg bg-emerald-50/50 border border-emerald-100">
-                      <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
-                      <span><strong className="text-emerald-900">{item.title}</strong> {item.desc}</span>
+                    <div key={i} className="flex items-center gap-2.5 p-3 rounded-lg bg-amber-50/50 border border-amber-200/70">
+                      <CheckCircle2 className="w-4 h-4 shrink-0 text-amber-600" />
+                      <span><strong className="text-amber-950">{item.title}</strong> {item.desc}</span>
                     </div>
                   ))}
                 </div>

@@ -53,12 +53,12 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateTab, onOpenDomainModal
             <div className="pt-1 flex flex-wrap items-center gap-2">
               <button
                 onClick={onOpenDomainModal}
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-mono transition-colors cursor-pointer bg-emerald-50 border border-emerald-200 text-emerald-800 hover:bg-emerald-100"
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-mono transition-colors cursor-pointer bg-amber-50 border border-amber-200 text-amber-900 hover:bg-amber-100"
               >
-                <Globe className="w-3.5 h-3.5 text-emerald-600" />
+                <Globe className="w-3.5 h-3.5 text-amber-600" />
                 <span className="font-semibold">veristyle.io</span>
                 <span
-                  className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-900 border border-emerald-300"
+                  className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-950 border border-amber-300"
                 >
                   SSL Active
                 </span>

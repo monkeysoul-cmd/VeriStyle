@@ -27,7 +27,7 @@ export const VeriLensLogo: React.FC<VeriLensLogoProps> = ({
   return (
     <div className={`flex items-center gap-2.5 ${className}`}>
       <div className={`${containerSizes[size]} bg-slate-900 border border-slate-700/60 flex items-center justify-center shrink-0 text-white shadow-2xs`}>
-        <VeriLensIcon className="text-emerald-400" style={{ width: svgDimensions[size], height: svgDimensions[size] }} />
+        <VeriLensIcon className="text-amber-400" style={{ width: svgDimensions[size], height: svgDimensions[size] }} />
       </div>
 
       {showText && (

@@ -212,10 +212,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
       <div className="w-full max-w-[1640px] 2xl:max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 pb-6 border-b border-indigo-100/80">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 pb-6 border-b border-amber-200/60">
           <div>
             <div className="section-badge mb-3">
-              <Activity className="w-3.5 h-3.5 text-indigo-600" />
+              <Activity className="w-3.5 h-3.5 text-amber-600" />
               Forensic Inspection Lab · Verification Engine
             </div>
             <h1 className="text-3xl sm:text-4xl font-black tracking-tight" style={{ fontFamily: 'var(--font-heading)' }}>
@@ -231,7 +231,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
 
           {/* Modern Object: Tactile Specimen Capsule Dock */}
           <div className="specimen-dock max-w-full p-1.5 rounded-xl bg-white/90 border border-slate-200/80 shadow-2xs">
-            <span className="text-[10px] uppercase tracking-widest font-black shrink-0 px-2 text-indigo-900 font-mono">Specimens:</span>
+            <span className="text-[10px] uppercase tracking-widest font-black shrink-0 px-2 text-amber-900 font-mono">Specimens:</span>
             {SAMPLE_PRESETS.map(preset => {
               const isSelected = itemName === preset.title;
               const isAuth = preset.expectedVerdict === 'VERIFIED AUTHENTIC';
@@ -865,7 +865,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                             {/* Telemetry HUD top overlay */}
                             <div className="absolute top-3 left-4 right-4 flex items-center justify-between text-[10px] font-mono font-bold text-slate-500 pointer-events-none z-20">
                               <span className="flex items-center gap-1.5 bg-white/90 px-2.5 py-1 rounded-md border border-slate-200/80 shadow-2xs">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                                <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
                                 OPTICAL RESOLUTION: 4096×4096 · CALIBRATED
                               </span>
                               <span className="hidden sm:inline bg-white/90 px-2.5 py-1 rounded-md border border-slate-200/80 shadow-2xs">
@@ -1101,9 +1101,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                               )}
 
                               {safeReviewFlags.length === 0 && (
-                                <div className="pt-3 border-t border-emerald-100">
-                                  <div className="flex items-center gap-2 text-xs font-bold p-3.5 rounded-xl bg-emerald-50/80 border border-emerald-200/80 text-emerald-800">
-                                    <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
+                                <div className="pt-3 border-t border-amber-200/60">
+                                  <div className="flex items-center gap-2 text-xs font-bold p-3.5 rounded-xl bg-amber-50/80 border border-amber-200/80 text-amber-900">
+                                    <CheckCircle2 className="w-4 h-4 shrink-0 text-amber-600" />
                                     <span>Zero synthetic bots detected: authentic human phrasing verified across linguistic markers</span>
                                   </div>
                                 </div>
@@ -1129,15 +1129,15 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                                 </ul>
                               </div>
 
-                              <div className="rounded-2xl p-5 bg-emerald-50/50 border border-emerald-100 space-y-3">
-                                <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-emerald-800">
-                                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                              <div className="rounded-2xl p-5 bg-amber-50/50 border border-amber-200/80 space-y-3">
+                                <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-amber-900">
+                                  <CheckCircle2 className="w-4 h-4 text-amber-600" />
                                   Recommended Next Steps
                                 </div>
                                 <ul className="space-y-2.5">
                                   {safeRecommendations.map((rec, idx) => (
                                     <li key={idx} className="flex items-start gap-2 text-xs text-slate-700 leading-relaxed font-medium">
-                                      <ChevronRight className="w-4 h-4 shrink-0 mt-0.5 text-emerald-600" />
+                                      <ChevronRight className="w-4 h-4 shrink-0 mt-0.5 text-amber-600" />
                                       <span>{rec}</span>
                                     </li>
                                   ))}
@@ -1159,8 +1159,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                           }}
                         >
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-2xl flex items-center justify-center bg-emerald-50 border border-emerald-100">
-                              <ShieldCheck className="w-5 h-5 text-emerald-600" />
+                            <div className="w-10 h-10 rounded-2xl flex items-center justify-center bg-amber-50 border border-amber-200">
+                              <ShieldCheck className="w-5 h-5 text-amber-600" />
                             </div>
                             <div>
                               <h3 className="text-base font-extrabold text-slate-900" style={{ fontFamily: 'var(--font-heading)' }}>
@@ -1187,14 +1187,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                               </ul>
                             </div>
 
-                            <div className="rounded-2xl p-5 bg-emerald-50/50 border border-emerald-100 space-y-3">
-                              <span className="text-xs font-black uppercase tracking-wider text-emerald-800 block">
+                            <div className="rounded-2xl p-5 bg-amber-50/50 border border-amber-200/80 space-y-3">
+                              <span className="text-xs font-black uppercase tracking-wider text-amber-900 block">
                                 Recommended Action Protocol
                               </span>
                               <ul className="space-y-2">
                                 {safeRecommendations.map((rec, idx) => (
                                   <li key={idx} className="flex items-start gap-2 text-xs text-slate-700 leading-relaxed font-medium">
-                                    <ChevronRight className="w-4 h-4 shrink-0 mt-0.5 text-emerald-600" />
+                                    <ChevronRight className="w-4 h-4 shrink-0 mt-0.5 text-amber-600" />
                                     <span>{rec}</span>
                                   </li>
                                 ))}
@@ -1219,7 +1219,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                   className="relative w-20 h-20 rounded-2xl flex items-center justify-center"
                   style={{ background: 'rgba(0,80,40,0.07)', border: '1px solid rgba(0,160,70,0.15)' }}
                 >
-                  <VeriLensIcon className="w-10 h-10" style={{ color: 'var(--green-accent-from)' }} />
+                  <VeriLensIcon className="w-10 h-10 text-amber-600" />
                 </div>
                 <div className="space-y-2 max-w-sm relative z-10">
                   <h3 className="text-xl font-extrabold" style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)' }}>Ready for Authenticity Inspection</h3>
@@ -1234,7 +1234,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                     { icon: Lock, label: 'Encrypted Hash' },
                   ].map(({ icon: Icon, label }) => (
                     <div key={label} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold" style={{ background: 'rgba(0,160,70,0.05)', border: '1px solid rgba(0,80,40,0.08)', color: 'var(--text-muted)' }}>
-                      <Icon className="w-3.5 h-3.5" style={{ color: 'var(--green-accent-from)' }} />
+                      <Icon className="w-3.5 h-3.5 text-amber-600" />
                       {label}
                     </div>
                   ))}
@@ -1265,7 +1265,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
 
             <div className="text-center space-y-3 pb-6" style={{ borderBottom: '1px solid rgba(0,80,40,0.07)' }}>
               <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto animate-glow-pulse" style={{ background: 'rgba(0,80,40,0.08)', border: '1px solid rgba(0,160,70,0.18)' }}>
-                <ShieldCheck className="w-8 h-8" style={{ color: 'var(--green-accent-from)' }} />
+                <ShieldCheck className="w-8 h-8 text-amber-600" />
               </div>
               <h2 className="text-3xl font-extrabold italic" style={{ fontFamily: 'var(--font-serif)', color: 'var(--text-primary)' }}>VeriStyle Certificate</h2>
               <p className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--text-dim)' }}>Digital Fashion Provenance Seal</p>
@@ -1284,7 +1284,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onRunAnalysis, initialPres
                     className={mono ? 'font-mono' : 'font-bold'}
                     style={{
                       color: highlight
-                        ? (score && score >= 80 ? 'var(--green-accent-from)' : '#F43F5E')
+                        ? (score && score >= 80 ? '#B8860B' : '#F43F5E')
                         : mono ? '#0F172A' : 'var(--text-primary)',
                       fontWeight: highlight || mono ? 800 : 600,
                     }}

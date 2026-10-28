@@ -132,17 +132,17 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
                 onClick={onOpenDomainModal}
                 className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-medium transition-colors cursor-pointer"
                 style={{
-                  background: 'rgba(5, 150, 105, 0.06)',
-                  border: '1px solid rgba(5, 150, 105, 0.22)',
-                  color: '#047857',
+                  background: 'rgba(184, 134, 11, 0.08)',
+                  border: '1px solid rgba(184, 134, 11, 0.30)',
+                  color: '#92640A',
                 }}
                 title="Configure Custom Domain"
               >
-                <Globe className="w-3.5 h-3.5" style={{ color: '#059669' }} />
+                <Globe className="w-3.5 h-3.5" style={{ color: '#B8860B' }} />
                 <span className="font-semibold">veristyle.io</span>
                 <span className="relative flex h-2 w-2 ml-0.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
                 </span>
               </motion.button>
             )}
@@ -221,7 +221,7 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onQui
                     style={{
                       background: 'rgba(5, 150, 105, 0.04)',
                       border: '1px solid rgba(5, 150, 105, 0.15)',
-                      color: '#047857',
+                      color: '#92640A',
                     }}
                   >
                     <span className="flex items-center gap-2">

@@ -333,14 +333,14 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                 transition={{ duration: 0.2 }}
               >
                 {idx < loadingStep ? (
-                  <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
+                  <CheckCircle2 className="w-4 h-4 shrink-0 text-amber-600" />
                 ) : idx === loadingStep ? (
                   <Loader2 className="w-4 h-4 animate-spin shrink-0 text-amber-600" />
                 ) : (
                   <div className="w-4 h-4 rounded-full border shrink-0 border-slate-300" />
                 )}
                 <span className="text-xs font-mono font-medium" style={{
-                  color: idx === loadingStep ? '#92400E' : idx < loadingStep ? '#065F46' : '#94A3B8'
+                  color: idx === loadingStep ? '#92400E' : idx < loadingStep ? '#92640A' : '#94A3B8'
                 }}>{step}</span>
               </motion.div>
             ))}
@@ -387,19 +387,19 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
     // Premium Light Luxury Verdict Config
     const vc = isAuthentic
       ? {
-          gradient: 'linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 100%)',
-          border: 'rgba(5, 150, 105, 0.35)',
-          glow: 'rgba(5, 150, 105, 0.15)',
-          accent: '#059669',
-          subAccent: '#10B981',
-          arc: '#059669',
+          gradient: 'linear-gradient(135deg, #FFFFFF 0%, #FEFCE8 100%)',
+          border: 'rgba(184, 134, 11, 0.35)',
+          glow: 'rgba(184, 134, 11, 0.15)',
+          accent: '#B8860B',
+          subAccent: '#D4AF37',
+          arc: '#B8860B',
           arcTrack: '#E2E8F0',
-          badgeBg: '#ECFDF5',
-          badgeBorder: '#A7F3D0',
-          badgeText: '#065F46',
+          badgeBg: 'rgba(184, 134, 11, 0.10)',
+          badgeBorder: 'rgba(184, 134, 11, 0.35)',
+          badgeText: '#92640A',
           badgeLabel: 'VERIFIED AUTHENTIC',
           tierLabel: 'High Authenticity Index · Master Grade',
-          statusIcon: <ShieldCheck style={{ width: '16px', height: '16px', color: '#059669' }} />,
+          statusIcon: <ShieldCheck style={{ width: '16px', height: '16px', color: '#B8860B' }} />,
         }
       : isSuspicious
       ? {
@@ -555,7 +555,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
               ))}
             </div>
             <div className="text-[11px] font-bold text-slate-500 hidden md:flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
               Priority Ranked · Essential Forensics First
             </div>
           </div>
@@ -608,7 +608,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                         {!imageFailed && imageSrc && (
                           <div
                             onClick={() => setExpandedImage(imageSrc)}
-                            className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden shrink-0 cursor-pointer bg-slate-50 border border-slate-200/90 shadow-sm hover:border-emerald-400 transition-all group/thumb"
+                            className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden shrink-0 cursor-pointer bg-slate-50 border border-slate-200/90 shadow-sm hover:border-amber-400 transition-all group/thumb"
                             title="Click to view specimen photo in HD"
                           >
                             <img
@@ -652,8 +652,8 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                             Sold by: <strong style={{ fontWeight: 800 }}>{result.sellerName}</strong>
                           </span>
                         )}
-                        <span className="inline-flex items-center gap-1.5 font-extrabold px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-900 border border-emerald-200">
-                          <Tag style={{ width: '12px', height: '12px', color: '#059669' }} />
+                        <span className="inline-flex items-center gap-1.5 font-extrabold px-2.5 py-1 rounded-lg bg-amber-50 text-amber-950 border border-amber-300">
+                          <Tag style={{ width: '12px', height: '12px', color: '#B8860B' }} />
                           {displayPrice}
                         </span>
                         <span className="inline-flex items-center gap-1.5 font-bold px-2.5 py-1 rounded-lg bg-amber-50 text-amber-900 border border-amber-200">
@@ -799,7 +799,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                         </div>
 
                         {/* Spectrum Track with Pin */}
-                        <div className="w-full h-2 rounded-full overflow-hidden my-1.5 relative bg-gradient-to-r from-rose-500 via-amber-400 to-emerald-500">
+                        <div className="w-full h-2 rounded-full overflow-hidden my-1.5 relative bg-gradient-to-r from-rose-500 via-amber-400 to-amber-500">
                           <div
                             className="absolute top-0 bottom-0 w-1.5 bg-slate-900 rounded-full shadow-md"
                             style={{ left: `${Math.min(98, Math.max(2, displayScore))}%`, transform: 'translateX(-50%)' }}
@@ -814,7 +814,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                           <span style={{ color: isSuspicious ? '#D97706' : undefined, fontWeight: isSuspicious ? 900 : 700 }}>
                             50 · Caution
                           </span>
-                          <span style={{ color: isAuthentic ? '#059669' : undefined, fontWeight: isAuthentic ? 900 : 700 }}>
+                          <span style={{ color: isAuthentic ? '#B8860B' : undefined, fontWeight: isAuthentic ? 900 : 700 }}>
                             80 · Genuine
                           </span>
                           <span>100</span>
@@ -852,13 +852,13 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                 style={{
                   background: displayFlags && displayFlags.length > 0
                     ? '#FFF1F2'
-                    : '#F0FDF4',
-                  borderColor: displayFlags && displayFlags.length > 0 ? '#FECDD3' : '#BBF7D0',
+                    : '#FEFCE8',
+                  borderColor: displayFlags && displayFlags.length > 0 ? '#FECDD3' : 'rgba(184, 134, 11, 0.35)',
                 }}
               >
                 <div>
                   <div className="report-section-header mb-3">
-                    <h4 className="report-section-title" style={{ color: displayFlags && displayFlags.length > 0 ? '#9F1239' : '#047857' }}>
+                    <h4 className="report-section-title" style={{ color: displayFlags && displayFlags.length > 0 ? '#9F1239' : '#92640A' }}>
                       {displayFlags && displayFlags.length > 0 ? (
                         <>
                           <Flame style={{ width: '15px', height: '15px', color: '#E11D48' }} />
@@ -866,12 +866,12 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                         </>
                       ) : (
                         <>
-                          <ShieldCheck style={{ width: '15px', height: '15px', color: '#059669' }} />
+                          <ShieldCheck style={{ width: '15px', height: '15px', color: '#B8860B' }} />
                           Security & Merchant Audit
                         </>
                       )}
                     </h4>
-                    <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md" style={{ background: displayFlags && displayFlags.length > 0 ? '#FFE4E6' : '#DCFCE7', color: displayFlags && displayFlags.length > 0 ? '#BE123C' : '#047857' }}>
+                    <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md" style={{ background: displayFlags && displayFlags.length > 0 ? '#FFE4E6' : 'rgba(184, 134, 11, 0.10)', color: displayFlags && displayFlags.length > 0 ? '#BE123C' : '#92640A' }}>
                       {displayFlags && displayFlags.length > 0 ? `${displayFlags.length} Flags` : 'Clearance Pass'}
                     </span>
                   </div>
@@ -892,23 +892,23 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                         </div>
                       </div>
                     )) : (
-                      <div className="clean-ledger-box text-left p-4 bg-white border border-emerald-200">
+                      <div className="clean-ledger-box text-left p-4 bg-white border border-amber-300">
                         <div className="flex items-center gap-2 mb-2">
-                          <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-emerald-50 border border-emerald-200">
-                            <ShieldCheck style={{ width: '18px', height: '18px', color: '#059669' }} />
+                          <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-amber-50 border border-amber-200">
+                            <ShieldCheck style={{ width: '18px', height: '18px', color: '#B8860B' }} />
                           </div>
                           <div>
-                            <p className="text-xs font-black text-emerald-950 m-0">Zero Deceptive Anomalies</p>
-                            <span className="text-[9px] text-emerald-700 font-extrabold uppercase tracking-wider">Full Integrity Clearance</span>
+                            <p className="text-xs font-black text-amber-950 m-0">Zero Deceptive Anomalies</p>
+                            <span className="text-[9px] text-amber-700 font-extrabold uppercase tracking-wider">Full Integrity Clearance</span>
                           </div>
                         </div>
                         <p className="text-xs text-slate-600 m-0 mb-2.5 leading-relaxed">
                           No artificial review stuffing, bot linguistic manipulation, or reseller account red-flags detected.
                         </p>
-                        <div className="space-y-1 text-[11px] font-bold text-emerald-800">
-                          <span className="flex items-center gap-1.5"><CheckCircle2 style={{ width: '12px', height: '12px', color: '#059669' }} /> Organic customer review dispersion</span>
-                          <span className="flex items-center gap-1.5"><CheckCircle2 style={{ width: '12px', height: '12px', color: '#059669' }} /> Certified marketplace seller distribution</span>
-                          <span className="flex items-center gap-1.5"><CheckCircle2 style={{ width: '12px', height: '12px', color: '#059669' }} /> Syntactic entropy within normal limits</span>
+                        <div className="space-y-1 text-[11px] font-bold text-amber-900">
+                          <span className="flex items-center gap-1.5"><CheckCircle2 style={{ width: '12px', height: '12px', color: '#B8860B' }} /> Organic customer review dispersion</span>
+                          <span className="flex items-center gap-1.5"><CheckCircle2 style={{ width: '12px', height: '12px', color: '#B8860B' }} /> Certified marketplace seller distribution</span>
+                          <span className="flex items-center gap-1.5"><CheckCircle2 style={{ width: '12px', height: '12px', color: '#B8860B' }} /> Syntactic entropy within normal limits</span>
                         </div>
                       </div>
                     )}
@@ -922,11 +922,11 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
               >
                 <div>
                   <div className="report-section-header mb-3">
-                    <h4 className="report-section-title text-emerald-900">
-                      <Lightbulb style={{ width: '15px', height: '15px', color: '#059669' }} />
+                    <h4 className="report-section-title text-amber-950">
+                      <Lightbulb style={{ width: '15px', height: '15px', color: '#B8860B' }} />
                       Action Recommendations
                     </h4>
-                    <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200">
+                    <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md bg-amber-50 text-amber-900 border border-amber-200">
                       Buyer Protocol
                     </span>
                   </div>
@@ -937,7 +937,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                         className="p-3 rounded-xl flex items-start gap-2.5 hover:translate-x-0.5 transition-all text-left bg-slate-50 border border-slate-200"
                       >
                         <span
-                          className="w-5 h-5 rounded-md flex items-center justify-center shrink-0 mt-0.5 text-[10px] font-black bg-emerald-100 text-emerald-800"
+                          className="w-5 h-5 rounded-md flex items-center justify-center shrink-0 mt-0.5 text-[10px] font-black bg-amber-100 text-amber-900"
                         >
                           {idx + 1}
                         </span>
@@ -1008,8 +1008,8 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                       <ShoppingBag style={{ width: '14px', height: '14px', color: '#059669' }} />
                       Inspected Product Media
                     </h4>
-                    <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wider bg-amber-50 text-amber-900 border border-amber-300">
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
                       Live Specimen
                     </span>
                   </div>
@@ -1047,14 +1047,14 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                         <span className="text-xs font-bold text-slate-800">{displayBrand}</span>
                         <span className="text-[11px] truncate max-w-[190px] text-slate-500">{displayTitle}</span>
                         <div className="mt-1.5 inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200">
-                          <Sparkles className="w-2.5 h-2.5 text-emerald-600" /> Listing Verified
+                          <Sparkles className="w-2.5 h-2.5 text-amber-600" /> Listing Verified
                         </div>
                       </div>
                     )}
                     <div
                       className="absolute top-2 right-2 px-2 py-0.5 rounded-md text-[9px] font-extrabold uppercase tracking-wider flex items-center gap-1 bg-slate-900/80 backdrop-blur-sm text-white border border-white/20"
                     >
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
                       Live Specimen
                     </div>
                   </div>
@@ -1074,8 +1074,8 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                             onClick={() => handleSelectThumbnail(originalIdx, imgUrl)}
                             className="w-10 h-10 rounded-lg overflow-hidden shrink-0 transition-all cursor-pointer"
                             style={{
-                              border: isSelected ? '2px solid #059669' : '1px solid #E2E8F0',
-                              boxShadow: isSelected ? '0 0 8px rgba(5, 150, 105, 0.25)' : 'none',
+                              border: isSelected ? '2px solid #B8860B' : '1px solid #E2E8F0',
+                              boxShadow: isSelected ? '0 0 8px rgba(184, 134, 11, 0.35)' : 'none',
                               background: '#FFFFFF', transform: isSelected ? 'scale(1.05)' : 'scale(1)',
                             }}
                           >
@@ -1104,15 +1104,15 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                   className="p-2.5 rounded-lg flex items-center justify-between mt-2 bg-slate-50 border border-slate-200"
                 >
                   <span className="text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 text-slate-500">
-                    <Hash style={{ width: '12px', height: '12px', color: '#059669' }} /> Audit Hash
+                    <Hash style={{ width: '12px', height: '12px', color: '#B8860B' }} /> Audit Hash
                   </span>
                   <button
                     onClick={() => handleCopyHash(result.verificationHash || '0xverified')}
-                    className="flex items-center gap-1 px-1.5 py-0.5 rounded text-[11px] font-mono font-bold hover:bg-emerald-50 transition-all cursor-pointer text-emerald-800"
+                    className="flex items-center gap-1 px-1.5 py-0.5 rounded text-[11px] font-mono font-bold hover:bg-amber-50 transition-all cursor-pointer text-amber-900"
                     title="Click to copy audit hash"
                   >
                     <span className="truncate max-w-[130px]">{result.verificationHash || '0xverified'}</span>
-                    {copiedHash ? <Check style={{ width: '12px', height: '12px', color: '#059669' }} /> : <Copy style={{ width: '12px', height: '12px', opacity: 0.6 }} />}
+                    {copiedHash ? <Check style={{ width: '12px', height: '12px', color: '#B8860B' }} /> : <Copy style={{ width: '12px', height: '12px', opacity: 0.6 }} />}
                   </button>
                 </div>
               </div>
@@ -1134,17 +1134,17 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                   <div className="grid grid-cols-2 gap-2.5 mb-2.5">
                     {/* Price Box */}
                     <div
-                      className="p-3 rounded-xl text-left bg-emerald-50/70 border border-emerald-200"
+                      className="p-3 rounded-xl text-left bg-amber-50/70 border border-amber-200"
                     >
                       <div className="flex items-center gap-1 mb-0.5">
-                        <Tag style={{ width: '11px', height: '11px', color: '#059669' }} />
-                        <span className="text-[9px] font-black uppercase tracking-wider text-emerald-800">Live Price</span>
+                        <Tag style={{ width: '11px', height: '11px', color: '#B8860B' }} />
+                        <span className="text-[9px] font-black uppercase tracking-wider text-amber-900">Live Price</span>
                       </div>
                       <div className="text-xl font-black text-slate-900 tracking-tight">
                         {displayPrice}
                       </div>
                       {result.priceAnalysis && (
-                        <div className="text-[9px] font-bold mt-1 px-1.5 py-0.5 rounded-md truncate bg-emerald-100 text-emerald-900">
+                        <div className="text-[9px] font-bold mt-1 px-1.5 py-0.5 rounded-md truncate bg-amber-100 text-amber-950">
                           {result.priceAnalysis}
                         </div>
                       )}
@@ -1211,10 +1211,10 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                 <div>
                   <div className="report-section-header mb-2.5">
                     <h4 className="report-section-title">
-                      <Compass style={{ width: '14px', height: '14px', color: '#059669' }} />
+                      <Compass style={{ width: '14px', height: '14px', color: '#B8860B' }} />
                       Sentiment Coherence & NLP
                     </h4>
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wider bg-amber-50 text-amber-900 border border-amber-300">
                       NLP Forensics
                     </span>
                   </div>
@@ -1222,7 +1222,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                   {/* Overall Sentiment Callout */}
                   <div className="flex items-center justify-between mb-2 text-left">
                     <span className="text-xs font-bold text-slate-700">Buyer Sentiment Index</span>
-                    <span className="text-sm font-black font-mono text-emerald-700">{sentiment.positive}% Positive</span>
+                    <span className="text-sm font-black font-mono text-amber-700">{sentiment.positive}% Positive</span>
                   </div>
 
                   {/* Tri-color Segmented Bar */}
@@ -1231,7 +1231,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                       initial={{ width: 0 }}
                       animate={{ width: `${sentiment.positive}%` }}
                       transition={{ duration: 1, ease: 'easeOut' }}
-                      style={{ background: '#059669', borderRadius: '3px' }}
+                      style={{ background: '#B8860B', borderRadius: '3px' }}
                     />
                     <motion.div
                       initial={{ width: 0 }}
@@ -1249,8 +1249,8 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
 
                   {/* Legend with exact percentages */}
                   <div className="flex justify-between text-xs font-bold mb-3 pt-0.5">
-                    <span className="flex items-center gap-1 text-emerald-700">
-                      <span className="w-2 h-2 rounded-full bg-emerald-600" /> {sentiment.positive}% Pos
+                    <span className="flex items-center gap-1 text-amber-700">
+                      <span className="w-2 h-2 rounded-full bg-amber-500" /> {sentiment.positive}% Pos
                     </span>
                     <span className="flex items-center gap-1 text-amber-700">
                       <span className="w-2 h-2 rounded-full bg-amber-600" /> {sentiment.neutral}% Neu
@@ -1265,7 +1265,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                     className="p-3 rounded-xl text-left bg-slate-50 border border-slate-200"
                   >
                     <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider mb-1 text-slate-800">
-                      <Brain style={{ width: '12px', height: '12px', color: '#059669' }} /> Linguistic Entropy Clearance
+                      <Brain style={{ width: '12px', height: '12px', color: '#B8860B' }} /> Linguistic Entropy Clearance
                     </div>
                     <p className="text-[11px] text-slate-600 m-0 leading-relaxed font-medium">
                       Natural language variation adheres to genuine customer distributions with low algorithmic bot manipulation.
@@ -1276,7 +1276,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                 {/* Signal Status */}
                 <div className="flex items-center justify-between text-[10px] font-bold text-slate-500 pt-2 border-t border-slate-100 mt-2">
                   <span>Linguistic Confidence</span>
-                  <span className="text-emerald-700 font-extrabold font-mono">98.2% Corroborated</span>
+                  <span className="text-amber-700 font-extrabold font-mono">98.2% Corroborated</span>
                 </div>
               </div>
 
@@ -1306,12 +1306,12 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                   <div className="report-section-header mb-2.5">
                     <div>
                       <h4 className="report-section-title">
-                        <BarChart3 style={{ width: '15px', height: '15px', color: '#059669' }} />
+                        <BarChart3 style={{ width: '15px', height: '15px', color: '#B8860B' }} />
                         Visual Craftsmanship Spec Benchmarks
                       </h4>
                     </div>
-                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200">
-                      <CheckCircle2 style={{ width: '12px', height: '12px', color: '#059669' }} />
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-amber-50 text-amber-900 border border-amber-300">
+                      <CheckCircle2 style={{ width: '12px', height: '12px', color: '#B8860B' }} />
                       Master Spec
                     </span>
                   </div>
@@ -1323,10 +1323,10 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                 </div>
 
                 <div
-                  className="p-2.5 rounded-xl flex items-center justify-between mt-3 bg-emerald-50/70 border border-emerald-200"
+                  className="p-2.5 rounded-xl flex items-center justify-between mt-3 bg-amber-50/70 border border-amber-200"
                 >
                   <span className="text-xs font-bold text-slate-800">Aggregate Structural Conformance</span>
-                  <span className="text-xs font-black font-mono px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-900 border border-emerald-300">
+                  <span className="text-xs font-black font-mono px-2 py-0.5 rounded-md bg-amber-100 text-amber-950 border border-amber-300">
                     {Math.round(qualityScores.reduce((acc, curr) => acc + curr.value, 0) / qualityScores.length)}% Master Match
                   </span>
                 </div>
@@ -1336,18 +1336,18 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
               <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-left">
                 
                 {/* 1. What Buyers Love */}
-                <div className="report-card-emerald p-4 rounded-xl flex flex-col justify-between text-left">
+                <div className="report-card-gold p-4 rounded-xl flex flex-col justify-between text-left">
                   <div>
-                    <div className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-wider mb-2 text-emerald-900">
-                      <span className="w-5 h-5 rounded-lg flex items-center justify-center bg-emerald-100">
-                        <ThumbsUp style={{ width: '11px', height: '11px', color: '#059669' }} />
+                    <div className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-wider mb-2 text-amber-950">
+                      <span className="w-5 h-5 rounded-lg flex items-center justify-center bg-amber-100">
+                        <ThumbsUp style={{ width: '11px', height: '11px', color: '#B8860B' }} />
                       </span>
                       What Buyers Love
                     </div>
                     <ul className="space-y-1.5 list-none p-0 m-0 text-left">
                       {displayLove && displayLove.length > 0 ? displayLove.slice(0, 3).map((pt, i) => (
                         <li key={i} className="flex items-start gap-1.5 text-xs text-slate-700 font-medium leading-relaxed">
-                          <span className="w-1.5 h-1.5 rounded-full shrink-0 mt-1.5 bg-emerald-500" />
+                          <span className="w-1.5 h-1.5 rounded-full shrink-0 mt-1.5 bg-amber-500" />
                           <span>{pt}</span>
                         </li>
                       )) : (
@@ -1503,7 +1503,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
                     href={expandedImage}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 font-bold text-emerald-700 hover:underline cursor-pointer"
+                    className="inline-flex items-center gap-1 font-bold text-amber-700 hover:underline cursor-pointer"
                   >
                     Open Full Image <ExternalLink className="w-3 h-3" />
                   </a>

@@ -42,9 +42,9 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
 
   const getVerdictStyle = (score: number) => {
     if (score >= 80) return {
-      badge: 'bg-emerald-50 text-emerald-800 border-emerald-200',
-      bar: '#059669',
-      dot: '#059669',
+      badge: 'bg-amber-50 text-amber-900 border-amber-300',
+      bar: '#B8860B',
+      dot: '#B8860B',
       label: 'VERIFIED AUTHENTIC',
       icon: ShieldCheck,
     };
@@ -69,7 +69,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-indigo-100/80">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-amber-200/60">
           <div>
             <div className="section-badge mb-2">
               Private Device Storage
@@ -79,7 +79,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
               style={{ fontFamily: 'var(--font-heading)' }}
             >
               <span className="text-slate-950">Inspection Vault & </span>
-              <span className="bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 bg-clip-text text-transparent">
+              <span className="hero-gold-glow font-black inline-block">
                 Provenance History
               </span>
             </h1>
@@ -103,23 +103,23 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
         <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
           {/* Search */}
           <div className="md:col-span-8 relative">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-600" />
+            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-600" />
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search by apparel name, brand, or cryptographic hash..."
-              className="w-full pl-10 pr-4 py-2.5 text-xs rounded-lg bg-white border border-slate-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-400/20 focus:outline-none text-slate-900 placeholder:text-slate-400 font-normal shadow-2xs"
+              className="w-full pl-10 pr-4 py-2.5 text-xs rounded-lg bg-white border border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-400/20 focus:outline-none text-slate-900 placeholder:text-slate-400 font-normal shadow-2xs"
             />
           </div>
 
           {/* Filter: No Emojis in Options */}
           <div className="md:col-span-4 relative">
-            <Filter className="w-3.5 h-3.5 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-indigo-600" />
+            <Filter className="w-3.5 h-3.5 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-amber-600" />
             <select
               value={filterVerdict}
               onChange={(e) => setFilterVerdict(e.target.value)}
-              className="w-full pl-9 pr-8 py-2.5 text-xs rounded-lg cursor-pointer appearance-none bg-white border border-slate-300 hover:border-indigo-400 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-400/20 focus:outline-none text-slate-800 font-semibold shadow-2xs transition-colors"
+              className="w-full pl-9 pr-8 py-2.5 text-xs rounded-lg cursor-pointer appearance-none bg-white border border-slate-300 hover:border-amber-400 focus:border-amber-600 focus:ring-2 focus:ring-amber-400/20 focus:outline-none text-slate-800 font-semibold shadow-2xs transition-colors"
             >
               <option value="ALL">All Verdicts</option>
               <option value="AUTHENTIC">Verified Authentic (80% or higher)</option>
@@ -136,7 +136,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
             {filteredHistory.map((item) => {
               const vs = getVerdictStyle(item.trustScore);
               const VerdictIcon = vs.icon;
-              const borderAccent = item.trustScore >= 80 ? 'border-l-emerald-500' : item.trustScore >= 50 ? 'border-l-amber-500' : 'border-l-rose-500';
+              const borderAccent = item.trustScore >= 80 ? 'border-l-amber-500' : item.trustScore >= 50 ? 'border-l-amber-400' : 'border-l-rose-500';
 
               return (
                 <motion.div
@@ -144,13 +144,13 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
                   whileHover={{ y: -4 }}
                   transition={{ type: "spring", stiffness: 350, damping: 25 }}
                   onClick={() => onSelectResult(item)}
-                  className={`group cursor-pointer p-5 rounded-xl flex flex-col justify-between space-y-4 transition-all duration-300 bg-white border border-slate-200/90 hover:border-indigo-300 hover:shadow-xl hover:shadow-indigo-500/10 shadow-2xs border-l-4 ${borderAccent}`}
+                  className={`group cursor-pointer p-5 rounded-xl flex flex-col justify-between space-y-4 transition-all duration-300 bg-white border border-slate-200/90 hover:border-amber-300 hover:shadow-xl hover:shadow-amber-500/10 shadow-2xs border-l-4 ${borderAccent}`}
                 >
                   {/* Top: Hash + Platform + Verdict badge */}
                   <div className="flex items-center justify-between gap-2 flex-wrap">
                     <div className="flex items-center gap-1.5 flex-wrap">
-                      <div className="flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-indigo-50/80 border border-indigo-100 text-indigo-900">
-                        <Hash className="w-3 h-3 text-indigo-500" />
+                      <div className="flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-50/80 border border-amber-200/80 text-amber-900">
+                        <Hash className="w-3 h-3 text-amber-600" />
                         {(item.verificationHash || '0xverified').slice(0, 14)}
                       </div>
                       {(item.platform || item.productUrl) && (
@@ -187,7 +187,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onSelectResul
                     </div>
                     <div className="min-w-0 flex-1">
                       <h3
-                        className="font-bold text-xs truncate mb-0.5 text-slate-900 group-hover:text-emerald-700 transition-colors"
+                        className="font-bold text-xs truncate mb-0.5 text-slate-900 group-hover:text-amber-700 transition-colors"
                         style={{ fontFamily: 'var(--font-heading)' }}
                       >
                         {item.itemName}

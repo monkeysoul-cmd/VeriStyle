@@ -11,9 +11,9 @@ interface ProductCardProps {
 const badgeStyles: Record<string, string> = {
   'Top Rated':    'bg-gradient-to-r from-amber-500 to-amber-600 text-white border-amber-500 shadow-xs',
   'Budget Pick':  'bg-gradient-to-r from-sky-500 to-blue-600 text-white border-sky-500 shadow-xs',
-  'Trending':     'bg-gradient-to-r from-emerald-500 to-teal-600 text-white border-emerald-500 shadow-xs',
+  'Trending':     'bg-gradient-to-r from-amber-500 to-amber-600 text-white border-amber-500 shadow-xs',
   'Premium Pick': 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white border-indigo-600 shadow-xs',
-  'Best Value':   'bg-gradient-to-r from-teal-500 to-emerald-600 text-white border-teal-500 shadow-xs',
+  'Best Value':   'bg-gradient-to-r from-amber-600 to-yellow-500 text-white border-amber-500 shadow-xs',
 };
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, onView }) => {
@@ -25,8 +25,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onView }) => 
   const getScoreBadge = (score: number) => {
     if (score >= 90) {
       return {
-        bg: 'bg-emerald-50 text-emerald-900 border-emerald-300',
-        dot: 'bg-emerald-600',
+        bg: 'bg-amber-50 text-amber-950 border-amber-300',
+        dot: 'bg-amber-600',
         label: 'VERIFIED GRADE A',
       };
     }
@@ -107,8 +107,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onView }) => 
         {/* Brand + Name */}
         <div>
           <div className="flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
-            <p className="text-[10px] text-emerald-700 font-mono font-bold uppercase tracking-wider">{product.brand}</p>
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-600" />
+            <p className="text-[10px] text-amber-800 font-mono font-bold uppercase tracking-wider">{product.brand}</p>
           </div>
           <h3 className="text-sm font-bold text-slate-900 mt-1 line-clamp-2 leading-snug group-hover:text-indigo-950 transition-colors" style={{ fontFamily: 'var(--font-heading)' }}>
             {product.name}
@@ -133,7 +133,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onView }) => 
             <span className="text-xs text-slate-400 line-through font-mono">{product.originalPrice}</span>
           )}
           {product.savings && (
-            <span className="text-[10px] text-emerald-800 font-semibold bg-emerald-50 border border-emerald-200 px-1.5 py-0.2 rounded font-mono">
+            <span className="text-[10px] text-amber-900 font-semibold bg-amber-50 border border-amber-200 px-1.5 py-0.2 rounded font-mono">
               {product.savings}
             </span>
           )}
@@ -153,11 +153,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onView }) => 
           <div className="mt-auto pt-3 border-t border-slate-100">
             <button
               onClick={onView}
-              className="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-lg bg-emerald-50/70 hover:bg-emerald-100 text-emerald-900 text-xs font-bold border border-emerald-200/90 hover:border-emerald-300 transition-all cursor-pointer shadow-2xs"
+              className="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-lg bg-amber-50/80 hover:bg-amber-100 text-amber-950 text-xs font-bold border border-amber-300 hover:border-amber-400 transition-all cursor-pointer shadow-2xs"
             >
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
+              <ShieldCheck className="w-3.5 h-3.5 text-amber-700" />
               <span>Inspection Report</span>
-              <ArrowRight className="w-3.5 h-3.5 text-emerald-600" />
+              <ArrowRight className="w-3.5 h-3.5 text-amber-600" />
             </button>
           </div>
         )}
