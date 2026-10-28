@@ -12,11 +12,11 @@ interface FooterProps {
 export const Footer: React.FC<FooterProps> = ({ onNavigateTab, onOpenDomainModal }) => {
   return (
     <footer className="relative overflow-hidden bg-slate-50 border-t border-slate-200/90 text-slate-700">
-      {/* Top delicate hairline accent */}
-      <div className="absolute top-0 inset-x-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(5, 150, 105, 0.4), rgba(79, 70, 229, 0.2), transparent)' }} />
+      {/* Top delicate gold hairline accent */}
+      <div className="absolute top-0 inset-x-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(184, 134, 11, 0.4), rgba(79, 70, 229, 0.2), transparent)' }} />
       
       {/* Soft light ambient glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[180px] pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(5, 150, 105, 0.04) 0%, transparent 70%)' }} />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[180px] pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(184, 134, 11, 0.04) 0%, transparent 70%)' }} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
         
@@ -29,8 +29,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateTab, onOpenDomainModal
               <div
                 className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 text-white shadow-xs"
                 style={{
-                  background: 'linear-gradient(135deg, #059669 0%, #0D9488 50%, #4F46E5 100%)',
-                  boxShadow: '0 4px 14px rgba(5, 150, 105, 0.25)',
+                  background: 'linear-gradient(135deg, #D4AF37 0%, #C59B27 50%, #B8860B 100%)',
+                  boxShadow: '0 4px 14px rgba(184, 134, 11, 0.25)',
                 }}
               >
                 <VeriLensIcon className="w-4 h-4 text-white" />
@@ -39,7 +39,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateTab, onOpenDomainModal
                 <span className="text-lg font-bold tracking-tight text-slate-900" style={{ fontFamily: 'var(--font-heading)' }}>
                   VeriStyle
                 </span>
-                <span className="text-[10px] font-bold uppercase tracking-[0.18em] mt-0.5 font-mono text-emerald-700">
+                <span className="text-[10px] font-bold uppercase tracking-[0.18em] mt-0.5 font-mono text-amber-800">
                   Authenticity Verification
                 </span>
               </div>
