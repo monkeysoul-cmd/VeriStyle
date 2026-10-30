@@ -15,7 +15,6 @@ interface LandingPageProps {
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSaveToVault }) => {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
-  const [sampleUrl, setSampleUrl] = useState<string>('');
 
   const faqs = [
     {
@@ -54,8 +53,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
   return (
     <div className="w-full flex flex-col min-h-screen" style={{ background: 'var(--bg-base)', color: 'var(--text-primary)' }}>
 
-      {/* 1. HERO SECTION: Clean Luxury Minimalist */}
-      <section className="relative w-full flex flex-col items-center justify-center pt-20 sm:pt-28 pb-14 overflow-hidden">
+      {/* 1. HERO SECTION: Ultra-Clean Minimalist */}
+      <section className="relative w-full flex flex-col items-center justify-center pt-24 sm:pt-32 pb-16 sm:pb-20 overflow-hidden">
         
         {/* Soft, radiant warm golden ambient glow */}
         <div
@@ -66,14 +65,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
         {/* Subtle, soft dot grid */}
         <div className="absolute inset-0 dot-grid-bg opacity-20 pointer-events-none" />
 
-        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
+        <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
 
           {/* Minimal Luxury Capsule */}
           <motion.div
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full mb-5 bg-amber-500/[0.07] border border-amber-500/20 shadow-2xs backdrop-blur-sm"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full mb-6 bg-amber-500/[0.07] border border-amber-500/20 shadow-2xs backdrop-blur-sm"
           >
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-amber-400" />
@@ -89,7 +88,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.15 }}
-            className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight max-w-4xl leading-[1.08] mb-3.5 text-slate-900 text-balance"
+            className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight max-w-3xl leading-[1.08] mb-4 text-slate-900 text-balance"
             style={{ fontFamily: 'var(--font-heading)' }}
           >
             Know it’s real.{' '}
@@ -102,7 +101,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.22 }}
-            className="text-base sm:text-lg text-slate-600 max-w-lg mx-auto mb-8 font-normal leading-relaxed text-balance"
+            className="text-base sm:text-lg text-slate-600 max-w-lg mx-auto mb-9 font-normal leading-relaxed text-balance"
           >
             Paste any product link to inspect counterfeits, hallmarks, and fake reviews in seconds.
           </motion.p>
@@ -114,63 +113,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
             transition={{ duration: 0.6, delay: 0.3 }}
             className="w-full mx-auto text-left"
           >
-            <UrlAnalyzer standalone={false} initialUrl={sampleUrl} onAnalyzeComplete={onSaveToVault} />
-          </motion.div>
-
-          {/* Sleek Minimal Sample Suggestions */}
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.35 }}
-            className="flex flex-wrap items-center justify-center gap-2 text-xs mt-3.5 text-slate-500"
-          >
-            <span className="text-[11px] font-semibold text-slate-400">Try an example:</span>
-            {[
-              { label: 'Nike Air Jordan', platform: 'amazon', url: 'https://www.amazon.in/Nike-Air-Jordan-Retro-Sneakers/dp/B0CKW79YQ4' },
-              { label: 'Gucci Dionysus Bag', platform: 'flipkart', url: 'https://www.flipkart.com/gucci-leather-handbag-dionysus/p/itm2894721' },
-              { label: 'Yeezy Boost 350', platform: 'myntra', url: 'https://www.myntra.com/casual-shoes/adidas/yeezy-boost-350-v2-sneakers/19482910/buy' },
-              { label: 'Armani Watch', platform: 'ajio', url: 'https://www.ajio.com/emporio-armani-analog-watch/p/460789234' },
-              { label: 'Dior Sauvage', platform: 'nykaa', url: 'https://www.nykaa.com/dior-sauvage-eau-de-parfum/p/354789' },
-            ].map((item) => (
-              <motion.button
-                key={item.label}
-                whileHover={{ scale: 1.03, y: -1 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => setSampleUrl(item.url)}
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium transition-all cursor-pointer bg-white/90 hover:bg-amber-50/90 border border-slate-200/90 hover:border-amber-300 text-slate-700 hover:text-amber-900 shadow-2xs"
-              >
-                <PlatformLogo platform={item.platform} size={13} />
-                <span>{item.label}</span>
-              </motion.button>
-            ))}
-          </motion.div>
-
-          {/* Unified Luxury Minimal Trust Bar */}
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="mt-8 flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-7 gap-y-2 text-[12px] font-medium text-slate-500"
-          >
-            <span className="inline-flex items-center gap-1.5">
-              <ShieldCheck className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-              <span>Optical Edge Forensics</span>
-            </span>
-            <span className="hidden sm:inline-block w-1 h-1 rounded-full bg-slate-300" />
-            <span className="inline-flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-              <span>NLP Review Entropy</span>
-            </span>
-            <span className="hidden sm:inline-block w-1 h-1 rounded-full bg-slate-300" />
-            <span className="inline-flex items-center gap-1.5">
-              <CheckCircle2 className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-              <span>Serial & Hallmark Check</span>
-            </span>
-            <span className="hidden sm:inline-block w-1 h-1 rounded-full bg-slate-300" />
-            <span className="inline-flex items-center gap-1.5">
-              <Lock className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-              <span>Zero Data Retention</span>
-            </span>
+            <UrlAnalyzer standalone={false} onAnalyzeComplete={onSaveToVault} />
           </motion.div>
 
         </div>

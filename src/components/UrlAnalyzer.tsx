@@ -254,31 +254,6 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
           </button>
         </div>
 
-        {/* Supported Platform Badges */}
-        {showConnectors && (
-          <div className="mt-3 flex items-center justify-center flex-wrap gap-2 text-[11px] text-slate-500 font-medium">
-            <span className="font-mono text-[10px] font-bold text-slate-400 uppercase tracking-wider">Connectors:</span>
-            {[
-              { key: 'amazon', name: 'Amazon' },
-              { key: 'flipkart', name: 'Flipkart' },
-              { key: 'myntra', name: 'Myntra' },
-              { key: 'ajio', name: 'AJIO' },
-              { key: 'nykaa', name: 'Nykaa' },
-              { key: 'croma', name: 'Croma' },
-              { key: 'meesho', name: 'Meesho' },
-              { key: 'tatacliq', name: 'Tata CLiQ' },
-            ].map(p => (
-              <span
-                key={p.key}
-                className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-white border border-slate-200/90 text-slate-700 shadow-2xs text-[11px] font-semibold"
-              >
-                <PlatformLogo platform={p.key} size={14} />
-                <span>{p.name}</span>
-              </span>
-            ))}
-          </div>
-        )}
-
         {status === 'error' && errorMsg && (
           <motion.div
             className="mt-3 p-4 rounded-xl flex items-center gap-3 text-sm bg-rose-50 border border-rose-200 text-rose-800"
