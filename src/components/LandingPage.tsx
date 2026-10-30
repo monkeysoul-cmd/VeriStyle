@@ -54,41 +54,42 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
   return (
     <div className="w-full flex flex-col min-h-screen" style={{ background: 'var(--bg-base)', color: 'var(--text-primary)' }}>
 
-      {/* 1. HERO SECTION: Luxury Light Editorial Aurora */}
-      <section className="relative w-full flex flex-col items-center justify-center pt-24 sm:pt-28 pb-12 overflow-hidden">
+      {/* 1. HERO SECTION: Clean Luxury Minimalist */}
+      <section className="relative w-full flex flex-col items-center justify-center pt-20 sm:pt-28 pb-14 overflow-hidden">
         
-        {/* Soft, radiant light ambient glows */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(184, 134, 11, 0.08) 0%, transparent 65%)' }} />
-        <div className="absolute top-1/4 -left-40 w-[600px] h-[600px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(79, 70, 229, 0.05) 0%, transparent 60%)' }} />
-        <div className="absolute top-1/3 -right-40 w-[600px] h-[600px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(5, 150, 105, 0.05) 0%, transparent 60%)' }} />
+        {/* Soft, radiant warm golden ambient glow */}
+        <div
+          className="absolute -top-32 left-1/2 -translate-x-1/2 w-[850px] h-[500px] rounded-full pointer-events-none blur-3xl opacity-60"
+          style={{ background: 'radial-gradient(ellipse at center, rgba(217, 119, 6, 0.12) 0%, rgba(245, 158, 11, 0.03) 60%, transparent 80%)' }}
+        />
         
-        {/* Subtle grid overlay */}
-        <div className="absolute inset-0 dot-grid-bg opacity-40 pointer-events-none" />
+        {/* Subtle, soft dot grid */}
+        <div className="absolute inset-0 dot-grid-bg opacity-20 pointer-events-none" />
 
-        <div className="relative z-10 w-full max-w-[1640px] 2xl:max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
+        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
 
-          {/* Minimal Telemetry Capsule */}
+          {/* Minimal Luxury Capsule */}
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full mb-4 bg-white border border-slate-200/90 shadow-2xs"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full mb-5 bg-amber-500/[0.07] border border-amber-500/20 shadow-2xs backdrop-blur-sm"
           >
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-amber-400"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-amber-400" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-600" />
             </span>
-            <span className="text-[11px] font-bold tracking-wider text-slate-800 uppercase font-mono">
+            <span className="text-[11px] font-bold tracking-wider text-amber-900 uppercase font-mono">
               AI Luxury Verification
             </span>
           </motion.div>
 
-          {/* Catchy, Minimal Editorial Headline */}
+          {/* Clean, Minimal Editorial Headline */}
           <motion.h1
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.15 }}
-            className="text-4xl sm:text-6xl md:text-7xl lg:text-[76px] font-extrabold tracking-tight max-w-4xl leading-[1.08] mb-3 text-slate-900 text-balance"
+            className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight max-w-4xl leading-[1.08] mb-3.5 text-slate-900 text-balance"
             style={{ fontFamily: 'var(--font-heading)' }}
           >
             Know it’s real.{' '}
@@ -98,74 +99,79 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartAnalysis, onSav
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.25 }}
-            className="text-base sm:text-lg text-slate-600 max-w-lg mx-auto mb-7 font-medium leading-relaxed"
+            transition={{ duration: 0.6, delay: 0.22 }}
+            className="text-base sm:text-lg text-slate-600 max-w-lg mx-auto mb-8 font-normal leading-relaxed text-balance"
           >
             Paste any product link to inspect counterfeits, hallmarks, and fake reviews in seconds.
           </motion.p>
 
           {/* URL Analyzer Cockpit */}
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.35 }}
-            className="w-full mx-auto mb-5 text-left"
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="w-full mx-auto text-left"
           >
             <UrlAnalyzer standalone={false} initialUrl={sampleUrl} onAnalyzeComplete={onSaveToVault} />
           </motion.div>
 
-          {/* Reference Test Benchmarks */}
-          <div className="flex flex-wrap items-center justify-center gap-2 text-xs mt-2 text-slate-500">
-            <span className="font-bold font-mono text-amber-800">Quick Test URLs:</span>
+          {/* Sleek Minimal Sample Suggestions */}
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.35 }}
+            className="flex flex-wrap items-center justify-center gap-2 text-xs mt-3.5 text-slate-500"
+          >
+            <span className="text-[11px] font-semibold text-slate-400">Try an example:</span>
             {[
-              { label: 'amazon.in/nike-jordan', platform: 'amazon', url: 'https://www.amazon.in/Nike-Air-Jordan-Retro-Sneakers/dp/B0CKW79YQ4' },
-              { label: 'flipkart.com/gucci-bag', platform: 'flipkart', url: 'https://www.flipkart.com/gucci-leather-handbag-dionysus/p/itm2894721' },
-              { label: 'myntra.com/yeezy', platform: 'myntra', url: 'https://www.myntra.com/casual-shoes/adidas/yeezy-boost-350-v2-sneakers/19482910/buy' },
-              { label: 'ajio.com/armani-watch', platform: 'ajio', url: 'https://www.ajio.com/emporio-armani-analog-watch/p/460789234' },
-              { label: 'nykaa.com/dior-perfume', platform: 'nykaa', url: 'https://www.nykaa.com/dior-sauvage-eau-de-parfum/p/354789' }
+              { label: 'Nike Air Jordan', platform: 'amazon', url: 'https://www.amazon.in/Nike-Air-Jordan-Retro-Sneakers/dp/B0CKW79YQ4' },
+              { label: 'Gucci Dionysus Bag', platform: 'flipkart', url: 'https://www.flipkart.com/gucci-leather-handbag-dionysus/p/itm2894721' },
+              { label: 'Yeezy Boost 350', platform: 'myntra', url: 'https://www.myntra.com/casual-shoes/adidas/yeezy-boost-350-v2-sneakers/19482910/buy' },
+              { label: 'Armani Watch', platform: 'ajio', url: 'https://www.ajio.com/emporio-armani-analog-watch/p/460789234' },
+              { label: 'Dior Sauvage', platform: 'nykaa', url: 'https://www.nykaa.com/dior-sauvage-eau-de-parfum/p/354789' },
             ].map((item) => (
               <motion.button
                 key={item.label}
-                whileHover={{ scale: 1.04, y: -1 }}
-                whileTap={{ scale: 0.96 }}
+                whileHover={{ scale: 1.03, y: -1 }}
+                whileTap={{ scale: 0.97 }}
                 onClick={() => setSampleUrl(item.url)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer bg-white border border-slate-200 text-slate-700 hover:text-slate-900 hover:border-amber-400 shadow-xs"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium transition-all cursor-pointer bg-white/90 hover:bg-amber-50/90 border border-slate-200/90 hover:border-amber-300 text-slate-700 hover:text-amber-900 shadow-2xs"
               >
-                <PlatformLogo platform={item.platform} size={15} />
+                <PlatformLogo platform={item.platform} size={13} />
                 <span>{item.label}</span>
               </motion.button>
             ))}
-          </div>
+          </motion.div>
 
-          {/* Technical Standards Micro-Badges */}
-          <div className="mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-medium text-slate-600">
-            <span className="flex items-center gap-1.5">
-              <span className="w-4 h-4 rounded-full flex items-center justify-center bg-amber-100 text-amber-800">
-                <Check className="w-2.5 h-2.5" />
-              </span>
-              Optical Edge Forensics
+          {/* Unified Luxury Minimal Trust Bar */}
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="mt-8 flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-7 gap-y-2 text-[12px] font-medium text-slate-500"
+          >
+            <span className="inline-flex items-center gap-1.5">
+              <ShieldCheck className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+              <span>Optical Edge Forensics</span>
             </span>
-            <span className="flex items-center gap-1.5">
-              <span className="w-4 h-4 rounded-full flex items-center justify-center bg-indigo-100 text-indigo-700">
-                <Check className="w-2.5 h-2.5" />
-              </span>
-              NLP Review Entropy
+            <span className="hidden sm:inline-block w-1 h-1 rounded-full bg-slate-300" />
+            <span className="inline-flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+              <span>NLP Review Entropy</span>
             </span>
-            <span className="flex items-center gap-1.5">
-              <span className="w-4 h-4 rounded-full flex items-center justify-center bg-amber-100 text-amber-700">
-                <Check className="w-2.5 h-2.5" />
-              </span>
-              Serial & Hallmark Check
+            <span className="hidden sm:inline-block w-1 h-1 rounded-full bg-slate-300" />
+            <span className="inline-flex items-center gap-1.5">
+              <CheckCircle2 className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+              <span>Serial & Hallmark Check</span>
             </span>
-            <span className="flex items-center gap-1.5">
-              <span className="w-4 h-4 rounded-full flex items-center justify-center bg-slate-100 text-slate-700">
-                <Lock className="w-2.5 h-2.5" />
-              </span>
-              Zero Data Retention
+            <span className="hidden sm:inline-block w-1 h-1 rounded-full bg-slate-300" />
+            <span className="inline-flex items-center gap-1.5">
+              <Lock className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+              <span>Zero Data Retention</span>
             </span>
-          </div>
+          </motion.div>
 
         </div>
       </section>

@@ -5,7 +5,7 @@ import {
   BadgeCheck, Flame, BarChart3, Lightbulb, ShoppingBag,
   Building2, Store, ThumbsUp, ThumbsDown, Eye, Compass, Zap,
   Activity, Hash, ArrowRight, ScanLine, Brain, ChevronRight,
-  Copy, Check, MessageSquare, Quote, Maximize2
+  Copy, Check, MessageSquare, Quote, Maximize2, X
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { UrlAnalysisResult } from '../types';
@@ -15,6 +15,7 @@ interface UrlAnalyzerProps {
   onAnalyzeComplete?: (result: UrlAnalysisResult) => void;
   standalone?: boolean;
   initialUrl?: string;
+  showConnectors?: boolean;
 }
 
 // ── Score bar with luxury light mode styling & status badge ──────────────────
@@ -85,7 +86,7 @@ const segments: { id: ReportSegment; label: string; priority: string; icon: Reac
   { id: 'specs', label: 'Craftsmanship & Deep Insights', priority: 'P4', icon: <BarChart3 style={{ width: '13px', height: '13px' }} /> },
 ];
 
-export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, standalone = true, initialUrl = '' }) => {
+export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, standalone = true, initialUrl = '', showConnectors = standalone }) => {
   const [url, setUrl] = useState(initialUrl);
   const [status, setStatus] = useState<'input' | 'loading' | 'result' | 'error'>('input');
   const [loadingStep, setLoadingStep] = useState(0);
@@ -215,16 +216,16 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
   /* ═══ INPUT / ERROR STATE ═══════════════════════════════════════════════════ */
   if (status === 'input' || status === 'error') {
     return (
-      <div className="w-full max-w-[850px] mx-auto">
+      <div className="w-full max-w-[760px] mx-auto">
         <div
-          className="flex items-center gap-2 rounded-2xl p-2 relative z-50 transition-all duration-300 group bg-white border border-slate-300/80 shadow-md hover:border-amber-400 focus-within:border-amber-500 focus-within:ring-3 focus-within:ring-amber-100"
+          className="flex items-center gap-2 rounded-2xl p-2 relative z-50 transition-all duration-300 group bg-white border border-slate-200/90 shadow-md shadow-slate-900/[0.04] hover:border-amber-400 focus-within:border-amber-500 focus-within:ring-4 focus-within:ring-amber-500/15"
         >
           <div className="pl-3 sm:pl-4 flex-shrink-0 transition-colors">
             <Search className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" />
           </div>
           <input
             type="url"
-            placeholder="Paste a product link from Amazon, Flipkart, Myntra, AJIO..."
+            placeholder="Paste product link from Amazon, Flipkart, Myntra, AJIO..."
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleAnalyze()}
@@ -232,10 +233,20 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
             autoComplete="off"
             spellCheck="false"
           />
+          {url.trim().length > 0 && (
+            <button
+              type="button"
+              onClick={() => { setUrl(''); setErrorMsg(''); }}
+              className="p-1 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors mr-0.5 cursor-pointer"
+              title="Clear input"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
           <button
             onClick={handleAnalyze}
             disabled={!url.trim()}
-            className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shrink-0 whitespace-nowrap active:scale-98 btn-neon shadow-sm"
+            className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shrink-0 whitespace-nowrap active:scale-98 btn-gold shadow-sm"
           >
             <Search className="w-4 h-4 shrink-0" />
             <span className="hidden sm:inline">Inspect Listing</span>
@@ -244,27 +255,29 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
         </div>
 
         {/* Supported Platform Badges */}
-        <div className="mt-2.5 flex items-center justify-center flex-wrap gap-2 text-[11px] text-slate-500 font-medium">
-          <span className="font-mono text-[10px] font-bold text-slate-400 uppercase tracking-wider">Automated Connectors:</span>
-          {[
-            { key: 'amazon', name: 'Amazon' },
-            { key: 'flipkart', name: 'Flipkart' },
-            { key: 'myntra', name: 'Myntra' },
-            { key: 'ajio', name: 'AJIO' },
-            { key: 'nykaa', name: 'Nykaa' },
-            { key: 'croma', name: 'Croma' },
-            { key: 'meesho', name: 'Meesho' },
-            { key: 'tatacliq', name: 'Tata CLiQ' },
-          ].map(p => (
-            <span
-              key={p.key}
-              className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-white border border-slate-200/90 text-slate-700 shadow-2xs text-[11px] font-semibold"
-            >
-              <PlatformLogo platform={p.key} size={14} />
-              <span>{p.name}</span>
-            </span>
-          ))}
-        </div>
+        {showConnectors && (
+          <div className="mt-3 flex items-center justify-center flex-wrap gap-2 text-[11px] text-slate-500 font-medium">
+            <span className="font-mono text-[10px] font-bold text-slate-400 uppercase tracking-wider">Connectors:</span>
+            {[
+              { key: 'amazon', name: 'Amazon' },
+              { key: 'flipkart', name: 'Flipkart' },
+              { key: 'myntra', name: 'Myntra' },
+              { key: 'ajio', name: 'AJIO' },
+              { key: 'nykaa', name: 'Nykaa' },
+              { key: 'croma', name: 'Croma' },
+              { key: 'meesho', name: 'Meesho' },
+              { key: 'tatacliq', name: 'Tata CLiQ' },
+            ].map(p => (
+              <span
+                key={p.key}
+                className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-white border border-slate-200/90 text-slate-700 shadow-2xs text-[11px] font-semibold"
+              >
+                <PlatformLogo platform={p.key} size={14} />
+                <span>{p.name}</span>
+              </span>
+            ))}
+          </div>
+        )}
 
         {status === 'error' && errorMsg && (
           <motion.div
@@ -294,7 +307,7 @@ export const UrlAnalyzer: React.FC<UrlAnalyzerProps> = ({ onAnalyzeComplete, sta
           {/* Top accent bar */}
           <div
             className="absolute top-0 left-0 right-0 h-[3px]"
-            style={{ background: 'linear-gradient(90deg, transparent, #B8860B, #059669, transparent)' }}
+            style={{ background: 'linear-gradient(90deg, transparent, #B8860B, #F59E0B, #B8860B, transparent)' }}
           />
 
           {/* Center spinner */}
