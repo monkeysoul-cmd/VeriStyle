@@ -1,11 +1,3 @@
-export {
-  runUniversalGeminiForensics,
-  runUniversalGeminiForensics as analyzeUrlForensics,
-  sanitizeProductUrl,
-  extractMetadataFromUrl
-} from "./analyze-url";
-export { runMultimodalAuthenticityForensics } from "./analyze-authenticity";
-
 import { GoogleGenAI } from "@google/genai";
 
 export function getAiClient(): GoogleGenAI | null {
@@ -61,4 +53,3 @@ export function safeParseJson<T = any>(raw: string): T | null {
 export default async function handler(req: any, res: any) {
   return res.status(200).json({ status: "analyzer_module_ready" });
 }
-

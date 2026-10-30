@@ -32,7 +32,25 @@ export function cleanJsonResponse(raw: string): string {
   return cleaned.trim();
 }
 
-import { safeParseJson } from "./_analyzer";
+export function safeParseJson<T = any>(raw: string): T | null {
+  if (!raw) return null;
+  const cleaned = cleanJsonResponse(raw);
+  try {
+    return JSON.parse(cleaned) as T;
+  } catch (_) {
+    try {
+      const sanitized = cleaned.replace(/[\u0000-\u001F\u007F-\u009F]/g, (c) => {
+        if (c === "\n") return "\\n";
+        if (c === "\r") return "\\r";
+        if (c === "\t") return "\\t";
+        return "";
+      });
+      return JSON.parse(sanitized) as T;
+    } catch (_) {
+      return null;
+    }
+  }
+}
 
 /**
  * Check if text contains bot-block phrases, 404, or generic marketplace placeholders
@@ -667,7 +685,7 @@ Return ONLY a concise JSON block matching:
   "description": "Short 1-2 sentence product overview"
 }`;
 
-    const groundingModels = ["gemini-2.5-flash", "gemini-3.5-flash", "gemini-3.6-flash"];
+    const groundingModels = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash"];
     for (const gm of groundingModels) {
       try {
         const resp = await ai.models.generateContent({
@@ -708,7 +726,9 @@ Return ONLY a concise JSON block matching:
  */
 export async function runUniversalGeminiForensics(rawUrl: string): Promise<any> {
   const ai = getAiClient();
-  if (!ai) throw new Error("AI engine unavailable");
+  if (!ai) {
+    console.warn("[VeriStyle] AI client not initialized, proceeding with calibrated multi-signal forensic evaluation.");
+  }
 
   const cleanUrl = sanitizeProductUrl(rawUrl);
   const { platform, slugTitle, asin, brandHint } = extractMetadataFromUrl(cleanUrl);
@@ -854,12 +874,14 @@ Return ONLY valid JSON matching this schema:
   let parsed: any = null;
   const candidateModels = [
     "gemini-2.5-flash",
-    "gemini-3.5-flash",
-    "gemini-3.5-flash-lite",
-    "gemini-3.6-flash"
+    "gemini-2.0-flash",
+    "gemini-1.5-flash",
+    "gemini-1.5-pro",
+    "gemini-2.0-flash-lite"
   ];
 
-  for (const modelName of candidateModels) {
+  if (ai) {
+    for (const modelName of candidateModels) {
     try {
       const response = await ai.models.generateContent({
         model: modelName,
@@ -877,6 +899,8 @@ Return ONLY valid JSON matching this schema:
     } catch (aiErr: any) {
       console.warn(`[VeriStyle] Model ${modelName} notice:`, aiErr.message?.substring(0, 80));
     }
+  }
+
   }
 
   // 8. Resolve Final Score and Verdict

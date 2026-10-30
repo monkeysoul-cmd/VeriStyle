@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-import { analyzeUrlForensics } from "../api/_analyzer";
+import { runUniversalGeminiForensics as analyzeUrlForensics } from "../api/analyze-url";
 
 async function main() {
   console.log("Analyzing Triggr Horizon Speaker via analyzeUrlForensics...");
